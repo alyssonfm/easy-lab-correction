@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	layout="absolute" width="644" height="446" title="Definir Permissões"
+	creationComplete="init()" showCloseButton="true" close="fechaJanela()">
+	
+	<mx:Script>
+		<![CDATA[
+			import bean.acesso.*;
+			import bean.Utilitarios.Util;
+			import mx.utils.StringUtil;
+			import mx.events.ValidationResultEvent;
+			import bean.Utilitarios.CastDeEntidades;
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import eventos.FechaPopupEvent;
+			import Scripts.ControladorDeModulos;
+	
+	
+			private var funcoes: ArrayCollection = new ArrayCollection();
+			private var grupos: ArrayCollection = new ArrayCollection();
+			private var permissoes: ArrayCollection = new ArrayCollection();
+			private var grupo: * = new Object();
+			private var funcao: * = new Object();
+			private var permissao: * = new Object();
+			
+			
+			private function init():void {
+				facade.channelSet = ControladorDeModulos.criaCanal();
+				var estado: String = String(ControladorDeModulos.getParam());
+				listarGrupos();
+			}
+			
+			private function fechaJanela(): void{
+				dispatchEvent(new FechaPopupEvent(this));
+			}
+			
+			private function listarGrupos():void{
+				facade.getOperation("listarGrupos").send()
+			}
+			
+			private function listarGrupos_result(event:ResultEvent):void{
+				grupos = event.result as ArrayCollection;
+				if (grupos == null) {
+					grupos = new ArrayCollection();
+					grupos.addItem(event.result);
+				}
+				cbGrupos.dataProvider = grupos;
+				cbGrupos.selectedIndex = -1;
+				listarFuncoes();
+			}
+			
+			private function listarFuncoes():void{
+				facade.getOperation("listarFuncoes").send()
+			}
+			
+			private function listarFuncoes_result(event:ResultEvent):void{
+				funcoes = event.result as ArrayCollection;
+				if (funcoes == null) {
+					funcoes = new ArrayCollection();
+					funcoes.addItem(event.result);
+				}
+				dgFuncoes.dataProvider = funcoes; 
+			}
+			
+			private function pegaPermissoesPorGrupo():void{
+				try{
+					grupo = CastDeEntidades.castGrupo(cbGrupos.selectedItem);
+					consultarPermissoesPorGrupo(grupo.idGrupo);
+				}catch(e:Error){}
+			}
+			
+			
+			private function consultarPermissoesPorGrupo(idGrupo: int):void{
+				facade.getOperation("consultarPermissoesPorGrupo").send(idGrupo);
+			}
+			
+			private function limpaChecks(): void{
+				for(var i:int = 0; i < dgFuncoes.dataProvider.length; i++){
+					dgFuncoes.dataProvider.getItemAt(i).selecionado = false;
+				}
+			} 
+			
+			private function consultarPermissoesPorGrupo_result(event:ResultEvent):void{
+				permissoes = event.result as ArrayCollection;
+				limpaChecks();
+				for(var i:int = 0; i < permissoes.length; i++){
+					permissao = CastDeEntidades.castPermissao(permissoes.getItemAt(i));
+					dgFuncoes.selectedIndex = Util.pegaPosObjeto("idFuncao", ArrayCollection(dgFuncoes.dataProvider), permissao.funcao);
+					dgFuncoes.selectedItem.selecionado = true;
+				}
+				dgFuncoes.headerHeight = dgFuncoes.headerHeight;
+			}
+			
+			private function cadastrarPermissao():void{
+				permissoes = new ArrayCollection();
+				for(var i:int = 0; i < dgFuncoes.dataProvider.length; i++){
+					grupo = CastDeEntidades.castGrupo(cbGrupos.selectedItem);
+					funcao = CastDeEntidades.castFuncao(dgFuncoes.dataProvider.getItemAt(i)); 
+					if(funcao.selecionado){
+						permissoes.addItem(funcao);
+					}
+				}
+				facade.getOperation("cadastraPermissaoGrupo").send(grupo, permissoes);
+			}
+			
+			private function cadastraPermissaoGrupo_result(event:ResultEvent):void{
+				permissoes = event.result as ArrayCollection;
+			}
+	
+			private function falha(event:FaultEvent):void {
+				var mensagem:String;
+				try{
+					if (event.fault.rootCause.message == null) {
+						mensagem = event.fault.faultString;
+					} else {
+						mensagem = event.fault.rootCause.message;
+					}
+				}
+				catch(e:Error){
+					mensagem = "Serviço indisponível, reinicie a operação.";
+				}
+				ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+			}
+			
+			private function labelGridFuncoes(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Rótulo":
+						sLabel = item.rotulo;
+						break;
+					case "Nome":
+						sLabel = item.nome;
+						break;
+				}
+				return sLabel;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">		
+		<mx:method name="listarGrupos" result="listarGrupos_result(event)" fault="falha(event)"/>
+		<mx:method name="listarFuncoes" result="listarFuncoes_result(event)" fault="falha(event)"/>
+		<mx:method name="consultarPermissoesPorGrupo" result="consultarPermissoesPorGrupo_result(event)" fault="falha(event)"/>
+		<mx:method name="cadastraPermissaoGrupo" result="cadastraPermissaoGrupo_result(event)" fault="falha(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:Label x="10" y="21" text="Selecione o Grupo:" id="labelGrupo"/>
+	<mx:Label x="10" y="70" text="Funções:" id="labelGrupo0"/>
+	<comp:ComboBoxAC labelField="nome" x="142" y="20" width="472" change="pegaPermissoesPorGrupo()" id="cbGrupos" enter="pegaPermissoesPorGrupo()"/>
+	<mx:DataGrid x="10" y="98" width="604" height="249" id="dgFuncoes" labelFunction="labelGridFuncoes">
+		<mx:columns>
+			<mx:DataGridColumn headerText="P" width="30">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Canvas width="100%" height="100%">
+							<mx:CheckBox creationComplete="inicializaCheck(event)" change="pegaSelecionado(event)" selected="{data.selecionado}" id="check" x="18">
+						 		<mx:Script>
+	                            	<![CDATA[
+	                            
+	                            		import mx.events.ItemClickEvent;
+		                            	import mx.controls.*;
+		                                
+		                                private function pegaSelecionado(event:Event):void {
+	                                		if(check.selected){
+	                                    		data.selecionado = true;
+	                                  		}else{
+	                                  			data.selecionado = false;
+	                                  		} 	                                 	
+		                                }
+		                                
+		                                private function inicializaCheck(event:Event):void{
+		                                	check.selected = false;
+		                                }
+	                              
+		                            ]]>
+		                        </mx:Script>
+							</mx:CheckBox>
+						</mx:Canvas>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="Rótulo" width="100"/>
+			<mx:DataGridColumn headerText="Nome" width="150"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:Button x="252.5" y="360" click="cadastrarPermissao()" label="   Salvar" icon="@Embed(source='../../image/disquete.png')" width="119" id="botaoSalvarPermissoes" height="28"/>
+	
+</les:ModuleTitleWindow>

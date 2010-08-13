@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="utf-8"?>
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	layout="absolute" width="644" height="446" title="Cadastros"
+	creationComplete="init()" showCloseButton="true" close="fechaJanela()">
+	
+	<mx:Script>
+		<![CDATA[
+			import bean.acesso.*;
+			import bean.Utilitarios.Util;
+			import mx.utils.StringUtil;
+			import mx.events.ValidationResultEvent;
+			import bean.Utilitarios.CastDeEntidades;
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import eventos.FechaPopupEvent;
+			import Scripts.ControladorDeModulos;
+			
+			[Bindable]
+			private var toolTipNomeMenu:String = 
+				"(Obrigatório) Informe o nome do menu.";
+			
+			[Bindable]
+			private var toolTipRotuloMenu:String = 
+				"(Obrigatório) Informe um rótulo para o menu.";
+				
+			[Bindable]
+			private var toolTipMenuFuncao:String = 
+				"(Obrigatório) Informe o menu da função.";
+			
+			[Bindable]
+			private var toolTipNomeFuncao:String = 
+				"(Obrigatório) Informe o nome para a função.";
+				
+			[Bindable]
+			private var toolTipRotuloFuncao:String = 
+				"(Obrigatório) Informe uma rótulo para a função.";
+				
+			[Bindable]
+			private var toolTipNomeGrupo:String = 
+				"(Obrigatório) Informe um nome para Grupo.";
+				
+			[Bindable]
+			private var toolTipNomeUsuario:String = 
+				"(Obrigatório) Informe um nome para o Usuário.";
+			
+			[Bindable]
+			private var toolTipLoginUsuario:String = 
+				"(Obrigatório) Informe um login para o Usuário.";
+				
+			[Bindable]
+			private var toolTipSenhaUsuario:String = 
+				"(Obrigatório) Informe uma senha para o Usuário.";
+				
+			[Bindable]
+			private var toolTipGrupoUsuario:String = 
+				"(Obrigatório) Informe um grupo para o Usuário.";
+			
+			
+			private var menus: ArrayCollection = new ArrayCollection();
+			private var grupos: ArrayCollection = new ArrayCollection();
+			
+			private var menu: Menu = new Menu();
+			private var funcao: Funcao = new Funcao();
+			private var grupo: Grupo = new Grupo();
+			private var usuario: Usuario = new Usuario();
+			private var grupoUsuario: GrupoUsuario = new GrupoUsuario();
+			
+			private function init():void {
+				facade.channelSet = ControladorDeModulos.criaCanal();
+				var estado: String = String(ControladorDeModulos.getParam());
+				selecionaAba();
+			}
+			
+			private function fechaJanela(): void{
+				dispatchEvent(new FechaPopupEvent(this));
+			}
+			
+			private function selecionaAba():void {
+				limpaCamposPorAba();
+				if (tabNav.selectedIndex == 2){
+					listarGrupos();
+				} 
+				else 
+					if (tabNav.selectedIndex == 3) {
+						listarGrupos();
+					}
+					else listarMenus();	
+			}
+			
+			private function falha(event:FaultEvent):void {
+				var mensagem:String;
+				try{
+					if (event.fault.rootCause.message == null) {
+						mensagem = event.fault.faultString;
+					} else {
+						mensagem = event.fault.rootCause.message;
+					}
+				}
+				catch(e:Error){
+					mensagem = "Serviço indisponível, reinicie a operação.";
+				}
+				ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+			}
+			
+			private function falhaMenu(event:FaultEvent):void {
+				var mensagem:String = "Não é possível realizar a exclusão. Pois existem funções cadastradas nesse Menu.";
+				lancaExcessao(new Array(true, mensagem));
+			}
+			
+			private function falhaGrupo(event:FaultEvent):void {
+				var mensagem:String = "Não é possível realizar a operação. Pois existem usuários cadastrados nesse Grupo.";
+				lancaExcessao(new Array(true, mensagem));
+			}
+			
+			private function lancaExcessao(params: Array): void{
+				ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, params);
+			}
+			
+			private function listarMenus(): void{
+				facade.getOperation("listarMenus").send();				
+			}
+			
+			private function listarMenus_result(event:ResultEvent):void {
+				menus = event.result as ArrayCollection;
+				if (tabNav.selectedIndex == 0){
+					if (menus == null) {
+						menus = new ArrayCollection();
+						menus.addItem(event.result);
+					}
+					dgMenus.dataProvider = menus;
+				}
+				if (tabNav.selectedIndex == 1){
+					cbMenu.dataProvider = menus;
+					cbMenu.selectedIndex = -1;
+					listarFuncoes();
+				}
+			}
+			
+			private function listarFuncoes():void{
+				facade.getOperation("listarFuncoes").send()
+			}
+			
+			private function listarFuncoes_result(event:ResultEvent):void{
+				dgFuncoes.dataProvider = event.result; 
+			}
+			
+			private function listarGrupos():void{
+				facade.getOperation("listarGrupos").send()
+			}
+			
+			private function listarGrupos_result(event:ResultEvent):void{
+				grupos = event.result as ArrayCollection;
+				if (tabNav.selectedIndex == 2){
+					if (grupos == null) {
+						grupos = new ArrayCollection();
+						grupos.addItem(event.result);
+					}
+					dgGrupos.dataProvider = grupos;
+				}
+				if (tabNav.selectedIndex == 3){
+					cbGrupoUsuario.dataProvider = grupos;
+					cbGrupoUsuario.selectedIndex = -1;
+					//listarUsuarios();
+				}
+			}
+			/*
+			private function listarUsuarios():void{
+				facade.getOperation("listarGrupoUsuarios").send()
+			}
+			
+			private function listarGrupoUsuarios_result(event:ResultEvent):void{
+				dgUsuarios.dataProvider = new ArrayCollection();
+				dgUsuarios.dataProvider = event.result as ArrayCollection;
+			}*/
+			
+			private function labelGridMenus(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Nome":
+						sLabel = item.nome;
+						break;
+					case "Rótulo":
+						sLabel = item.rotulo;
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function labelGridFuncoes(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Rótulo":
+						sLabel = item.rotulo;
+						break;
+					case "Nome":
+						sLabel = item.nome;
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function labelGridGrupos(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Grupo":
+						sLabel = item.nome;
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function labelGridUsuarios(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Login":
+						sLabel = item.usuario.login;
+						break;
+					case "Usuário":
+						sLabel = item.usuario.nome;
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function cadastrarMenu(): void{
+				menu = new Menu();
+				editarMenu();
+			}
+			
+			private function editarMenu():void {
+				menu.nome = StringUtil.trim(inputNomeMenu.text);
+				menu.rotulo = StringUtil.trim(inputRotuloMenu.text);
+				facade.getOperation("cadastrarMenu").send(menu);
+			}
+			
+			private function excluirMenu():void {
+				facade.getOperation("excluirMenu").send(menu);
+			}
+			
+			private function excluirMenu_result(): void{
+				listarMenus();
+				limpaCamposPorAba();
+			}
+			
+			private function cadastrarMenu_result(event:ResultEvent): void{
+				var menuP: Menu = CastDeEntidades.castMenu(event.result);
+				if (menuP != null && menuP.idMenu != 0){
+					listarMenus();	
+					inputNomeMenu.text = "";
+					inputRotuloMenu.text = "";
+				}
+				else{
+					var paramErro:Array = new Array(true, "Falha ao cadastrar este Menu.");
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, paramErro);
+				} 	
+			}
+			
+			private function selecionarMenu(): void{
+				if (dgMenus.selectedItem != null) {
+					menu.idMenu = dgMenus.selectedItem.idMenu;
+					menu.nome = dgMenus.selectedItem.nome;
+					menu.rotulo = dgMenus.selectedItem.rotulo;
+					inputNomeMenu.text = menu.nome;
+					inputRotuloMenu.text = menu.rotulo;
+					botaoCadastrarMenu.visible = false;
+					botaoAtualizarMenu.visible = true;
+					botaoRemoverMenu.visible = true;
+				}
+			}
+			
+			private function cadastrarFuncao(): void{
+				funcao = new Funcao();
+				editarFuncao();
+			}
+			
+			private function editarFuncao():void {
+				funcao.nome = StringUtil.trim(inputNomeFuncao.text);
+				funcao.rotulo = StringUtil.trim(inputRotuloFuncao.text);
+				funcao.menu = CastDeEntidades.castMenu(cbMenu.selectedItem);
+				facade.getOperation("cadastrarFuncao").send(funcao);
+			}
+			
+			private function excluirFuncao():void {
+				facade.getOperation("excluirFuncao").send(funcao);
+			}
+			
+			private function excluirFuncao_result(): void{
+				listarFuncoes();
+				limpaCamposPorAba();
+			}
+			
+			private function filtrarFuncoesPorMenu():void {
+				try{
+					handleValidaFuncao(null);
+					var menuAux : * = cbMenu.selectedItem;
+					facade.getOperation("consultarFuncaoPorMenu").send(menuAux.idMenu);
+				} catch(e: Error){}
+				
+			}
+			
+			private function consultarFuncaoPorMenu_result(event:ResultEvent): void{
+				dgFuncoes.dataProvider = new ArrayCollection();
+				dgFuncoes.dataProvider = event.result as ArrayCollection;
+			}
+			
+			private function cadastrarFuncao_result(event:ResultEvent): void{
+				var funcaoP: Funcao = CastDeEntidades.castFuncao(event.result);
+				if (funcaoP != null && funcaoP.idFuncao != 0){
+					listarFuncoes();	
+					inputNomeFuncao.text = "";
+					inputRotuloFuncao.text = "";
+				}
+				else{
+					var paramErro:Array = new Array(true, "Falha ao cadastrar esta Função.");
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, paramErro);
+				} 	
+			}
+			
+			private function selecionarFuncao(): void{
+				if (dgFuncoes.selectedItem != null) {
+					funcao.idFuncao = dgFuncoes.selectedItem.idFuncao;
+					funcao.nome = dgFuncoes.selectedItem.nome;
+					funcao.rotulo = dgFuncoes.selectedItem.rotulo;
+					funcao.menu = CastDeEntidades.castMenu(dgFuncoes.selectedItem.menu);
+					inputNomeFuncao.text = funcao.nome;
+					inputRotuloFuncao.text = funcao.rotulo;
+					cbMenu.selectedIndex = Util.pegaPosObjeto("idMenu", ArrayCollection(cbMenu.dataProvider), funcao.menu);
+					botaoCadastrarFuncao.visible = false;
+					botaoAtualizarFuncao.visible = true;
+					botaoRemoverFuncao.visible = true;
+					botaoRemoverFuncao.enabled = true;
+					botaoAtualizarFuncao.enabled = true;
+				}
+			}
+			
+			private function cadastrarGrupo(): void{
+				grupo = new Grupo();
+				editarGrupo();
+			}
+			
+			private function editarGrupo():void {
+				grupo.nome = StringUtil.trim(inputGrupo.text);
+				facade.getOperation("cadastrarGrupo").send(grupo);
+			}
+			
+			private function excluirGrupo():void {
+				facade.getOperation("excluirGrupo").send(grupo);
+			}
+			
+			private function excluirGrupo_result(): void{
+				listarGrupos();
+				limpaCamposPorAba();
+			}
+			
+			private function cadastrarGrupo_result(event:ResultEvent): void{
+				var grupoP: Grupo = CastDeEntidades.castGrupo(event.result);
+				if (grupoP != null && grupoP.idGrupo != 0){
+					listarGrupos();	
+					inputGrupo.text = "";
+				}
+				else{
+					var paramErro:Array = new Array(true, "Falha ao cadastrar este Grupo.");
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, paramErro);
+				} 	
+			}
+			
+			private function selecionarGrupo(): void{
+				if (dgGrupos.selectedItem != null) {
+					grupo.idGrupo = dgGrupos.selectedItem.idGrupo;
+					grupo.nome = dgGrupos.selectedItem.nome;
+					inputGrupo.text = grupo.nome;
+					botaoCadastrarGrupo.visible = false;
+					botaoAtualizarGrupo.visible = true;
+					botaoRemoverGrupo.visible = true;
+				}
+			}
+			
+			private function cadastrarGrupoUsuario(): void{
+				usuario = new Usuario();
+				grupoUsuario = new GrupoUsuario();
+				editarUsuario();
+			}
+			
+			private function editarUsuario(): void{
+				if(dgUsuarios.selectedItem != null){
+					usuario.idUsuario = dgUsuarios.selectedItem.usuario.idUsuario;
+					if(StringUtil.trim(inputSenhaUsuario.text) != ""){
+						usuario.senha = StringUtil.trim(inputSenhaUsuario.text);
+					}else{
+						usuario.senha = dgUsuarios.selectedItem.usuario.senha;
+					}	
+				}else{
+					usuario.senha = StringUtil.trim(inputSenhaUsuario.text);	
+				}
+				usuario.login = StringUtil.trim(inputLoginUsuario.text);
+				usuario.nome = StringUtil.trim(inputNomeUsuario.text);
+				grupoUsuario.grupo = CastDeEntidades.castGrupo(cbGrupoUsuario.selectedItem);
+				grupoUsuario.usuario = usuario;
+				facade.getOperation("cadastrarUsuario").send(grupoUsuario);
+			}
+			
+			private function excluirUsuario():void {
+				facade.getOperation("excluirUsuario").send(grupoUsuario);
+			}
+			
+			private function excluirGrupoUsuario_result(): void{
+				filtrarUsuarioPorGrupo();
+				limpaCamposPorAba();
+			}
+			
+			private function cadastrarUsuario_result(event:ResultEvent): void{
+				var grupoUsuarioP: GrupoUsuario = CastDeEntidades.castGrupoUsuario(event.result);
+				if (grupoUsuarioP != null && grupoUsuarioP.idGrupoUsuario != 0){
+					filtrarUsuarioPorGrupo();	
+					inputLoginUsuario.text = "";
+					inputNomeUsuario.text = "";
+					inputSenhaUsuario.text = "";
+				}	
+			}
+			
+			private function selecionarUsuario(): void{
+				if (dgUsuarios.selectedItem != null) {
+					grupoUsuario.idGrupoUsuario = dgUsuarios.selectedItem.idGrupoUsuario;
+					grupoUsuario.usuario = CastDeEntidades.castUsuario(dgUsuarios.selectedItem.usuario);
+					grupoUsuario.grupo = dgUsuarios.selectedItem.grupo;
+					cbGrupoUsuario.selectedIndex = Util.pegaPosObjeto("idGrupo", ArrayCollection(cbGrupoUsuario.dataProvider), grupoUsuario.grupo);
+					inputNomeUsuario.text = grupoUsuario.usuario.nome;
+					inputLoginUsuario.text = grupoUsuario.usuario.login;
+					botaoCadastrarUsuario.visible = false;
+					botaoAtualizarUsuario.visible = true;
+					botaoRemoverUsuario.visible = true;
+				}
+			}
+			
+			private function mudaCadastrar(): void {
+				limpaCamposPorAba();
+				
+			}
+			
+			private function limpaCamposPorAba():void {
+				if (tabNav.selectedIndex == 0){
+					limpaCamposMenu();
+					botaoCadastrarMenu.visible = true;
+					botaoAtualizarMenu.visible = false;
+					botaoRemoverMenu.visible = false;
+				}
+				if (tabNav.selectedIndex == 1){
+					limpaCamposFuncao();
+					botaoCadastrarFuncao.visible = true;
+					botaoAtualizarFuncao.visible = false;
+					botaoRemoverFuncao.visible = false;
+				}
+				if (tabNav.selectedIndex == 2){
+					limpaCamposGrupo();
+					botaoCadastrarGrupo.visible = true;
+					botaoAtualizarGrupo.visible = false;
+					botaoRemoverGrupo.visible = false;
+				}
+				if (tabNav.selectedIndex == 3){
+					limpaCamposUsuario();
+					botaoCadastrarUsuario.visible = true;
+					botaoAtualizarUsuario.visible = false;
+					botaoRemoverUsuario.visible = false;
+				}
+			}
+			
+			private function limpaCamposMenu(): void{
+				inputNomeMenu.text = "";
+				inputRotuloMenu.text = "";	
+			}
+			
+			private function limpaCamposFuncao(): void{
+				inputNomeFuncao.text = "";
+				inputRotuloFuncao.text = "";
+				cbMenu.selectedIndex = -1;	
+			}
+			
+			private function limpaCamposGrupo(): void{
+				inputGrupo.text = "";	
+			}
+			
+			private function limpaCamposUsuario(): void{
+				inputLoginUsuario.text = "";
+				inputNomeUsuario.text = "";
+				inputSenhaUsuario.text = "";
+				cbGrupoUsuario.selectedIndex = -1;
+				dgUsuarios.selectedItem = null;
+			}
+			
+			private function filtrarUsuarioPorGrupo(): void{
+				try{
+					handleValidaUsuario(null);
+					var menuAux : * = cbGrupoUsuario.selectedItem;
+					facade.getOperation("consultarUsuarioPorGrupo").send(menuAux.idGrupo);
+				} catch(e: Error){}
+			}
+			
+			private function consultarUsuarioPorGrupo_result(event:ResultEvent): void{
+				dgUsuarios.dataProvider = new ArrayCollection();
+				dgUsuarios.dataProvider = event.result as ArrayCollection;
+			}
+						
+			private function handleValidaMenu(eventObj:ValidationResultEvent):void {
+				if (StringUtil.trim(inputNomeMenu.text) != "" && StringUtil.trim(inputRotuloMenu.text) != ""){     
+               		botaoCadastrarMenu.enabled = true;
+            		botaoAtualizarMenu.enabled = true;
+            	    botaoRemoverMenu.enabled = true;
+        		}
+        		else{        
+               		botaoCadastrarMenu.enabled = false;
+            		botaoAtualizarMenu.enabled = false;
+            	    botaoRemoverMenu.enabled = false;
+        		}
+            }
+            
+            private function handleValidaFuncao(eventObj:ValidationResultEvent):void {
+            	if (StringUtil.trim(inputNomeFuncao.text) != "" && 
+                	StringUtil.trim(inputRotuloFuncao.text) != "" &&
+                	cbMenu.selectedIndex != -1){
+                 	botaoCadastrarFuncao.enabled = true;
+                	botaoAtualizarFuncao.enabled = true;
+                	botaoRemoverFuncao.enabled = true;
+             	}
+             	else{             		
+                   	botaoCadastrarFuncao.enabled = false;
+                	botaoAtualizarFuncao.enabled = false;
+                	botaoRemoverFuncao.enabled = false;	
+             	}
+            }
+            
+            private function handleValidaGrupo(eventObj:ValidationResultEvent):void {
+                if (StringUtil.trim(inputGrupo.text) != ""){                
+                    botaoCadastrarGrupo.enabled = true;
+                 	botaoAtualizarGrupo.enabled = true;
+                 	botaoRemoverGrupo.enabled = true;                 	
+            	}                    
+                else{                
+                    botaoCadastrarGrupo.enabled = false;
+                 	botaoAtualizarGrupo.enabled = false;
+                 	botaoRemoverGrupo.enabled = false;	
+                }   
+            }
+            
+            private function handleValidaUsuario(eventObj:ValidationResultEvent):void {
+                if (StringUtil.trim(inputNomeUsuario.text) != "" && 
+                	StringUtil.trim(inputLoginUsuario.text) != "" &&
+                	cbGrupoUsuario.selectedIndex != -1){
+                	botaoCadastrarUsuario.enabled = true;
+                	botaoAtualizarUsuario.enabled = true;
+                	botaoRemoverUsuario.enabled = true;                	
+                }
+                else{
+                	botaoCadastrarUsuario.enabled = false;
+                	botaoAtualizarUsuario.enabled = false;
+                	botaoRemoverUsuario.enabled = false;                	
+                }
+            }
+            
+            private function falhaRemove(event:FaultEvent):void{
+				var mens:Array = new Array(true, "Não é possível realizar a operação. Existe professor ou avaliador associado a este usuário.");
+				lancaExcessao(mens);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+		
+		<mx:method name="listarMenus" result="listarMenus_result(event)" fault="falha(event)"/>
+		<mx:method name="listarFuncoes" result="listarFuncoes_result(event)" fault="falha(event)"/>
+		<mx:method name="listarGrupos" result="listarGrupos_result(event)" fault="falha(event)"/>
+		<mx:method name="cadastrarMenu" result="cadastrarMenu_result(event)" fault="falha(event)"/>
+		<mx:method name="cadastrarFuncao" result="cadastrarFuncao_result(event)" fault="falha(event)"/>
+		<mx:method name="consultarFuncaoPorMenu" result="consultarFuncaoPorMenu_result(event)" fault="falha(event)"/>
+		<mx:method name="cadastrarGrupo" result="cadastrarGrupo_result(event)" fault="falha(event)"/>
+		<mx:method name="cadastrarUsuario" result="cadastrarUsuario_result(event)" fault="falha(event)"/>
+		<mx:method name="consultarUsuarioPorGrupo" result="consultarUsuarioPorGrupo_result(event)" fault="falha(event)"/>
+		<mx:method name="excluirMenu" result="excluirMenu_result()" fault="falhaMenu(event)"/>
+		<mx:method name="excluirFuncao" result="excluirFuncao_result()" fault="falha(event)"/>
+		<mx:method name="excluirGrupo" result="excluirGrupo_result()" fault="falhaGrupo(event)"/>
+		<mx:method name="excluirUsuario" result="excluirGrupoUsuario_result()" fault="falhaRemove(event)"/>
+		
+	</mx:RemoteObject>
+	
+	<mx:Validator required="true" id="validatorNomeMenu" source="{inputNomeMenu}"
+    	property="text" valid="handleValidaMenu(event)" invalid="handleValidaMenu(event)"
+    	requiredFieldError="Informe o nome do menu."/>
+    	
+    <mx:Validator required="true" id="validatorRotuloMenu" source="{inputRotuloMenu}"
+    	property="text" valid="handleValidaMenu(event)" invalid="handleValidaMenu(event)"
+    	requiredFieldError="Informe o rótulo do menu."/>
+    	
+    <mx:Validator required="true" id="validatorNomeFuncao" source="{inputNomeFuncao}"
+    	property="text" valid="handleValidaFuncao(event)" invalid="handleValidaFuncao(event)"
+    	requiredFieldError="Informe o nome da função."/>
+    	
+    <mx:Validator required="true" id="validatorRotuloFuncao" source="{inputRotuloFuncao}"
+    	property="text" valid="handleValidaFuncao(event)" invalid="handleValidaFuncao(event)"
+    	requiredFieldError="Informe o rótulo da função."/>
+    	
+    <mx:Validator required="true" id="validatorMenuFuncao" source="{cbMenu}"
+    	property="text" valid="handleValidaFuncao(event)" invalid="handleValidaFuncao(event)"
+    	requiredFieldError="Informe o menu da função."/>
+    	
+    <mx:Validator required="true" id="validatorGrupo" source="{inputGrupo}"
+    	property="text" valid="handleValidaGrupo(event)" invalid="handleValidaGrupo(event)"
+    	requiredFieldError="Informe o nome de grupo."/>
+    	
+    <mx:Validator required="true" id="validatorLoginUsuario" source="{inputLoginUsuario}"
+    	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
+    	requiredFieldError="Informe o login do usuário."/>
+    	
+    <mx:Validator required="true" id="validatorNomeUsuario" source="{inputNomeUsuario}"
+    	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
+    	requiredFieldError="Informe o nome do usuário."/>
+    	
+    <mx:Validator required="true" id="validatorGrupoUsuario" source="{cbGrupoUsuario}"
+    	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
+    	requiredFieldError="Informe o grupo do usuário."/>
+	
+	<mx:TabNavigator change="selecionaAba()" width="100%" height="100%" id = "tabNav">	
+		
+		<mx:Canvas label="Menu" width="100%" height="100%" id="canvas1">		
+			<mx:TextInput x="64" y="45" width="548" id="inputNomeMenu" toolTip="{toolTipNomeMenu}" change="handleValidaMenu(null)"/>
+			<mx:TextInput x="64" y="73" width="548" id="inputRotuloMenu" toolTip="{toolTipRotuloMenu}" change="handleValidaMenu(null)"/>
+			<mx:Button x="243.5" y="111" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" click="cadastrarMenu()" width="135" id="botaoCadastrarMenu" height="28" enabled="false"/>
+			<mx:Button x="548" y="23" label="Novo" width="63" click="mudaCadastrar()" id="botaoNovoMenu" height="23"/>
+			<mx:Label x="10" y="47" text="Nome:" id="labelNomeMenu"/>
+			<mx:Label x="10" y="75" text="Rótulo:" id="labelRotuloMenu"/>
+			<mx:Button x="315" y="111" label="   Remover" click="excluirMenu()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverMenu" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="111" label="   Atualizar" click="editarMenu()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarMenu" height="28" enabled="false" visible="false"/>
+			<mx:DataGrid x="10" y="155" width="602" change="selecionarMenu()" itemClick="selecionarMenu()" 
+					height="204" labelFunction="labelGridMenus" draggableColumns="false" id="dgMenus">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Rótulo" width="100"/>
+					<mx:DataGridColumn headerText="Nome"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
+		<mx:Canvas label="Função" width="100%" height="100%" id="canvas2">
+			<comp:ComboBoxAC labelField="nome" x="62" y="15.5" width="550" id="cbMenu" toolTip="{toolTipMenuFuncao}" change="filtrarFuncoesPorMenu()"/>
+			<mx:TextInput x="62" y="76" width="550" id="inputNomeFuncao" toolTip="{toolTipNomeFuncao}" change="handleValidaFuncao(null)"/>
+			<mx:TextInput x="62" y="104" width="550" id="inputRotuloFuncao" toolTip="{toolTipNomeFuncao}" change="handleValidaFuncao(null)"/>
+			<mx:Button x="243.5" y="144" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" 
+				id="botaoCadastrarFuncao" click="cadastrarFuncao()" height="28" enabled="false"/>
+			<mx:Button x="548" y="54" label="Novo" width="63" id="botaoNovaFuncao" height="23" click="mudaCadastrar()"/>
+			<mx:Button x="315" y="143" label="   Remover" click="excluirFuncao()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverFuncao" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="143" label="   Atualizar" click="editarFuncao()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarFuncao" height="28" visible="false" enabled="false"/>
+			<mx:Label x="10" y="16.5" text="Menu:" id="labelCbMenu"/>
+			<mx:Label x="10" y="78" text="Nome:" id="labelNomeFuncao"/>
+			<mx:Label x="10" y="106" text="Rótulo:" id="labelRotuloFuncao"/>
+			<mx:DataGrid x="10" y="189" width="602" height="168" change="selecionarFuncao()" itemClick="selecionarFuncao()"
+					draggableColumns="false" labelFunction="labelGridFuncoes" id="dgFuncoes">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Rótulo" width="100"/>
+					<mx:DataGridColumn headerText="Nome"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
+		<mx:Canvas label="Grupo" width="100%" height="100%" id="canvas3">
+			<mx:TextInput x="74" y="45" width="538" id="inputGrupo" toolTip="{toolTipNomeGrupo}" change="handleValidaGrupo(null)"/>
+			<mx:Label x="18" y="45.5" text="Grupo:" id="labelGrupo"/>
+			<mx:Button x="243.5" y="90" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" click="cadastrarGrupo()" id="botaoCadastrarGrupo" height="28" enabled="false"/>
+			<mx:Button x="548" y="23" label="Novo" width="63" id="botaoNovoGrupo" height="23" click="mudaCadastrar()"/>
+			<mx:Button x="315" y="90" label="   Remover" click="excluirGrupo()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverGrupo" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="90" label="   Atualizar" click="editarGrupo()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarGrupo" height="28" visible="false" enabled="false"/>
+			<mx:DataGrid x="10" y="141" width="602" height="216" change="selecionarGrupo()" itemClick="selecionarGrupo()"
+					draggableColumns="false" labelFunction="labelGridGrupos" id="dgGrupos">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Grupo"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
+		<mx:Canvas label="Usuário" width="100%" height="100%" id="canvas4">
+			<mx:ComboBox prompt="selecione..." x="64" y="92" width="548" labelField="nome" id="cbGrupoUsuario" toolTip="{toolTipGrupoUsuario}" change="filtrarUsuarioPorGrupo()"/>
+			<mx:TextInput x="64" y="32.5" width="548" id="inputNomeUsuario" toolTip="{toolTipNomeUsuario}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="64" y="62" width="348" id="inputLoginUsuario" toolTip="{toolTipLoginUsuario}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="478" y="62" width="134" id="inputSenhaUsuario" displayAsPassword="true"/>
+			<mx:Button x="242.5" y="127" label="   Cadastrar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuario" height="28" enabled="false"/>
+			<mx:Button x="549" y="10" label="Novo" width="63" height="23" id="botaoNovoUsuario" click="mudaCadastrar()"/>
+			<mx:Button x="315" y="127" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuario" height="28" visible="true" />
+			<mx:Button x="172" y="127" label="   Atualizar" click="editarUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuario" height="28" visible="true" />
+			<mx:Label x="10" y="93.5" text="Grupo:" id="labelGrupoUsuario"/>
+			<mx:Label x="10" y="34.5" text="Nome:" id="labelNomeUsuario"/>
+			<mx:Label x="12" y="64" text="Login:" id="labelLoginUsuario"/>
+			<mx:Label x="420" y="64" text="Senha:" id="labelSenhaUsuario"/>
+			<mx:DataGrid x="10" y="168" width="602" height="189" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
+					 labelFunction="labelGridUsuarios" id="dgUsuarios">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Login" dataField="id" width="100"/>
+					<mx:DataGridColumn headerText="Usuário"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
+		
+	</mx:TabNavigator>
+</les:ModuleTitleWindow>
