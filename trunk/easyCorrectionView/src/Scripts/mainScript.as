@@ -260,8 +260,8 @@ private function menuItemPressionado(event: MenuEvent):void  {
      if (event.item.@data == "defPerm") {
      	ControladorDeModulos.criaModulo("modulos/ControleDeAcesso/DefinirFuncoes.swf", this, "");
      }
-     if (event.item.@data == "cadastroRoteiro") {
-     	ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, "");
+     if (event.item.@data == "agendaRoteiros") {
+     	ControladorDeModulos.criaModulo("modulos/Views/AgendamentoRoteiros.swf", this, "");
      }
 }
 
