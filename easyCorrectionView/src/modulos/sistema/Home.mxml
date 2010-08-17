@@ -41,40 +41,39 @@
 	<mx:Canvas label="Roteiros" id="canvasRoteiros">
 	
 		<mx:Label x="374" y="12" text="Detalhes do Roteiro" fontWeight="bold" fontStyle="italic" fontSize="14"/>
-		<mx:Label x="371" y="398" text="Palavras-Chave:"/>
 		<mx:Label x="14" y="552" text="Total de Projetos Inscritos:" id="labelTotalProjetosInscritos" visible="false"/>
 		<mx:Label x="198" y="552" width="85" id="totalProjetosInscritos" visible="false"/>
-		<mx:Label x="371" y="416" width="163" id="labelPalavraChave1" color="#1B7A0F"/>
-		<mx:Label x="558.95" y="416" width="163" id="labelPalavraChave2" color="#1B7A0F"/>
-		<mx:Label x="749" y="416" width="163" id="labelPalavraChave3" color="#1B7A0F"/>
-		<mx:Label x="374" y="62" text="Título Completo:"/>
-		<mx:Label x="374" y="120" text="Aluno:"/>
-		<mx:Label x="372" y="444" text="Participantes:"/>
-		<mx:LinkButton x="744" y="31" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar este Roteiro"/>
+		<mx:Label x="374" y="62" text="Aluno:"/>
+		<mx:Label x="374" y="436" text="Participantes:"/>
+		<mx:LinkButton x="744" y="13" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar este Roteiro"/>
+		<mx:LinkButton x="744" y="44" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Avaliação"/>
 		<mx:LinkButton x="626" y="10" visible="false" icon="@Embed(source='../../image/help2.png')" label="  Instruções para Avaliação dos Projetos" id="linkInstrucao"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Atualizar Projeto" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAtualizaOrientador"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Avaliar" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAvaliacao"/>
 		<mx:List x="10" y="70" visible="false" fontSize="12" width="315" height="95" cornerRadius="20" alpha="0.5" id="projetoAvaliacaoList"/>
 		<mx:List x="10" y="404" visible="false" fontSize="12" width="315" height="137" cornerRadius="20" alpha="0.5" id="projetoList"/>
 		<mx:List x="10" y="202" visible="false" fontSize="12" width="315" height="155" cornerRadius="20" alpha="0.5" id="projetoCotaList"/>
-		<mx:Label x="374" y="184" text="Resumo:"/>
+		<mx:Label x="377" y="115" text="Descrição do Roteiro:" id="labelDescRoteiro"/>
+		<mx:Label x="377" y="376" text="Nota final:"/>
+		<mx:Label x="377" y="320" text="Nota dos testes automáticos:"/>
+		<mx:Label x="377" y="348" text="Nota da codificação:"/>
 		<mx:Label x="10" y="46" text="Projetos para Avaliação:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetoAvaliacaoLabel" visible="false"/>
 		<mx:Label x="10" y="378" text="Meus Projetos:" fontStyle="normal" fontWeight="bold" fontSize="14" id="meusProjetosLabel" visible="false"/>
 		<mx:Label x="10" y="176" text="Projetos da Cota Atual:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetosCotaLabel" visible="false"/>
 		<mx:VRule x="346" y="16" height="577"  width="1"/>
-		<mx:Label x="374" y="91" width="541" id="tituloLabel" color="#1B7A0F"/>
-		<mx:Label x="374" y="145" width="541" id="orientadorLabel" color="#1B7A0F"/>
-		<mx:TextArea x="371" y="212" width="541" height="178" backgroundAlpha="0.0" id="resumoText" editable="false" alpha="0.5" cornerRadius="10"/>
-		<mx:DataGrid x="371" y="466" width="541" height="78" id="gridAlunos">
+		<mx:Label x="374" y="87" width="541" id="orientadorLabel" color="#1B7A0F"/>
+		<mx:Label x="577" y="376" width="32" id="labelNota" color="#1B7A0F" text="8,0"/>
+		<mx:Label x="577" y="348" width="32" id="labelNota0" color="#1B7A0F" text="4,0"/>
+		<mx:Label x="577" y="320" width="32" id="labelNota1" color="#1B7A0F" text="4,0"/>
+		<mx:TextArea x="377" y="143" width="541" height="169" backgroundAlpha="0.0" id="resumoText" editable="false" alpha="0.5" cornerRadius="10"/>
+		<mx:DataGrid x="374" y="464" width="541" height="78" id="gridAlunos">
 			<mx:columns>
 				<mx:DataGridColumn headerText="Matrícula" width="120"/>
 				<mx:DataGridColumn headerText="Nome" width="300"/>
 				<mx:DataGridColumn headerText="Status" />
 			</mx:columns>
 		</mx:DataGrid>
-		<mx:Label x="10" y="2" text="Roteiro:"/>
-		<mx:TextInput x="73" y="0" width="252" id="inputTituloProjeto"/>
-		<mx:HRule x="535" y="416" height="20" width="19.95"/>
-		<mx:HRule x="725.05" y="416" height="20" width="19.95"/>
+		<mx:Label x="10" y="12" text="Roteiro:"/>
+		<mx:TextInput x="73" y="10" width="252" id="inputTituloProjeto"/>
 	</mx:Canvas>
 </mx:TabNavigator>
