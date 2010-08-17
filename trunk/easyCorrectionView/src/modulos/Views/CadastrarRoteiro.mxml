@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Componente para a tela de login do sistema
+-->
+
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	width="800" height="538" creationComplete="init()" title="Cadastro de Roteiro" showCloseButton="true" close="fechaJanela()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import eventos.UsuarioEvent;
+				import bean.acesso.*;
+				import eventos.RespostaLoginEvent;
+				import eventos.FechaPopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ControladorDeModulos;
+				import mx.binding.utils.BindingUtils;
+				//import eventos.RespostaLoginEvent;
+				//import eventos.FechaPopupEvent;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+				
+				private var fileRef:FileReference;
+				private var request: URLRequest;
+				private const FILE_UPLOAD_URL:String = "http://les.edu.br/easyLabCorrection/";
+	            
+	            private function falha(event:FaultEvent):void {
+					var mensagem:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							mensagem = event.fault.faultString;
+						} else {
+							mensagem = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						mensagem = "Serviço indisponível, reinicie a operação.";
+					}
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+				}
+				
+				private function fechaJanela():void {
+					dispatchEvent(new FechaPopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function lancaEvento(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					
+					facade.channelSet = ControladorDeModulos.criaCanal();
+					var estado: String = String(ControladorDeModulos.getParam());
+					
+				}
+				
+				private function escolheArquivo(): void{
+					fileRef = new FileReference();
+			   	 	fileRef.addEventListener(Event.SELECT, arquivoSelecionado);
+			   	 	fileRef.addEventListener(Event.COMPLETE, envioCompleto);
+			   	 	fileRef.addEventListener(IOErrorEvent.IO_ERROR, erroEnvio);
+			    	fileRef.browse(new Array(new FileFilter("Testes","*.java;")));
+				}
+				
+				public function erroEnvio(evt:Event):void {
+			       	var param:Array = new Array(true, "Ocorreu um erro de transmissão. O projeto não foi cadastrado." +
+														"\n\nTente novamente! Caso este erro persista..." + 
+														"\n\nVerifique se sua conexão com a internet está ativada.");
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+				}
+				
+				public function arquivoSelecionado(evt:Event):void {
+			       	request = new URLRequest(FILE_UPLOAD_URL);
+			       	caminho.text = fileRef.name;
+				}
+				
+				public function envioCompleto(evt:Event):void {
+					request = new URLRequest(FILE_UPLOAD_URL);
+			       	var param:Array = new Array(false, "Roteiro cadastrado com sucesso.");
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+				}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			
+		</mx:RemoteObject>
+		
+		<mx:Label text="Título:" fontWeight="bold"
+			textAlign="left" width="121" x="10" y="10" id="labelTitulo"/>
+		<mx:Label text="Porcentagem Automática da Avaliação:" fontWeight="bold"
+			textAlign="left" width="270" x="10" y="266"/>
+		<mx:Label text="%" fontWeight="bold"
+			textAlign="left" width="20" x="339" y="266"/>
+		<mx:Label text="Descrição:" fontWeight="bold"
+			textAlign="left" width="121" x="10" y="67" id="labelDescricao"/>
+		<mx:TextInput x="10" y="35" id="inputTitulo" width="760"/>
+		<mx:TextInput x="278" y="264" id="inputAutomatica" width="57"/>
+		<mx:Label text="Máximo de integrantes por equipe:" fontWeight="bold"
+			textAlign="left" width="251" x="10" y="236" id="labelAutomatica0"/>
+		<mx:TextInput x="278" y="234" id="inputAutomatica0" width="57"/>
+		<mx:TextArea x="10" y="95" width="760" height="122" id="inputDescricao"/>
+		<mx:HRule x="10" y="305" width="760"/>
+		<mx:LinkButton x="263.5" y="315" label="   Anexar Testes Automáticos" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes"/>
+		<mx:Label x="10" y="351" width="760" id="caminho" textAlign="center" text="Arquivos.zip"/>
+		<mx:LinkButton x="273" y="379" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="anexarInterface"/>
+		<mx:Label x="10" y="415" width="760" id="caminho0" textAlign="center" text="Interface.java"/>
+		<mx:Button x="298" y="456" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoCadastrarProjeto"/>
+		
+		
+</les:ModuleTitleWindow>
