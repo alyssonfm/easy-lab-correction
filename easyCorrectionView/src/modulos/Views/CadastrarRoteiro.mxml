@@ -93,6 +93,10 @@
 					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 				}
 				
+				public function cadastraRoteiro(): void{
+					dispatchEvent(new FechaPopupEvent(this));
+				}
+				
 			]]>
 		</mx:Script>
 				
@@ -109,17 +113,17 @@
 		<mx:Label text="Descrição:" fontWeight="bold"
 			textAlign="left" width="121" x="10" y="67" id="labelDescricao"/>
 		<mx:TextInput x="10" y="35" id="inputTitulo" width="760"/>
-		<mx:TextInput x="278" y="264" id="inputAutomatica" width="57"/>
+		<mx:TextInput x="278" y="264" id="inputAutomatica" width="57" restrict="[0-9]" maxChars="3"/>
 		<mx:Label text="Máximo de integrantes por equipe:" fontWeight="bold"
 			textAlign="left" width="251" x="10" y="236" id="labelAutomatica0"/>
-		<mx:TextInput x="278" y="234" id="inputAutomatica0" width="57"/>
+		<mx:TextInput x="278" y="234" id="inputAutomatica0" width="57" restrict="[0-9]" maxChars="2"/>
 		<mx:TextArea x="10" y="95" width="760" height="122" id="inputDescricao"/>
 		<mx:HRule x="10" y="305" width="760"/>
-		<mx:LinkButton x="263.5" y="315" label="   Anexar Testes Automáticos" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes"/>
+		<mx:LinkButton x="263.5" y="315" label="   Anexar Testes Automáticos" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivo()"/>
 		<mx:Label x="10" y="351" width="760" id="caminho" textAlign="center" text="Arquivos.zip"/>
-		<mx:LinkButton x="273" y="379" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="anexarInterface"/>
+		<mx:LinkButton x="273" y="379" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="anexarInterface" click="escolheArquivo()"/>
 		<mx:Label x="10" y="415" width="760" id="caminho0" textAlign="center" text="Interface.java"/>
-		<mx:Button x="298" y="456" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoCadastrarProjeto"/>
+		<mx:Button x="298" y="456" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoCadastrarProjeto" click="cadastraRoteiro()"/>
 		
 		
 </les:ModuleTitleWindow>
