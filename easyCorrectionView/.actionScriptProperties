@@ -12,12 +12,14 @@
     <application path="main.mxml"/>
   </applications>
   <modules>
-    <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/DefinirFuncoes.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/DefinirFuncoes.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/sistema/MensagemStatus.swf" optimize="true" sourcePath="src/modulos/sistema/MensagemStatus.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/sistema/AlteraSenha.swf" optimize="true" sourcePath="src/modulos/sistema/AlteraSenha.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/AgendamentoRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AgendamentoRoteiros.mxml"/>
     <module application="src/main.mxml" destPath="modulos/sistema/RecuperacaoSenha.swf" optimize="true" sourcePath="src/modulos/sistema/RecuperacaoSenha.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/sistema/AlteraSenha.swf" optimize="true" sourcePath="src/modulos/sistema/AlteraSenha.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/CadastrarRoteiro.swf" optimize="true" sourcePath="src/modulos/Views/CadastrarRoteiro.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/sistema/MensagemStatus.swf" optimize="true" sourcePath="src/modulos/sistema/MensagemStatus.mxml"/>
     <module application="src/main.mxml" destPath="modulos/sistema/Login.swf" optimize="true" sourcePath="src/modulos/sistema/Login.mxml"/>
     <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/Cadastros.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/Cadastros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/DefinirFuncoes.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/DefinirFuncoes.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>
