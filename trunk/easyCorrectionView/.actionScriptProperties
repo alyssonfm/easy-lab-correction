@@ -22,6 +22,8 @@
     <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/DefinirFuncoes.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/DefinirFuncoes.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/AtribuicaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AtribuicaoDeRoteiros.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/Penalidades.swf" optimize="true" sourcePath="src/modulos/Views/Penalidades.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/VisualizacaoDeNotas.swf" optimize="true" sourcePath="src/modulos/Views/VisualizacaoDeNotas.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/AvaliacaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AvaliacaoDeRoteiros.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>
