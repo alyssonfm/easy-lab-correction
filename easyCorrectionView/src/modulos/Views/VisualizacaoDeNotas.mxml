@@ -7,7 +7,7 @@
 						xmlns:les="modulos.sistema.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="800" height="538" creationComplete="init()" title="Penalidades" showCloseButton="true" close="fechaJanela()" layout="absolute">
+	width="800" height="538" creationComplete="init()" title="Notas" showCloseButton="true" close="fechaJanela()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -77,128 +77,63 @@
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 		</mx:RemoteObject>
-		<mx:TabNavigator height="448" width="771">	
+		<mx:TabNavigator height="448">	
 			<mx:Canvas label="Roteiro 1" id="labelRoteiro1">
-				<mx:DataGrid x="10" y="21" width="750" height="383">
+				<mx:DataGrid x="10" y="21" width="750" height="383" wordWrap="true">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Matrícula" width="50"/>
-						<mx:DataGridColumn headerText="Nome do aluno" width="150"/>
-						<mx:DataGridColumn headerText="Penalidade" width="80">
-							<mx:itemRenderer>
-								<mx:Component>
-									<mx:Canvas width="100%" height="100%">
-										<mx:TextInput x="18">
-										</mx:TextInput>
-									</mx:Canvas>
-								</mx:Component>
-							</mx:itemRenderer>
-						</mx:DataGridColumn>
-						<mx:DataGridColumn headerText="Justificativa" width="200">
-							<mx:itemRenderer>
-								<mx:Component>
-									<mx:Canvas width="100%" height="100%">
-										<mx:TextInput x="18">
-										</mx:TextInput>
-									</mx:Canvas>
-								</mx:Component>
-							</mx:itemRenderer>
-						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
+						<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
+						<mx:DataGridColumn headerText="Nota2 (Correção do Monitor)" width="50"/>
+						<mx:DataGridColumn headerText="Nota3 (Penalidades)" width="50"/>
+						<mx:DataGridColumn headerText="Nota" width="50"/>
 					</mx:columns>
 				</mx:DataGrid>
 			</mx:Canvas>
 			<mx:Canvas label="Roteiro 2" id="labelRoteiro2">
-				<mx:DataGrid x="10" y="21" width="750" height="383">
+				<mx:DataGrid x="10" y="21" width="750" height="383" wordWrap="true">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Matrícula" width="50"/>
-						<mx:DataGridColumn headerText="Nome do aluno" width="150"/>
-						<mx:DataGridColumn headerText="Penalidade" width="80">
-							<mx:itemRenderer>
-								<mx:Component>
-									<mx:Canvas width="100%" height="100%">
-										<mx:TextInput x="18">
-										</mx:TextInput>
-									</mx:Canvas>
-								</mx:Component>
-							</mx:itemRenderer>
-						</mx:DataGridColumn>
-						<mx:DataGridColumn headerText="Justificativa" width="200">
-							<mx:itemRenderer>
-								<mx:Component>
-									<mx:Canvas width="100%" height="100%">
-										<mx:TextInput x="18">
-										</mx:TextInput>
-									</mx:Canvas>
-								</mx:Component>
-							</mx:itemRenderer>
-						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
+						<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
+						<mx:DataGridColumn headerText="Nota2 (Correção do Monitor)" width="50"/>
+						<mx:DataGridColumn headerText="Nota3 (Penalidades)" width="50"/>
+						<mx:DataGridColumn headerText="Nota" width="50"/>
 					</mx:columns>
 				</mx:DataGrid>
 			</mx:Canvas>
 			<mx:Canvas label="Roteiro 3" id="labelRoteiro3">
-				<mx:DataGrid x="10" y="21" width="750" height="383">
+				<mx:DataGrid x="10" y="21" width="750" height="383" wordWrap="true">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Matrícula" width="50"/>
-						<mx:DataGridColumn headerText="Nome do aluno" width="150"/>
-						<mx:DataGridColumn headerText="Penalidade" width="80">
-							<mx:itemRenderer>
-								<mx:Component>
-									<mx:Canvas width="100%" height="100%">
-										<mx:TextInput x="18">
-										</mx:TextInput>
-									</mx:Canvas>
-								</mx:Component>
-							</mx:itemRenderer>
-						</mx:DataGridColumn>
-						<mx:DataGridColumn headerText="Justificativa" width="200">
-							<mx:itemRenderer>
-								<mx:Component>
-									<mx:Canvas width="100%" height="100%">
-										<mx:TextInput x="18">
-										</mx:TextInput>
-									</mx:Canvas>
-								</mx:Component>
-							</mx:itemRenderer>
-						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
+						<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
+						<mx:DataGridColumn headerText="Nota2 (Correção do Monitor)" width="50"/>
+						<mx:DataGridColumn headerText="Nota3 (Penalidades)" width="50"/>
+						<mx:DataGridColumn headerText="Nota" width="50"/>
 					</mx:columns>
 				</mx:DataGrid>
 			</mx:Canvas>
 			<mx:Canvas label="Roteiro 4" id="labelRoteiro4">
-				<mx:DataGrid x="10" y="21" width="749" height="383">
+				<mx:DataGrid x="10" y="21" width="750" height="383" wordWrap="true">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Matrícula" width="50"/>
-						<mx:DataGridColumn headerText="Nome do aluno" width="150"/>
-						<mx:DataGridColumn headerText="Penalidade" width="80">
-							<mx:itemRenderer>
-								<mx:Component>
-									<mx:Canvas width="100%" height="100%">
-										<mx:TextInput x="18">
-										</mx:TextInput>
-									</mx:Canvas>
-								</mx:Component>
-							</mx:itemRenderer>
-						</mx:DataGridColumn>
-						<mx:DataGridColumn headerText="Justificativa" width="200">
-							<mx:itemRenderer>
-								<mx:Component>
-									<mx:Canvas width="100%" height="100%">
-										<mx:TextInput x="18">
-										</mx:TextInput>
-									</mx:Canvas>
-								</mx:Component>
-							</mx:itemRenderer>
-						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
+						<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
+						<mx:DataGridColumn headerText="Nota2 (Correção do Monitor)" width="50"/>
+						<mx:DataGridColumn headerText="Nota3 (Penalidades)" width="50"/>
+						<mx:DataGridColumn headerText="Nota" width="50"/>
 					</mx:columns>
 				</mx:DataGrid>
 			</mx:Canvas>
 			<mx:Canvas label="Todos" id="quadroResumo">
-				<mx:DataGrid x="10" y="21" width="749" height="383">
+				<mx:DataGrid x="10" y="21" width="750" height="383" wordWrap="true">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Aluno/Roteiro" width="80"/>
 						<mx:DataGridColumn headerText="Roteiro 1" width="80"/>
 						<mx:DataGridColumn headerText="Roteiro 2" width="80"/>
 						<mx:DataGridColumn headerText="Roteiro 3" width="80"/>
 						<mx:DataGridColumn headerText="Roteiro 4" width="80"/>
-						<mx:DataGridColumn headerText="Roteiro 5" width="80"/>
 					</mx:columns>
 				</mx:DataGrid>
 			</mx:Canvas>
