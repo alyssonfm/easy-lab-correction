@@ -79,7 +79,7 @@
 		</mx:RemoteObject>
 		<mx:TabNavigator height="448">	
 			<mx:Canvas label="Roteiro 1" id="labelRoteiro1">
-				<mx:DataGrid x="10" y="21" width="750" height="383" wordWrap="true">
+				<mx:DataGrid x="10" y="10" width="750" height="394" wordWrap="true">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Matrícula" width="50"/>
 						<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
@@ -138,6 +138,6 @@
 				</mx:DataGrid>
 			</mx:Canvas>
 		</mx:TabNavigator>
-		<mx:Button x="298" y="456" click="salvarAgendamento()" label="   Salvar" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSalvar"/>
+		<mx:Button x="298.05" y="456" click="salvarAgendamento()" label="   Salvar" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSalvar"/>
 		
 </les:ModuleTitleWindow>
