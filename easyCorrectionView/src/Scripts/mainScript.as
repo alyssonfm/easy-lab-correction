@@ -263,6 +263,9 @@ private function menuItemPressionado(event: MenuEvent):void  {
      if (event.item.@data == "agendaRoteiros") {
      	ControladorDeModulos.criaModulo("modulos/Views/AgendamentoRoteiros.swf", this, "");
      }
+     if (event.item.@data == "penalidades") {
+     	ControladorDeModulos.criaModulo("modulos/Views/Penalidades.swf", this, "");
+     }
 }
 
 /**
