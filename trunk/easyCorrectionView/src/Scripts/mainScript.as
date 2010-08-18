@@ -266,6 +266,9 @@ private function menuItemPressionado(event: MenuEvent):void  {
      if (event.item.@data == "penalidades") {
      	ControladorDeModulos.criaModulo("modulos/Views/Penalidades.swf", this, "");
      }
+     if (event.item.@data == "atribuicaoDeRoteiros") {
+     	ControladorDeModulos.criaModulo("modulos/Views/AtribuicaoDeRoteiros.swf", this, "");
+     }
 }
 
 /**
