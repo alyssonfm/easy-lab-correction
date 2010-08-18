@@ -275,6 +275,9 @@ private function menuItemPressionado(event: MenuEvent):void  {
      if (event.item.@data == "avaliacaoDeRoteiros") {
      	ControladorDeModulos.criaModulo("modulos/Views/AvaliacaoDeRoteiros.swf", this, "");
      }
+     if (event.item.@data == "submissaoDeRoteiros") {
+     	ControladorDeModulos.criaModulo("modulos/Views/SubmissaoDeRoteiros.swf", this, "");
+     }
 }
 
 /**
