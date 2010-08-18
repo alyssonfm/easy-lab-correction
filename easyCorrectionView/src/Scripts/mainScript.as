@@ -269,6 +269,12 @@ private function menuItemPressionado(event: MenuEvent):void  {
      if (event.item.@data == "atribuicaoDeRoteiros") {
      	ControladorDeModulos.criaModulo("modulos/Views/AtribuicaoDeRoteiros.swf", this, "");
      }
+     if (event.item.@data == "notas") {
+     	ControladorDeModulos.criaModulo("modulos/Views/VisualizacaoDeNotas.swf", this, "");
+     }
+     if (event.item.@data == "avaliacaoDeRoteiros") {
+     	ControladorDeModulos.criaModulo("modulos/Views/AvaliacaoDeRoteiros.swf", this, "");
+     }
 }
 
 /**
