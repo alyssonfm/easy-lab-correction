@@ -75,5 +75,6 @@
 		</mx:DataGrid>
 		<mx:Label x="10" y="12" text="Roteiro:"/>
 		<mx:TextInput x="73" y="10" width="252" id="inputTituloProjeto"/>
+		<mx:List x="10" y="44" width="315" height="498"></mx:List>
 	</mx:Canvas>
 </mx:TabNavigator>
