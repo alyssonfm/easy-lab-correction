@@ -61,20 +61,17 @@
 		<mx:Label x="10" y="378" text="Meus Projetos:" fontStyle="normal" fontWeight="bold" fontSize="14" id="meusProjetosLabel" visible="false"/>
 		<mx:Label x="10" y="176" text="Projetos da Cota Atual:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetosCotaLabel" visible="false"/>
 		<mx:VRule x="346" y="16" height="577"  width="1"/>
-		<mx:Label x="374" y="87" width="541" id="orientadorLabel" color="#1B7A0F"/>
+		<mx:Label x="374" y="87" width="541" id="orientadorLabel" color="#1B7A0F" text="Demetrio Mestre"/>
+		<mx:Label x="374" y="464" width="541" id="orientadorLabel0" color="#1B7A0F" text="Augusto Macedo"/>
+		<mx:Label x="374" y="492" width="541" id="orientadorLabel1" color="#1B7A0F" text="Alysson Filgueira"/>
 		<mx:Label x="577" y="376" width="32" id="labelNota" color="#1B7A0F" text="8,0"/>
 		<mx:Label x="577" y="348" width="32" id="labelNota0" color="#1B7A0F" text="4,0"/>
 		<mx:Label x="577" y="320" width="32" id="labelNota1" color="#1B7A0F" text="4,0"/>
 		<mx:TextArea x="377" y="143" width="541" height="169" backgroundAlpha="0.0" id="resumoText" editable="false" alpha="0.5" cornerRadius="10"/>
-		<mx:DataGrid x="374" y="464" width="541" height="78" id="gridAlunos">
-			<mx:columns>
-				<mx:DataGridColumn headerText="Matrícula" width="120"/>
-				<mx:DataGridColumn headerText="Nome" width="300"/>
-				<mx:DataGridColumn headerText="Status" />
-			</mx:columns>
-		</mx:DataGrid>
-		<mx:Label x="10" y="12" text="Roteiro:"/>
-		<mx:TextInput x="73" y="10" width="252" id="inputTituloProjeto"/>
-		<mx:List x="10" y="44" width="315" height="498"></mx:List>
+		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
+		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
+		<mx:Label x="10" y="295" text="Grupos:" height="22"/>
+		<mx:List x="10" y="44" width="315" height="241"></mx:List>
+		<mx:List x="10" y="325" width="315" height="268"></mx:List>
 	</mx:Canvas>
 </mx:TabNavigator>
