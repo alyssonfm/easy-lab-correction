@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Componente para a tela de login do sistema
+-->
+
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	width="800" height="600" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="fechaJanela()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import mx.collections.ArrayCollection;
+				import mx.utils.ArrayUtil;
+				import eventos.UsuarioEvent;
+				import bean.acesso.*;
+				import eventos.RespostaLoginEvent;
+				import eventos.FechaPopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ControladorDeModulos;
+				import mx.binding.utils.BindingUtils;
+				//import eventos.RespostaLoginEvent;
+				//import eventos.FechaPopupEvent;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+	            
+	            private function falha(event:FaultEvent):void {
+					var mensagem:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							mensagem = event.fault.faultString;
+						} else {
+							mensagem = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						mensagem = "Serviço indisponível, reinicie a operação.";
+					}
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+				}
+				
+				private function fechaJanela():void {
+					dispatchEvent(new FechaPopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function lancaEvento(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					
+					facade.channelSet = ControladorDeModulos.criaCanal();
+					var estado: String = String(ControladorDeModulos.getParam());
+					var roteiros: ArrayCollection = new ArrayCollection();
+					roteiros.addItem("Roteiro 1");
+					roteiros.addItem("Roteiro 2");
+					roteiros.addItem("Roteiro 3");
+					roteiros.addItem("Roteiro 4");
+					var grupos: ArrayCollection = new ArrayCollection();
+					grupos.addItem("Grupo A");
+					grupos.addItem("Grupo B");
+					grupos.addItem("Grupo C");
+					grupos.addItem("Grupo D");
+					var classes: ArrayCollection = new ArrayCollection();
+					classes.addItem("Heap.java");
+					classes.addItem("Lista.java");
+					classes.addItem("gerenciaHeap.java");
+					classes.addItem("HeapSort.java");
+					comboRoteiros.dataProvider = roteiros;
+					listaGrupos.dataProvider = grupos;
+				}
+				
+				private function chamaTelaCadastraRoteiro():void{
+					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
+				}
+				
+				private function salvarAgendamento():void{
+					dispatchEvent(new FechaPopupEvent(this));
+				}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			
+		</mx:RemoteObject>
+		<mx:Label text="Roteiro:" fontWeight="bold"
+			textAlign="left" width="64" x="10" y="22" id="labelRoteiro"/>
+		<mx:Label text="Grupos:" fontWeight="bold"
+			textAlign="left" width="72" x="10" y="72" id="labelGrupos"/>
+		<mx:Label text="Observações:" fontWeight="bold"
+			textAlign="left" width="114" x="265.95" y="265" id="labelTitulo3"/>
+		<mx:Label text="Nota:" fontWeight="bold"
+			textAlign="left" width="43" x="265.95" y="237" id="labelNota"/>
+		<mx:Label text="Peso: 60%" fontWeight="bold"
+			textAlign="left" width="80" x="367" y="237" id="labelPeso"/>
+		<mx:Label text="Integrantes: Augusto Queiros, Alysson Filgueira, Demetrio Mestre" fontWeight="bold"
+			textAlign="left" width="504.05" x="265.95" y="72" id="labelIntegrantes"/>
+		<comp:ComboBoxAC labelField="periodoCota" x="72" y="21" width="698" id="comboRoteiros"/>
+		<mx:HRule x="10" y="62" width="760" height="2"/>
+		<mx:HRule x="10" y="504" width="760" height="3"/>
+		<mx:DataGrid x="265.95" y="100" width="504.05" height="129" wordWrap="true" id="dgClasses">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Classes" width="80"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:List id="listaGrupos" x="10" y="100" width="226" height="396"/>
+		<mx:Button x="298" y="518" click="salvarAgendamento()" label="   Salvar" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSalvar"/>
+		<mx:VRule x="244" y="72" height="424" width="13.95"/>
+		<mx:TextInput x="310" y="235" width="49" id="inputNota"/>
+		<mx:TextArea x="265" y="293" width="505" height="203" id="inputObservacoes"/>
+		
+		
+</les:ModuleTitleWindow>

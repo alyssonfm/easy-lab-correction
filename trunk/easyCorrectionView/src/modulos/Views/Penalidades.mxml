@@ -77,9 +77,9 @@
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 		</mx:RemoteObject>
-		<mx:TabNavigator height="448">	
+		<mx:TabNavigator height="448" width="771">	
 			<mx:Canvas label="Roteiro 1" id="labelRoteiro1">
-				<mx:DataGrid x="10" y="21" width="760" height="383">
+				<mx:DataGrid x="10" y="21" width="750" height="383">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Matrícula" width="50"/>
 						<mx:DataGridColumn headerText="Nome do aluno" width="150"/>
@@ -107,7 +107,7 @@
 				</mx:DataGrid>
 			</mx:Canvas>
 			<mx:Canvas label="Roteiro 2" id="labelRoteiro2">
-				<mx:DataGrid x="10" y="21" width="760" height="383">
+				<mx:DataGrid x="10" y="21" width="750" height="383">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Matrícula" width="50"/>
 						<mx:DataGridColumn headerText="Nome do aluno" width="150"/>
@@ -135,7 +135,7 @@
 				</mx:DataGrid>
 			</mx:Canvas>
 			<mx:Canvas label="Roteiro 3" id="labelRoteiro3">
-				<mx:DataGrid x="10" y="21" width="760" height="383">
+				<mx:DataGrid x="10" y="21" width="750" height="383">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Matrícula" width="50"/>
 						<mx:DataGridColumn headerText="Nome do aluno" width="150"/>
@@ -163,7 +163,7 @@
 				</mx:DataGrid>
 			</mx:Canvas>
 			<mx:Canvas label="Roteiro 4" id="labelRoteiro4">
-				<mx:DataGrid x="10" y="21" width="760" height="383">
+				<mx:DataGrid x="10" y="21" width="749" height="383">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Matrícula" width="50"/>
 						<mx:DataGridColumn headerText="Nome do aluno" width="150"/>
@@ -191,7 +191,7 @@
 				</mx:DataGrid>
 			</mx:Canvas>
 			<mx:Canvas label="Todos" id="quadroResumo">
-				<mx:DataGrid x="10" y="21" width="760" height="383">
+				<mx:DataGrid x="10" y="21" width="749" height="383">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Aluno/Roteiro" width="80"/>
 						<mx:DataGridColumn headerText="Roteiro 1" width="80"/>
