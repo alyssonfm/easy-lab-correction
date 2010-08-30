@@ -278,6 +278,9 @@ private function menuItemPressionado(event: MenuEvent):void  {
      if (event.item.@data == "submissaoDeRoteiros") {
      	ControladorDeModulos.criaModulo("modulos/Views/SubmissaoDeRoteiros.swf", this, "");
      }
+     if (event.item.@data == "chat") {
+     	ControladorDeModulos.criaModulo("modulos/Views/Chat.swf", this, "");
+     }
 }
 
 /**
