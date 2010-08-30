@@ -4,7 +4,7 @@
 						xmlns:les="modulos.sistema.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="800" height="330" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="fechaJanela()" layout="absolute">
+	width="800" height="646" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="fechaJanela()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -78,8 +78,19 @@
 					listaGrupos.dataProvider = grupos;
 				}
 				
-				private function chamaModuloCorrecao():void{
-					ControladorDeModulos.criaModulo("modulos/Views/ModuloCorrecao.swf", this, null);
+				private function selecionaRoteiro():void {
+					if(comboRoteiros.selectedIndex == 3){
+						labelStatusDiscussao.text = "Data final da discussao: 12/09/2010.";
+						inputMensagem.enabled = true;
+					}
+					else{
+						labelStatusDiscussao.text = "Discussão Expirada!";
+						inputMensagem.enabled = false;
+					}
+				}
+				
+				private function enviarMensagem():void {
+					inputConversa.text += "Demas diz: " + inputMensagem.text + "\n\n";
 				}
 				
 			]]>
@@ -91,14 +102,21 @@
 		<mx:Label text="Roteiro:" fontWeight="bold"
 			textAlign="left" width="64" x="10" y="22" id="labelRoteiro"/>
 		<mx:Label text="Grupos:" fontWeight="bold"
-			textAlign="left" width="72" x="10" y="72" id="labelGrupos"/>
+			textAlign="left" width="72" x="10" y="90" id="labelGrupos"/>
+		<mx:Label fontWeight="bold" text = "Discussão Expirada!"
+			textAlign="left" width="698" x="72" y="52" id="labelStatusDiscussao" color="#FF0202"/>
 		<mx:Label text="Integrantes: Augusto Queiros, Alysson Filgueira, Demetrio Mestre" fontWeight="bold"
-			textAlign="left" width="504.05" x="265.95" y="72" id="labelIntegrantes"/>
-		<comp:ComboBoxAC labelField="periodoCota" x="72" y="21" width="698" id="comboRoteiros"/>
-		<mx:HRule x="10" y="62" width="760" height="2"/>
-		<mx:List id="listaGrupos" x="10" y="100" width="226" height="176"/>
-		<mx:VRule x="244" y="72" height="204" width="13.95"/>
-		<mx:Button x="352" y="131" label="Correção" click="chamaModuloCorrecao()" width="324" height="78" fontSize="26" fontStyle="italic" fontWeight="normal"/>
+			textAlign="left" width="504.05" x="265.95" y="90" id="labelIntegrantes"/>
+		<mx:Label fontWeight="bold"
+			textAlign="left" width="81" x="265.95" y="407" id="labelIntegrantes0" text="Demas diz:"/>
+		<comp:ComboBoxAC labelField="periodoCota" x="72" y="21" width="698" id="comboRoteiros" change="selecionaRoteiro()"/>
+		<mx:HRule x="10" y="80" width="760" height="2"/>
+		<mx:HRule x="250.95" y="388" width="519.05" height="11"/>
+		<mx:List id="listaGrupos" x="10" y="118" width="226" height="470"/>
+		<mx:VRule x="244" y="80" height="508" width="13.95"/>
+		<mx:TextArea x="265" y="118" width="505" height="262" editable="false" id="inputConversa"/>
+		<mx:TextArea x="265" y="434" width="505" height="123" id="inputMensagem" enabled="false"/>
+		<mx:Button x="465" y="569" label="Enviar" width="103" id="botaoEnviar" click="enviarMensagem()"/>
 		
 		
 </les:ModuleTitleWindow>
