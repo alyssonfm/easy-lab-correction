@@ -25,6 +25,8 @@
     <module application="src/main.mxml" destPath="modulos/Views/VisualizacaoDeNotas.swf" optimize="true" sourcePath="src/modulos/Views/VisualizacaoDeNotas.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/AvaliacaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AvaliacaoDeRoteiros.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/SubmissaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/SubmissaoDeRoteiros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/ModuloCorrecao.swf" optimize="true" sourcePath="src/modulos/Views/ModuloCorrecao.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/Chat.swf" optimize="true" sourcePath="src/modulos/Views/Chat.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>
