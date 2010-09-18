@@ -4,10 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
-import br.edu.les.easyCorrection.excepetions.AutenticacaoException;
-import br.edu.les.easyCorrection.excepetions.EasyCorrectionException;
-import br.edu.les.easyCorrection.excepetions.ObjetoNaoEncontradoException;
-import br.edu.les.easyCorrection.excepetions.ValorDuplicadoException;
+import br.edu.les.easyCorrection.exceptions.AutenticacaoException;
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
+import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
+import br.edu.les.easyCorrection.exceptions.ValorDuplicadoException;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
