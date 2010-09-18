@@ -185,7 +185,6 @@
 					</mx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Rótulo" width="100"/>
 			<mx:DataGridColumn headerText="Nome" width="150"/>
 		</mx:columns>
 	</mx:DataGrid>
