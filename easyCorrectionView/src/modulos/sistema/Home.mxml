@@ -23,8 +23,7 @@
 			//private const FILE_UPLOAD_URL:String = "http://200.129.73.191:8080/ePibic/";
 			private const FILE_UPLOAD_URL:String = "http://localhost:8080/ePibic/";
 			private var fileRef:FileReference = new FileReference();
-			private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadProjeto'));			
-			
+			private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadProjeto'));
 			
 			private function init():void {
 				facade.channelSet = ControladorDeModulos.criaCanal();
