@@ -53,6 +53,11 @@
 			[Bindable]
 			private var toolTipSenhaUsuario:String = 
 				"(Obrigatório) Informe uma senha para o Usuário.";
+			
+			[Bindable]
+			private var toolTipEmailUsuario:String = 
+				"(Obrigatório) Informe um email para o Usuário.";
+				
 				
 			[Bindable]
 			private var toolTipGrupoUsuario:String = 
@@ -401,6 +406,7 @@
 				}
 				usuario.login = StringUtil.trim(inputLoginUsuario.text);
 				usuario.nome = StringUtil.trim(inputNomeUsuario.text);
+				usuario.email = StringUtil.trim(inputEmailUsuario.text);
 				grupoUsuario.grupo = CastDeEntidades.castGrupo(cbGrupoUsuario.selectedItem);
 				grupoUsuario.usuario = usuario;
 				facade.getOperation("cadastrarUsuario").send(grupoUsuario);
@@ -422,6 +428,7 @@
 					inputLoginUsuario.text = "";
 					inputNomeUsuario.text = "";
 					inputSenhaUsuario.text = "";
+					inputEmailUsuario.text = "";
 				}	
 			}
 			
@@ -433,6 +440,7 @@
 					cbGrupoUsuario.selectedIndex = Util.pegaPosObjeto("idGrupo", ArrayCollection(cbGrupoUsuario.dataProvider), grupoUsuario.grupo);
 					inputNomeUsuario.text = grupoUsuario.usuario.nome;
 					inputLoginUsuario.text = grupoUsuario.usuario.login;
+					inputEmailUsuario.text = grupoUsuario.usuario.email;
 					botaoCadastrarUsuario.visible = false;
 					botaoAtualizarUsuario.visible = true;
 					botaoRemoverUsuario.visible = true;
@@ -621,6 +629,10 @@
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
     	requiredFieldError="Informe o nome do usuário."/>
     	
+    <mx:Validator required="true" id="validatorEmailUsuario" source="{inputEmailUsuario}"
+    	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
+    	requiredFieldError="Informe o email do usuário."/>
+    	
     <mx:Validator required="true" id="validatorGrupoUsuario" source="{cbGrupoUsuario}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
     	requiredFieldError="Informe o grupo do usuário."/>
@@ -679,19 +691,21 @@
 			</mx:DataGrid>
 		</mx:Canvas>
 		<mx:Canvas label="Usuário" width="100%" height="100%" id="canvas4">
-			<mx:ComboBox prompt="selecione..." x="64" y="92" width="548" labelField="nome" id="cbGrupoUsuario" toolTip="{toolTipGrupoUsuario}" change="filtrarUsuarioPorGrupo()"/>
-			<mx:TextInput x="64" y="32.5" width="548" id="inputNomeUsuario" toolTip="{toolTipNomeUsuario}" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="64" y="62" width="348" id="inputLoginUsuario" toolTip="{toolTipLoginUsuario}" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="478" y="62" width="134" id="inputSenhaUsuario" displayAsPassword="true"/>
-			<mx:Button x="242.5" y="127" label="   Cadastrar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuario" height="28" enabled="false"/>
-			<mx:Button x="549" y="10" label="Novo" width="63" height="23" id="botaoNovoUsuario" click="mudaCadastrar()"/>
-			<mx:Button x="315" y="127" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuario" height="28" visible="true" />
-			<mx:Button x="172" y="127" label="   Atualizar" click="editarUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuario" height="28" visible="true" />
-			<mx:Label x="10" y="93.5" text="Grupo:" id="labelGrupoUsuario"/>
-			<mx:Label x="10" y="34.5" text="Nome:" id="labelNomeUsuario"/>
-			<mx:Label x="12" y="64" text="Login:" id="labelLoginUsuario"/>
-			<mx:Label x="420" y="64" text="Senha:" id="labelSenhaUsuario"/>
-			<mx:DataGrid x="10" y="168" width="602" height="189" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
+			<mx:ComboBox prompt="selecione..." x="64" y="112" width="548" labelField="nome" id="cbGrupoUsuario" toolTip="{toolTipGrupoUsuario}" change="filtrarUsuarioPorGrupo()"/>
+			<mx:TextInput x="64" y="23.5" width="548" id="inputNomeUsuario" toolTip="{toolTipNomeUsuario}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="64" y="53" width="348" id="inputLoginUsuario" toolTip="{toolTipLoginUsuario}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="478" y="53" width="134" id="inputSenhaUsuario" displayAsPassword="true"/>
+			<mx:Button x="242.5" y="142" label="   Cadastrar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuario" height="28" enabled="false"/>
+			<mx:Button x="549" y="1" label="Novo" width="63" height="23" id="botaoNovoUsuario" click="mudaCadastrar()"/>
+			<mx:Button x="315" y="142" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuario" height="28" visible="true" />
+			<mx:Button x="172" y="142" label="   Atualizar" click="editarUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuario" height="28" visible="true" />
+			<mx:Label x="10" y="113.5" text="Grupo:" id="labelGrupoUsuario"/>
+			<mx:Label x="10" y="25.5" text="Nome:" id="labelNomeUsuario"/>
+			<mx:Label x="12" y="55" text="Login:" id="labelLoginUsuario"/>
+			<mx:TextInput x="64" y="83" width="548" id="inputEmailUsuario" toolTip="{toolTipEmailUsuario}" change="handleValidaUsuario(null)"/>
+			<mx:Label x="12" y="85" text="Email:" id="labelEmailUsuario"/>
+			<mx:Label x="420" y="55" text="Senha:" id="labelSenhaUsuario"/>
+			<mx:DataGrid x="10" y="178" width="602" height="179" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
 					 labelFunction="labelGridUsuarios" id="dgUsuarios">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Login" dataField="id" width="100"/>
