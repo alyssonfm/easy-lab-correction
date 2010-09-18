@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import br.edu.les.easyCorrection.excepetions.AtributoNaoExisteExeption;
-import br.edu.les.easyCorrection.excepetions.EasyCorrectionException;
+import br.edu.les.easyCorrection.exceptions.AtributoNaoExisteExeption;
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 
 public class SwapperAtributosReflect {
 
