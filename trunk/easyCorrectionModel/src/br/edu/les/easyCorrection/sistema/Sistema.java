@@ -2,7 +2,7 @@ package br.edu.les.easyCorrection.sistema;
 
 import java.util.List;
 
-import br.edu.les.easyCorrection.excepetions.EasyCorrectionException;
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
