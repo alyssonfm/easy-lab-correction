@@ -2,8 +2,9 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
 	xmlns:les="componentes.*"
 	xmlns:mccune="com.dougmccune.controls.*"
+	xmlns:comp="com.adobe.flex.extras.controls.*"
 	backgroundAlpha="1"
-	backgroundColor="#FFFFFF" creationComplete="init()" scriptTimeLimit="60" height="100%" xmlns:comp="com.adobe.flex.extras.controls.*" width="100%" backgroundGradientColors="[#FFFFFF, #FFFFFF]" backgroundGradientAlphas="[1.0, 1.0]">
+	backgroundColor="#FFFFFF" creationComplete="init()" scriptTimeLimit="60" height="100%" width="100%" backgroundGradientColors="[#FFFFFF, #FFFFFF]" backgroundGradientAlphas="[1.0, 1.0]">
 	
 	<mx:Style source="style/app_style.css"/>
 	<mx:Script source="Scripts/mainScript.as"/>
@@ -11,8 +12,8 @@
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 	</mx:RemoteObject>
 	
-	<mx:Image id="imagemELC" x="36" y="20" width="123" height="96" source="imagemDSC.png" />
-    <mx:MenuBar id="menuBar" labelField="@label" menuStyleName="#042E8E" dataProvider="{menuBarCollection}" x="170" y="89" alpha="0.5" cornerRadius="10" color="#042E8E" height="27"/>
+	<mx:Image id="imagemELC" x="46" y="15" width="88" height="106" source="Logo projeto LES.jpg" />
+    <mx:MenuBar id="menuBar" labelField="@label" menuStyleName="#042E8E" dataProvider="{menuBarCollection}" x="164" y="94" alpha="0.5" cornerRadius="10" color="#042E8E" height="27"/>
     <mx:ViewStack x="0" y="164" id="viewPrincipal" width="1034" height="329"/>
     <mx:HRule id="hr" x="28" y="129" width="934.95" height="11"/>
     <mx:VRule id="vr" x="18" y="15" height="120" width="20"/>
