@@ -44,7 +44,7 @@ public class FuncaoHibernateDAO extends
 	public List<Funcao> findByNomeERotulo(String nome, String rotulo) {
 		 SimpleExpression criteria1 = Restrictions.eq("nome", nome);
 		 SimpleExpression criteria2 = Restrictions.eq("rotulo", rotulo);
-		 LogicalExpression criteria = Restrictions.or(criteria1, criteria2);
+		 LogicalExpression criteria = Restrictions.and(criteria1, criteria2);
 		 List <Funcao> lista = findByCriteria(criteria);
 		return lista;
 	}

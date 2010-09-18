@@ -25,6 +25,8 @@ public class Usuario implements Serializable {
 	private String nome;
 	
 	private String senha;
+	
+	private String email;
 
 	
 
@@ -41,10 +43,11 @@ public class Usuario implements Serializable {
 	 * @param nome
 	 * @param senha
 	 */
-	public Usuario(String login, String nome, String senha) {
+	public Usuario(String login, String nome, String senha, String email) {
 		this.login = login;
 		this.nome = nome;
 		this.senha = senha;
+		this.email = email;
 	}
 
 	public Integer getIdUsuario() {
@@ -78,6 +81,14 @@ public class Usuario implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEmail() {
+		return email;
+	}
 
 	@Override
 	public int hashCode() {
@@ -88,6 +99,7 @@ public class Usuario implements Serializable {
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		return result;
 	}
 
@@ -119,6 +131,11 @@ public class Usuario implements Serializable {
 			if (other.senha != null)
 				return false;
 		} else if (!senha.equals(other.senha))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
 			return false;
 		return true;
 	}
