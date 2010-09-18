@@ -16,7 +16,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
 
-import br.edu.les.easyCorrection.excepetions.EasyCorrectionRunTimeException;
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionRunTimeException;
 
 
 
