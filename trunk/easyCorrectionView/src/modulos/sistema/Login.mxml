@@ -64,7 +64,7 @@
 							mensagem = event.fault.faultString;
 						} else {
 							mensagem = event.fault.rootCause.message;
-						}
+						} 
 					}
 					catch(e:Error){
 						mensagem = "Serviço indisponível, reinicie a operação.";
@@ -137,11 +137,11 @@
 					var estado: String = String(ControladorDeModulos.getParam());
 				
 					var imagem:Image = new Image();
-					imagem.source = "imagemDSC.png";
-					imagem.x = 170;
+					imagem.source = "Logo projeto LES.jpg";
+					imagem.x = 210;
 					imagem.y = 20;
-	                imagem.width = 180;
-					imagem.height = 180;
+	                imagem.width = 140;
+					imagem.height = 140;
 					this.addChild(imagem);
 					
 					stage.focus = input_login;
@@ -192,8 +192,7 @@
 					toolTip="{tooltipSenha}" change="validaCampos()"/>
 			</mx:FormItem>
 		</mx:Form>
-		<mx:LinkButton id="botaoAlterarSenha" label="Alterar Senha" x="212.5" y="304" click="alterarSenha()"/>
-		<mx:LinkButton id="botaoCadastrarUsuario" click="cadastrarUsuario()" label="Cadastrar Usuário" x="198" y="326"/>
+		<mx:LinkButton id="botaoAlterarSenha" label="Alterar Senha" x="212.5" y="311" click="alterarSenha()"/>
 		<mx:HBox width="100%" horizontalAlign="center" verticalAlign="middle" horizontalGap="20" y="359">
 			<mx:Button label="Entrar" id="button_login" click="enviarLogin()" 
 				icon="@Embed(source='../../image/login.png')"/>
