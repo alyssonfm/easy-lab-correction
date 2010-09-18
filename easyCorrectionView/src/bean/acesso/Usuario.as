@@ -16,5 +16,7 @@ package bean.acesso {
 		
 		public var senha: String;
 		
+		public var email: String;
+		
 	}
 }
