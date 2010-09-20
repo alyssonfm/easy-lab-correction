@@ -45,7 +45,7 @@ CREATE TABLE `funcao` (
 /*!40000 ALTER TABLE `funcao` DISABLE KEYS */;
 INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES 
  (1,'Cadastros','acesso',1),
- (2,'Definir Permiss√£o','defPerm',1);
+ (2,'Definir Permiss„o','defPerm',1);
 /*!40000 ALTER TABLE `funcao` ENABLE KEYS */;
 
 
@@ -158,6 +158,7 @@ CREATE TABLE `usuario` (
   `login` varchar(100) NOT NULL,
   `nome` varchar(600) NOT NULL,
   `senha` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `Index_login` (`login`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1211 DEFAULT CHARSET=latin1;
@@ -167,8 +168,8 @@ CREATE TABLE `usuario` (
 --
 
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`) VALUES 
- (1,'demas','Demetrio Gomes Mestre','202cb962ac59075b964b07152d234b70');
+INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`, `email`) VALUES 
+ (1,'demas','Demetrio Gomes Mestre','202cb962ac59075b964b07152d234b70', 'demetriogm@gmail.com');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
