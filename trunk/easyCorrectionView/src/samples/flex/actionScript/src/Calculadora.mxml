@@ -30,10 +30,11 @@
 	}
 	
 	private function dividir():void{
-		if (int(val2.text) != 0) {
-			result.text = (int(val1.text)+int(val2.text)).toString();
-		}
-		result.text = "Impossível dividir por zero.";
+		if (int(val2.text) == 0) {
+			result.text = "Impossível dividir por zero.";
+		}else{
+			result.text = (int(val1.text)/int(val2.text)).toString();
+		}		
 	}
 
 </mx:Script>
