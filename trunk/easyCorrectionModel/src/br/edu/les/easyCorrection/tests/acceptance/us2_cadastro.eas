@@ -1,7 +1,7 @@
 #--------------------------------------------------------------------------------------------
 # Teste de Aceitaçãoo do sistema easyLabCorrection
 # Equipe de Desenvolvimento:
-# ----- Alysson Milanez
+# ----- Alysson Filgueira
 # ----- Augusto Macedo
 # ----- Demetrio Mestre
 #--------------------------------------------------------------------------------------------
@@ -11,14 +11,6 @@
 # Funcionalidade que permite o GRUD de menus, funções, grupos e usuários no sistema.
 #####################################################################################
 
-#Limpar os registors do banco de dados
-limpaBanco
-
-expect "[]" listarMenus
-expect "[]" listarFuncoes
-expect "[]" listarGrupos
-expect "[]" listarUsuarios
-
 #####################################################################################
 # testes de setup: temos um controle de acesso adequado? menus, funções, grupos e 
 # usuários.
@@ -26,29 +18,12 @@ expect "[]" listarUsuarios
 
 # ------- Setup de Menus -----------
 #gravar e ler
-menu1=cadastrarMenu nome="Controle de Acesso" rotulo="acesso" 
-expect ${menu1} getMenu id=${menu1}
-expectError "Menu nao foi encontrado(a)." getMenu id=999
- 
-menus=echo "["${menu1}"]"
-expect ${menus} listarMenus
-expect "Controle de Acesso" getAtributoMenu id=${menu1} nomeAtributo="nome"
-expect "acesso" getAtributoMenu id=${menu1} nomeAtributo="rotulo"
-
+menu1=cadastrarMenu nome="MenuTeste1" rotulo="menuTeste1" 
+expect ${menu1} getMenu menu=${menu1}
+expectError "menu nao foi encontrado(a)." getMenu id=999
 
 menu2=cadastrarMenu nome="Avaliação" rotulo="avaliacao"
 expectDifferent ${menu1} echo ${menu2}
 
 menu3=cadastrarMenu nome="Configurações" rotulo=
-expect "Configurações" getAtributoMenu id=${menu3} nomeAtributo="nome"
-expect "null" getAtributoMenu id=${menu3} nomeAtributo="rotulo"
-
-expectError "Atributo \"naoExiste\" nao existe." getAtributomenu id=${menu3} nomeAtributo="naoExiste"
 menuAuxiliar=cadastrarMenu nome="qualquer" rotulo=
-
-menus=echo "["${menu1}"," ${menu2}"," ${menu3}"," ${menuAuxiliar}"]"
-expect ${menus} listarMenus
-
-expectError "O campo \"nome\" nao pode ser vazio." cadastrarMenu nome="" rotulo="qualquer"
-expectError "O campo \"nome\" nao pode ser vazio." cadastrarMenu nome="  " rotulo="qualquer"
-expectError "O campo \"nome\" nao pode ser vazio." cadastrarMenu nome="" rotulo="qualquer"
