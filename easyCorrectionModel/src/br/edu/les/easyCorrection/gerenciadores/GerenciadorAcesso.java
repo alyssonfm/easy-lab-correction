@@ -323,7 +323,13 @@ public class GerenciadorAcesso {
 				}
 			}else{
 				//Gera o md5 da senha
-				String senha = GeraMd5.md5(grupoUsuario.getUsuario().getSenha());
+				String senha = "";
+				if (grupoUsuario.getUsuario().getSenha().equals("")){
+					senha = GeraMd5.md5(grupoUsuario.getUsuario().getLogin());
+				}
+				else{
+					senha = GeraMd5.md5(grupoUsuario.getUsuario().getSenha());
+				}
 				grupoUsuario.getUsuario().setSenha(senha);
 			}
 			//Cadastrar o usuário
