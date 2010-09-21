@@ -1,0 +1,121 @@
+<TopNode>
+  <TestSuite name="TestSuite_US1" description="">
+    <TestCase name="TestCase_Sample" description="">
+      <Test name="TestLogin_OK" description="Login totally ok" defaultThinkTime="0">
+        <UIEvent command="SelectText" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="0"/>
+          <arg value="0"/>
+        </UIEvent>
+        <UIEvent command="Input" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="demas"/>
+        </UIEvent>
+        <UIEvent command="ChangeFocus" value="input_login" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_senha" prop="automationName" delay="500" attempts="10">
+          <arg value="123"/>
+        </UIEvent>
+        <UIEvent command="Click" value="Entrar" prop="automationName" delay="500" attempts="10"/>
+      </Test>
+      <Test name="TestLogin_Fail1" description="Wrong Password" defaultThinkTime="0">
+        <UIEvent command="SelectText" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="0"/>
+          <arg value="0"/>
+        </UIEvent>
+        <UIEvent command="Input" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="demas"/>
+        </UIEvent>
+        <UIEvent command="ChangeFocus" value="input_login" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_senha" prop="automationName" delay="500" attempts="10">
+          <arg value="123456"/>
+        </UIEvent>
+        <UIEvent command="Click" value="Entrar" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Click" value="OK" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="SelectText" value="input_senha" prop="automationName" delay="500" attempts="10">
+          <arg value="6"/>
+          <arg value="6"/>
+        </UIEvent>
+      </Test>
+      <Test name="TestLogin_AlterarSenha" description="" defaultThinkTime="0">
+        <UIEvent command="Click" value="Alterar Senha" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="demas"/>
+        </UIEvent>
+        <UIEvent command="ChangeFocus" value="input_login" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_senha_atual" prop="automationName" delay="500" attempts="10">
+          <arg value="123"/>
+        </UIEvent>
+        <UIEvent command="ChangeFocus" value="input_senha_atual" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_senha_nova" prop="automationName" delay="500" attempts="10">
+          <arg value="1234"/>
+        </UIEvent>
+        <UIEvent command="Click" value="Alterar senha" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Click" value="OK" prop="automationName" delay="500" attempts="10"/>
+      </Test>
+      <Test name="TestLogin_AlterarSenha2" description="Wrong Login" defaultThinkTime="0">
+        <UIEvent command="Click" value="Alterar Senha" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="demetrio"/>
+        </UIEvent>
+        <UIEvent command="ChangeFocus" value="input_login" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_senha_atual" prop="automationName" delay="500" attempts="10">
+          <arg value="1234"/>
+        </UIEvent>
+        <UIEvent command="ChangeFocus" value="input_senha_atual" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_senha_nova" prop="automationName" delay="500" attempts="10">
+          <arg value="12345"/>
+        </UIEvent>
+        <UIEvent command="Click" value="Alterar senha" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Click" value="OK" prop="automationName" delay="500" attempts="10"/>
+      </Test>
+      <Test name="TestLogin_Fail2" description="Wrong Login " defaultThinkTime="0">
+        <UIEvent command="SelectText" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="0"/>
+          <arg value="5"/>
+        </UIEvent>
+        <UIEvent command="SelectText" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="0"/>
+          <arg value="0"/>
+        </UIEvent>
+        <UIEvent command="Input" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="demetrio"/>
+        </UIEvent>
+        <UIEvent command="ChangeFocus" value="input_login" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_senha" prop="automationName" delay="500" attempts="10">
+          <arg value="123"/>
+        </UIEvent>
+        <UIEvent command="Click" value="Entrar" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Click" value="OK" prop="automationName" delay="500" attempts="10"/>
+      </Test>
+      <Test name="TestLogin_Fail_OK" description="Wrong login, clean and sucessful login" defaultThinkTime="50">
+        <UIEvent command="SelectText" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="0"/>
+          <arg value="0"/>
+        </UIEvent>
+        <UIEvent command="Input" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="demetrio"/>
+        </UIEvent>
+        <UIEvent command="ChangeFocus" value="input_login" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_senha" prop="automationName" delay="500" attempts="10">
+          <arg value="123"/>
+        </UIEvent>
+        <UIEvent command="Click" value="Entrar" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Click" value="OK" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Click" value="Limpar" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="SelectText" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="0"/>
+          <arg value="0"/>
+        </UIEvent>
+        <UIEvent command="Input" value="input_login" prop="automationName" delay="500" attempts="10">
+          <arg value="demas"/>
+        </UIEvent>
+        <UIEvent command="ChangeFocus" value="input_login" prop="automationName" delay="500" attempts="10"/>
+        <UIEvent command="Input" value="input_senha" prop="automationName" delay="500" attempts="10">
+          <arg value="123"/>
+        </UIEvent>
+        <UIEvent command="Click" value="Entrar" prop="automationName" delay="500" attempts="10"/>
+      </Test>
+    </TestCase>
+    <TestCase name="TestCase_Cadastro" description="null">
+      <Test name="NewTest" description="null" defaultThinkTime="0"/>
+    </TestCase>
+  </TestSuite>
+</TopNode>

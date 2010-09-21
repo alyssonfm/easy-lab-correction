@@ -1,0 +1,4 @@
+<project>
+  <targetSWF commMode="monkeyLink"/>
+  <generatedCode url="file:///F:/Augusto/Eclipse_EE/flex_workspace/easyCorrectionInterface/src/samples/flexMonkey/src" suitesPackageName="testSuites"/>
+</project>
