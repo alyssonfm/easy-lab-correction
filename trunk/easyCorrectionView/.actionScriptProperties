@@ -1,32 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties mainApplicationPath="main.mxml" version="3">
-<compiler additionalCompilerArguments="-locale en_US" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="C:/apache-tomcat-6.0.20/webapps/EasyCorrection" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
-<compilerSourcePath/>
-<libraryPath defaultLinkType="1">
-<libraryPathEntry kind="4" path=""/>
-<libraryPathEntry kind="1" linkType="1" path="libs"/>
-</libraryPath>
-<sourceAttachmentPath/>
-</compiler>
-<applications>
-<application path="main.mxml"/>
-</applications>
-<modules>
-<module application="src/main.mxml" destPath="modulos/Views/AgendamentoRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AgendamentoRoteiros.mxml"/>
-<module application="src/main.mxml" destPath="modulos/sistema/RecuperacaoSenha.swf" optimize="true" sourcePath="src/modulos/sistema/RecuperacaoSenha.mxml"/>
-<module application="src/main.mxml" destPath="modulos/sistema/AlteraSenha.swf" optimize="true" sourcePath="src/modulos/sistema/AlteraSenha.mxml"/>
-<module application="src/main.mxml" destPath="modulos/Views/CadastrarRoteiro.swf" optimize="true" sourcePath="src/modulos/Views/CadastrarRoteiro.mxml"/>
-<module application="src/main.mxml" destPath="modulos/sistema/MensagemStatus.swf" optimize="true" sourcePath="src/modulos/sistema/MensagemStatus.mxml"/>
-<module application="src/main.mxml" destPath="modulos/sistema/Login.swf" optimize="true" sourcePath="src/modulos/sistema/Login.mxml"/>
-<module application="src/main.mxml" destPath="modulos/ControleDeAcesso/Cadastros.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/Cadastros.mxml"/>
-<module application="src/main.mxml" destPath="modulos/ControleDeAcesso/DefinirFuncoes.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/DefinirFuncoes.mxml"/>
-<module application="src/main.mxml" destPath="modulos/Views/AtribuicaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AtribuicaoDeRoteiros.mxml"/>
-<module application="src/main.mxml" destPath="modulos/Views/Penalidades.swf" optimize="true" sourcePath="src/modulos/Views/Penalidades.mxml"/>
-<module application="src/main.mxml" destPath="modulos/Views/VisualizacaoDeNotas.swf" optimize="true" sourcePath="src/modulos/Views/VisualizacaoDeNotas.mxml"/>
-<module application="src/main.mxml" destPath="modulos/Views/AvaliacaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AvaliacaoDeRoteiros.mxml"/>
-<module application="src/main.mxml" destPath="modulos/Views/SubmissaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/SubmissaoDeRoteiros.mxml"/>
-<module application="src/main.mxml" destPath="modulos/Views/ModuloCorrecao.swf" optimize="true" sourcePath="src/modulos/Views/ModuloCorrecao.mxml"/>
-<module application="src/main.mxml" destPath="modulos/Views/Chat.swf" optimize="true" sourcePath="src/modulos/Views/Chat.mxml"/>
-</modules>
-<buildCSSFiles/>
+  <compiler additionalCompilerArguments="-locale en_US -include-libraries &quot;../libs/automation_monkey3.x.swc&quot; &quot;${flexlib}/libs/automation.swc&quot; &quot;${flexlib}/libs/automation_agent.swc&quot; &quot;${flexlib}/libs/automation_dmv.swc&quot;" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="C:/apache-tomcat-6.0.20/webapps/EasyCorrection" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+    <compilerSourcePath/>
+    <libraryPath defaultLinkType="1">
+      <libraryPathEntry kind="4" path=""/>
+      <libraryPathEntry kind="1" linkType="1" path="libs"/>
+    </libraryPath>
+    <sourceAttachmentPath/>
+  </compiler>
+  <applications>
+    <application path="main.mxml"/>
+  </applications>
+  <modules>
+    <module application="src/main.mxml" destPath="modulos/Views/AgendamentoRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AgendamentoRoteiros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/sistema/RecuperacaoSenha.swf" optimize="true" sourcePath="src/modulos/sistema/RecuperacaoSenha.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/sistema/AlteraSenha.swf" optimize="true" sourcePath="src/modulos/sistema/AlteraSenha.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/CadastrarRoteiro.swf" optimize="true" sourcePath="src/modulos/Views/CadastrarRoteiro.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/sistema/MensagemStatus.swf" optimize="true" sourcePath="src/modulos/sistema/MensagemStatus.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/sistema/Login.swf" optimize="true" sourcePath="src/modulos/sistema/Login.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/Cadastros.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/Cadastros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/DefinirFuncoes.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/DefinirFuncoes.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/AtribuicaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AtribuicaoDeRoteiros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/Penalidades.swf" optimize="true" sourcePath="src/modulos/Views/Penalidades.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/VisualizacaoDeNotas.swf" optimize="true" sourcePath="src/modulos/Views/VisualizacaoDeNotas.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/AvaliacaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AvaliacaoDeRoteiros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/SubmissaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/SubmissaoDeRoteiros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/ModuloCorrecao.swf" optimize="true" sourcePath="src/modulos/Views/ModuloCorrecao.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/Chat.swf" optimize="true" sourcePath="src/modulos/Views/Chat.mxml"/>
+  </modules>
+  <buildCSSFiles/>
 </actionScriptProperties>
