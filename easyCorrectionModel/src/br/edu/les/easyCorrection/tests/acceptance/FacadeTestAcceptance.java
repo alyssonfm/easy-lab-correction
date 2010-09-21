@@ -1,8 +1,6 @@
 package br.edu.les.easyCorrection.tests.acceptance;
 
 import java.util.List;
-
-import easyaccept.EasyAcceptException;
 import br.edu.les.easyCorrection.pojo.acesso.*;
 import br.edu.les.easyCorrection.sistema.Facade;
 
