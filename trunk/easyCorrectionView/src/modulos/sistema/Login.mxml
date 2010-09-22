@@ -8,6 +8,7 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import mx.validators.EmailValidator;
 				import eventos.UsuarioEvent;
 				import bean.acesso.*;
 				import eventos.RespostaLoginEvent;
