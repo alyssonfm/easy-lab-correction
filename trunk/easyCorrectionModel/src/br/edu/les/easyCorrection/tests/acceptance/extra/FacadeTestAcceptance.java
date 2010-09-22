@@ -1,4 +1,4 @@
-package br.edu.les.easyCorrection.tests.acceptance;
+package br.edu.les.easyCorrection.tests.acceptance.extra;
 
 import java.util.List;
 import br.edu.les.easyCorrection.pojo.acesso.*;
