@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate Mapping DTD 3.0//EN" 
+"hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+   <class name="Usuario" table="tb_usuarios">
+       <id name="UsCod"  column="USCOD"  type="string">
+            <generator class="assigned"/>
+        </id>
+        <property name="UsSenha" column="USSENHA" type="string"/>
+        <property name="UsNome" column="USNOME" type="string"/>
+        <property name="UsEmail" column="USEMAIL" type="string"/>
+    </class>
+</hibernate-mapping>
