@@ -6,7 +6,7 @@
 	layout="absolute" width="644" height="446" title="Cadastros" creationComplete="init()" showCloseButton="true" close="fechaJanela()">
 	<les:states>
 		<mx:State name="estadoProfessor">
-			<mx:RemoveChild target="{tabNav}"/>
+			<mx:RemoveChild target="{tabNav}"/>			
 			<mx:AddChild position="lastChild">
 				<mx:ComboBox prompt="selecione..." x="65" y="121" width="548" labelField="nome" id="cbGrupoUsuarioAlt" toolTip="{toolTipGrupoUsuario}" change="filtrarUsuarioPorGrupo()"/>
 			</mx:AddChild>
@@ -71,6 +71,7 @@
 			import mx.rpc.events.FaultEvent;
 			import mx.collections.ArrayCollection;
 			import mx.rpc.events.ResultEvent;
+			import mx.validators.EmailValidator;
 			import eventos.FechaPopupEvent;
 			import Scripts.ControladorDeModulos;
 			
@@ -129,6 +130,7 @@
 			private var usuario: Usuario = new Usuario();
 			private var grupoUsuario: GrupoUsuario = new GrupoUsuario();
 			private var usuarioLogado: *;
+			private var emailValido: Boolean;
 			
 			private function init():void {
 				facade.channelSet = ControladorDeModulos.criaCanal();
@@ -144,6 +146,9 @@
 				var listaGrupoUsuarios: * = event.result as ArrayCollection;
 				if (listaGrupoUsuarios.getItemAt(0).grupo.nome.toUpperCase() == "PROFESSOR"){
 					currentState = "estadoProfessor";
+					emailValidator.source = inputEmailUsuarioAlt;
+					emailValidator.trigger = inputEmailUsuarioAlt;
+					emailValido = false;
 					listarGrupos();
 				}
 				else{
@@ -719,6 +724,7 @@
             	if (currentState != "estadoProfessor"){
 	                if (StringUtil.trim(inputNomeUsuario.text) != "" && 
 	                	StringUtil.trim(inputLoginUsuario.text) != "" &&
+	                	StringUtil.trim(inputEmailUsuario.text) != "" &&
 	                	cbGrupoUsuario.selectedIndex != -1){
 	                	botaoCadastrarUsuario.enabled = true;
 	                	botaoAtualizarUsuario.enabled = true;
@@ -733,6 +739,7 @@
             	else{
             		 if (StringUtil.trim(inputNomeUsuarioAlt.text) != "" && 
 	                	StringUtil.trim(inputLoginUsuarioAlt.text) != "" &&
+	                	StringUtil.trim(inputEmailUsuarioAlt.text) != "" &&
 	                	cbGrupoUsuarioAlt.selectedIndex != -1){
 	                	botaoCadastrarUsuarioAlt.enabled = true;
 	                	botaoAtualizarUsuarioAlt.enabled = true;
@@ -749,6 +756,19 @@
             private function falhaRemove(event:FaultEvent):void{
 				var mens:Array = new Array(true, "Não é possível realizar a operação. Existe professor ou avaliador associado a este usuário.");
 				lancaExcessao(mens);
+			}
+			
+			private function invalidaEmail(event:ValidationResultEvent):void {
+				if (currentState != "estadoProfessor"){
+                	botaoCadastrarUsuario.enabled = false;
+                	botaoAtualizarUsuario.enabled = false;
+                	botaoRemoverUsuario.enabled = false;
+            	}
+            	else{
+	                botaoCadastrarUsuarioAlt.enabled = false;
+	                botaoAtualizarUsuarioAlt.enabled = false;
+	                botaoRemoverUsuarioAlt.enabled = false;	                
+            	}
 			}
 			
 		]]>
@@ -812,6 +832,19 @@
     <mx:Validator required="true" id="validatorGrupoUsuario" source="{cbGrupoUsuario}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
     	requiredFieldError="Informe o grupo do usuário."/>
+    
+    <mx:EmailValidator id="emailValidator" invalid="invalidaEmail(event)" valid="handleValidaUsuario(event)"
+		source="{inputEmailUsuario}" property="text" trigger="{inputEmailUsuario}" 
+		triggerEvent="change"
+		invalidCharError="Seu endereço de email contém caracteres inválidos."
+	    invalidDomainError= "O dominio de seu endereço de email está formatado incorretamente." 
+	    invalidIPDomainError="The endereço IP do dominio de seu email está formatado incorretamente." 
+	    invalidPeriodsInDomainError="O domínio do seu endereço de email possui pontos consecutivos." 
+	    missingAtSignError="Um caracter @ está faltando no seu endereço de email."
+	    missingPeriodInDomainError="Está faltando um ponto (.) no seu endereço de email." 
+	    missingUsernameError="O nome de usuário está faltando no seu endereço de email." 
+	    tooManyAtSignsError="Seu endereço de email contém muitos caracteres @."
+	/>
 	
 	<mx:TabNavigator change="selecionaAba()" width="100%" height="100%" id = "tabNav">	
 		
