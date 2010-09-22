@@ -1,4 +1,4 @@
-package testSuites.TestSuite_US1.tests{
+package testSuites.TestSuite_Samples.tests{
     import com.gorillalogic.flexmonkey.flexunit.tests.MonkeyFlexUnitTestCase;
 
     import com.gorillalogic.flexmonkey.core.MonkeyTest;
@@ -8,21 +8,45 @@ package testSuites.TestSuite_US1.tests{
 
     import mx.collections.ArrayCollection;
 
-    public class TestCase_Sample extends MonkeyFlexUnitTestCase{
-        public function TestCase_Sample(){
+    public class TestCase_Login extends MonkeyFlexUnitTestCase{
+        public function TestCase_Login(){
             super();
         }
 
         private var mtTestLogin_OK:MonkeyTest = new MonkeyTest('TestLogin_OK', 0,
             new ArrayCollection([
-                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', [0, '0']),
+                new VerifyMonkeyCommand('New Verify', null, 'Easy Lab Correction', 'automationName', false,
+                    new ArrayCollection([
+                        new AttributeVO('className', null, 'property', 'Login'),
+                        new AttributeVO('clipContent', null, 'property', 'true'),
+                        new AttributeVO('input_login', null, 'property', '<TextInput id="input_login">'),
+                        new AttributeVO('input_senha', null, 'property', '<TextInput id="input_senha">'),
+                        new AttributeVO('isDocument', null, 'property', 'true'),
+                        new AttributeVO('isPopUp', null, 'property', 'true'),
+                        new AttributeVO('title', null, 'property', 'Easy Lab Correction'),
+                        new AttributeVO('x', null, 'property', '362'),
+                        new AttributeVO('y', null, 'property', '85.5')
+                    ]), null, null, true, '500', '20', 0),
+                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', ['0', '0']),
                 new UIEventMonkeyCommand('Input', 'input_login', 'automationName', ['demas']),
                 new UIEventMonkeyCommand('ChangeFocus', 'input_login', 'automationName', [null]),
                 new UIEventMonkeyCommand('Input', 'input_senha', 'automationName', ['123']),
-                new UIEventMonkeyCommand('Click', 'Entrar', 'automationName', [null])
+                new UIEventMonkeyCommand('Click', 'Entrar', 'automationName', [null]),
+                new VerifyMonkeyCommand('New Verify', null, 'menuBar', 'automationName', false,
+                    new ArrayCollection([
+                        new AttributeVO('measuredHeight', null, 'property', '23'),
+                        new AttributeVO('measuredMinHeight', null, 'property', '23'),
+                        new AttributeVO('measuredMinWidth', null, 'property', '639'),
+                        new AttributeVO('measuredWidth', null, 'property', '639'),
+                        new AttributeVO('menuBarItemRenderer', null, 'property', '[object ClassFactory]'),
+                        new AttributeVO('minHeight', null, 'property', '23'),
+                        new AttributeVO('minWidth', null, 'property', '639'),
+                        new AttributeVO('screen', null, 'property', 'Rectange(x=0, y=0, width=1280, height=685)'),
+                        new AttributeVO('visible', null, 'property', 'true')
+                    ]), null, null, true, '500', '20', 0)
             ]));
 
-        private var mtTestLogin_OKTimeoutTime:int = 10000;
+        private var mtTestLogin_OKTimeoutTime:int = 12000;
 
         [Test]
         public function TestLogin_OK():void{
@@ -36,16 +60,18 @@ package testSuites.TestSuite_US1.tests{
 
         private var mtTestLogin_Fail1:MonkeyTest = new MonkeyTest('TestLogin_Fail1', 0,
             new ArrayCollection([
-                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', [0, '0']),
+                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', ['0', '0']),
                 new UIEventMonkeyCommand('Input', 'input_login', 'automationName', ['demas']),
                 new UIEventMonkeyCommand('ChangeFocus', 'input_login', 'automationName', [null]),
                 new UIEventMonkeyCommand('Input', 'input_senha', 'automationName', ['123456']),
                 new UIEventMonkeyCommand('Click', 'Entrar', 'automationName', [null]),
-                new UIEventMonkeyCommand('Click', 'OK', 'automationName', [null]),
-                new UIEventMonkeyCommand('SelectText', 'input_senha', 'automationName', [6, '6'])
+                new VerifyMonkeyCommand('New Verify', null, 'Senha ou login invalido', 'automationName', false,
+                    new ArrayCollection([
+                        new AttributeVO('automationName', null, 'property', 'Senha ou login invalido')
+                    ]), null, null, true, '500', '20', 0)
             ]));
 
-        private var mtTestLogin_Fail1TimeoutTime:int = 12000;
+        private var mtTestLogin_Fail1TimeoutTime:int = 11000;
 
         [Test]
         public function TestLogin_Fail1():void{
@@ -107,8 +133,8 @@ package testSuites.TestSuite_US1.tests{
 
         private var mtTestLogin_Fail2:MonkeyTest = new MonkeyTest('TestLogin_Fail2', 0,
             new ArrayCollection([
-                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', [0, '5']),
-                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', [0, '0']),
+                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', ['0', '5']),
+                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', ['0', '0']),
                 new UIEventMonkeyCommand('Input', 'input_login', 'automationName', ['demetrio']),
                 new UIEventMonkeyCommand('ChangeFocus', 'input_login', 'automationName', [null]),
                 new UIEventMonkeyCommand('Input', 'input_senha', 'automationName', ['123']),
@@ -130,14 +156,14 @@ package testSuites.TestSuite_US1.tests{
 
         private var mtTestLogin_Fail_OK:MonkeyTest = new MonkeyTest('TestLogin_Fail_OK', 50,
             new ArrayCollection([
-                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', [0, '0']),
+                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', ['0', '0']),
                 new UIEventMonkeyCommand('Input', 'input_login', 'automationName', ['demetrio']),
                 new UIEventMonkeyCommand('ChangeFocus', 'input_login', 'automationName', [null]),
                 new UIEventMonkeyCommand('Input', 'input_senha', 'automationName', ['123']),
                 new UIEventMonkeyCommand('Click', 'Entrar', 'automationName', [null]),
                 new UIEventMonkeyCommand('Click', 'OK', 'automationName', [null]),
                 new UIEventMonkeyCommand('Click', 'Limpar', 'automationName', [null]),
-                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', [0, '0']),
+                new UIEventMonkeyCommand('SelectText', 'input_login', 'automationName', ['0', '0']),
                 new UIEventMonkeyCommand('Input', 'input_login', 'automationName', ['demas']),
                 new UIEventMonkeyCommand('ChangeFocus', 'input_login', 'automationName', [null]),
                 new UIEventMonkeyCommand('Input', 'input_senha', 'automationName', ['123']),

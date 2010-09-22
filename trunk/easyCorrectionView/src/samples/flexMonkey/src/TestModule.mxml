@@ -4,11 +4,11 @@
 
 		<mx:Script>
 		<![CDATA[
-			import testSuites.TestSuite_US1.TestSuite_US1;
+			import testSuites.TestSuite_Samples.TestSuite_Samples;
 
 			public function getTestSuites() : Array { 
 				var suiteArray : Array = new Array();
-				suiteArray.push(new TestSuite_US1());
+				suiteArray.push(new TestSuite_Samples());
 				return suiteArray;
 			}
 		]]>
