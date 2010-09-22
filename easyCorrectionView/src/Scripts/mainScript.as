@@ -31,6 +31,7 @@ private var stackMenuSistemas:ViewStack;
 private var home:Home;
 private var tabBar:TabBar;
 private var setoresUsuario:Array;
+private var usuario: *;
 
 [Embed(source='/image/porta.png')]
 private var icone:Class;
@@ -209,7 +210,7 @@ private function geraListaMenus(listaFuncoes: ArrayCollection): ArrayCollection 
 }
 
 private function salvaCookie(event:UsuarioEvent):void{
-	var usuario:* = event.usuario;
+	usuario = event.usuario;
 	var cookie:SharedObject = SharedObject.getLocal("sistema", "/");
 	cookie.data.idUsuario= usuario.idUsuario;
 	cookie.data.loginUsuario = usuario.login;
@@ -255,7 +256,7 @@ private function menuItemPressionado(event: MenuEvent):void  {
      
      //Caso o evento tenha sido num item de menu 'Setor' -> 'Cadastrar'
      if (event.item.@data == "acesso") {
-     	ControladorDeModulos.criaModulo("modulos/ControleDeAcesso/Cadastros.swf", this, "");
+     	ControladorDeModulos.criaModulo("modulos/ControleDeAcesso/Cadastros.swf", this, usuario);
      }
      if (event.item.@data == "defPerm") {
      	ControladorDeModulos.criaModulo("modulos/ControleDeAcesso/DefinirFuncoes.swf", this, "");
