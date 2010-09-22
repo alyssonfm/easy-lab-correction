@@ -1,4 +1,3 @@
-﻿-- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
 -- Server version	5.0.51
@@ -31,18 +30,12 @@ ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 CREATE TABLE usuario (
   id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  periodo_id INTEGER UNSIGNED NOT NULL,
-login VARCHAR(255) NOT NULL,
+  login VARCHAR(255) NOT NULL,
   nome VARCHAR(255) NOT NULL,
   senha VARCHAR(50) NOT NULL,
   email VARCHAR(255) NULL,
   PRIMARY KEY(id),
-  UNIQUE KEY `Index_login` (`login`),
-  INDEX usuario_FKIndex2(periodo_id),
-  FOREIGN KEY(periodo_id)
-    REFERENCES periodo(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  UNIQUE KEY `Index_login` (`login`)
 )
 ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
