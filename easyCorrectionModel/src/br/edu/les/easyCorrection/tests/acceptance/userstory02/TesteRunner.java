@@ -1,7 +1,10 @@
-package br.edu.les.easyCorrection.tests.acceptance;
+package br.edu.les.easyCorrection.tests.acceptance.userstory02;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import br.edu.les.easyCorrection.tests.acceptance.Constants;
+import br.edu.les.easyCorrection.tests.acceptance.extra.FacadeTestAcceptance;
 
 import easyaccept.EasyAcceptFacade;
 
