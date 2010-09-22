@@ -2,8 +2,6 @@ package br.edu.les.easyCorrection.pojo.acesso;
 
 import java.io.Serializable;
 
-
-
 /**
  * <p>Pojo mapping TABLE agenda</p>
  * <p></p>
