@@ -142,7 +142,7 @@
 			
 			private function getGrupoUsuarioPorUsuario_result(event:ResultEvent):void {
 				var listaGrupoUsuarios: * = event.result as ArrayCollection;
-				if (listaGrupoUsuarios.getItemAt(0).grupo.nome == "Professor"){
+				if (listaGrupoUsuarios.getItemAt(0).grupo.nome.toUpperCase() == "PROFESSOR"){
 					currentState = "estadoProfessor";
 					listarGrupos();
 				}
@@ -234,7 +234,7 @@
 				var grupoAux: ArrayCollection = new ArrayCollection();
 				if (currentState == "estadoProfessor"){
 					for(var i: int = 0; i < grupos.length; i++){
-						if(grupos.getItemAt(i).nome != "Professor" && grupos.getItemAt(i).nome != "Administrador"){
+						if(grupos.getItemAt(i).nome.toUpperCase() != "PROFESSOR" && grupos.getItemAt(i).nome.toUpperCase() != "ADMINISTRADOR"){
 							grupoAux.addItem(grupos.getItemAt(i));
 						}
 					}
