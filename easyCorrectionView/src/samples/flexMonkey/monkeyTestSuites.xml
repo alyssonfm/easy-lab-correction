@@ -1,7 +1,18 @@
 <TopNode>
-  <TestSuite name="TestSuite_US1" description="">
-    <TestCase name="TestCase_Sample" description="">
+  <TestSuite name="TestSuite_Samples" description="">
+    <TestCase name="TestCase_Login" description="">
       <Test name="TestLogin_OK" description="Login totally ok" defaultThinkTime="0">
+        <Verify value="Easy Lab Correction" prop="automationName" description="New Verify" isRetryable="true" delay="500" attempts="20">
+          <Attribute name="className" expectedValue="Login" type="property" actualValue="Login"/>
+          <Attribute name="clipContent" expectedValue="true" type="property" actualValue="true"/>
+          <Attribute name="input_login" expectedValue="&lt;TextInput id=&quot;input_login&quot;>" type="property" actualValue="&lt;TextInput id=&quot;input_login&quot;>"/>
+          <Attribute name="input_senha" expectedValue="&lt;TextInput id=&quot;input_senha&quot;>" type="property" actualValue="&lt;TextInput id=&quot;input_senha&quot;>"/>
+          <Attribute name="isDocument" expectedValue="true" type="property" actualValue="true"/>
+          <Attribute name="isPopUp" expectedValue="true" type="property" actualValue="true"/>
+          <Attribute name="title" expectedValue="Easy Lab Correction" type="property" actualValue="Easy Lab Correction"/>
+          <Attribute name="x" expectedValue="362" type="property" actualValue="362"/>
+          <Attribute name="y" expectedValue="85.5" type="property" actualValue="85.5"/>
+        </Verify>
         <UIEvent command="SelectText" value="input_login" prop="automationName" delay="500" attempts="10">
           <arg value="0"/>
           <arg value="0"/>
@@ -14,6 +25,17 @@
           <arg value="123"/>
         </UIEvent>
         <UIEvent command="Click" value="Entrar" prop="automationName" delay="500" attempts="10"/>
+        <Verify value="menuBar" prop="automationName" description="New Verify" isRetryable="true" delay="500" attempts="20">
+          <Attribute name="measuredHeight" expectedValue="23" type="property" actualValue="23"/>
+          <Attribute name="measuredMinHeight" expectedValue="23" type="property" actualValue="23"/>
+          <Attribute name="measuredMinWidth" expectedValue="639" type="property" actualValue="639"/>
+          <Attribute name="measuredWidth" expectedValue="639" type="property" actualValue="639"/>
+          <Attribute name="menuBarItemRenderer" expectedValue="[object ClassFactory]" type="property" actualValue="[object ClassFactory]"/>
+          <Attribute name="minHeight" expectedValue="23" type="property" actualValue="23"/>
+          <Attribute name="minWidth" expectedValue="639" type="property" actualValue="639"/>
+          <Attribute name="screen" expectedValue="Rectange(x=0, y=0, width=1280, height=685)" type="property" actualValue="Rectange(x=0, y=0, width=1280, height=685)"/>
+          <Attribute name="visible" expectedValue="true" type="property" actualValue="true"/>
+        </Verify>
       </Test>
       <Test name="TestLogin_Fail1" description="Wrong Password" defaultThinkTime="0">
         <UIEvent command="SelectText" value="input_login" prop="automationName" delay="500" attempts="10">
@@ -28,11 +50,9 @@
           <arg value="123456"/>
         </UIEvent>
         <UIEvent command="Click" value="Entrar" prop="automationName" delay="500" attempts="10"/>
-        <UIEvent command="Click" value="OK" prop="automationName" delay="500" attempts="10"/>
-        <UIEvent command="SelectText" value="input_senha" prop="automationName" delay="500" attempts="10">
-          <arg value="6"/>
-          <arg value="6"/>
-        </UIEvent>
+        <Verify value="Senha ou login invalido" prop="automationName" description="New Verify" isRetryable="true" delay="500" attempts="20">
+          <Attribute name="automationName" expectedValue="Senha ou login invalido" type="property" actualValue="Senha ou login invalido"/>
+        </Verify>
       </Test>
       <Test name="TestLogin_AlterarSenha" description="" defaultThinkTime="0">
         <UIEvent command="Click" value="Alterar Senha" prop="automationName" delay="500" attempts="10"/>
@@ -113,9 +133,6 @@
         </UIEvent>
         <UIEvent command="Click" value="Entrar" prop="automationName" delay="500" attempts="10"/>
       </Test>
-    </TestCase>
-    <TestCase name="TestCase_Cadastro" description="null">
-      <Test name="NewTest" description="null" defaultThinkTime="0"/>
     </TestCase>
   </TestSuite>
 </TopNode>
