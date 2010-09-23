@@ -3,6 +3,7 @@ package br.edu.les.easyCorrection.tests.acceptance.extra;
 import java.util.List;
 import br.edu.les.easyCorrection.pojo.acesso.*;
 import br.edu.les.easyCorrection.sistema.Facade;
+import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class FacadeTestAcceptance {
 	
@@ -14,25 +15,29 @@ public class FacadeTestAcceptance {
 
 // ******************************************* Menus ******************************************
 	
+	public Object getAtributoMenu(int id, String nomeAtributo) throws Throwable{
+		Menu objMenu = getMenu(id);
+		return easyCorrectionUtil.getAtributo(objMenu, nomeAtributo, false);
+	}
+	
 	//EasyAcceptOK
-	public Menu cadastrarMenu(String nomeMenu, String rotulo)
+	public int cadastrarMenu(String nomeMenu, String rotulo)
 			throws Throwable{
 		Menu menuAux = new Menu();
 		menuAux.setNome(nomeMenu);
 		menuAux.setRotulo(rotulo);
 		Menu n = facadeSistema.cadastrarMenu(menuAux);
-		return n;
+		return n.getIdMenu();
 	}
 
 	//EasyAcceptOK
-	public Menu editarMenu(int id, String nomeMenu,
-			String rotulo) throws Throwable {
+	public int editarMenu(int id, String nomeMenu, String rotulo) throws Throwable {
 		Menu menuAux = new Menu();
 		menuAux.setIdMenu(id);
 		menuAux.setNome(nomeMenu);
 		menuAux.setRotulo(rotulo);
 		Menu n = facadeSistema.cadastrarMenu(menuAux);
-		return n;
+		return n.getIdMenu();
 	}
 
 	//EasyAcceptOK
