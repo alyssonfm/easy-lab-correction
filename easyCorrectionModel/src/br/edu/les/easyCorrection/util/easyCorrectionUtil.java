@@ -3,6 +3,7 @@ package br.edu.les.easyCorrection.util;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
+import br.edu.les.easyCorrection.exceptions.*;
 
 
 
@@ -81,6 +82,36 @@ public class easyCorrectionUtil {
 		return c.getTime();
 	}
 	
+	/**
+	 * Retorna um atributo do objeto passado, desde de que ele implemente o
+	 * metodo get segundo a convencao para o atributo desejado.
+	 * 
+	 * @param objeto
+	 *            O objeto sob o qual se invocara o get.
+	 * @param atributo
+	 *            O atributo desejado do objeto.
+	 * @return O valor do atributo especificado do objeto.
+	 * @throws AtributoNaoExisteExeption
+	 *             Caso o atributo especificado nao exista.
+	 */
+	public static Object getAtributo(Object objeto, String atributo, boolean isBoolean) throws AtributoNaoExisteExeption {
+		try {
+			Method m = null;
+			if (isBoolean){
+				m = objeto.getClass().getMethod("is" + corrigeStringAtributo(atributo));
+			}else{
+				m = objeto.getClass().getMethod("get" + corrigeStringAtributo(atributo));
+			}
+			Object valor = m.invoke(objeto);
+			return valor;
+		} catch (Exception e) {
+			throw new AtributoNaoExisteExeption(MsgErros.ATRIBUTO_INVALIDO.msg(atributo));
+		}
+	}
 	
+	private static String corrigeStringAtributo(String atributo) {
+		String primeiraLetra = String.valueOf(atributo.charAt(0));
+		return atributo.replaceFirst(primeiraLetra, primeiraLetra.toUpperCase());
+	}
 
 }
