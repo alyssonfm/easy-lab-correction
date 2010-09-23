@@ -6,6 +6,7 @@ import br.edu.les.easyCorrection.DAO.hibernate.acesso.GrupoUsuarioHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.MenuHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.PermissaoHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
+import br.edu.les.easyCorrection.samples.hibernate.dao.UsuarioDAO;
 
 
 
@@ -40,5 +41,9 @@ public class HibernateDAOFactory extends DAOFactory {
 	public PermissaoHibernateDAO buildPermissaoDAO() {
 		return new PermissaoHibernateDAO(HibernateUtil.getSession());
 	}
-	
+
+	//Utilizado Para o teste de Augusto
+	public UsuarioDAO buildUsuarioTesteDAO() {
+		return new UsuarioDAO(HibernateUtil.getSession());
+	}
 }
