@@ -1,0 +1,14 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping package="br.edu.les.easyCorrection.samples.hibernate.dao">
+   <class name="UsuarioTeste" table="tb_usuarios">
+       <id name="usCod"  column="USCOD">
+            <generator class="native"/>
+        </id>
+        <property name="usSenha" column="USSENHA"/>
+        <property name="usNome" column="USNOME"/>
+        <property name="usEmail" column="USEMAIL"/>
+    </class>
+</hibernate-mapping>
