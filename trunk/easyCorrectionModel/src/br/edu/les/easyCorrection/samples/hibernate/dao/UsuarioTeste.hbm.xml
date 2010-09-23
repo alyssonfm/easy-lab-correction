@@ -3,7 +3,7 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> 
 
 <hibernate-mapping package="br.edu.les.easyCorrection.samples.hibernate.dao">
-   <class name="UsuarioTeste" table="tb_usuarios">
+   <class name="UsuarioTeste" table="easy_correction_samples.tb_usuarios">
        <id name="usCod"  column="USCOD">
             <generator class="native"/>
         </id>
