@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 
-public class UsuarioDAO extends AbstractHibernateDAO<UsuarioTeste, Integer>{
+public class UsuarioDAO extends AbstractHibernateDAO<UsuarioTeste, String>{
 	
 	public UsuarioDAO(Session s){
 		super(s);	
