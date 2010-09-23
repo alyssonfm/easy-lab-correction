@@ -6,6 +6,7 @@ import br.edu.les.easyCorrection.DAO.hibernate.acesso.GrupoUsuarioHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.MenuHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.PermissaoHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
+import br.edu.les.easyCorrection.samples.hibernate.dao.UsuarioDAO;
 
 /**
  * Generated at Fri Jan 30 09:30:06 GMT-03:00 2009
@@ -43,5 +44,8 @@ public abstract class DAOFactory {
 	public abstract FuncaoHibernateDAO buildFuncaoDAO();
 	
 	public abstract PermissaoHibernateDAO buildPermissaoDAO();
+	
+	//Utilizado Para o teste de Augusto
+	public abstract UsuarioDAO buildUsuarioTesteDAO();
 		
 }
