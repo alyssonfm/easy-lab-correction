@@ -17,13 +17,21 @@
 #####################################################################################
 
 # ------- Setup de Menus -----------
+
 #gravar e ler
-menu1=cadastrarMenu nome="MenuTeste1" rotulo="menuTeste1" 
-expect ${menu1} getMenu menu=${menu1}
+idMenu=cadastrarMenu nome="MenuTeste1" rotulo="menuTeste1"
+expect "MenuTeste1" getAtributoMenu id=${idMenu} atributo=nome
+expect "menuTeste1" getAtributoMenu id=${idMenu} atributo=rotulo
 expectError "menu nao foi encontrado(a)." getMenu id=999
 
-menu2=cadastrarMenu nome="Avaliação" rotulo="avaliacao"
-expectDifferent ${menu1} echo ${menu2}
+idMenu2=cadastrarMenu nome="MenuTeste2" rotulo="avaliacao"
+expectDifferent ${idMenu} echo ${iMenu2}
 
-menu3=cadastrarMenu nome="Configurações" rotulo=
-menuAuxiliar=cadastrarMenu nome="qualquer" rotulo=
+idMenu3=cadastrarMenu nome="MenuTeste3" rotulo="menu3"
+idMenu4=cadastrarMenu nome="qualquer" rotulo="null"
+expectDifferent ${idMenu3} echo ${iMenu4}
+
+excluirMenu idMenu=${idMenu}
+excluirMenu idMenu=${idMenu2}
+excluirMenu idMenu=${idMenu3}
+excluirMenu idMenu=${idMenu4}
