@@ -1,4 +1,7 @@
 package br.edu.les.easyCorrection.samples.hibernate.dao;
+
+import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
+
 public class Teste { 
 	
 	public static void main(String[] args) throws Exception { 
@@ -10,8 +13,8 @@ public class Teste {
 			String nome = "Rafael"; 
 			String email = "Rafael@email.com.br";
 
-			UsuarioDAO dao = new UsuarioDAO(); 
-			Usuario usuario = new Usuario(log,senha,nome,email);		
+			UsuarioDAO dao = DAOFactory.DEFAULT.buildUsuarioTesteDAO(); 
+			UsuarioTeste usuario = new UsuarioTeste(log,senha,nome,email);		
 			dao.UsInserir(usuario);
 			System.out.println("Registro inserido com sucesso!!!");
 			} 
