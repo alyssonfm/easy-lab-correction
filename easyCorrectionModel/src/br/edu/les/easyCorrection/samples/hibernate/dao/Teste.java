@@ -1,6 +1,7 @@
 package br.edu.les.easyCorrection.samples.hibernate.dao;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
+import br.edu.les.easyCorrection.samples.hibernate.pojo.UsuarioTeste;
 
 public class Teste { 
 	

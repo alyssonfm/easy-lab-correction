@@ -2,7 +2,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> 
 
-<hibernate-mapping package="br.edu.les.easyCorrection.samples.hibernate.dao">
+<hibernate-mapping package="br.edu.les.easyCorrection.samples.hibernate.pojo">
    <class name="UsuarioTeste" table="easy_correction_samples.tb_usuarios">
        <id name="usCod"  column="USCOD">
             <generator class="native"/>

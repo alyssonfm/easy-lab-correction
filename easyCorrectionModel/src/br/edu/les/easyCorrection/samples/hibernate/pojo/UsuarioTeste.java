@@ -1,4 +1,4 @@
-package br.edu.les.easyCorrection.samples.hibernate.dao;
+package br.edu.les.easyCorrection.samples.hibernate.pojo;
 
 import java.io.Serializable;
 
