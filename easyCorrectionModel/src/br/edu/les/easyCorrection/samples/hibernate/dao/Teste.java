@@ -8,7 +8,7 @@ public class Teste {
 			
 		try 
 		{ 
-			String log = "login"; 
+			int log = 1; 
 			String senha = "abc"; 
 			String nome = "Rafael"; 
 			String email = "Rafael@email.com.br";

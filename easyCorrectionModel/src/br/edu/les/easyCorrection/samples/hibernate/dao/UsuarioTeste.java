@@ -8,7 +8,7 @@ public class UsuarioTeste implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String usCod;
+	private int usCod;
 	private String usSenha;
 	private String usNome;
 	private String usEmail;
@@ -17,18 +17,18 @@ public class UsuarioTeste implements Serializable{
 		super();
 	}		 
 
-	public UsuarioTeste(String usCod, String usSenha, String usNome, String usEmail) {
+	public UsuarioTeste(int usCod, String usSenha, String usNome, String usEmail) {
 		this.usCod = usCod;
 		this.usSenha = usSenha;
 		this.usNome = usNome;
 		this.usEmail = usEmail;
 	}
 
-	public String getUsCod() {
+	public int getUsCod() {
 		return usCod;
 	}
 
-	public void setUsCod(String usCod) {
+	public void setUsCod(int usCod) {
 		this.usCod = usCod;
 	}
 
