@@ -14,11 +14,10 @@ import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
-import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 import br.edu.les.easyCorrection.util.GeraMd5;
-import br.edu.les.easyCorrection.util.GeradorSenhas;
 import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
+import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class GerenciadorAcesso {
 	
@@ -520,15 +519,6 @@ public class GerenciadorAcesso {
 		return usuarioBanco;
 	}
 
-	public String alterarSenhaAutomatico(int idUsuario) {
-		Usuario usuarioBanco = getUsuario(idUsuario);
-		//getUsuario valida a existecnia de usuario
-		String senha = GeradorSenhas.gerarSenha(6, "usuario").toLowerCase();
-		String senhaMD5= GeraMd5.md5(senha);
-		usuarioBanco.setSenha(senhaMD5);
-		DAOFactory.DEFAULT.buildUsuarioDAO().update(usuarioBanco);
-		return senha;
-	}
-	
+
 	
 }
