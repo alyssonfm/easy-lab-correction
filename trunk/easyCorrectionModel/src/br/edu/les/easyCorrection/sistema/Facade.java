@@ -12,7 +12,6 @@ import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
-import br.edu.les.easyCorrection.util.GeradorSenhas;
 
 public class Facade {
 
@@ -283,24 +282,6 @@ public class Facade {
 			return sistema.atualizarUsuario(usuario);
 		}catch (Throwable e) {
 			log.error("atualizarUsuario()", e);
-			throw e;
-		}
-	}
-	
-	public String gerarSenha(int numDigitos, String nomeUsuario) throws Throwable{
-		try{
-			return GeradorSenhas.gerarSenha(numDigitos, nomeUsuario);
-		}catch (Throwable e) {
-			log.error("gerarSenha()", e);
-			throw e;
-		}
-	}
-	
-	public String alterarSenhaAutomatico(int idUsuario) throws Throwable{
-		try{
-			return sistema.alterarSenhaAutomatico(idUsuario);
-		}catch (Throwable e) {
-			log.error("alterarSenhaAutomatico()", e);
 			throw e;
 		}
 	}

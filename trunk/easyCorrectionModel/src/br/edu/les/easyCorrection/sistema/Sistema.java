@@ -156,7 +156,4 @@ public class Sistema {
 		return gerenciadorAcesso.alterarSenha(usuario, novaSenha);
 	}
 	
-	public String alterarSenhaAutomatico(int idUsuario){
-		return gerenciadorAcesso.alterarSenhaAutomatico(idUsuario);
-	}
 }

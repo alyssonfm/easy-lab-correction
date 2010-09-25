@@ -65,77 +65,13 @@ public enum MsgErros {
 			return "Operacao de \""+args[0]+"\"nao realizada. "+args[1];
 		}
 	},
-	DATA_INVALIDA{
-		public String msg(String... args){
-			return "Data invalida para o campo \""+args[0]+"\".";
-		}
-		public String toString(){
-			return "Data invalida";
-		}
-	},
+
 	VIOLACAO_CONSTRAINT{
 		public String msg(String... args) {
 			return "\""+args[0]+"\" duplicado(a).";
 		}
-	},
-	ESTOQUE_INSUFICIENTE{
-		public String msg(String... args) {
-				return "Quantidade insuficiente em estoque. Quantidade disponivel: "+args[0]+".";
-			}
-	},
-	DAR_BAIXA{
-		public String msg(String... args) {
-				return "Produto ja atendido para a solicitacao: "+args[0]+".";
-			}
-	}, 
-	
-	ESTOQUE_MINIMO{
-		public String msg(String... args) {
-				return "Produto atingiu o estoque minimo";
-			}
-	},
-	
-	SOLIC_NAO_AUTORIZADA{
-		public String msg(String... args) {
-			return "Solicita��o ainda n�o foi autorizada.";
-		}
-	},
-	
-	TAXA_BANCADA{
-		public String msg(String... args) {
-			return "O projeto já possui duas taxas de bancada.";
-		}
-	},
-	NUM_PLANOS_PROJETO{
-		public String msg(String... args) {
-			return "O projeto não pode ter duas taxas de bancada. Número de planos de trabalho inferior a três.";
-		}
-	},
-	ALUNOS_PROJETO{
-		public String msg(String... args) {
-			return "Não é possível cadastrar este aluno para este projeto. O número máximo de alunos por projeto foi excedido.";
-		}
-	},
-	ALUNO_CADASTRADO{
-		public String msg(String... args) {
-			return "O aluno já participa de algum projeto nessa cota.";
-		}
-	},
-	ALUNO_CRE{
-		public String msg(String... args) {
-			return "O aluno possui CRE inferior a 7.0.";
-		}
-	},
-	ALUNO_MATRICULADO{
-		public String msg(String... args) {
-			return "O aluno não matriculado na instituição.";
-		}
-	},
-	BOLSISTA{
-		public String msg(String... args) {
-			return "Esse projeto já possui um bolsista.";
-		}
 	};
+
 	
 	public String msg(String... args) {
 		return "ERRO 499";
