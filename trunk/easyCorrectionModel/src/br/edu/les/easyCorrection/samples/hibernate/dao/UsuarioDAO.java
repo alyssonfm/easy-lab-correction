@@ -1,9 +1,12 @@
 package br.edu.les.easyCorrection.samples.hibernate.dao;
 
 import java.util.List;
+
 import org.hibernate.Session;
+
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
+import br.edu.les.easyCorrection.samples.hibernate.pojo.UsuarioTeste;
 
 public class UsuarioDAO extends AbstractHibernateDAO<UsuarioTeste, String>{
 	
