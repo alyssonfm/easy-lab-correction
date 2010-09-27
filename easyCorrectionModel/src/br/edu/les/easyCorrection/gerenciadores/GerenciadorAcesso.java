@@ -96,7 +96,7 @@ public class GerenciadorAcesso {
 		Menu men = new Menu();
 		if(!easyCorrectionUtil.isNull(menu)){
 			if(easyCorrectionUtil.isNull(menu.getIdMenu()) || menu.getIdMenu().equals(new Integer(0))){
-				//Verifica se o rótulo ou o nome já existe
+				//Verifica se o rotulo ou o nome ja existe
 				m = consultarMenuPorRotuloENome(menu.getNome(), menu.getRotulo());
 				//Se o rótulo/nome não existe e e o id é null
 				if(easyCorrectionUtil.isNull(m)){
@@ -106,7 +106,7 @@ public class GerenciadorAcesso {
 				}else if(!easyCorrectionUtil.isNull(m)){
 					throw new ValorDuplicadoException(MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
-			//Se o id é diferente de null
+			//Se o id eh diferente de null
 			}else{
 				men = consultarMenuPorRotuloENome(menu.getNome(), menu.getRotulo());
 				if(easyCorrectionUtil.isNull(men)){
@@ -384,7 +384,7 @@ public class GerenciadorAcesso {
 		return DAOFactory.DEFAULT.buildFuncaoDAO().findAll();
 	}
 	
-	public List<Menu> litarMenu(){
+	public List<Menu> listarMenu(){
 		return DAOFactory.DEFAULT.buildMenuDAO().findAll();
 	}
 	
