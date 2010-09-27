@@ -103,7 +103,7 @@ public class Sistema {
 	}
 	
 	public List<Menu> listarMenu(){
-		return gerenciadorAcesso.litarMenu();
+		return gerenciadorAcesso.listarMenu();
 	}
 	
 	public List<Funcao> validaUsuario(Usuario usuario){
