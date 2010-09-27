@@ -30,6 +30,8 @@ expectDifferent ${idMenu} echo ${iMenu2}
 idMenu3=cadastrarMenu nome="MenuTeste3" rotulo="menu3"
 idMenu4=cadastrarMenu nome="qualquer" rotulo="null"
 expectDifferent ${idMenu3} echo ${iMenu4}
+idMenu5=cadastrarMenu nome="qualquer2" rotulo="qualquer"
+expect ${idMenu5} editarMenu id = ${idMenu5} nome="nomeAlterado5" rotulo="rotuloAlterado5"
 
 excluirMenu idMenu=${idMenu}
 excluirMenu idMenu=${idMenu2}
