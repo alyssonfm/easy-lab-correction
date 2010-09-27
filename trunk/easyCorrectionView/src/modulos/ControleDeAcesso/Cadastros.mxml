@@ -571,20 +571,11 @@
 			
 			private function envioEmails(grupoUsuarioP: GrupoUsuario):void {
 				var senha: String = "";
-				if (currentState != "estadoProfessor"){
-					if(StringUtil.trim(inputSenhaUsuario.text) == ""){
-						senha = grupoUsuarioP.usuario.login;
-					}
-					else{
-						senha = StringUtil.trim(inputSenhaUsuario.text);
-					}
-				} else{
-					if(StringUtil.trim(inputSenhaUsuarioAlt.text) == ""){
-						senha = grupoUsuarioP.usuario.login;
-					}
-					else{
-						senha = StringUtil.trim(inputSenhaUsuarioAlt.text);
-					}
+				if(usuario.senha == ""){
+					senha = grupoUsuarioP.usuario.login;
+				}
+				else{
+					senha = usuario.senha;
 				}
 				mensagem = "<BR>Parabéns, você foi cadastrado no sistema Easy Lab Correction da disciplina Laboratório de estrutura de dados.</BR>" +
 						"<BR></BR>" +				
