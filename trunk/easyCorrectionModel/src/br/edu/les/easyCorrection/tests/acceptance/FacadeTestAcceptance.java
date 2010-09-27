@@ -15,6 +15,7 @@ public class FacadeTestAcceptance {
 
 // ******************************************* Menus ******************************************
 	
+	//EasyAcceptOK
 	public Object getAtributoMenu(int id, String nomeAtributo) throws Throwable{
 		Menu objMenu = getMenu(id);
 		return easyCorrectionUtil.getAtributo(objMenu, nomeAtributo, false);
@@ -50,6 +51,17 @@ public class FacadeTestAcceptance {
 		List<Menu> listarMenus = facadeSistema.listarMenus();
 		return listarMenus;
 	}
+	
+	//EasyAcceptOK
+	public Object getAtributoMenuListaMenus(int id, String nomeAtributo) throws Throwable{
+		List<Menu> listaMenus = listarMenus();
+		for(Menu menu: listaMenus){
+			if(menu.getIdMenu() == id){
+				return easyCorrectionUtil.getAtributo(menu, nomeAtributo, false); 
+			}
+		}
+		return "Menu Inexistente.";
+	}
 
 	//EasyAcceptOK
 	public Menu getMenu(int idMenu) throws Throwable {
@@ -59,26 +71,31 @@ public class FacadeTestAcceptance {
 // ******************************************* Funcoes *****************************************
 	
 	//EasyAcceptOK
-	public Funcao cadastrarFuncao(String nomeFuncao, String rotulo, Menu menu)
+	public Object getAtributoFuncao(int id, String nomeAtributo) throws Throwable{
+		Funcao objFuncao = getFuncao(id);
+		return easyCorrectionUtil.getAtributo(objFuncao, nomeAtributo, false);
+	}
+	
+	//EasyAcceptOK
+	public int cadastrarFuncao(String nomeFuncao, String rotulo, int idMenu)
 			throws Throwable{
 		Funcao funcaoAux = new Funcao();
 		funcaoAux.setNome(nomeFuncao);
 		funcaoAux.setRotulo(rotulo);
-		funcaoAux.setMenu(menu);
+		funcaoAux.setMenu(getMenu(idMenu));
 		Funcao n = facadeSistema.cadastrarFuncao(funcaoAux);
-		return n;
+		return n.getIdFuncao();
 	}
-
+	
 	//EasyAcceptOK
-	public Funcao editarFuncao(int id, String nomeFuncao,
-			String rotulo, Menu menu) throws Throwable {
+	public int editarFuncao(int id, String nomeFuncao, String rotulo, int idMenu) throws Throwable {
 		Funcao funcaoAux = new Funcao();
 		funcaoAux.setIdFuncao(id);
 		funcaoAux.setNome(nomeFuncao);
 		funcaoAux.setRotulo(rotulo);
-		funcaoAux.setMenu(menu);
+		funcaoAux.setMenu(getMenu(idMenu));
 		Funcao n = facadeSistema.cadastrarFuncao(funcaoAux);
-		return n;
+		return n.getIdFuncao();
 	}
 
 	//EasyAcceptOK
@@ -87,9 +104,20 @@ public class FacadeTestAcceptance {
 	}
 
 	//EasyAcceptOK
-	public List<Funcao> listarFuncoes() throws Throwable{
-		List<Funcao> listarFuncoes = facadeSistema.listarFuncoes();
-		return listarFuncoes;
+	public List<Funcao> listarFuncaos() throws Throwable{
+		List<Funcao> listarFuncaos = facadeSistema.listarFuncoes();
+		return listarFuncaos;
+	}
+	
+	//EasyAcceptOK
+	public Object getAtributoFuncaoListaFuncoes(int id, String nomeAtributo) throws Throwable{
+		List<Funcao> listaFuncaos = listarFuncaos();
+		for(Funcao funcao: listaFuncaos){
+			if(funcao.getIdFuncao() == id){
+				return easyCorrectionUtil.getAtributo(funcao, nomeAtributo, false); 
+			}
+		}
+		return "Funcao Inexistente.";
 	}
 
 	//EasyAcceptOK
