@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.Security;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -55,9 +56,9 @@ public class SendMailServlet extends HttpServlet implements Servlet {
 		    message.setRecipients(Message.RecipientType.TO, 
 	                        InternetAddress.parse(contato));
 		    message.setSubject(assunto);
-		    message.setText("<html>Mensagem enviada por: <b> Easy Lab Correction - LEDA</b>" +
+		    message.setContent("<html>Mensagem enviada por: <b> Easy Lab Correction - LEDA</b>" +
 					"<p><p><table border=1>" +	mensagem + "</table>" +
-					"<p>Contato:<br><b>" + emailInst + "</b></html>");
+					"<p>Contato:<br><b>" + emailInst + "</b></html>", "text/html");
 	 
 		    Transport.send(message);
 		    
