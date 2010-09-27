@@ -570,16 +570,33 @@
 			}
 			
 			private function envioEmails(grupoUsuarioP: GrupoUsuario):void {
-				mensagem = "<BR>Parabens, voce foi adicionado ao sistema Easy Lab Correction da disciplina Laboratório de estrutura de dados.</BR>" +				
-						"<BR>Informamos que o envio de roteiros sera realizado através do sistema mediante os seguintes dados de acesso:</BR>" +
+				var senha: String = "";
+				if (currentState != "estadoProfessor"){
+					if(StringUtil.trim(inputSenhaUsuario.text) == ""){
+						senha = grupoUsuarioP.usuario.login;
+					}
+					else{
+						senha = StringUtil.trim(inputSenhaUsuario.text);
+					}
+				} else{
+					if(StringUtil.trim(inputSenhaUsuarioAlt.text) == ""){
+						senha = grupoUsuarioP.usuario.login;
+					}
+					else{
+						senha = StringUtil.trim(inputSenhaUsuarioAlt.text);
+					}
+				}
+				mensagem = "<BR>Parabéns, você foi cadastrado no sistema Easy Lab Correction da disciplina Laboratório de estrutura de dados.</BR>" +
+						"<BR></BR>" +				
+						"<BR>Informamos que o envio de roteiros será realizado através do sistema mediante os seguintes dados de acesso:</BR>" +
 						"<BR></BR>" +
 						"Login:<BR>" + grupoUsuarioP.usuario.login + "</BR>" + 
-						"<BR>Senha:</BR><BR>"+ grupoUsuarioP.usuario.senha +"</br><p>Obs.:\nLembre-se! Sua senha &#233; pessoal e intransfer&#237;vel.</p>" +
-						"<BR>Sugerimos alteracao imediata de sua senha.</BR>" + 
+						"<BR>Senha:</BR><BR>"+ senha +"</br><p>Obs.:\nLembre-se! Sua senha é pessoal e intransferível. " +
+						"Sugerimos alteração imediata de sua senha.</p>" + 
 						"<BR>Clique <a href=http://easyLabCorrection.dsc.ufcg.edu;>aqui</a> para acessar o sistema.</BR>" +
 						"<BR></BR>" +
 						"<BR>Atenciosamente,</BR>" +
-						"<BR>Sistema Easy Lab Correction</BR>";
+						"<BR>Easy Lab Correction</BR>";
 						
 				mensagem = Util.geraCodigosHTML(mensagem);
 				contato = grupoUsuarioP.usuario.email;
@@ -800,7 +817,7 @@
 			
 			private function handleEmail(event:ResultEvent):void {
 				ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this,
-					[false, "Uma nova senha foi enviada para seu e-mail!"]);
+					[false, "O e-mail foi enviado com sucesso!"]);
 			}
             
             private function falhaRemove(event:FaultEvent):void{
