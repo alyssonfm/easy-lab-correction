@@ -6,7 +6,7 @@
 	layout="absolute" width="644" height="446" title="Cadastros" creationComplete="init()" showCloseButton="true" close="fechaJanela()">
 	<les:states>
 		<mx:State name="estadoProfessor">
-			<mx:RemoveChild target="{tabNav}"/>			
+			<mx:RemoveChild target="{tabNav}"/>
 			<mx:AddChild position="lastChild">
 				<mx:ComboBox prompt="selecione..." x="65" y="121" width="548" labelField="nome" id="cbGrupoUsuarioAlt" toolTip="{toolTipGrupoUsuario}" change="filtrarUsuarioPorGrupo()"/>
 			</mx:AddChild>
@@ -131,6 +131,21 @@
 			private var grupoUsuario: GrupoUsuario = new GrupoUsuario();
 			private var usuarioLogado: *;
 			private var emailValido: Boolean;
+			private var primeiroCadastro: Boolean = false;
+			
+			[Bindable]
+			private var mensagem:String;
+			
+			[Bindable]
+			private var contato:String;
+			
+			[Bindable]
+			private var nomeUsuario:String;
+			
+			[Bindable]
+			private var assunto: String = "[LEDA]Cadastro no Easy Lab Correction";			
+			
+			
 			
 			private function init():void {
 				facade.channelSet = ControladorDeModulos.criaCanal();
@@ -477,6 +492,7 @@
 			}
 			
 			private function cadastrarGrupoUsuario(): void{
+				primeiroCadastro = true;
 				usuario = new Usuario();
 				grupoUsuario = new GrupoUsuario();
 				editarUsuario();
@@ -546,7 +562,27 @@
 						inputSenhaUsuarioAlt.text = "";
 						inputEmailUsuarioAlt.text = "";
 					}
-				}	
+				}
+				envioEmails(grupoUsuarioP);
+			}
+			
+			private function envioEmails(grupoUsuarioP: GrupoUsuario):void {
+				mensagem = "<BR>Parabens, voce foi adicionado ao sistema Easy Lab Correction da disciplina Laboratório de estrutura de dados.</BR>" +				
+						"<BR>Informamos que o envio de roteiros sera realizado através do sistema mediante os seguintes dados de acesso:</BR>" +
+						"<BR></BR>" +
+						"Login:<BR>" + grupoUsuarioP.usuario.login + "</BR>" + 
+						"<BR>Senha:</BR><BR>"+ grupoUsuarioP.usuario.senha +"</br><p>Obs.:\nLembre-se! Sua senha &#233; pessoal e intransfer&#237;vel.</p>" +
+						"<BR>Sugerimos alteracao imediata de sua senha.</BR>" + 
+						"<BR>Clique <a href=http://easyLabCorrection.dsc.ufcg.edu;>aqui</a> para acessar o sistema.</BR>" +
+						"<BR></BR>" +
+						"<BR>Atenciosamente,</BR>" +
+						"<BR>Sistema Easy Lab Correction</BR>";
+						
+				mensagem = Util.geraCodigosHTML(mensagem);
+				contato = grupoUsuarioP.usuario.email;
+				nomeUsuario = grupoUsuarioP.usuario.nome;
+				servicoEnviarEmail.send();
+				
 			}
 			
 			private function selecionarUsuario(): void{
@@ -753,6 +789,17 @@
             	}
             }
             
+            private function lancaEvento(event:FaultEvent):void {
+				var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+					event.fault, event.token, event.message);
+				dispatchEvent(e);
+			}
+			
+			private function handleEmail(event:ResultEvent):void {
+				ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this,
+					[false, "Uma nova senha foi enviada para seu e-mail!"]);
+			}
+            
             private function falhaRemove(event:FaultEvent):void{
 				var mens:Array = new Array(true, "Não é possível realizar a operação. Existe professor ou avaliador associado a este usuário.");
 				lancaExcessao(mens);
@@ -792,6 +839,21 @@
 		<mx:method name="excluirUsuario" result="excluirGrupoUsuario_result()" fault="falhaRemove(event)"/>
 		
 	</mx:RemoteObject>
+	
+	<mx:HTTPService id="servicoEnviarEmail" method="POST" 
+    	url="{ExternalInterface.call('getUrlSendMail')}"
+    	useProxy="false"
+    	resultFormat="text"
+    	result="handleEmail(event)"
+    	fault="lancaEvento(event)"
+    	showBusyCursor="true">
+	    <mx:request>
+	        <assunto>{assunto}</assunto>
+	        <contato>{contato}</contato>
+	        <mensagem>{mensagem}</mensagem>
+	        <nomeUsuario>{nomeUsuario}</nomeUsuario>
+	    </mx:request>
+	</mx:HTTPService>
 	
 	<mx:Validator required="true" id="validatorNomeMenu" source="{inputNomeMenu}"
     	property="text" valid="handleValidaMenu(event)" invalid="handleValidaMenu(event)"
@@ -904,6 +966,7 @@
 			<mx:TextInput x="64" y="23.5" width="548" id="inputNomeUsuario" toolTip="{toolTipNomeUsuario}" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="64" y="53" width="348" id="inputLoginUsuario" toolTip="{toolTipLoginUsuario}" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="478" y="53" width="134" id="inputSenhaUsuario" displayAsPassword="true"/>
+			<mx:TextInput x="64" y="83" width="548" id="inputEmailUsuario" toolTip="{toolTipEmailUsuario}" change="handleValidaUsuario(null)"/>
 			<mx:Button x="242.5" y="142" label="   Cadastrar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuario" height="28" enabled="false"/>
 			<mx:Button x="549" y="1" label="Novo" width="63" height="23" id="botaoNovoUsuario" click="mudaCadastrar()"/>
 			<mx:Button x="315" y="142" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuario" height="28" visible="true" />
@@ -911,7 +974,6 @@
 			<mx:Label x="10" y="113.5" text="Grupo:" id="labelGrupoUsuario"/>
 			<mx:Label x="10" y="25.5" text="Nome:" id="labelNomeUsuario"/>
 			<mx:Label x="12" y="55" text="Login:" id="labelLoginUsuario"/>
-			<mx:TextInput x="64" y="83" width="548" id="inputEmailUsuario" toolTip="{toolTipEmailUsuario}" change="handleValidaUsuario(null)"/>
 			<mx:Label x="12" y="85" text="Email:" id="labelEmailUsuario"/>
 			<mx:Label x="420" y="55" text="Senha:" id="labelSenhaUsuario"/>
 			<mx:DataGrid x="10" y="178" width="602" height="179" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
