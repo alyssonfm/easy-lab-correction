@@ -22,6 +22,14 @@
        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
+    <servlet>
+    	<description>Envia email para supporte</description>
+    	<display-name>SendMailServlet</display-name>
+	    <servlet-name>SendMailServlet</servlet-name>
+    	<servlet-class>br.edu.les.easyCorrection.servlet.SendMailServlet</servlet-class>
+	    <load-on-startup>2</load-on-startup>
+	</servlet>
 	
 	<servlet>
     	<description></description>
@@ -60,6 +68,11 @@
     	<servlet-name>Upload</servlet-name>
 	    <url-pattern>/DownloadServlet</url-pattern>
     </servlet-mapping>
+    
+    <servlet-mapping>
+    	<servlet-name>SendMailServlet</servlet-name>
+	    <url-pattern>/SendMailServlet</url-pattern>
+	</servlet-mapping>
 	
 	<welcome-file-list>
         <welcome-file>index.html</welcome-file>
