@@ -563,7 +563,10 @@
 						inputEmailUsuarioAlt.text = "";
 					}
 				}
-				envioEmails(grupoUsuarioP);
+				if (primeiroCadastro){
+					envioEmails(grupoUsuarioP);
+					primeiroCadastro = false;
+				}
 			}
 			
 			private function envioEmails(grupoUsuarioP: GrupoUsuario):void {
