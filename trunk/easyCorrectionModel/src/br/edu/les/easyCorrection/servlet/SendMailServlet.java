@@ -60,9 +60,7 @@ public class SendMailServlet extends HttpServlet implements Servlet {
 					"<p>Contato:<br><b>" + emailInst + "</b></html>");
 	 
 		    Transport.send(message);
-	 
-		    System.out.println("Done");
- 
+		    
     	} catch (MessagingException e) {
     	    throw new RuntimeException(e);
     	}
