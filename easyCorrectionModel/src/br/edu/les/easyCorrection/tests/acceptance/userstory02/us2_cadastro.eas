@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------------------------
-# Teste de Aceitação do sistema easyLabCorrection
+# Teste de Aceitacao do sistema easyLabCorrection
 # Equipe de Desenvolvimento:
 # ----- Alysson Filgueira
 # ----- Augusto Macedo
@@ -8,12 +8,12 @@
 
 #####################################################################################
 # Caso de Uso 2: Controle de Acesso: 
-# Funcionalidade que permite o GRUD de menus, funções, grupos e usuários no sistema.
+# Funcionalidade que permite o GRUD de menus, funcoes, grupos e usuarios no sistema.
 #####################################################################################
 
 #####################################################################################
-# testes de setup: temos um controle de acesso adequado? menus, funções, grupos e 
-# usuários.
+# testes de setup: temos um controle de acesso adequado? menus, funcoes, grupos e 
+# usuarios.
 #####################################################################################
 
 # ------- Setup de Menus -----------
@@ -49,7 +49,7 @@ expect "nomeAlterado3" getAtributoMenuListaMenus id=${idMenu3} atributo=nome
 expect ${idMenu5} getAtributoMenuListaMenus id=${idMenu5} atributo=idMenu
 expect "Menu Inexistente." getAtributoMenuListaMenus id=999 atributo=nome
 
-# ------- Setup de Funções -----------
+# ------- Setup de Funcoes -----------
 
 #gravar e ler
 idFuncao=cadastrarFuncao nome="FuncaoTeste1" rotulo="FuncaoTeste1" idMenu=${idMenu}
@@ -82,9 +82,69 @@ expect "nomeAlterado3" getAtributoFuncaoListaFuncoes id=${idFuncao3} atributo=no
 expect ${idFuncao5} getAtributoFuncaoListaFuncoes id=${idFuncao5} atributo=idFuncao
 expect "Funcao Inexistente." getAtributoFuncaoListaFuncoes id=999 atributo=nome
 
+# ------- Setup de Grupos -----------
+
+#gravar e ler
+idGrupo=cadastrarGrupo nome="GrupoTeste1"
+expect "GrupoTeste1" getAtributoGrupo id=${idGrupo} atributo=nome
+expectError "grupo nao foi encontrado(a)." getGrupo id=99
+
+idGrupo2=cadastrarGrupo nome="GrupoTeste2"
+expectDifferent ${idGrupo} echo ${iGrupo2}
+
+idGrupo3=cadastrarGrupo nome="GrupoTeste3"
+idGrupo4=cadastrarGrupo nome="qualquer"
+expectDifferent ${idGrupo3} echo ${iGrupo4}
+idGrupo6=cadastrarGrupo nome="ag"
+idGrupo7=cadastrarGrupo nome="algumNome"
+
+expect ${idGrupo} editarGrupo id=${idGrupo} nome="nomeAlterado1"
+expect ${idGrupo2} editarGrupo id=${idGrupo2} nome="nomeAlterado2"
+expect ${idGrupo3} editarGrupo id=${idGrupo3} nome="nomeAlterado3"
+expect ${idGrupo4} editarGrupo id=${idGrupo4} nome="nomeAlterado4"
+
+expect "nomeAlterado2" getAtributoGrupo id=${idGrupo2} atributo=nome
+expect ${idGrupo4} getAtributoGrupo id=${idGrupo4} atributo=idGrupo
+expect "nomeAlterado1" getAtributoGrupoListaGrupos id=${idGrupo} atributo=nome
+expect "nomeAlterado3" getAtributoGrupoListaGrupos id=${idGrupo3} atributo=nome
+expect "Grupo Inexistente." getAtributoGrupoListaGrupos id=999 atributo=nome
+
+# ------- Setup de UsuÃ¡rio -----------
+
+idGrupoUsuario=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste1" login="usuariot1" senha="123" email="usuario@gmail.com"
+expect ${idGrupoUsuario} getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=idGrupoUsuario
+expect "usuariot1" getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=login
+expect "202cb962ac59075b964b07152d234b70" getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=senha
+expect "usuario@gmail.com" getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=email
+expect "UsuarioTeste1" getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=nome
+
+
+idGrupoUsuario2=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste2" login="usuariot2" senha="usuariot2" email="usuarioTeste2@gmail.com"
+expectDifferent ${idGrupoUsuario} echo ${iGrupoUsuario2}
+idGrupoUsuario3=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste3" login="usuariot3" senha="usuariot3" email="us@oi.com.br"
+expectError "usuario nao foi encontrado(a)." getUsuario id=999
+idGrupoUsuario4=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste4" login="usuariot4" senha="usuariot4" email="us@yahoo.com.br"
+
+expect ${idGrupoUsuario} editarUsuario id=${idGrupoUsuario} grupoId=${idGrupo} nome="UsuarioTesteAlterado" login="usuariot1" senha="UsuarioTesteAlterada" email="UsuarioTesteAlterado@gmail.com"
+expect ${idGrupoUsuario2} editarUsuario id=${idGrupoUsuario2} grupoId=${idGrupo} nome="UsuarioTeste2Alterado" login="usuariot2" senha="UsuarioTeste2Alterada" email="UsuarioTeste2Alterado@gmail.com"
+
+expect ${idGrupoUsuario} getAtributoGrupoUsuarioListaFuncoes id=${idGrupoUsuario} atributo=idGrupoUsuario
+
 #####################################################################################
-# Para ver as alterações no Banco de Dados comente as linhas seguintes.
+# Para ver as alteracoes no Banco de Dados comente as linhas seguintes.
 #####################################################################################
+
+excluirUsuario idGrupoUsuario=${idGrupoUsuario}
+excluirUsuario idGrupoUsuario=${idGrupoUsuario2}
+excluirUsuario idGrupoUsuario=${idGrupoUsuario3}
+excluirUsuario idGrupoUsuario=${idGrupoUsuario4}
+
+excluirGrupo idGrupo=${idGrupo}
+excluirGrupo idGrupo=${idGrupo2}
+excluirGrupo idGrupo=${idGrupo3}
+excluirGrupo idGrupo=${idGrupo4}
+excluirGrupo idGrupo=${idGrupo6}
+excluirGrupo idGrupo=${idGrupo7}
 
 excluirFuncao idFuncao=${idFuncao}
 excluirFuncao idFuncao=${idFuncao2}
