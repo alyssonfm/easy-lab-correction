@@ -128,19 +128,27 @@ public class FacadeTestAcceptance {
 //******************************************* Grupos ******************************************
 	
 	//EasyAcceptOK
-	public Grupo cadastrarGrupo(String nomeGrupo) throws Throwable{
+	public Object getAtributoGrupo(int id, String nomeAtributo) throws Throwable{
+		Grupo objGrupo = getGrupo(id);
+		return easyCorrectionUtil.getAtributo(objGrupo, nomeAtributo, false);
+	}
+	
+	//EasyAcceptOK
+	public int cadastrarGrupo(String nomeGrupo)
+			throws Throwable{
 		Grupo grupoAux = new Grupo();
 		grupoAux.setNome(nomeGrupo);
 		Grupo n = facadeSistema.cadastrarGrupo(grupoAux);
-		return n;
+		return n.getIdGrupo();
 	}
 
 	//EasyAcceptOK
-	public Grupo editarGrupo(String nomeGrupo) throws Throwable {
+	public int editarGrupo(int id, String nomeGrupo) throws Throwable {
 		Grupo grupoAux = new Grupo();
+		grupoAux.setIdGrupo(id);
 		grupoAux.setNome(nomeGrupo);
 		Grupo n = facadeSistema.cadastrarGrupo(grupoAux);
-		return n;
+		return n.getIdGrupo();
 	}
 
 	//EasyAcceptOK
@@ -150,51 +158,109 @@ public class FacadeTestAcceptance {
 
 	//EasyAcceptOK
 	public List<Grupo> listarGrupos() throws Throwable{
-		List<Grupo> listarFuncoes = facadeSistema.listarGrupos();
-		return listarFuncoes;
+		List<Grupo> listarGrupos = facadeSistema.listarGrupos();
+		return listarGrupos;
+	}
+	
+	//EasyAcceptOK
+	public Object getAtributoGrupoListaGrupos(int id, String nomeAtributo) throws Throwable{
+		List<Grupo> listaGrupos = listarGrupos();
+		for(Grupo Grupo: listaGrupos){
+			if(Grupo.getIdGrupo() == id){
+				return easyCorrectionUtil.getAtributo(Grupo, nomeAtributo, false); 
+			}
+		}
+		return "Grupo Inexistente.";
 	}
 
 	//EasyAcceptOK
 	public Grupo getGrupo(int idGrupo) throws Throwable {
 		return facadeSistema.getGrupo(idGrupo);
 	}
-
 // ******************************************* Usuarios *****************************************
 	
 	//EasyAcceptOK
-	public GrupoUsuario cadastrarUsuario(int grupoId, int idUsuario) throws Throwable{
+	public Object getAtributoGrupoUsuario(int id, String nomeAtributo) throws Throwable{
+		GrupoUsuario objGrupoUsuario = getGrupoUsuario(id);
+		if (nomeAtributo.equals("idGrupoUsuario")){
+			return easyCorrectionUtil.getAtributo(objGrupoUsuario, nomeAtributo, false);
+		}
+		else{
+			return easyCorrectionUtil.getAtributo(objGrupoUsuario.getUsuario(), nomeAtributo, false);
+		}
+	}
+	
+	//EasyAcceptOK
+	public int cadastrarUsuario(int grupoId, String nome, String login, String senha, String email) throws Throwable{
 		GrupoUsuario usuarioAux = new GrupoUsuario();
 		usuarioAux.setGrupo(facadeSistema.getGrupo(grupoId));
-		usuarioAux.setUsuario(facadeSistema.getUsuario(idUsuario));
+		Usuario usu = new Usuario(login, nome, senha, email);
+		usu.setIdUsuario(0);
+		usuarioAux.setUsuario(usu);
 		GrupoUsuario n = facadeSistema.cadastrarUsuario(usuarioAux);
-		return n;
+		return n.getIdGrupoUsuario();
 	}
 
 	//EasyAcceptOK
-	public GrupoUsuario editarUsuario(int grupoUsuarioId, int grupoId, int idUsuario) throws Throwable {
+	public int editarUsuario(int grupoUsuarioId, 
+								int grupoId,
+								String nome, 
+								String login, 
+								String senha,
+								String email) throws Throwable {
+		
 		GrupoUsuario usuarioAux = new GrupoUsuario();
 		usuarioAux.setIdGrupoUsuario(grupoUsuarioId);
 		usuarioAux.setGrupo(facadeSistema.getGrupo(grupoId));
-		usuarioAux.setUsuario(facadeSistema.getUsuario(idUsuario));
+		Usuario us = facadeSistema.getUsuarioPorLogin(login);
+		us.setNome(nome);
+		us.setLogin(login);
+		us.setSenha(senha);
+		us.setEmail(email);
+		usuarioAux.setUsuario(us);
 		GrupoUsuario n = facadeSistema.cadastrarUsuario(usuarioAux);
-		return n;
+		return n.getIdGrupoUsuario();
 	}
 
 	//EasyAcceptOK
 	public void excluirUsuario(int idGrupoUsuario) throws Throwable {
 		facadeSistema.excluirUsuario(facadeSistema.getGrupoUsuario(idGrupoUsuario));
 	}
+	
+	//EasyAcceptOK
+	public Object getAtributoGrupoUsuarioListaFuncoes(int id, String nomeAtributo) throws Throwable{
+		List<GrupoUsuario> listaGrupoUsuarios = listarGrupoUsuarios();
+		for(GrupoUsuario GrupoUsuario: listaGrupoUsuarios){
+			if(GrupoUsuario.getIdGrupoUsuario() == id){
+				return easyCorrectionUtil.getAtributo(GrupoUsuario, nomeAtributo, false); 
+			}
+		}
+		return "grupoUsuario Inexistente.";
+	}
+	
+	//EasyAcceptOK
+	public Usuario getUsuario(int idUsuario) throws Throwable {
+		return facadeSistema.getUsuario(idUsuario);
+	}
 
+	//EasyAcceptOK
+	public List<GrupoUsuario> listarGrupoUsuarios() throws Throwable{
+		List<GrupoUsuario> listarGrupoUsuarios = facadeSistema.listarGrupoUsuarios();
+		return listarGrupoUsuarios;
+	}
+	
+	//EasyAcceptOK
+	public GrupoUsuario getGrupoUsuario(int idGrupoUsuario) throws Throwable {
+		return facadeSistema.getGrupoUsuario(idGrupoUsuario);
+	}
+	
 	//EasyAcceptOK
 	public List<Usuario> listarUsuarios() throws Throwable{
 		List<Usuario> listarFuncoes = facadeSistema.listarUsuarios();
 		return listarFuncoes;
 	}
 
-	//EasyAcceptOK
-	public Usuario getUsuario(int idUsuario) throws Throwable {
-		return facadeSistema.getUsuario(idUsuario);
-	}
+	
 
 }
 
