@@ -42,6 +42,7 @@
 		<mapping resource="br/edu/les/easyCorrection/mapeamentos/acesso/GrupoUsuario.hbm.xml" />
 		<mapping resource="br/edu/les/easyCorrection/mapeamentos/acesso/Usuario.hbm.xml" />
 		<mapping resource="br/edu/les/easyCorrection/mapeamentos/acesso/Grupo.hbm.xml" />
+		<mapping resource="br/edu/les/easyCorrection/mapeamentos/sistema/Periodo.hbm.xml" />
 		
 		<!--  Mapeamento para o teste de Augusto -->
 		<mapping resource="br/edu/les/easyCorrection/samples/hibernate/dao/UsuarioTeste.hbm.xml" />
