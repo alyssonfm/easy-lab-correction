@@ -150,13 +150,13 @@ CREATE TABLE `funcao` (
 /*!40000 ALTER TABLE `funcao` DISABLE KEYS */;
 INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES 
  (1,'Cadastros','acesso',1),
- (2,'Definir Permiss√£o','defPerm',1),
+ (2,'Definir Permiss„o','defPerm',1),
  (4,'Agendamento de Roteiros','agendaRoteiros',2),
  (5,'Penalidades','penalidades',2),
- (6,'Atribui√ß√£o de Roteiros','atribuicaoDeRoteiros',2),
+ (6,'AtribuiÁ„o de Roteiros','atribuicaoDeRoteiros',2),
  (7,'Visualizar Notas','notas',2),
- (8,'Avalia√ß√£o de Roteiros','avaliacaoDeRoteiros',3),
- (9,'Submiss√£o De Roteiros','submissaoDeRoteiros',4),
+ (8,'AvaliaÁ„o de Roteiros','avaliacaoDeRoteiros',3),
+ (9,'Submiss„o De Roteiros','submissaoDeRoteiros',4),
  (10,'Chat','chat',5);
 /*!40000 ALTER TABLE `funcao` ENABLE KEYS */;
 
@@ -240,10 +240,10 @@ CREATE TABLE `menu` (
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
 INSERT INTO `menu` (`id`,`titulo`,`nome`) VALUES 
  (1,'acesso','Controle de Acesso'),
- (2,'config','Configura√ß√µes'),
- (3,'avaliacao','Avalia√ß√£o'),
- (4,'submissao','Submiss√£o'),
- (5,'discussao','Discuss√£o');
+ (2,'config','ConfiguraÁıes'),
+ (3,'avaliacao','AvaliaÁ„o'),
+ (4,'submissao','Submiss„o'),
+ (5,'discussao','Discuss„o');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 
 
