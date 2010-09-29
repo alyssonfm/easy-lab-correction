@@ -2,6 +2,8 @@ package br.edu.les.easyCorrection.pojo.acesso;
 
 import java.io.Serializable;
 
+import br.edu.les.easyCorrection.pojo.sistema.Periodo;
+
 /**
  * <p>Pojo mapping TABLE agenda</p>
  * <p></p>
@@ -25,6 +27,8 @@ public class Usuario implements Serializable {
 	private String senha;
 	
 	private String email;
+	
+	private Periodo periodo;
 
 	
 
@@ -88,16 +92,26 @@ public class Usuario implements Serializable {
 		return email;
 	}
 
+	public Periodo getPeriodo() {
+		return periodo;
+	}
+
+	public void setPeriodo(Periodo periodo) {
+		this.periodo = periodo;
+	}
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
 				+ ((idUsuario == null) ? 0 : idUsuario.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((periodo == null) ? 0 : periodo.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		return result;
 	}
 
@@ -109,7 +123,12 @@ public class Usuario implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final Usuario other = (Usuario) obj;
+		Usuario other = (Usuario) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
 		if (idUsuario == null) {
 			if (other.idUsuario != null)
 				return false;
@@ -125,23 +144,18 @@ public class Usuario implements Serializable {
 				return false;
 		} else if (!nome.equals(other.nome))
 			return false;
+		if (periodo == null) {
+			if (other.periodo != null)
+				return false;
+		} else if (!periodo.equals(other.periodo))
+			return false;
 		if (senha == null) {
 			if (other.senha != null)
 				return false;
 		} else if (!senha.equals(other.senha))
 			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
 		return true;
 	}
 
 	
-	
-	
-
-
-
 }
