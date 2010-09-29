@@ -143,13 +143,13 @@ private function geraBLinks(): void {
 	eButton.label = "Fale Conosco!";
 	eButton.setStyle("icon", iconeEnviar);
 	eButton.styleName = "linkColor";
-	eButton.toolTip = "Enviar mensagem sobre dúvidas, sugestões, reclamações para o CPD.";
+	eButton.toolTip = "Ver README.pdf";
 	lbar.addChild(eButton);
 	var hButton:LinkButton = new LinkButton();
 	hButton.label = "Ajuda";
 	hButton.setStyle("icon", iconeHelp);
 	hButton.styleName = "linkColor";
-	hButton.toolTip = "Baixar um arquivo tutorial para ajudar na usabilidade do e-pibic.";
+	hButton.toolTip = "Baixar um arquivo tutorial (README.pdf)";
 	lbar.addChild(hButton);
 	var sButton:LinkButton = new LinkButton();
 	sButton.label = "Sair";
