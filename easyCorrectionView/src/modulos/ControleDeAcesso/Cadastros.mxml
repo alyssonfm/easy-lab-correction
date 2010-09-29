@@ -8,49 +8,49 @@
 		<mx:State name="estadoProfessor">
 			<mx:RemoveChild target="{tabNav}"/>
 			<mx:AddChild position="lastChild">
-				<mx:ComboBox prompt="selecione..." x="65" y="121" width="548" labelField="nome" id="cbGrupoUsuarioAlt" toolTip="{toolTipGrupoUsuario}" change="filtrarUsuarioPorGrupo()"/>
+				<mx:ComboBox prompt="selecione..." x="66" y="10" width="548" labelField="nome" id="cbGrupoUsuarioAlt" toolTip="{toolTipGrupoUsuario}" change="filtrarUsuarioPorGrupo()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="65" y="32.5" width="548" id="inputNomeUsuarioAlt" toolTip="{toolTipNomeUsuario}" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="65" y="41" width="548" id="inputNomeUsuarioAlt" toolTip="{toolTipNomeUsuario}" change="handleValidaUsuario(null)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="65" y="62" width="348" id="inputLoginUsuarioAlt" toolTip="{toolTipLoginUsuario}" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="65" y="70.5" width="348" id="inputLoginUsuarioAlt" toolTip="{toolTipLoginUsuario}" change="handleValidaUsuario(null)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="479" y="62" width="134" id="inputSenhaUsuarioAlt" displayAsPassword="true"/>
+				<mx:TextInput x="479" y="70.5" width="134" id="inputSenhaUsuarioAlt" displayAsPassword="true"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="243.5" y="151" label="   Cadastrar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuarioAlt" height="28" enabled="false"/>
+				<mx:Button x="244.5" y="132.5" label="   Salvar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuarioAlt" height="28" enabled="false"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="550" y="10" label="Novo" width="63" height="23" id="botaoNovoUsuarioAlt" click="mudaCadastrar()"/>
+				<mx:Button x="101.5" y="132.5" label="   Novo" width="135" height="28" id="botaoNovoUsuarioAlt" click="mudaCadastrar()" icon="@Embed(source='../../image/novo.png')"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="316" y="151" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuarioAlt" height="28" visible="false" />
+				<mx:Button x="387.5" y="132.5" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuarioAlt" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="173" y="151" label="   Atualizar" click="editarUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuarioAlt" height="28" visible="false" />
+				<mx:Button x="244.5" y="132.5" label="   Atualizar" click="editarUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuarioAlt" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="11" y="122.5" text="Grupo:" id="labelGrupoUsuarioAlt"/>
+				<mx:Label x="12" y="11.5" text="Grupo:" id="labelGrupoUsuarioAlt"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="11" y="34.5" text="Nome:" id="labelNomeUsuarioAlt"/>
+				<mx:Label x="11" y="43" text="Nome:" id="labelNomeUsuarioAlt"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="13" y="64" text="Login:" id="labelLoginUsuarioAlt"/>
+				<mx:Label x="13" y="72.5" text="Login:" id="labelLoginUsuarioAlt"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="65" y="92" width="548" id="inputEmailUsuarioAlt" toolTip="{toolTipEmailUsuario}" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="65" y="100.5" width="548" id="inputEmailUsuarioAlt" toolTip="{toolTipEmailUsuario}" change="handleValidaUsuario(null)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="13" y="94" text="Email:" id="labelEmailUsuarioAlt"/>
+				<mx:Label x="13" y="102.5" text="Email:" id="labelEmailUsuarioAlt"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="421" y="64" text="Senha:" id="labelSenhaUsuarioAlt"/>
+				<mx:Label x="421" y="72.5" text="Senha:" id="labelSenhaUsuarioAlt"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:DataGrid x="11" y="187" width="602" height="205" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
+				<mx:DataGrid x="11" y="168.5" width="602" height="223.5" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
 						 labelFunction="labelGridUsuarios" id="dgUsuariosAlt">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Login" dataField="id" width="100"/>
@@ -132,6 +132,7 @@
 			private var usuarioLogado: *;
 			private var emailValido: Boolean;
 			private var primeiroCadastro: Boolean = false;
+			private var monitorLogado: Boolean = false;
 			
 			[Bindable]
 			private var mensagem:String;
@@ -159,14 +160,18 @@
 			
 			private function getGrupoUsuarioPorUsuario_result(event:ResultEvent):void {
 				var listaGrupoUsuarios: * = event.result as ArrayCollection;
-				if (listaGrupoUsuarios.getItemAt(0).grupo.nome.toUpperCase() == "PROFESSOR"){
+				if (listaGrupoUsuarios.getItemAt(0).grupo.nome.toUpperCase() == "PROFESSOR"
+					|| listaGrupoUsuarios.getItemAt(0).grupo.nome.toUpperCase() == "MONITOR"){
+					if(listaGrupoUsuarios.getItemAt(0).grupo.nome.toUpperCase() == "MONITOR") monitorLogado = true;
 					currentState = "estadoProfessor";
+					tabNav.visible = true;
 					emailValidator.source = inputEmailUsuarioAlt;
 					emailValidator.trigger = inputEmailUsuarioAlt;
 					emailValido = false;
 					listarGrupos();
 				}
 				else{
+					tabNav.visible = true;
 					selecionaAba();
 				}
 			}
@@ -178,11 +183,11 @@
 			
 			private function selecionaAba():void {
 				limpaCamposPorAba();
-				if (tabNav.selectedIndex == 2){
+				if (tabNav.selectedIndex == 1){
 					listarGrupos();
 				} 
 				else 
-					if (tabNav.selectedIndex == 3) {
+					if (tabNav.selectedIndex == 0) {
 						listarGrupos();
 					}
 					else listarMenus();	
@@ -223,14 +228,14 @@
 			
 			private function listarMenus_result(event:ResultEvent):void {
 				menus = event.result as ArrayCollection;
-				if (tabNav.selectedIndex == 0){
+				if (tabNav.selectedIndex == 2){
 					if (menus == null) {
 						menus = new ArrayCollection();
 						menus.addItem(event.result);
 					}
 					dgMenus.dataProvider = menus;
 				}
-				if (tabNav.selectedIndex == 1){
+				if (tabNav.selectedIndex == 3){
 					cbMenu.dataProvider = menus;
 					cbMenu.selectedIndex = -1;
 					listarFuncoes();
@@ -255,35 +260,45 @@
 				if (currentState == "estadoProfessor"){
 					for(var i: int = 0; i < grupos.length; i++){
 						if(grupos.getItemAt(i).nome.toUpperCase() != "PROFESSOR" && grupos.getItemAt(i).nome.toUpperCase() != "ADMINISTRADOR"){
-							grupoAux.addItem(grupos.getItemAt(i));
+							if(!monitorLogado){
+								grupoAux.addItem(grupos.getItemAt(i));	 
+							}
+							else{
+								if(grupos.getItemAt(i).nome.toUpperCase() != "MONITOR"){
+									grupoAux.addItem(grupos.getItemAt(i));
+								}
+							}
 						}
 					}
 					cbGrupoUsuarioAlt.dataProvider = grupoAux;
+					if (grupos.length != 0){
+						cbGrupoUsuarioAlt.selectedIndex = 0;
+						filtrarUsuarioPorGrupo();
+					}
+					else{
+						cbGrupoUsuarioAlt.selectedIndex = -1;
+					}
 				}
 				else{
-					if (tabNav.selectedIndex == 2){
+					if (tabNav.selectedIndex == 1){
 						if (grupos == null) {
 							grupos = new ArrayCollection();
 							grupos.addItem(event.result);
 						}
 						dgGrupos.dataProvider = grupos;
 					}
-					if (tabNav.selectedIndex == 3){
+					if (tabNav.selectedIndex == 0){
 						cbGrupoUsuario.dataProvider = grupos;
-						cbGrupoUsuario.selectedIndex = -1;
-						//listarUsuarios();
+						if (grupos.length != 0){
+							cbGrupoUsuario.selectedIndex = 0;
+							filtrarUsuarioPorGrupo();
+						}
+						else{
+							cbGrupoUsuario.selectedIndex = -1;
+						}
 					}
 				}
 			}
-			/*
-			private function listarUsuarios():void{
-				facade.getOperation("listarGrupoUsuarios").send()
-			}
-			
-			private function listarGrupoUsuarios_result(event:ResultEvent):void{
-				dgUsuarios.dataProvider = new ArrayCollection();
-				dgUsuarios.dataProvider = event.result as ArrayCollection;
-			}*/
 			
 			private function labelGridMenus(item:*, column:DataGridColumn):String {
 				var sLabel:String = "";
@@ -495,13 +510,22 @@
 				primeiroCadastro = true;
 				usuario = new Usuario();
 				grupoUsuario = new GrupoUsuario();
+				facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));
+			}
+			
+			private function getUsuarioPorLogin_result(event:ResultEvent): void{
+				var mens:Array = new Array(true, "Já existe um usuário com este login cadastrado.");
+				lancaExcessao(mens);
+			}
+			
+			private function falhaUsuarioExistente(event:FaultEvent):void {
 				editarUsuario();
 			}
 			
 			private function editarUsuario(): void{
 				if (currentState != "estadoProfessor"){
 					if(dgUsuarios.selectedItem != null){
-						usuario.idUsuario = dgUsuarios.selectedItem.usuario.idUsuario;
+						if(!primeiroCadastro) usuario.idUsuario = dgUsuarios.selectedItem.usuario.idUsuario;
 						if(StringUtil.trim(inputSenhaUsuario.text) != ""){
 							usuario.senha = StringUtil.trim(inputSenhaUsuario.text);
 						}else{
@@ -519,7 +543,7 @@
 				}
 				else{
 					if(dgUsuariosAlt.selectedItem != null){
-						usuario.idUsuario = dgUsuariosAlt.selectedItem.usuario.idUsuario;
+						if(!primeiroCadastro) usuario.idUsuario = dgUsuariosAlt.selectedItem.usuario.idUsuario;
 						if(StringUtil.trim(inputSenhaUsuarioAlt.text) != ""){
 							usuario.senha = StringUtil.trim(inputSenhaUsuarioAlt.text);
 						}else{
@@ -566,6 +590,7 @@
 				if (primeiroCadastro){
 					envioEmails(grupoUsuarioP);
 					primeiroCadastro = false;
+					filtrarUsuarioPorGrupo();
 				}
 			}
 			
@@ -608,6 +633,7 @@
 						inputEmailUsuario.text = grupoUsuario.usuario.email;
 						botaoCadastrarUsuario.visible = false;
 						botaoAtualizarUsuario.visible = true;
+						botaoNovoUsuario.visible = true;
 						botaoRemoverUsuario.visible = true;
 					}
 				}
@@ -622,6 +648,7 @@
 						inputEmailUsuarioAlt.text = grupoUsuario.usuario.email;
 						botaoCadastrarUsuarioAlt.visible = false;
 						botaoAtualizarUsuarioAlt.visible = true;
+						botaoNovoUsuarioAlt.visible = true;
 						botaoRemoverUsuarioAlt.visible = true;
 					}
 				}
@@ -634,28 +661,29 @@
 			
 			private function limpaCamposPorAba():void {
 				if (currentState != "estadoProfessor"){
-					if (tabNav.selectedIndex == 0){
+					if (tabNav.selectedIndex == 2){
 						limpaCamposMenu();
 						botaoCadastrarMenu.visible = true;
 						botaoAtualizarMenu.visible = false;
 						botaoRemoverMenu.visible = false;
 					}
-					if (tabNav.selectedIndex == 1){
+					if (tabNav.selectedIndex == 3){
 						limpaCamposFuncao();
 						botaoCadastrarFuncao.visible = true;
 						botaoAtualizarFuncao.visible = false;
 						botaoRemoverFuncao.visible = false;
 					}
-					if (tabNav.selectedIndex == 2){
+					if (tabNav.selectedIndex == 1){
 						limpaCamposGrupo();
 						botaoCadastrarGrupo.visible = true;
 						botaoAtualizarGrupo.visible = false;
 						botaoRemoverGrupo.visible = false;
 					}
-					if (tabNav.selectedIndex == 3){
+					if (tabNav.selectedIndex == 0){
 						limpaCamposUsuario();
 						botaoCadastrarUsuario.visible = true;
 						botaoAtualizarUsuario.visible = false;
+						botaoNovoUsuario.visible = false;
 						botaoRemoverUsuario.visible = false;
 					}
 				}
@@ -663,6 +691,7 @@
 					limpaCamposUsuario();
 					botaoCadastrarUsuarioAlt.visible = true;
 					botaoAtualizarUsuarioAlt.visible = false;
+					botaoNovoUsuarioAlt.visible = false;
 					botaoRemoverUsuarioAlt.visible = false;
 				}
 			}
@@ -688,30 +717,30 @@
 					inputNomeUsuario.text = "";
 					inputSenhaUsuario.text = "";
 					inputEmailUsuario.text = "";
-					cbGrupoUsuario.selectedIndex = -1;
-					dgUsuarios.dataProvider = new ArrayCollection;
+					//cbGrupoUsuario.selectedIndex = -1;
+					//dgUsuarios.dataProvider = new ArrayCollection;
 				}
 				else{
 					inputLoginUsuarioAlt.text = "";
 					inputNomeUsuarioAlt.text = "";
 					inputSenhaUsuarioAlt.text = "";
 					inputEmailUsuarioAlt.text = "";
-					cbGrupoUsuarioAlt.selectedIndex = -1;
-					dgUsuariosAlt.dataProvider = new ArrayCollection;
+					//scbGrupoUsuarioAlt.selectedIndex = -1;
+					//dgUsuariosAlt.dataProvider = new ArrayCollection;
 				}
 			}
 			
 			private function filtrarUsuarioPorGrupo(): void{
 				try{
 					handleValidaUsuario(null);
-					var menuAux : *;
+					var grupoUsuarioAux : *;
 					if (currentState != "estadoProfessor"){
-						menuAux = cbGrupoUsuario.selectedItem;	
+						grupoUsuarioAux = cbGrupoUsuario.selectedItem;	
 					}
 					else{
-						menuAux = cbGrupoUsuarioAlt.selectedItem;
+						grupoUsuarioAux = cbGrupoUsuarioAlt.selectedItem;
 					}
-					facade.getOperation("consultarUsuarioPorGrupo").send(menuAux.idGrupo);
+					facade.getOperation("consultarUsuarioPorGrupo").send(grupoUsuarioAux.idGrupo);
 				} catch(e: Error){}
 			}
 			
@@ -719,10 +748,24 @@
 				if (currentState != "estadoProfessor"){
 					dgUsuarios.dataProvider = new ArrayCollection();
 					dgUsuarios.dataProvider = event.result as ArrayCollection;
+					if(dgUsuarios.dataProvider.length > 0){
+						dgUsuarios.selectedIndex = 0;
+						selecionarUsuario();
+					}
+					else{
+						mudaCadastrar();
+					}
 				}
 				else{
 					dgUsuariosAlt.dataProvider = new ArrayCollection();
 					dgUsuariosAlt.dataProvider = event.result as ArrayCollection;
+					if(dgUsuariosAlt.dataProvider.length > 0){
+						dgUsuariosAlt.selectedIndex = 0;
+						selecionarUsuario();
+					}
+					else{
+						mudaCadastrar();
+					}
 				}
 			}
 						
@@ -775,12 +818,11 @@
 	                	cbGrupoUsuario.selectedIndex != -1){
 	                	botaoCadastrarUsuario.enabled = true;
 	                	botaoAtualizarUsuario.enabled = true;
+	                	botaoNovoUsuario.enabled = true;
 	                	botaoRemoverUsuario.enabled = true;                	
 	                }
 	                else{
-	                	botaoCadastrarUsuario.enabled = false;
-	                	botaoAtualizarUsuario.enabled = false;
-	                	botaoRemoverUsuario.enabled = false;                	
+	                	botaoCadastrarUsuario.enabled = false;               	
 	                }
             	}
             	else{
@@ -790,12 +832,11 @@
 	                	cbGrupoUsuarioAlt.selectedIndex != -1){
 	                	botaoCadastrarUsuarioAlt.enabled = true;
 	                	botaoAtualizarUsuarioAlt.enabled = true;
+	                	botaoNovoUsuarioAlt.enabled = true;
 	                	botaoRemoverUsuarioAlt.enabled = true;                	
 	                }
 	                else{
-	                	botaoCadastrarUsuarioAlt.enabled = false;
-	                	botaoAtualizarUsuarioAlt.enabled = false;
-	                	botaoRemoverUsuarioAlt.enabled = false;                	
+	                	botaoCadastrarUsuarioAlt.enabled = false;              	
 	                }
             	}
             }
@@ -812,7 +853,7 @@
 			}
             
             private function falhaRemove(event:FaultEvent):void{
-				var mens:Array = new Array(true, "Não é possível realizar a operação. Existe professor ou avaliador associado a este usuário.");
+				var mens:Array = new Array(true, "Não é possível realizar a operação.");
 				lancaExcessao(mens);
 			}
 			
@@ -820,11 +861,13 @@
 				if (currentState != "estadoProfessor"){
                 	botaoCadastrarUsuario.enabled = false;
                 	botaoAtualizarUsuario.enabled = false;
+                	botaoNovoUsuario.enabled = false;
                 	botaoRemoverUsuario.enabled = false;
             	}
             	else{
 	                botaoCadastrarUsuarioAlt.enabled = false;
 	                botaoAtualizarUsuarioAlt.enabled = false;
+	                botaoNovoUsuarioAlt.enabled = false;
 	                botaoRemoverUsuarioAlt.enabled = false;	                
             	}
 			}
@@ -844,6 +887,7 @@
 		<mx:method name="cadastrarUsuario" result="cadastrarUsuario_result(event)" fault="falha(event)"/>
 		<mx:method name="consultarUsuarioPorGrupo" result="consultarUsuarioPorGrupo_result(event)" fault="falha(event)"/>
 		<mx:method name="getGrupoUsuarioPorUsuario" result="getGrupoUsuarioPorUsuario_result(event)" fault="falha(event)"/>
+		<mx:method name="getUsuarioPorLogin" result="getUsuarioPorLogin_result(event)" fault="falhaUsuarioExistente(event)"/>
 		<mx:method name="excluirMenu" result="excluirMenu_result()" fault="falhaMenu(event)"/>
 		<mx:method name="excluirFuncao" result="excluirFuncao_result()" fault="falha(event)"/>
 		<mx:method name="excluirGrupo" result="excluirGrupo_result()" fault="falhaGrupo(event)"/>
@@ -919,7 +963,46 @@
 	    tooManyAtSignsError="Seu endereço de email contém muitos caracteres @."
 	/>
 	
-	<mx:TabNavigator change="selecionaAba()" width="100%" height="100%" id = "tabNav">	
+	<mx:TabNavigator change="selecionaAba()" width="100%" height="100%" id = "tabNav" visible="false">	
+		
+		<mx:Canvas label="Usuário" width="100%" height="100%" id="canvas4">
+			<mx:ComboBox prompt="selecione..." x="64" y="10" width="548" labelField="nome" id="cbGrupoUsuario" toolTip="{toolTipGrupoUsuario}" change="filtrarUsuarioPorGrupo()"/>
+			<mx:TextInput x="64" y="41" width="548" id="inputNomeUsuario" toolTip="{toolTipNomeUsuario}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="64" y="70.5" width="348" id="inputLoginUsuario" toolTip="{toolTipLoginUsuario}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="478" y="70.5" width="134" id="inputSenhaUsuario" displayAsPassword="true"/>
+			<mx:TextInput x="64" y="100.5" width="548" id="inputEmailUsuario" toolTip="{toolTipEmailUsuario}" change="handleValidaUsuario(null)"/>
+			<mx:Button x="243.5" y="132.5" label="   Salvar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuario" height="28" enabled="false"/>
+			<mx:Button x="100.5" y="132.5" label="   Novo" width="135" height="28" id="botaoNovoUsuario" click="mudaCadastrar()" icon="@Embed(source='../../image/novo.png')"/>
+			<mx:Button x="386.5" y="132.5" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuario" height="28"/>
+			<mx:Button x="243.5" y="132.5" label="   Atualizar" click="editarUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuario" height="28"/>
+			<mx:Label x="10" y="11.5" text="Grupo:" id="labelGrupoUsuario"/>
+			<mx:Label x="10" y="43" text="Nome:" id="labelNomeUsuario"/>
+			<mx:Label x="12" y="72.5" text="Login:" id="labelLoginUsuario"/>
+			<mx:Label x="12" y="102.5" text="Email:" id="labelEmailUsuario"/>
+			<mx:Label x="420" y="72.5" text="Senha:" id="labelSenhaUsuario"/>
+			<mx:DataGrid x="10" y="168.5" width="602" height="188.5" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
+					 labelFunction="labelGridUsuarios" id="dgUsuarios">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Login" dataField="id" width="100"/>
+					<mx:DataGridColumn headerText="Usuário"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
+		
+		<mx:Canvas label="Grupo" width="100%" height="100%" id="canvas3">
+			<mx:TextInput x="74" y="45" width="538" id="inputGrupo" toolTip="{toolTipNomeGrupo}" change="handleValidaGrupo(null)"/>
+			<mx:Label x="18" y="45.5" text="Grupo:" id="labelGrupo"/>
+			<mx:Button x="243.5" y="90" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" click="cadastrarGrupo()" id="botaoCadastrarGrupo" height="28" enabled="false"/>
+			<mx:Button x="548" y="23" label="Novo" width="63" id="botaoNovoGrupo" height="23" click="mudaCadastrar()"/>
+			<mx:Button x="315" y="90" label="   Remover" click="excluirGrupo()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverGrupo" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="90" label="   Atualizar" click="editarGrupo()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarGrupo" height="28" visible="false" enabled="false"/>
+			<mx:DataGrid x="10" y="141" width="602" height="216" change="selecionarGrupo()" itemClick="selecionarGrupo()"
+					draggableColumns="false" labelFunction="labelGridGrupos" id="dgGrupos">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Grupo"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
 		
 		<mx:Canvas label="Menu" width="100%" height="100%" id="canvas1">		
 			<mx:TextInput x="64" y="45" width="548" id="inputNomeMenu" toolTip="{toolTipNomeMenu}" change="handleValidaMenu(null)"/>
@@ -938,6 +1021,7 @@
 				</mx:columns>
 			</mx:DataGrid>
 		</mx:Canvas>
+		
 		<mx:Canvas label="Função" width="100%" height="100%" id="canvas2">
 			<comp:ComboBoxAC labelField="nome" x="62" y="15.5" width="550" id="cbMenu" toolTip="{toolTipMenuFuncao}" change="filtrarFuncoesPorMenu()"/>
 			<mx:TextInput x="62" y="76" width="550" id="inputNomeFuncao" toolTip="{toolTipNomeFuncao}" change="handleValidaFuncao(null)"/>
@@ -955,43 +1039,6 @@
 				<mx:columns>
 					<mx:DataGridColumn headerText="Rótulo" width="100"/>
 					<mx:DataGridColumn headerText="Nome"/>
-				</mx:columns>
-			</mx:DataGrid>
-		</mx:Canvas>
-		<mx:Canvas label="Grupo" width="100%" height="100%" id="canvas3">
-			<mx:TextInput x="74" y="45" width="538" id="inputGrupo" toolTip="{toolTipNomeGrupo}" change="handleValidaGrupo(null)"/>
-			<mx:Label x="18" y="45.5" text="Grupo:" id="labelGrupo"/>
-			<mx:Button x="243.5" y="90" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" click="cadastrarGrupo()" id="botaoCadastrarGrupo" height="28" enabled="false"/>
-			<mx:Button x="548" y="23" label="Novo" width="63" id="botaoNovoGrupo" height="23" click="mudaCadastrar()"/>
-			<mx:Button x="315" y="90" label="   Remover" click="excluirGrupo()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverGrupo" height="28" visible="false" enabled="false"/>
-			<mx:Button x="172" y="90" label="   Atualizar" click="editarGrupo()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarGrupo" height="28" visible="false" enabled="false"/>
-			<mx:DataGrid x="10" y="141" width="602" height="216" change="selecionarGrupo()" itemClick="selecionarGrupo()"
-					draggableColumns="false" labelFunction="labelGridGrupos" id="dgGrupos">
-				<mx:columns>
-					<mx:DataGridColumn headerText="Grupo"/>
-				</mx:columns>
-			</mx:DataGrid>
-		</mx:Canvas>
-		<mx:Canvas label="Usuário" width="100%" height="100%" id="canvas4">
-			<mx:ComboBox prompt="selecione..." x="64" y="112" width="548" labelField="nome" id="cbGrupoUsuario" toolTip="{toolTipGrupoUsuario}" change="filtrarUsuarioPorGrupo()"/>
-			<mx:TextInput x="64" y="23.5" width="548" id="inputNomeUsuario" toolTip="{toolTipNomeUsuario}" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="64" y="53" width="348" id="inputLoginUsuario" toolTip="{toolTipLoginUsuario}" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="478" y="53" width="134" id="inputSenhaUsuario" displayAsPassword="true"/>
-			<mx:TextInput x="64" y="83" width="548" id="inputEmailUsuario" toolTip="{toolTipEmailUsuario}" change="handleValidaUsuario(null)"/>
-			<mx:Button x="242.5" y="142" label="   Cadastrar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuario" height="28" enabled="false"/>
-			<mx:Button x="549" y="1" label="Novo" width="63" height="23" id="botaoNovoUsuario" click="mudaCadastrar()"/>
-			<mx:Button x="315" y="142" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuario" height="28" visible="true" />
-			<mx:Button x="172" y="142" label="   Atualizar" click="editarUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuario" height="28" visible="true" />
-			<mx:Label x="10" y="113.5" text="Grupo:" id="labelGrupoUsuario"/>
-			<mx:Label x="10" y="25.5" text="Nome:" id="labelNomeUsuario"/>
-			<mx:Label x="12" y="55" text="Login:" id="labelLoginUsuario"/>
-			<mx:Label x="12" y="85" text="Email:" id="labelEmailUsuario"/>
-			<mx:Label x="420" y="55" text="Senha:" id="labelSenhaUsuario"/>
-			<mx:DataGrid x="10" y="178" width="602" height="179" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
-					 labelFunction="labelGridUsuarios" id="dgUsuarios">
-				<mx:columns>
-					<mx:DataGridColumn headerText="Login" dataField="id" width="100"/>
-					<mx:DataGridColumn headerText="Usuário"/>
 				</mx:columns>
 			</mx:DataGrid>
 		</mx:Canvas>
