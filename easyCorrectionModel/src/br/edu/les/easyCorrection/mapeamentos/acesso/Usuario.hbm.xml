@@ -17,6 +17,8 @@
 		<property name="senha" column="senha"/>
 		
 		<property name="email" column="email"/>
+		
+		<many-to-one name="periodo" lazy="false" column="periodo_id" class="br.edu.les.easyCorrection.pojo.sistema.Periodo" insert="true" update="true"/>
 
 	</class>
 </hibernate-mapping>
