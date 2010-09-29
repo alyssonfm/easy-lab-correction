@@ -602,14 +602,14 @@
 				else{
 					senha = usuario.senha;
 				}
-				mensagem = "<BR>Parabéns, você foi cadastrado no sistema Easy Lab Correction da disciplina Laboratório de estrutura de dados.</BR>" +
+				mensagem = "<BR>Parabéns, você foi cadastrado no sistema Easy Lab Correction da disciplina Laboratório de Estrutura de Dados.</BR>" +
 						"<BR></BR>" +				
 						"<BR>Informamos que o envio de roteiros será realizado através do sistema mediante os seguintes dados de acesso:</BR>" +
 						"<BR></BR>" +
 						"Login:<BR>" + grupoUsuarioP.usuario.login + "</BR>" + 
-						"<BR>Senha:</BR><BR>"+ senha +"</br><p>Obs.:\nLembre-se! Sua senha é pessoal e intransferível. " +
-						"Sugerimos alteração imediata de sua senha.</p>" + 
-						"<BR>Clique <a href=http://easyLabCorrection.dsc.ufcg.edu;>aqui</a> para acessar o sistema.</BR>" +
+						"<BR>Senha:</BR><BR>"+ senha +"</br><p>Obs.:\nLembre-se! Sua senha é pessoal e intransferível, " +
+						"sugerimos sua alteração imediata.</p>" + 
+						"<BR>Clique <a href=http://easyLabCorrection.dsc.ufcg.edu>aqui</a> para acessar o sistema.</BR>" +
 						"<BR></BR>" +
 						"<BR>Atenciosamente,</BR>" +
 						"<BR>Easy Lab Correction</BR>";
@@ -617,7 +617,7 @@
 				mensagem = Util.geraCodigosHTML(mensagem);
 				contato = grupoUsuarioP.usuario.email;
 				nomeUsuario = grupoUsuarioP.usuario.nome;
-				servicoEnviarEmail.send();
+				//servicoEnviarEmail.send();
 				
 			}
 			
