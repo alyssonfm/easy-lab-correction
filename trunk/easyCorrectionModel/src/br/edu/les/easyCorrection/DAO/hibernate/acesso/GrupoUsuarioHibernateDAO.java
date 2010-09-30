@@ -9,9 +9,9 @@ import org.hibernate.criterion.SimpleExpression;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.pojo.acesso.Grupo;
+import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
-import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
 /**
@@ -41,9 +41,20 @@ public class GrupoUsuarioHibernateDAO extends
 		q.setParameter("idGrupo",idGrupo);
 		q.setCacheable(true);
 		List <GrupoUsuario> lista = q.list();
-		instaciaLista(lista);
+		instanciaLista(lista);
 		return lista;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GrupoUsuario> findByGrupo(String nome) {
+		Query q = getSession().createQuery("from GrupoUsuario where grupo.nome like :nome");
+		q.setParameter("nome",nome);
+		q.setCacheable(true);
+		List <GrupoUsuario> lista = q.list();
+		instanciaLista(lista);
+		return lista;
+	}
+
 	
 	@SuppressWarnings("unchecked")
 	public List<GrupoUsuario> findByUsuarioId(Integer idUsuario) {
@@ -51,7 +62,7 @@ public class GrupoUsuarioHibernateDAO extends
 		q.setParameter("idUsuario",idUsuario);
 		q.setCacheable(true);
 		List <GrupoUsuario> lista = q.list();
-		instaciaLista(lista);
+		instanciaLista(lista);
 		return lista;
 	}
 	
@@ -71,19 +82,27 @@ public class GrupoUsuarioHibernateDAO extends
 	
 
 	@Override
-	public void instaciaLista(List<GrupoUsuario> lista) {
-		for (GrupoUsuario gU: lista) {
-			
-			Grupo grupo = MyPersistenceLayer.deproxy(gU.getGrupo(),
-					Grupo.class);
-			gU.setGrupo(grupo);
-			
-			Usuario usuario = MyPersistenceLayer.deproxy(gU.getUsuario(),
-					Usuario.class);
-			gU.setUsuario(usuario);
+	public List<GrupoUsuario> instanciaLista(List<GrupoUsuario> lista) {
+		try {
+			for (GrupoUsuario gu : lista) {
+				gu = instanciaGrupoUsuario(gu);
+			}	
+		} catch (CampoVazioException e) {
+			throw new ViolacaoConstraintException(e.getMessage());
 		}
-		HibernateUtil.closeSession();
+		finally{
+			HibernateUtil.closeSession();
+		}
+		return lista;
 	}
+	
+	public static GrupoUsuario instanciaGrupoUsuario(GrupoUsuario gu) throws CampoVazioException{
+		gu.setGrupo(GrupoHibernateDAO.instanciaGrupo(gu.getGrupo()));
+		gu.setUsuario(UsuarioHibernateDAO.instanciaUsuario(gu.getUsuario()));
+		gu= MyPersistenceLayer.deproxy(gu, GrupoUsuario.class);
+		return gu;
+	}
+
 
 	
 	
