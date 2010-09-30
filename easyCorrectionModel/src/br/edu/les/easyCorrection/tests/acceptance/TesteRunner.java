@@ -3,6 +3,8 @@ package br.edu.les.easyCorrection.tests.acceptance;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.les.easyCorrection.tests.acceptance.userstory03.FacadeTestUS3Acceptance;
+
 
 import easyaccept.EasyAcceptFacade;
 
@@ -13,9 +15,15 @@ public class TesteRunner {
 	 */
 	public static void main(String[] args) {
         List<String> files = new ArrayList<String>();
-        files.add(Constants.dirTestsAcceptance + "us2_cadastro.eas");
+        EasyAcceptFacade eaFacade;
+		/*
+        files.add(Constants.dirTestsAcceptanceUS2 + "us2_cadastro.eas");
         FacadeTestAcceptance testFacade = new FacadeTestAcceptance();
-        EasyAcceptFacade eaFacade = new EasyAcceptFacade(testFacade, files);
+        eaFacade.executeTests();
+        System.out.println(eaFacade.getCompleteResults());*/
+        files.add(Constants.dirTestsAcceptanceUS3 + "us3_CriacaoRoteiros.eas");
+        FacadeTestUS3Acceptance testFacadeUS3 = new FacadeTestUS3Acceptance();
+        eaFacade = new EasyAcceptFacade(testFacadeUS3, files);
         eaFacade.executeTests();
         System.out.println(eaFacade.getCompleteResults());
 	}
