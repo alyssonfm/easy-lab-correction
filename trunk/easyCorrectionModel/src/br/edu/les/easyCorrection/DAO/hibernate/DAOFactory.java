@@ -6,6 +6,13 @@ import br.edu.les.easyCorrection.DAO.hibernate.acesso.GrupoUsuarioHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.MenuHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.PermissaoHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.AvaliacaoHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.ChatHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.EquipeHasUsuarioHasRoteiroHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.EquipeHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.PeriodoHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.RoteiroHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.SubmissaoHibernateDAO;
 import br.edu.les.easyCorrection.samples.hibernate.dao.UsuarioDAO;
 
 /**
@@ -44,6 +51,21 @@ public abstract class DAOFactory {
 	public abstract FuncaoHibernateDAO buildFuncaoDAO();
 	
 	public abstract PermissaoHibernateDAO buildPermissaoDAO();
+	
+	public abstract PeriodoHibernateDAO buildPeriodoDAO();
+	
+	public abstract AvaliacaoHibernateDAO buildAvaliacaoDAO();
+	
+	public abstract ChatHibernateDAO buildChatDAO();
+	
+	public abstract EquipeHibernateDAO buildEquipeDAO();
+	
+	public abstract EquipeHasUsuarioHasRoteiroHibernateDAO buildEquipeHasUsuarioHasRoteiroDAO();
+	
+	public abstract RoteiroHibernateDAO buildRoteiroDAO();
+	
+	public abstract SubmissaoHibernateDAO buildSubmissaoDAO();
+	
 	
 	//Utilizado Para o teste de Augusto
 	public abstract UsuarioDAO buildUsuarioTesteDAO();

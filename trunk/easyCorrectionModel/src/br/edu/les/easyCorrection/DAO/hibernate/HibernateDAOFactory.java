@@ -6,6 +6,13 @@ import br.edu.les.easyCorrection.DAO.hibernate.acesso.GrupoUsuarioHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.MenuHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.PermissaoHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.AvaliacaoHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.ChatHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.EquipeHasUsuarioHasRoteiroHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.EquipeHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.PeriodoHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.RoteiroHibernateDAO;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.SubmissaoHibernateDAO;
 import br.edu.les.easyCorrection.samples.hibernate.dao.UsuarioDAO;
 
 
@@ -45,5 +52,40 @@ public class HibernateDAOFactory extends DAOFactory {
 	//Utilizado Para o teste de Augusto
 	public UsuarioDAO buildUsuarioTesteDAO() {
 		return new UsuarioDAO(HibernateUtil.getSession());
+	}
+
+	@Override
+	public AvaliacaoHibernateDAO buildAvaliacaoDAO() {
+		return new AvaliacaoHibernateDAO(HibernateUtil.getSession());
+	}
+
+	@Override
+	public ChatHibernateDAO buildChatDAO() {
+		return new ChatHibernateDAO(HibernateUtil.getSession());
+	}
+
+	@Override
+	public EquipeHibernateDAO buildEquipeDAO() {
+		return new EquipeHibernateDAO(HibernateUtil.getSession());
+	}
+
+	@Override
+	public EquipeHasUsuarioHasRoteiroHibernateDAO buildEquipeHasUsuarioHasRoteiroDAO() {
+		return new EquipeHasUsuarioHasRoteiroHibernateDAO(HibernateUtil.getSession());
+	}
+
+	@Override
+	public PeriodoHibernateDAO buildPeriodoDAO() {
+		return new PeriodoHibernateDAO(HibernateUtil.getSession());
+	}
+
+	@Override
+	public RoteiroHibernateDAO buildRoteiroDAO() {
+		return new RoteiroHibernateDAO(HibernateUtil.getSession());
+	}
+
+	@Override
+	public SubmissaoHibernateDAO buildSubmissaoDAO() {
+		return new SubmissaoHibernateDAO(HibernateUtil.getSession());
 	}
 }
