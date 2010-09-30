@@ -195,7 +195,7 @@ import br.edu.les.easyCorrection.exceptions.EasyCorrectionRunTimeException;
 			if (t != null){
 				List <T> l = new LinkedList<T>();
 				l.add(t);
-				instaciaLista(l);
+				instanciaLista(l);
 				return l.get(0);
 			}else{
 				return t;	
@@ -239,7 +239,7 @@ import br.edu.les.easyCorrection.exceptions.EasyCorrectionRunTimeException;
 	        }
 	        crit.setMaxResults(5000);//FIXME limitar a consulta
 	        List<T> lista = crit.list();
-	        instaciaLista(lista);
+	        instanciaLista(lista);
 	        return  lista;
 	   }
 	   
@@ -252,7 +252,7 @@ import br.edu.les.easyCorrection.exceptions.EasyCorrectionRunTimeException;
 			Criteria criteria = getSession().createCriteria(getPersistentClass());
 			criteria.add(Restrictions.allEq(criterias));
 			List<T> lista = criteria.list();
-		    instaciaLista(lista);
+		    instanciaLista(lista);
 		    return  lista;
 		}
 		
@@ -268,10 +268,10 @@ import br.edu.les.easyCorrection.exceptions.EasyCorrectionRunTimeException;
 	        
 	        crit.add(example);
 	        List<T> lista = crit.list();
-	        instaciaLista(lista);
+	        instanciaLista(lista);
 	        return  lista;
 	    }	
 		
-		public abstract void instaciaLista(List<T> lista);
+		public abstract List<T> instanciaLista(List<T> lista);
 		
 	}
