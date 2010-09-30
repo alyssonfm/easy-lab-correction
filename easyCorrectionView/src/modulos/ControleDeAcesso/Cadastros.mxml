@@ -53,7 +53,7 @@
 				<mx:DataGrid x="11" y="168.5" width="602" height="223.5" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
 						 labelFunction="labelGridUsuarios" id="dgUsuariosAlt">
 					<mx:columns>
-						<mx:DataGridColumn headerText="Login" dataField="id" width="100"/>
+						<mx:DataGridColumn headerText="Login" dataField="id" width="200"/>
 						<mx:DataGridColumn headerText="Usuário"/>
 					</mx:columns>
 				</mx:DataGrid>
@@ -133,6 +133,7 @@
 			private var emailValido: Boolean;
 			private var primeiroCadastro: Boolean = false;
 			private var monitorLogado: Boolean = false;
+			private var senhaCadastrada: String = "";
 			
 			[Bindable]
 			private var mensagem:String;
@@ -510,11 +511,16 @@
 				primeiroCadastro = true;
 				usuario = new Usuario();
 				grupoUsuario = new GrupoUsuario();
-				facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));
+				if (currentState != "estadoProfessor"){
+					facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));
+				}
+				else{
+					facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuarioAlt.text));
+				}
 			}
 			
 			private function getUsuarioPorLogin_result(event:ResultEvent): void{
-				var mens:Array = new Array(true, "Já existe um usuário com este login cadastrado.");
+				var mens:Array = new Array(true, "Login já existente, alteração não realizada.");
 				lancaExcessao(mens);
 			}
 			
@@ -523,41 +529,54 @@
 			}
 			
 			private function editarUsuario(): void{
+				var mens:Array;
 				if (currentState != "estadoProfessor"){
-					if(dgUsuarios.selectedItem != null){
-						if(!primeiroCadastro) usuario.idUsuario = dgUsuarios.selectedItem.usuario.idUsuario;
-						if(StringUtil.trim(inputSenhaUsuario.text) != ""){
-							usuario.senha = StringUtil.trim(inputSenhaUsuario.text);
-						}else{
-							usuario.senha = dgUsuarios.selectedItem.usuario.senha;
-						}	
-					}else{
-						usuario.senha = StringUtil.trim(inputSenhaUsuario.text);	
+					if(inputSenhaUsuario.text.length != 0 && inputSenhaUsuario.text.length < 6){
+						mens = new Array(true, "Senha muito pequena, cadastro não realizado.");
+						lancaExcessao(mens);
 					}
-					usuario.login = StringUtil.trim(inputLoginUsuario.text);
-					usuario.nome = StringUtil.trim(inputNomeUsuario.text);
-					usuario.email = StringUtil.trim(inputEmailUsuario.text);
-					grupoUsuario.grupo = CastDeEntidades.castGrupo(cbGrupoUsuario.selectedItem);
-					grupoUsuario.usuario = usuario;
-					facade.getOperation("cadastrarUsuario").send(grupoUsuario);
+					else{
+						if(dgUsuarios.selectedItem != null){
+							if(!primeiroCadastro) usuario.idUsuario = dgUsuarios.selectedItem.usuario.idUsuario;
+							if(StringUtil.trim(inputSenhaUsuario.text) != ""){
+								usuario.senha = StringUtil.trim(inputSenhaUsuario.text);
+							}else{
+								usuario.senha = dgUsuarios.selectedItem.usuario.senha;
+							}	
+						}else{
+							usuario.senha = StringUtil.trim(inputSenhaUsuario.text);	
+						}
+						usuario.login = StringUtil.trim(inputLoginUsuario.text);
+						usuario.nome = StringUtil.trim(inputNomeUsuario.text);
+						usuario.email = StringUtil.trim(inputEmailUsuario.text);
+						grupoUsuario.grupo = CastDeEntidades.castGrupo(cbGrupoUsuario.selectedItem);
+						grupoUsuario.usuario = usuario;
+						facade.getOperation("cadastrarUsuario").send(grupoUsuario);
+					}
 				}
 				else{
-					if(dgUsuariosAlt.selectedItem != null){
-						if(!primeiroCadastro) usuario.idUsuario = dgUsuariosAlt.selectedItem.usuario.idUsuario;
-						if(StringUtil.trim(inputSenhaUsuarioAlt.text) != ""){
-							usuario.senha = StringUtil.trim(inputSenhaUsuarioAlt.text);
-						}else{
-							usuario.senha = dgUsuariosAlt.selectedItem.usuario.senha;
-						}	
-					}else{
-						usuario.senha = StringUtil.trim(inputSenhaUsuarioAlt.text);	
+					if(inputSenhaUsuarioAlt.text.length != 0 && inputSenhaUsuarioAlt.text.length < 6){
+						mens = new Array(true, "Senha muito pequena, cadastro não realizado.");
+						lancaExcessao(mens);
 					}
-					usuario.login = StringUtil.trim(inputLoginUsuarioAlt.text);
-					usuario.nome = StringUtil.trim(inputNomeUsuarioAlt.text);
-					usuario.email = StringUtil.trim(inputEmailUsuarioAlt.text);
-					grupoUsuario.grupo = CastDeEntidades.castGrupo(cbGrupoUsuarioAlt.selectedItem);
-					grupoUsuario.usuario = usuario;
-					facade.getOperation("cadastrarUsuario").send(grupoUsuario);
+					else{
+						if(dgUsuariosAlt.selectedItem != null){
+							if(!primeiroCadastro) usuario.idUsuario = dgUsuariosAlt.selectedItem.usuario.idUsuario;
+							if(StringUtil.trim(inputSenhaUsuarioAlt.text) != ""){
+								usuario.senha = StringUtil.trim(inputSenhaUsuarioAlt.text);
+							}else{
+								usuario.senha = dgUsuariosAlt.selectedItem.usuario.senha;
+							}	
+						}else{
+							usuario.senha = StringUtil.trim(inputSenhaUsuarioAlt.text);	
+						}
+						usuario.login = StringUtil.trim(inputLoginUsuarioAlt.text);
+						usuario.nome = StringUtil.trim(inputNomeUsuarioAlt.text);
+						usuario.email = StringUtil.trim(inputEmailUsuarioAlt.text);
+						grupoUsuario.grupo = CastDeEntidades.castGrupo(cbGrupoUsuarioAlt.selectedItem);
+						grupoUsuario.usuario = usuario;
+						facade.getOperation("cadastrarUsuario").send(grupoUsuario);
+					}
 				}
 			}
 			
@@ -568,6 +587,8 @@
 			private function excluirGrupoUsuario_result(): void{
 				filtrarUsuarioPorGrupo();
 				limpaCamposPorAba();
+				var mens: Array = new Array(false, "Usuário removido com sucesso!");
+				lancaExcessao(mens);
 			}
 			
 			private function cadastrarUsuario_result(event:ResultEvent): void{
@@ -577,37 +598,40 @@
 					if (currentState != "estadoProfessor"){
 						inputLoginUsuario.text = "";
 						inputNomeUsuario.text = "";
+						senhaCadastrada = inputSenhaUsuario.text;
 						inputSenhaUsuario.text = "";
 						inputEmailUsuario.text = "";
 					}
 					else{	
 						inputLoginUsuarioAlt.text = "";
 						inputNomeUsuarioAlt.text = "";
+						senhaCadastrada = inputSenhaUsuarioAlt.text;
 						inputSenhaUsuarioAlt.text = "";
 						inputEmailUsuarioAlt.text = "";
 					}
 				}
+				var mens:Array;
 				if (primeiroCadastro){
 					envioEmails(grupoUsuarioP);
 					primeiroCadastro = false;
 					filtrarUsuarioPorGrupo();
 				}
+				else{
+					mens = new Array(false, "Dados atualizados com sucesso!");
+					lancaExcessao(mens);
+				}
 			}
 			
 			private function envioEmails(grupoUsuarioP: GrupoUsuario):void {
-				var senha: String = "";
-				if(usuario.senha == ""){
-					senha = grupoUsuarioP.usuario.login;
-				}
-				else{
-					senha = usuario.senha;
+				if(senhaCadastrada == ""){
+					senhaCadastrada = grupoUsuarioP.usuario.login;
 				}
 				mensagem = "<BR>Parabéns, você foi cadastrado no sistema Easy Lab Correction da disciplina Laboratório de Estrutura de Dados.</BR>" +
 						"<BR></BR>" +				
 						"<BR>Informamos que o envio de roteiros será realizado através do sistema mediante os seguintes dados de acesso:</BR>" +
 						"<BR></BR>" +
 						"Login:<BR>" + grupoUsuarioP.usuario.login + "</BR>" + 
-						"<BR>Senha:</BR><BR>"+ senha +"</br><p>Obs.:\nLembre-se! Sua senha é pessoal e intransferível, " +
+						"<BR>Senha:</BR><BR>"+ senhaCadastrada +"</br><p>Obs.:\nLembre-se! Sua senha é pessoal e intransferível, " +
 						"sugerimos sua alteração imediata.</p>" + 
 						"<BR>Clique <a href=http://easyLabCorrection.dsc.ufcg.edu>aqui</a> para acessar o sistema.</BR>" +
 						"<BR></BR>" +
@@ -617,7 +641,7 @@
 				mensagem = Util.geraCodigosHTML(mensagem);
 				contato = grupoUsuarioP.usuario.email;
 				nomeUsuario = grupoUsuarioP.usuario.nome;
-				//servicoEnviarEmail.send();
+				servicoEnviarEmail.send();
 				
 			}
 			
@@ -848,8 +872,14 @@
 			}
 			
 			private function handleEmail(event:ResultEvent):void {
+				var tipo: String = "";
+				if (currentState != "estadoProfessor"){
+					tipo = cbGrupoUsuario.selectedItem.nome;
+				}else{
+					tipo = cbGrupoUsuarioAlt.selectedItem.nome;
+				}
 				ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this,
-					[false, "O e-mail foi enviado com sucesso!"]);
+					[false, tipo + " cadastrado com sucesso! Email já enviado."]);
 			}
             
             private function falhaRemove(event:FaultEvent):void{
@@ -983,7 +1013,7 @@
 			<mx:DataGrid x="10" y="168.5" width="602" height="188.5" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
 					 labelFunction="labelGridUsuarios" id="dgUsuarios">
 				<mx:columns>
-					<mx:DataGridColumn headerText="Login" dataField="id" width="100"/>
+					<mx:DataGridColumn headerText="Login" dataField="id" width="200"/>
 					<mx:DataGridColumn headerText="Usuário"/>
 				</mx:columns>
 			</mx:DataGrid>
