@@ -11,6 +11,8 @@ import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.sistema.Periodo;
+import br.edu.les.easyCorrection.pojo.sistema.Roteiro;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class Facade {
@@ -329,5 +331,30 @@ public class Facade {
 			log.error("alterarSenha()", e);
 			throw e;
 		}
+	}
+	
+	public Periodo getPeriodo(int periodoId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Roteiro getRoteiro(int idRoteiro) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Roteiro> listarRoteiros() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void excluirRoteiro(Roteiro roteiro) {
+		// TODO Auto-generated method stub
+		
 	}
 }
