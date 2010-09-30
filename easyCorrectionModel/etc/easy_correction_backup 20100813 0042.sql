@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.0.51
+-- Server version	5.1.41
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -27,15 +27,15 @@ USE easy_correction;
 
 DROP TABLE IF EXISTS `avaliacao`;
 CREATE TABLE `avaliacao` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `submissao_id` int(10) unsigned NOT NULL,
   `nota_automatica` decimal(2,1) NOT NULL,
   `nota_correcao` decimal(2,1) NOT NULL,
   `resultado_execucao_testes` text,
-  `penalidade` decimal(2,1) default NULL,
+  `penalidade` decimal(2,1) DEFAULT NULL,
   `data_avaliacao` datetime NOT NULL,
   `usuario_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `submissao_id` (`submissao_id`),
   KEY `FK_avaliacao_usuario` (`usuario_id`),
   CONSTRAINT `avaliacao_ibfk_1` FOREIGN KEY (`submissao_id`) REFERENCES `submissao` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -56,14 +56,14 @@ CREATE TABLE `avaliacao` (
 
 DROP TABLE IF EXISTS `chat`;
 CREATE TABLE `chat` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `roteiro_id` int(10) unsigned NOT NULL,
   `mensagem` text NOT NULL,
   `data_envio` datetime NOT NULL,
   `usuario_origem_id` int(10) unsigned NOT NULL,
-  `usuario_destino_id` int(10) unsigned default NULL,
-  `equipe_destino_id` int(10) unsigned default NULL,
-  PRIMARY KEY  USING BTREE (`id`),
+  `usuario_destino_id` int(10) unsigned DEFAULT NULL,
+  `equipe_destino_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
   KEY `chat_FKIndex1` (`roteiro_id`),
   KEY `FK_chat_usuario_origem` (`usuario_origem_id`),
   KEY `FK_chat_usuario_destino` (`usuario_destino_id`),
@@ -88,9 +88,9 @@ CREATE TABLE `chat` (
 
 DROP TABLE IF EXISTS `equipe`;
 CREATE TABLE `equipe` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nome` varchar(50) NOT NULL,
-  PRIMARY KEY  USING BTREE (`id`)
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=FIXED;
 
 --
@@ -110,7 +110,7 @@ CREATE TABLE `equipe_has_usuario_has_roteiro` (
   `equipe_id` int(10) unsigned NOT NULL,
   `usuario_id` int(10) unsigned NOT NULL,
   `roteiro_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY  USING BTREE (`equipe_id`,`usuario_id`,`roteiro_id`),
+  PRIMARY KEY (`equipe_id`,`usuario_id`,`roteiro_id`) USING BTREE,
   KEY `FK_equipe_has_usuario_has_roteiro_usuario` (`usuario_id`),
   KEY `FK_equipe_has_usuario_has_roteiro_roteiro` (`roteiro_id`),
   CONSTRAINT `FK_equipe_has_usuario_has_roteiro_equipe` FOREIGN KEY (`equipe_id`) REFERENCES `equipe` (`id`),
@@ -132,11 +132,11 @@ CREATE TABLE `equipe_has_usuario_has_roteiro` (
 
 DROP TABLE IF EXISTS `funcao`;
 CREATE TABLE `funcao` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nome` varchar(500) NOT NULL,
   `rotulo` varchar(500) NOT NULL,
   `menu_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `Index_rotulo` (`rotulo`),
   KEY `FK_funcao_menu` (`menu_id`),
   KEY `Index_nome` (`nome`),
@@ -150,14 +150,14 @@ CREATE TABLE `funcao` (
 /*!40000 ALTER TABLE `funcao` DISABLE KEYS */;
 INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES 
  (1,'Cadastros','acesso',1),
- (2,'Definir Permissão','defPerm',1),
- (4,'Agendamento de Roteiros','agendaRoteiros',2),
- (5,'Penalidades','penalidades',2),
- (6,'Atribuição de Roteiros','atribuicaoDeRoteiros',2),
- (7,'Visualizar Notas','notas',2),
- (8,'Avaliaação de Roteiros','avaliacaoDeRoteiros',3),
- (9,'Submissão De Roteiros','submissaoDeRoteiros',4),
- (10,'Chat','chat',5);
+ (2,'Permissões','defPerm',1),
+ (4,'Criação','agendaRoteiros',4),
+ (5,'Atribuição de Atividades','atribuicaoDeRoteiros',3),
+ (6,'Penalidades','penalidades',3),
+ (7,'Visualizar Notas','notas',3),
+ (8,'Submissão','submissaoDeRoteiros',4),
+ (9,'Avaliação de Roteiros','avaliacaoDeRoteiros',3),
+ (10,'Discussão','chat',3);
 /*!40000 ALTER TABLE `funcao` ENABLE KEYS */;
 
 
@@ -167,9 +167,9 @@ INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES
 
 DROP TABLE IF EXISTS `grupo`;
 CREATE TABLE `grupo` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nome` varchar(200) NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `Index_nome` (`nome`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
@@ -192,15 +192,15 @@ INSERT INTO `grupo` (`id`,`nome`) VALUES
 
 DROP TABLE IF EXISTS `grupo_usuario`;
 CREATE TABLE `grupo_usuario` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_usuario` int(10) unsigned NOT NULL,
   `id_grupo` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `FK_grupo_usuario_grupo` (`id_grupo`),
   KEY `FK_grupo_usuario_usuario` (`id_usuario`),
   CONSTRAINT `FK_grupo_usuario_grupo` FOREIGN KEY (`id_grupo`) REFERENCES `grupo` (`id`),
   CONSTRAINT `FK_grupo_usuario_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `grupo_usuario`
@@ -208,14 +208,7 @@ CREATE TABLE `grupo_usuario` (
 
 /*!40000 ALTER TABLE `grupo_usuario` DISABLE KEYS */;
 INSERT INTO `grupo_usuario` (`id`,`id_usuario`,`id_grupo`) VALUES 
- (1,1,1),
- (2,2,1),
- (4,4,2),
- (17,17,4),
- (23,6,1),
- (24,20,2),
- (25,21,4),
- (27,22,3);
+ (1,1,1);
 /*!40000 ALTER TABLE `grupo_usuario` ENABLE KEYS */;
 
 
@@ -225,10 +218,10 @@ INSERT INTO `grupo_usuario` (`id`,`id_usuario`,`id_grupo`) VALUES
 
 DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `titulo` varchar(200) NOT NULL,
   `nome` varchar(200) NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `Index_nome` (`nome`),
   KEY `Index_rotulo` (`titulo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
@@ -240,10 +233,8 @@ CREATE TABLE `menu` (
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
 INSERT INTO `menu` (`id`,`titulo`,`nome`) VALUES 
  (1,'acesso','Controle de Acesso'),
- (2,'config','Configurações'),
  (3,'avaliacao','Avaliação'),
- (4,'submissao','Submissão'),
- (5,'discussao','Discussão');
+ (4,'submissao','Roteiros');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 
 
@@ -253,9 +244,9 @@ INSERT INTO `menu` (`id`,`titulo`,`nome`) VALUES
 
 DROP TABLE IF EXISTS `periodo`;
 CREATE TABLE `periodo` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `semestre` varchar(50) NOT NULL,
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
@@ -274,15 +265,15 @@ INSERT INTO `periodo` (`id`,`semestre`) VALUES
 
 DROP TABLE IF EXISTS `permissao`;
 CREATE TABLE `permissao` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `grupo_id` int(10) unsigned NOT NULL,
   `funcao_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `FK_permissao_grupo` (`grupo_id`),
   KEY `FK_permissao_funcao` (`funcao_id`),
   CONSTRAINT `FK_permissao_funcao` FOREIGN KEY (`funcao_id`) REFERENCES `funcao` (`id`),
   CONSTRAINT `FK_permissao_grupo` FOREIGN KEY (`grupo_id`) REFERENCES `grupo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `permissao`
@@ -290,26 +281,15 @@ CREATE TABLE `permissao` (
 
 /*!40000 ALTER TABLE `permissao` DISABLE KEYS */;
 INSERT INTO `permissao` (`id`,`grupo_id`,`funcao_id`) VALUES 
- (2,1,2),
- (3,1,1),
- (5,1,4),
- (6,1,5),
- (7,1,6),
- (8,1,7),
- (9,1,8),
- (10,1,9),
- (11,1,10),
- (12,2,9),
- (13,2,10),
- (14,3,4),
- (15,3,5),
- (16,3,6),
- (17,3,7),
- (18,3,8),
- (19,3,10),
- (20,3,1),
- (21,3,2),
- (22,2,1);
+ (2,1,1),
+ (3,1,2),
+ (23,1,4),
+ (24,1,5),
+ (25,1,6),
+ (26,1,7),
+ (27,1,8),
+ (28,1,9),
+ (29,1,10);
 /*!40000 ALTER TABLE `permissao` ENABLE KEYS */;
 
 
@@ -319,7 +299,7 @@ INSERT INTO `permissao` (`id`,`grupo_id`,`funcao_id`) VALUES
 
 DROP TABLE IF EXISTS `roteiro`;
 CREATE TABLE `roteiro` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `periodo_id` int(10) unsigned NOT NULL,
   `nome` varchar(255) NOT NULL,
   `descricao` text,
@@ -330,11 +310,11 @@ CREATE TABLE `roteiro` (
   `penalidade_dia_atraso` decimal(2,1) NOT NULL,
   `porcentagem_testes_automaticos` decimal(2,1) NOT NULL,
   `tempo_limite_testes` int(10) unsigned NOT NULL,
-  `diretorio_interface` varchar(255) default NULL,
-  `diretorio_testes` varchar(255) default NULL,
-  `versao_interface` varchar(50) default NULL,
-  `versao_testes` varchar(50) default NULL,
-  PRIMARY KEY  (`id`),
+  `diretorio_interface` varchar(255) DEFAULT NULL,
+  `diretorio_testes` varchar(255) DEFAULT NULL,
+  `versao_interface` varchar(50) DEFAULT NULL,
+  `versao_testes` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `roteiro_FKIndex1` (`periodo_id`),
   CONSTRAINT `roteiro_ibfk_1` FOREIGN KEY (`periodo_id`) REFERENCES `periodo` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -353,14 +333,14 @@ CREATE TABLE `roteiro` (
 
 DROP TABLE IF EXISTS `submissao`;
 CREATE TABLE `submissao` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `url` text NOT NULL,
-  `estado` varchar(50) default NULL,
+  `estado` varchar(50) DEFAULT NULL,
   `equipe_id` int(10) unsigned NOT NULL,
   `roteiro_id` int(10) unsigned NOT NULL,
   `usuario_id` int(10) unsigned NOT NULL,
   `data_submissao` datetime NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `FK_submissao_equipe_has_usuario_has_roteiro` (`equipe_id`,`usuario_id`,`roteiro_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=FIXED;
 
@@ -378,17 +358,17 @@ CREATE TABLE `submissao` (
 
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE `usuario` (
-  `id` int(10) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `login` varchar(255) NOT NULL,
   `nome` varchar(255) NOT NULL,
   `senha` varchar(50) NOT NULL,
-  `email` varchar(255) default NULL,
-  `periodo_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`),
+  `email` varchar(255) DEFAULT NULL,
+  `periodo_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `Index_login` (`login`),
   KEY `FK_usuario_periodo` (`periodo_id`),
   CONSTRAINT `FK_usuario_periodo` FOREIGN KEY (`periodo_id`) REFERENCES `periodo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `usuario`
@@ -396,14 +376,7 @@ CREATE TABLE `usuario` (
 
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`,`email`,`periodo_id`) VALUES 
- (1,'demas','Demetrio Gomes Mestre','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',NULL),
- (2,'augusto','Augusto Macedo','202cb962ac59075b964b07152d234b70','augustoqmacedo@gmail.com',NULL),
- (4,'20811007','Augusto Macedo','e10adc3949ba59abbe56e057f20f883e','augustoqmacedo@gmail.com',1),
- (6,'alyssonfm','Alysson Filgueira','e10adc3949ba59abbe56e057f20f883e','alyssonFilgueira@gmail.com',NULL),
- (17,'walfredoc','Walfredo Cirne','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',NULL),
- (20,'demetriogm','Demetrio Gomes Mestre','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',NULL),
- (21,'pauloa','Paulo Andre','e10adc3949ba59abbe56e057f20f883e','demetriogm@gmail.com',NULL),
- (22,'demetriog','Demetrio Gomes Mestre','1d9a469c86d1cffa512a755ac766e34a','dafdsafsafdS@globo.co',NULL);
+ (1,'demas','Demetrio Gomes Mestre','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',1);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
