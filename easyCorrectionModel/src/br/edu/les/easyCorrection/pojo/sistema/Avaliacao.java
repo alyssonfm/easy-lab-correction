@@ -1,5 +1,7 @@
 package br.edu.les.easyCorrection.pojo.sistema;
 
+import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+
 public class Avaliacao {
 	
 	private Integer id;
@@ -8,6 +10,7 @@ public class Avaliacao {
 	private double notaCorrecao;
 	private String resuladoExecucaoTestes;
 	private double penalidade;
+	private Usuario usuario;
 	
 	
 	public Integer getId() {
@@ -46,6 +49,12 @@ public class Avaliacao {
 	public void setPenalidade(double penalidade) {
 		this.penalidade = penalidade;
 	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 	
 	
 	@Override
@@ -66,6 +75,7 @@ public class Avaliacao {
 						: resuladoExecucaoTestes.hashCode());
 		result = prime * result
 				+ ((submissao == null) ? 0 : submissao.hashCode());
+		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		return result;
 	}
 	@Override
@@ -101,15 +111,14 @@ public class Avaliacao {
 				return false;
 		} else if (!submissao.equals(other.submissao))
 			return false;
+		if (usuario == null) {
+			if (other.usuario != null)
+				return false;
+		} else if (!usuario.equals(other.usuario))
+			return false;
 		return true;
 	}
 	
 	
 	
-	
-	
-	
-	
-	
-
 }

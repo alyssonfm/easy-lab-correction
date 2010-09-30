@@ -1,9 +1,13 @@
 package br.edu.les.easyCorrection.pojo.sistema;
 
+import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+
 public class Submissao {
 
 	private Integer id;
 	private Equipe equipe;
+	private Usuario usuario;
+	private Roteiro roteiro;
 	private String url;
 	private String estado;
 	
@@ -14,11 +18,24 @@ public class Submissao {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
 	public Equipe getEquipe() {
 		return equipe;
 	}
 	public void setEquipe(Equipe equipe) {
 		this.equipe = equipe;
+	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	public Roteiro getRoteiro() {
+		return roteiro;
+	}
+	public void setRoteiro(Roteiro roteiro) {
+		this.roteiro = roteiro;
 	}
 	public String getUrl() {
 		return url;
@@ -33,7 +50,6 @@ public class Submissao {
 		this.estado = estado;
 	}
 	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -41,7 +57,9 @@ public class Submissao {
 		result = prime * result + ((equipe == null) ? 0 : equipe.hashCode());
 		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((roteiro == null) ? 0 : roteiro.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
+		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		return result;
 	}
 	@Override
@@ -68,14 +86,23 @@ public class Submissao {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (roteiro == null) {
+			if (other.roteiro != null)
+				return false;
+		} else if (!roteiro.equals(other.roteiro))
+			return false;
 		if (url == null) {
 			if (other.url != null)
 				return false;
 		} else if (!url.equals(other.url))
 			return false;
+		if (usuario == null) {
+			if (other.usuario != null)
+				return false;
+		} else if (!usuario.equals(other.usuario))
+			return false;
 		return true;
 	}
-	
 	
 	
 	

@@ -14,7 +14,7 @@ public class EquipeHasUsuarioHasRoteiro {
 	}
 	
 	public EquipeHasUsuarioHasRoteiro(Equipe equipe, Roteiro roteiro, Usuario usuario) {
-		setId(new ChaveCompostaTernariaInteger(equipe.getId(), roteiro.getId(), usuario.getIdUsuario()));
+		setId(new ChaveCompostaTernariaInteger(equipe.getId(), usuario.getIdUsuario(), roteiro.getId()));
 	}
 	
 	
