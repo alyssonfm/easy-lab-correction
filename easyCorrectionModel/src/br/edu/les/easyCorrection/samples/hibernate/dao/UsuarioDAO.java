@@ -26,7 +26,9 @@ public class UsuarioDAO extends AbstractHibernateDAO<UsuarioTeste, String>{
 	}
 
 	@Override
-	public void instaciaLista(List<UsuarioTeste> lista) {
-		//DAOFactory.DEFAULT.buildUsuarioTestDAO().instaciaLista(us);
+	public List<UsuarioTeste> instanciaLista(List<UsuarioTeste> lista) {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 }
