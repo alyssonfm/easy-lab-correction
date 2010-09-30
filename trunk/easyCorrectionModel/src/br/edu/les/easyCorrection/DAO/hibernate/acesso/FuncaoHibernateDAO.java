@@ -11,8 +11,9 @@ import org.hibernate.criterion.SimpleExpression;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
+import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
-import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
 /**
@@ -32,11 +33,13 @@ public class FuncaoHibernateDAO extends
 
 	public List<Funcao> findById(Integer id) {
 		List <Funcao> lista = findByCriteria(Restrictions.eq("id", id));
+		instanciaLista(lista);
 		return lista;
 	}
 	
 	public List<Funcao> findByNome(String nome) {
 		List <Funcao> lista = findByCriteria(Restrictions.eq("nome", nome));
+		instanciaLista(lista);
 		return lista;
 	}
 	
@@ -44,8 +47,9 @@ public class FuncaoHibernateDAO extends
 	public List<Funcao> findByNomeERotulo(String nome, String rotulo) {
 		 SimpleExpression criteria1 = Restrictions.eq("nome", nome);
 		 SimpleExpression criteria2 = Restrictions.eq("rotulo", rotulo);
-		 LogicalExpression criteria = Restrictions.and(criteria1, criteria2);
+		 LogicalExpression criteria = Restrictions.or(criteria1, criteria2);
 		 List <Funcao> lista = findByCriteria(criteria);
+		 instanciaLista(lista);
 		return lista;
 	}
 	
@@ -55,21 +59,30 @@ public class FuncaoHibernateDAO extends
 		crit.add(Restrictions.eq("menu.idMenu", idMenu));
 		crit.addOrder(Order.desc("rotulo"));
 		List <Funcao> lista = crit.list();
-		instaciaLista(lista);
+		instanciaLista(lista);
 		return lista;
 	}
 	
 	@Override
-	public void instaciaLista(List<Funcao> lista) {
-		
-		for (Funcao f: lista) {
-			
-			Menu menu = MyPersistenceLayer.deproxy(f.getMenu(),
-					Menu.class);
-			f.setMenu(menu);
+	public List<Funcao> instanciaLista(List<Funcao> lista) {
+		try {
+			for (Funcao f : lista) {
+				f = instanciaFuncao(f);
+			}	
+		} catch (CampoVazioException e) {
+			throw new ViolacaoConstraintException(e.getMessage());
 		}
-		HibernateUtil.closeSession();
+		finally{
+			HibernateUtil.closeSession();
+		}
+		return lista;
+	}
+	
+	public static Funcao instanciaFuncao(Funcao f) throws CampoVazioException{
+		f.setMenu(MenuHibernateDAO.instanciaMenu(f.getMenu()));
+		f = MyPersistenceLayer.deproxy(f, Funcao.class);
 		
+		return f;
 	}
 
 }
