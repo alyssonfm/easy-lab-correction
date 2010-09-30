@@ -8,7 +8,10 @@ import org.hibernate.criterion.SimpleExpression;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
+import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
 /**
  * <p>Hibernate DAO layer for Agendas</p>
@@ -45,10 +48,25 @@ public class UsuarioHibernateDAO extends
 	}
 
 	@Override
-	public void instaciaLista(List<Usuario> lista) {
-		// TODO Auto-generated method stub
-		HibernateUtil.closeSession();
+	public List<Usuario> instanciaLista(List<Usuario> lista) {
+		try {
+			for (Usuario u : lista) {
+				u = instanciaUsuario(u);
+			}	
+		} catch (CampoVazioException e) {
+			throw new ViolacaoConstraintException(e.getMessage());
+		}
+		finally{
+			HibernateUtil.closeSession();
+		}
+		return lista;
 	}
+	
+	public static Usuario instanciaUsuario(Usuario u) throws CampoVazioException{
+		u = MyPersistenceLayer.deproxy(u, Usuario.class);
+		return u;
+	}
+
 
 	
 	
