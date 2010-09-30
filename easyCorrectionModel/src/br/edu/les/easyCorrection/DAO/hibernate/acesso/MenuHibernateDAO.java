@@ -11,7 +11,10 @@ import org.hibernate.criterion.SimpleExpression;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
+import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
+import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
 /**
  * <p>Hibernate DAO layer for Agendas</p>
@@ -42,7 +45,7 @@ public class MenuHibernateDAO extends
 	public List<Menu> findByNomeERotulo(String nome, String rotulo) {
 		SimpleExpression criteria1 = Restrictions.eq("nome", nome);
 		SimpleExpression criteria2 = Restrictions.eq("rotulo", rotulo);
-		LogicalExpression criteria = Restrictions.and(criteria1, criteria2);
+		LogicalExpression criteria = Restrictions.or(criteria1, criteria2);
 		return findByCriteria(criteria);
 	}
 	
@@ -55,9 +58,24 @@ public class MenuHibernateDAO extends
 	}
 
 	@Override
-	public void instaciaLista(List<Menu> lista) {
-		// TODO Auto-generated method stub
-		HibernateUtil.closeSession();
-	} 
+	public List<Menu> instanciaLista(List<Menu> lista) {
+		try {
+			for (Menu m : lista) {
+				m = instanciaMenu(m);
+			}	
+		} catch (CampoVazioException e) {
+			throw new ViolacaoConstraintException(e.getMessage());
+		}
+		finally{
+			HibernateUtil.closeSession();
+		}
+		return lista;
+	}
+	
+	public static Menu instanciaMenu(Menu m) throws CampoVazioException{
+		m = MyPersistenceLayer.deproxy(m, Menu.class);
+		
+		return m;
+	}
 	
 }
