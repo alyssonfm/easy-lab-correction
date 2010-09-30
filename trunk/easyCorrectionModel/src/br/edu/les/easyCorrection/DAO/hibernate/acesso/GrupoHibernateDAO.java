@@ -7,7 +7,10 @@ import org.hibernate.criterion.Restrictions;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
+import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
+import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
 /**
  * <p>Hibernate DAO layer for Agendas</p>
@@ -33,10 +36,25 @@ public class GrupoHibernateDAO extends
 	}
 
 	@Override
-	public void instaciaLista(List<Grupo> lista) {
-		// TODO Auto-generated method stub
-		HibernateUtil.closeSession();
+	public List<Grupo> instanciaLista(List<Grupo> lista) {
+		try {
+			for (Grupo g : lista) {
+				g = instanciaGrupo(g);
+			}	
+		} catch (CampoVazioException e) {
+			throw new ViolacaoConstraintException(e.getMessage());
+		}
+		finally{
+			HibernateUtil.closeSession();
+		}
+		return lista;
 	}
+	
+	public static Grupo instanciaGrupo(Grupo g) throws CampoVazioException{
+		g = MyPersistenceLayer.deproxy(g, Grupo.class);
+		return g;
+	}
+
 	
 
 	
