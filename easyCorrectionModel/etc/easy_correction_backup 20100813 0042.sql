@@ -38,8 +38,8 @@ CREATE TABLE `avaliacao` (
   PRIMARY KEY  (`id`),
   KEY `submissao_id` (`submissao_id`),
   KEY `FK_avaliacao_usuario` (`usuario_id`),
-  CONSTRAINT `FK_avaliacao_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`),
-  CONSTRAINT `avaliacao_ibfk_1` FOREIGN KEY (`submissao_id`) REFERENCES `submissao` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `avaliacao_ibfk_1` FOREIGN KEY (`submissao_id`) REFERENCES `submissao` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_avaliacao_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=FIXED;
 
 --
@@ -68,8 +68,8 @@ CREATE TABLE `chat` (
   KEY `FK_chat_usuario_origem` (`usuario_origem_id`),
   KEY `FK_chat_usuario_destino` (`usuario_destino_id`),
   KEY `FK_chat_equipe` (`equipe_destino_id`),
-  CONSTRAINT `FK_chat_equipe` FOREIGN KEY (`equipe_destino_id`) REFERENCES `equipe` (`id`),
   CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`roteiro_id`) REFERENCES `roteiro` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_chat_equipe` FOREIGN KEY (`equipe_destino_id`) REFERENCES `equipe` (`id`),
   CONSTRAINT `FK_chat_usuario_destino` FOREIGN KEY (`usuario_destino_id`) REFERENCES `usuario` (`id`),
   CONSTRAINT `FK_chat_usuario_origem` FOREIGN KEY (`usuario_origem_id`) REFERENCES `usuario` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=FIXED;
@@ -155,7 +155,7 @@ INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES
  (5,'Penalidades','penalidades',2),
  (6,'Atribuição de Roteiros','atribuicaoDeRoteiros',2),
  (7,'Visualizar Notas','notas',2),
- (8,'Avaliação de Roteiros','avaliacaoDeRoteiros',3),
+ (8,'Avaliaação de Roteiros','avaliacaoDeRoteiros',3),
  (9,'Submissão De Roteiros','submissaoDeRoteiros',4),
  (10,'Chat','chat',5);
 /*!40000 ALTER TABLE `funcao` ENABLE KEYS */;
@@ -200,7 +200,7 @@ CREATE TABLE `grupo_usuario` (
   KEY `FK_grupo_usuario_usuario` (`id_usuario`),
   CONSTRAINT `FK_grupo_usuario_grupo` FOREIGN KEY (`id_grupo`) REFERENCES `grupo` (`id`),
   CONSTRAINT `FK_grupo_usuario_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `grupo_usuario`
@@ -210,12 +210,12 @@ CREATE TABLE `grupo_usuario` (
 INSERT INTO `grupo_usuario` (`id`,`id_usuario`,`id_grupo`) VALUES 
  (1,1,1),
  (2,2,1),
- (3,3,1),
  (4,4,2),
- (5,5,3),
- (6,6,2),
  (17,17,4),
- (18,1,4);
+ (23,6,1),
+ (24,20,2),
+ (25,21,4),
+ (27,22,3);
 /*!40000 ALTER TABLE `grupo_usuario` ENABLE KEYS */;
 
 
@@ -282,7 +282,7 @@ CREATE TABLE `permissao` (
   KEY `FK_permissao_funcao` (`funcao_id`),
   CONSTRAINT `FK_permissao_funcao` FOREIGN KEY (`funcao_id`) REFERENCES `funcao` (`id`),
   CONSTRAINT `FK_permissao_grupo` FOREIGN KEY (`grupo_id`) REFERENCES `grupo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `permissao`
@@ -308,7 +308,8 @@ INSERT INTO `permissao` (`id`,`grupo_id`,`funcao_id`) VALUES
  (18,3,8),
  (19,3,10),
  (20,3,1),
- (21,3,2);
+ (21,3,2),
+ (22,2,1);
 /*!40000 ALTER TABLE `permissao` ENABLE KEYS */;
 
 
@@ -360,8 +361,7 @@ CREATE TABLE `submissao` (
   `usuario_id` int(10) unsigned NOT NULL,
   `data_submissao` datetime NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `FK_submissao_equipe_has_usuario_has_roteiro` (`equipe_id`,`usuario_id`,`roteiro_id`),
-  CONSTRAINT `FK_submissao_equipe_has_usuario_has_roteiro` FOREIGN KEY (`equipe_id`, `usuario_id`, `roteiro_id`) REFERENCES `equipe_has_usuario_has_roteiro` (`equipe_id`, `usuario_id`, `roteiro_id`)
+  KEY `FK_submissao_equipe_has_usuario_has_roteiro` (`equipe_id`,`usuario_id`,`roteiro_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=FIXED;
 
 --
@@ -388,7 +388,7 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `Index_login` (`login`),
   KEY `FK_usuario_periodo` (`periodo_id`),
   CONSTRAINT `FK_usuario_periodo` FOREIGN KEY (`periodo_id`) REFERENCES `periodo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `usuario`
@@ -396,13 +396,14 @@ CREATE TABLE `usuario` (
 
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`,`email`,`periodo_id`) VALUES 
- (1,'demas','Demas','d8f08986e8072e78bf9295c294ef3bc2','demetriogm@gmail.com',1),
- (2,'augusto','Augusto Macedo','202cb962ac59075b964b07152d234b70','',1),
- (3,'alysson','Alysson Filgueira','202cb962ac59075b964b07152d234b70','',1),
+ (1,'demas','Demetrio Gomes Mestre','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',NULL),
+ (2,'augusto','Augusto Macedo','202cb962ac59075b964b07152d234b70','augustoqmacedo@gmail.com',NULL),
  (4,'20811007','Augusto Macedo','e10adc3949ba59abbe56e057f20f883e','augustoqmacedo@gmail.com',1),
- (5,'livia','Livia','202cb962ac59075b964b07152d234b70','liviagm@gmail.com',1),
- (6,'alyssonfm','Alysson Filgueira Milanez Alse','e10adc3949ba59abbe56e057f20f883e','alyssonfm@yahoo.com.br',1),
- (17,'demetriogm','Demetrio Gomes Mestre','e10adc3949ba59abbe56e057f20f883e','demetriogm@gmail.com',1);
+ (6,'alyssonfm','Alysson Filgueira','e10adc3949ba59abbe56e057f20f883e','alyssonFilgueira@gmail.com',NULL),
+ (17,'walfredoc','Walfredo Cirne','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',NULL),
+ (20,'demetriogm','Demetrio Gomes Mestre','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',NULL),
+ (21,'pauloa','Paulo Andre','e10adc3949ba59abbe56e057f20f883e','demetriogm@gmail.com',NULL),
+ (22,'demetriog','Demetrio Gomes Mestre','1d9a469c86d1cffa512a755ac766e34a','dafdsafsafdS@globo.co',NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
