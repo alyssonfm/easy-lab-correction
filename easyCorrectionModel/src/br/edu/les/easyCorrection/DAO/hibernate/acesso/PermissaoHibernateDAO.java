@@ -8,9 +8,8 @@ import org.hibernate.criterion.Restrictions;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.pojo.acesso.Funcao;
-import br.edu.les.easyCorrection.pojo.acesso.Grupo;
-import br.edu.les.easyCorrection.pojo.acesso.Menu;
+import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
@@ -49,37 +48,41 @@ public class PermissaoHibernateDAO extends
 		return lista;
 	}
 	
-
-
-	@Override
-	public void instaciaLista(List<Permissao> lista) {
-		for (Permissao p: lista) {
-			
-			Grupo grupo = MyPersistenceLayer.deproxy(p.getGrupo(),
-					Grupo.class);
-			p.setGrupo(grupo);
-			
-			Funcao funcao = MyPersistenceLayer.deproxy(p.getFuncao(),
-					Funcao.class);
-			p.setFuncao(funcao);
-			
-			Menu menu = MyPersistenceLayer.deproxy(p.getFuncao().getMenu(), 
-					Menu.class);
-			p.getFuncao().setMenu(menu);
-			
-		}
-		HibernateUtil.closeSession();
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<Permissao>  findByGrupoAndFuncao(Integer idGrupo, Integer idFuncao) {
 		Criteria crit = getSession().createCriteria(getPersistentClass());
 		crit.add(Restrictions.eq("grupo.idGrupo", idGrupo));
 		crit.add(Restrictions.eq("funcao.idFuncao", idFuncao));
         List<Permissao> lista = crit.list();
-        instaciaLista(lista);
+        instanciaLista(lista);
         return  lista;
 	}
+
+	@Override
+	public List<Permissao> instanciaLista(List<Permissao> lista) {
+		try {
+			for (Permissao p : lista) {
+				p = instanciaPermissao(p);
+			}	
+		} catch (CampoVazioException e) {
+			throw new ViolacaoConstraintException(e.getMessage());
+		}
+		finally{
+			HibernateUtil.closeSession();
+		}
+		return lista;
+	}
+	
+	public static Permissao instanciaPermissao(Permissao p) throws CampoVazioException{
+		p.setFuncao(FuncaoHibernateDAO.instanciaFuncao(p.getFuncao()));
+		p.setGrupo(GrupoHibernateDAO.instanciaGrupo(p.getGrupo()));
+		p = MyPersistenceLayer.deproxy(p, Permissao.class);
+		
+		return p;
+	}
+
+
+	
 
 	
 	
