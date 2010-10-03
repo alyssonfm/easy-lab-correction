@@ -3,8 +3,8 @@ package br.edu.les.easyCorrection.gerenciadores;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
+import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
-import br.edu.les.easyCorrection.pojo.sistema.Roteiro;
 
 public class GerenciadorRoteiros {
 

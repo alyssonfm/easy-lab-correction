@@ -1,4 +1,4 @@
-package br.edu.les.easyCorrection.pojo.sistema;
+package br.edu.les.easyCorrection.pojo.roteiros;
 
 import java.io.Serializable;
 

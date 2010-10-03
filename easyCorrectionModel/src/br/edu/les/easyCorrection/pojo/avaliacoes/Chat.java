@@ -1,8 +1,10 @@
-package br.edu.les.easyCorrection.pojo.sistema;
+package br.edu.les.easyCorrection.pojo.avaliacoes;
 
 import java.util.Date;
 
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
+import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 
 public class Chat {
 	

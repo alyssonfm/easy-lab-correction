@@ -1,6 +1,8 @@
-package br.edu.les.easyCorrection.pojo.sistema;
+package br.edu.les.easyCorrection.pojo.roteiros;
 
 import java.util.Date;
+
+import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 
 public class Roteiro {
 	
