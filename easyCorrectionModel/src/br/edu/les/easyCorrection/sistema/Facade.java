@@ -333,28 +333,48 @@ public class Facade {
 		}
 	}
 	
-	public Periodo getPeriodo(int periodoId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Periodo getPeriodo(int periodoId) throws Throwable{
+		try {
+			return sistema.getPeriodo(periodoId);
+		} catch (Throwable e) {
+			log.error("getPeriodo()", e);
+			throw e;
+		}
 	}
 	
-	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp) {
-		// TODO Auto-generated method stub
-		return null;
+	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp) throws Throwable{
+		try {
+			return sistema.cadastrarRoteiro(roteiroTemp);
+		} catch (Throwable e) {
+			log.error("cadastrarRoteiro()", e);
+			throw e;
+		}
 	}
 
-	public Roteiro getRoteiro(int idRoteiro) {
-		// TODO Auto-generated method stub
-		return null;
+	public Roteiro getRoteiro(int idRoteiro) throws Throwable {
+		try {
+			return sistema.getRoteiro(idRoteiro);
+		} catch (Throwable e) {
+			log.error("getRoteiro()", e);
+			throw e;
+		}
 	}
 
-	public List<Roteiro> listarRoteiros() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Roteiro> listarRoteiros() throws Throwable{
+		try {
+			return sistema.listarRoteiros();
+		} catch (Throwable e) {
+			log.error("listarRoteiros()", e);
+			throw e;
+		}
 	}
 
-	public void excluirRoteiro(Roteiro roteiro) {
-		// TODO Auto-generated method stub
-		
+	public void excluirRoteiro(Roteiro roteiro) throws Throwable{
+		try{
+			sistema.excluirRoteiro(roteiro);
+		}catch (Throwable e) {
+			log.error("excluirRoteiro()", e);
+			throw e;
+		}
 	}
 }

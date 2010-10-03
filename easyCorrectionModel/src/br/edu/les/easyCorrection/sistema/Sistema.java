@@ -10,6 +10,8 @@ import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.sistema.Periodo;
+import br.edu.les.easyCorrection.pojo.sistema.Roteiro;
 
 public class Sistema {
 
@@ -156,4 +158,25 @@ public class Sistema {
 		return gerenciadorAcesso.alterarSenha(usuario, novaSenha);
 	}
 	
+	/*------------------------------------------------------------------------------*/
+	
+	public Periodo getPeriodo(int periodoId){
+		return gerenciadorAcesso.getPeriodo(periodoId);
+	}
+	
+	public Roteiro getRoteiro(int roteiroId){
+		return gerenciadorAcesso.getRoteiro(roteiroId);
+	}
+	
+	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp){
+		return gerenciadorAcesso.cadastrarRoteiro(roteiroTemp);
+	}
+
+	public void excluirRoteiro(Roteiro roteiro) {
+		gerenciadorAcesso.excluirRoteiro(roteiro);
+	}
+
+	public List<Roteiro> listarRoteiros() {
+		return gerenciadorAcesso.listarRoteiros();
+	}
 }
