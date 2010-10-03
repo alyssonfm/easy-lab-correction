@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
+import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
@@ -15,10 +16,12 @@ import br.edu.les.easyCorrection.pojo.sistema.Roteiro;
 
 public class Sistema {
 
-	private GerenciadorAcesso gerenciadorAcesso;	
+	private GerenciadorAcesso gerenciadorAcesso;
+	private GerenciadorRoteiros gerenciadorRoteiros;
 
 	public Sistema(){
 		gerenciadorAcesso = new GerenciadorAcesso();
+		gerenciadorRoteiros = new GerenciadorRoteiros();
 	}
 	
 	public void excluirMenu(Menu menu) throws EasyCorrectionException{
@@ -157,26 +160,25 @@ public class Sistema {
 	public Usuario alterarSenha(Usuario usuario, String novaSenha){
 		return gerenciadorAcesso.alterarSenha(usuario, novaSenha);
 	}
-	
-	/*------------------------------------------------------------------------------*/
-	
+
+	/******************************************** Controle de Roteiros EasyLabCorrection *********************************************/	
 	public Periodo getPeriodo(int periodoId){
-		return gerenciadorAcesso.getPeriodo(periodoId);
+		return gerenciadorRoteiros.getPeriodo(periodoId);
 	}
 	
 	public Roteiro getRoteiro(int roteiroId){
-		return gerenciadorAcesso.getRoteiro(roteiroId);
+		return gerenciadorRoteiros.getRoteiro(roteiroId);
 	}
 	
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp){
-		return gerenciadorAcesso.cadastrarRoteiro(roteiroTemp);
+		return gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
 	}
 
 	public void excluirRoteiro(Roteiro roteiro) {
-		gerenciadorAcesso.excluirRoteiro(roteiro);
+		gerenciadorRoteiros.excluirRoteiro(roteiro);
 	}
 
 	public List<Roteiro> listarRoteiros() {
-		return gerenciadorAcesso.listarRoteiros();
+		return gerenciadorRoteiros.listarRoteiros();
 	}
 }
