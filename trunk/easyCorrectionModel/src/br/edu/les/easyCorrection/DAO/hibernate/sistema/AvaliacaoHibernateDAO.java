@@ -9,7 +9,7 @@ import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
 import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
-import br.edu.les.easyCorrection.pojo.sistema.Avaliacao;
+import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
 /**

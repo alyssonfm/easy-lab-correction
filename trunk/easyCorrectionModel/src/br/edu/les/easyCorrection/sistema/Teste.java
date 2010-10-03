@@ -3,8 +3,8 @@ package br.edu.les.easyCorrection.sistema;
 import java.util.Date;
 
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
+import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
-import br.edu.les.easyCorrection.pojo.sistema.Roteiro;
 
 
 

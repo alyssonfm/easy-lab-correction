@@ -1,8 +1,9 @@
 package br.edu.les.easyCorrection.tests.acceptance.userstory03;
 
 import java.util.List;
+
+import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
-import br.edu.les.easyCorrection.pojo.sistema.Roteiro;
 import br.edu.les.easyCorrection.sistema.Facade;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 

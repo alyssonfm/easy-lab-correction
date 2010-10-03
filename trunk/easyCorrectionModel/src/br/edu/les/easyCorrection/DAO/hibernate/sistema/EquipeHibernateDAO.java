@@ -8,7 +8,7 @@ import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
-import br.edu.les.easyCorrection.pojo.sistema.Equipe;
+import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
 /**

@@ -1,6 +1,7 @@
-package br.edu.les.easyCorrection.pojo.sistema;
+package br.edu.les.easyCorrection.pojo.avaliacoes;
 
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 
 public class Avaliacao {
 	
