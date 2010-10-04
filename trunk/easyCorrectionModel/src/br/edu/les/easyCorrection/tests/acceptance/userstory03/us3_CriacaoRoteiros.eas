@@ -18,10 +18,7 @@
 # ------- Setup de Roteiros -----------
 
 #gravar e ler
-idRoteiro=cadastrarRoteiro periodoId=1 nome="RoteiroTeste1" descricao="Descricao1" dataLiberacao="12/09/2010"
-dataFinalEntrega="12/09/2010" dataFinalDiscussao="12/10/2010" numeroMaximoEnvios=8 penalidadeDiasAtraso=0.5
-porcentagemTestesAutomaticos=0.5 tempoLimiteTestes = 10 diretorioInterface="/home/demetriogm/Inteface" 
-diretorioTestes="/home/demetriogm/Testes" versaoInterface="Versão 4" versaoTestes="Versão 4"
+idRoteiro=cadastrarRoteiro periodoId="1" nome="RoteiroTeste1" descricao="Descricao1" dataLiberacao="12/10/2010" dataFinalEntrega="13/10/2010" dataFinalDiscussao="14/10/2010" numeroMaximoEnvios=8 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=0.5 tempoLimiteTestes=10 diretorioInterface="/home/demetriogm/Inteface" diretorioTestes="/home/demetriogm/Testes" versaoInterface="Versão 4" versaoTestes="Versão 5"
 
 #expect "RoteiroTeste1" getAtributoRoteiro id=${idRoteiro} atributo=nome
 #expect "RoteiroTeste1" getAtributoRoteiro id=${idRoteiro} atributo=rotulo
