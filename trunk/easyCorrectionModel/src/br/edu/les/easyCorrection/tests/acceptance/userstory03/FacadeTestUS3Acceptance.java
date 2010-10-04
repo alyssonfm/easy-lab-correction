@@ -28,12 +28,37 @@ public class FacadeTestUS3Acceptance {
 		}
 	}
 	
-	//EasyAcceptOK
-	public int cadastrarRoteiro(int periodoId, String nome, String login, String senha, String email) throws Throwable{
+	public int cadastrarRoteiro(int periodoId, 
+								String nome, 
+								String descricao,
+								String dataLiberacao,
+								String dataFinalEntrega,
+								String dataFinalDiscussao,
+								int numeroMaximoEnvios,
+								double penalidadeDiasAtraso,
+								double porcentagemTestesAutomaticos,
+								int tempoLimiteTestes,
+								String diretorioInterface,
+								String diretorioTestes,
+								String versaoInterface,
+								String versaoTestes) throws Throwable{
 		Roteiro roteiroTemp = new Roteiro();
 		roteiroTemp.setPeriodo(facadeSistema.getPeriodo(periodoId));
 		Periodo periodoTemp = new Periodo();
 		periodoTemp.setId(0);
+		roteiroTemp.setNome(nome); 
+		roteiroTemp.setDescricao(descricao);
+		roteiroTemp.setDataLiberacao(easyCorrectionUtil.formataData(dataLiberacao));
+		roteiroTemp.setDataFinalEntrega(easyCorrectionUtil.formataData(dataFinalEntrega));
+		roteiroTemp.setDataFinalDiscussao(easyCorrectionUtil.formataData(dataFinalDiscussao));
+		roteiroTemp.setNumeroMaximoEnvios(numeroMaximoEnvios);
+		roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
+		roteiroTemp.setPorcentagemTestesAutomaticos(porcentagemTestesAutomaticos);
+		roteiroTemp.setTempoLimiteTestes(tempoLimiteTestes);
+		roteiroTemp.setDiretorioInterface(diretorioInterface);
+		roteiroTemp.setDiretorioTestes(diretorioTestes);
+		roteiroTemp.setVersaoInterface(versaoInterface);
+		roteiroTemp.setVersaoTestes(versaoTestes);
 		periodoTemp.setSemestre("2010.2");
 		Roteiro roteiroCriado = facadeSistema.cadastrarRoteiro(roteiroTemp);
 		return roteiroCriado.getId();
@@ -41,18 +66,37 @@ public class FacadeTestUS3Acceptance {
 
 	//EasyAcceptOK
 	public int editarRoteiro(int roteiroId, 
-								int periodoId,
-								String nome, 
-								String login, 
-								String senha,
-								String email) throws Throwable {
+							 int periodoId, 
+							 String nome, 
+							 String descricao,
+							 String dataLiberacao,
+							 String dataFinalEntrega,
+							 String dataFinalDiscussao,
+							 int numeroMaximoEnvios,
+							 double penalidadeDiasAtraso,
+							 double porcentagemTestesAutomaticos,
+							 int tempoLimiteTestes,
+							 String diretorioInterface,
+							 String diretorioTestes,
+							 String versaoInterface,
+							 String versaoTestes) throws Throwable {
 		
 		Roteiro roteiroTemp = facadeSistema.getRoteiro(roteiroId);
 		roteiroTemp.setId(roteiroId);
 		roteiroTemp.setPeriodo(facadeSistema.getPeriodo(periodoId));
 		roteiroTemp.setNome(nome);
-		roteiroTemp.setDiretorioTestes(login);
-		roteiroTemp.setDiretorioInterface(senha);
+		roteiroTemp.setDescricao(descricao);
+		roteiroTemp.setDataLiberacao(easyCorrectionUtil.formataData(dataLiberacao));
+		roteiroTemp.setDataFinalEntrega(easyCorrectionUtil.formataData(dataFinalEntrega));
+		roteiroTemp.setDataFinalDiscussao(easyCorrectionUtil.formataData(dataFinalDiscussao));
+		roteiroTemp.setNumeroMaximoEnvios(numeroMaximoEnvios);
+		roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
+		roteiroTemp.setPorcentagemTestesAutomaticos(porcentagemTestesAutomaticos);
+		roteiroTemp.setTempoLimiteTestes(tempoLimiteTestes);
+		roteiroTemp.setDiretorioInterface(diretorioInterface);
+		roteiroTemp.setDiretorioTestes(diretorioTestes);
+		roteiroTemp.setVersaoInterface(versaoInterface);
+		roteiroTemp.setVersaoTestes(versaoTestes);
 		Roteiro rotAtualizado = facadeSistema.cadastrarRoteiro(roteiroTemp);
 		return rotAtualizado.getId();
 	}
