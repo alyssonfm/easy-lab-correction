@@ -342,9 +342,9 @@ public class Facade {
 		}
 	}
 	
-	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp) throws Throwable{
+	public Roteiro cadastrarRoteiro(Roteiro roteiro) throws Throwable{
 		try {
-			return sistema.cadastrarRoteiro(roteiroTemp);
+			return sistema.cadastrarRoteiro(roteiro);
 		} catch (Throwable e) {
 			log.error("cadastrarRoteiro()", e);
 			throw e;
