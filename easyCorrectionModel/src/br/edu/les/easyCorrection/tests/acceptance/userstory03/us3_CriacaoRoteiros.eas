@@ -7,157 +7,59 @@
 #--------------------------------------------------------------------------------------------
 
 #####################################################################################
-# Caso de Uso 2: Controle de Acesso: 
-# Funcionalidade que permite o GRUD de menus, funcoes, grupos e usuarios no sistema.
+# Caso de Uso 3: Criação de Roteiros: 
+# Funcionalidade que permite o GRUD de Roteiros.
 #####################################################################################
 
 #####################################################################################
-# testes de setup: temos um controle de acesso adequado? menus, funcoes, grupos e 
-# usuarios.
+# testes de setup: temos uma criação de Roteiros desejada?
 #####################################################################################
 
-# ------- Setup de Menus -----------
+# ------- Setup de Roteiros -----------
 
 #gravar e ler
-idMenu=cadastrarMenu nome="MenuTeste1" rotulo="menuTeste1"
-expect "MenuTeste1" getAtributoMenu id=${idMenu} atributo=nome
-expect "menuTeste1" getAtributoMenu id=${idMenu} atributo=rotulo
-expectError "menu nao foi encontrado(a)." getMenu id=999
+idRoteiro=cadastrarRoteiro periodoId=1 nome="RoteiroTeste1" descricao="Descricao1" dataLiberacao="12/09/2010"
+dataFinalEntrega="12/09/2010" dataFinalDiscussao="12/10/2010" numeroMaximoEnvios=8 penalidadeDiasAtraso=0.5
+porcentagemTestesAutomaticos=0.5 tempoLimiteTestes = 10 diretorioInterface="/home/demetriogm/Inteface" 
+diretorioTestes="/home/demetriogm/Testes" versaoInterface="Versão 4" versaoTestes="Versão 4"
 
-idMenu2=cadastrarMenu nome="MenuTeste2" rotulo="avaliacao"
-expectDifferent ${idMenu} echo ${iMenu2}
+#expect "RoteiroTeste1" getAtributoRoteiro id=${idRoteiro} atributo=nome
+#expect "RoteiroTeste1" getAtributoRoteiro id=${idRoteiro} atributo=rotulo
+#expectError "Roteiro nao foi encontrado(a)." getRoteiro id=999
 
-idMenu3=cadastrarMenu nome="MenuTeste3" rotulo="menu3"
-idMenu4=cadastrarMenu nome="qualquer" rotulo="null"
-expectDifferent ${idMenu3} echo ${iMenu4}
-idMenu5=cadastrarMenu nome="qualquer" rotulo="nomeAlgum"
-idMenu6=cadastrarMenu nome="" rotulo="nomeAlg"
-idMenu7=cadastrarMenu nome="algumNome" rotulo=""
+#idRoteiro2=cadastrarRoteiro nome="RoteiroTeste2" rotulo="avaliacao"
+#expectDifferent ${idRoteiro} echo ${iRoteiro2}
 
-expect ${idMenu} editarMenu id=${idMenu} nome="nomeAlterado1" rotulo="rotuloAlterado1"
-expect ${idMenu2} editarMenu id=${idMenu2} nome="nomeAlterado2" rotulo="rotuloAlterado2"
-expect ${idMenu3} editarMenu id=${idMenu3} nome="nomeAlterado3" rotulo="rotuloAlterado3"
-expect ${idMenu4} editarMenu id=${idMenu4} nome="nomeAlterado4" rotulo="rotuloAlterado4"
-expect ${idMenu5} editarMenu id=${idMenu5} nome="nomeAlterado5" rotulo="rotuloAlterado5"
+#idRoteiro3=cadastrarRoteiro nome="RoteiroTeste3" rotulo="Roteiro3"
+#idRoteiro4=cadastrarRoteiro nome="qualquer" rotulo="null"
+#expectDifferent ${idRoteiro3} echo ${iRoteiro4}
+#idRoteiro5=cadastrarRoteiro nome="qualquer" rotulo="nomeAlgum"
+#idRoteiro6=cadastrarRoteiro nome="" rotulo="nomeAlg"
+#idRoteiro7=cadastrarRoteiro nome="algumNome" rotulo=""
 
-expect "nomeAlterado2" getAtributoMenu id=${idMenu2} atributo=nome
-expect "rotuloAlterado3" getAtributoMenu id=${idMenu3} atributo=rotulo
-expect ${idMenu4} getAtributoMenu id=${idMenu4} atributo=idMenu
-expect "nomeAlterado1" getAtributoMenuListaMenus id=${idMenu} atributo=nome
-expect "rotuloAlterado2" getAtributoMenuListaMenus id=${idMenu2} atributo=rotulo
-expect "nomeAlterado3" getAtributoMenuListaMenus id=${idMenu3} atributo=nome
-expect ${idMenu5} getAtributoMenuListaMenus id=${idMenu5} atributo=idMenu
-expect "Menu Inexistente." getAtributoMenuListaMenus id=999 atributo=nome
+#expect ${idRoteiro} editarRoteiro id=${idRoteiro} nome="nomeAlterado1" rotulo="rotuloAlterado1"
+#expect ${idRoteiro2} editarRoteiro id=${idRoteiro2} nome="nomeAlterado2" rotulo="rotuloAlterado2"
+#expect ${idRoteiro3} editarRoteiro id=${idRoteiro3} nome="nomeAlterado3" rotulo="rotuloAlterado3"
+#expect ${idRoteiro4} editarRoteiro id=${idRoteiro4} nome="nomeAlterado4" rotulo="rotuloAlterado4"
+#expect ${idRoteiro5} editarRoteiro id=${idRoteiro5} nome="nomeAlterado5" rotulo="rotuloAlterado5"
 
-# ------- Setup de Funcoes -----------
-
-#gravar e ler
-idFuncao=cadastrarFuncao nome="FuncaoTeste1" rotulo="FuncaoTeste1" idMenu=${idMenu}
-expect "FuncaoTeste1" getAtributoFuncao id=${idFuncao} atributo=nome
-expect "FuncaoTeste1" getAtributoFuncao id=${idFuncao} atributo=rotulo
-expectError "funcao nao foi encontrado(a)." getFuncao id=999
-
-idFuncao2=cadastrarFuncao nome="FuncaoTeste2" rotulo="avaliacao" idMenu=${idMenu2}
-expectDifferent ${idFuncao} echo ${iFuncao2}
-
-idFuncao3=cadastrarFuncao nome="FuncaoTeste3" rotulo="Funcao3" idMenu=${idMenu3}
-idFuncao4=cadastrarFuncao nome="qualquer" rotulo="null" idMenu=${idMenu4}
-expectDifferent ${idFuncao3} echo ${iFuncao4}
-idFuncao5=cadastrarFuncao nome="qualquer" rotulo="nomeAlgum" idMenu=${idMenu5}
-idFuncao6=cadastrarFuncao nome="no" rotulo="nomeAlg" idMenu=${idMenu6}
-idFuncao7=cadastrarFuncao nome="algumNome" rotulo="" idMenu=${idMenu7}
-
-expect ${idFuncao} editarFuncao id=${idFuncao} nome="nomeAlterado1" rotulo="rotuloAlterado1" idMenu=${idMenu5}
-expect ${idFuncao2} editarFuncao id=${idFuncao2} nome="nomeAlterado2" rotulo="rotuloAlterado2" idMenu=${idMenu5}
-expect ${idFuncao3} editarFuncao id=${idFuncao3} nome="nomeAlterado3" rotulo="rotuloAlterado3" idMenu=${idMenu5}
-expect ${idFuncao4} editarFuncao id=${idFuncao4} nome="nomeAlterado4" rotulo="rotuloAlterado4" idMenu=${idMenu5}
-expect ${idFuncao5} editarFuncao id=${idFuncao5} nome="nomeAlterado5" rotulo="rotuloAlterado5" idMenu=${idMenu5}
-
-expect "nomeAlterado2" getAtributoFuncao id=${idFuncao2} atributo=nome
-expect "rotuloAlterado3" getAtributoFuncao id=${idFuncao3} atributo=rotulo
-expect ${idFuncao4} getAtributoFuncao id=${idFuncao4} atributo=idFuncao
-expect "nomeAlterado1" getAtributoFuncaoListaFuncoes id=${idFuncao} atributo=nome
-expect "rotuloAlterado2" getAtributoFuncaoListaFuncoes id=${idFuncao2} atributo=rotulo
-expect "nomeAlterado3" getAtributoFuncaoListaFuncoes id=${idFuncao3} atributo=nome
-expect ${idFuncao5} getAtributoFuncaoListaFuncoes id=${idFuncao5} atributo=idFuncao
-expect "Funcao Inexistente." getAtributoFuncaoListaFuncoes id=999 atributo=nome
-
-# ------- Setup de Grupos -----------
-
-#gravar e ler
-idGrupo=cadastrarGrupo nome="GrupoTeste1"
-expect "GrupoTeste1" getAtributoGrupo id=${idGrupo} atributo=nome
-expectError "grupo nao foi encontrado(a)." getGrupo id=99
-
-idGrupo2=cadastrarGrupo nome="GrupoTeste2"
-expectDifferent ${idGrupo} echo ${iGrupo2}
-
-idGrupo3=cadastrarGrupo nome="GrupoTeste3"
-idGrupo4=cadastrarGrupo nome="qualquer"
-expectDifferent ${idGrupo3} echo ${iGrupo4}
-idGrupo6=cadastrarGrupo nome="ag"
-idGrupo7=cadastrarGrupo nome="algumNome"
-
-expect ${idGrupo} editarGrupo id=${idGrupo} nome="nomeAlterado1"
-expect ${idGrupo2} editarGrupo id=${idGrupo2} nome="nomeAlterado2"
-expect ${idGrupo3} editarGrupo id=${idGrupo3} nome="nomeAlterado3"
-expect ${idGrupo4} editarGrupo id=${idGrupo4} nome="nomeAlterado4"
-
-expect "nomeAlterado2" getAtributoGrupo id=${idGrupo2} atributo=nome
-expect ${idGrupo4} getAtributoGrupo id=${idGrupo4} atributo=idGrupo
-expect "nomeAlterado1" getAtributoGrupoListaGrupos id=${idGrupo} atributo=nome
-expect "nomeAlterado3" getAtributoGrupoListaGrupos id=${idGrupo3} atributo=nome
-expect "Grupo Inexistente." getAtributoGrupoListaGrupos id=999 atributo=nome
-
-# ------- Setup de UsuÃ¡rio -----------
-
-idGrupoUsuario=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste1" login="usuariot1" senha="123" email="usuario@gmail.com"
-expect ${idGrupoUsuario} getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=idGrupoUsuario
-expect "usuariot1" getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=login
-expect "202cb962ac59075b964b07152d234b70" getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=senha
-expect "usuario@gmail.com" getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=email
-expect "UsuarioTeste1" getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=nome
-
-
-idGrupoUsuario2=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste2" login="usuariot2" senha="usuariot2" email="usuarioTeste2@gmail.com"
-expectDifferent ${idGrupoUsuario} echo ${iGrupoUsuario2}
-idGrupoUsuario3=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste3" login="usuariot3" senha="usuariot3" email="us@oi.com.br"
-expectError "usuario nao foi encontrado(a)." getUsuario id=999
-idGrupoUsuario4=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste4" login="usuariot4" senha="usuariot4" email="us@yahoo.com.br"
-
-expect ${idGrupoUsuario} editarUsuario id=${idGrupoUsuario} grupoId=${idGrupo} nome="UsuarioTesteAlterado" login="usuariot1" senha="UsuarioTesteAlterada" email="UsuarioTesteAlterado@gmail.com"
-expect ${idGrupoUsuario2} editarUsuario id=${idGrupoUsuario2} grupoId=${idGrupo} nome="UsuarioTeste2Alterado" login="usuariot2" senha="UsuarioTeste2Alterada" email="UsuarioTeste2Alterado@gmail.com"
-
-expect ${idGrupoUsuario} getAtributoGrupoUsuarioListaFuncoes id=${idGrupoUsuario} atributo=idGrupoUsuario
+#expect "nomeAlterado2" getAtributoRoteiro id=${idRoteiro2} atributo=nome
+#expect "rotuloAlterado3" getAtributoRoteiro id=${idRoteiro3} atributo=rotulo
+#expect ${idRoteiro4} getAtributoRoteiro id=${idRoteiro4} atributo=idRoteiro
+#expect "nomeAlterado1" getAtributoRoteiroListaRoteiros id=${idRoteiro} atributo=nome
+#expect "rotuloAlterado2" getAtributoRoteiroListaRoteiros id=${idRoteiro2} atributo=rotulo
+#expect "nomeAlterado3" getAtributoRoteiroListaRoteiros id=${idRoteiro3} atributo=nome
+#expect ${idRoteiro5} getAtributoRoteiroListaRoteiros id=${idRoteiro5} atributo=idRoteiro
+#expect "Roteiro Inexistente." getAtributoRoteiroListaRoteiros id=999 atributo=nome
 
 #####################################################################################
 # Para ver as alteracoes no Banco de Dados comente as linhas seguintes.
 #####################################################################################
 
-excluirUsuario idGrupoUsuario=${idGrupoUsuario}
-excluirUsuario idGrupoUsuario=${idGrupoUsuario2}
-excluirUsuario idGrupoUsuario=${idGrupoUsuario3}
-excluirUsuario idGrupoUsuario=${idGrupoUsuario4}
-
-excluirGrupo idGrupo=${idGrupo}
-excluirGrupo idGrupo=${idGrupo2}
-excluirGrupo idGrupo=${idGrupo3}
-excluirGrupo idGrupo=${idGrupo4}
-excluirGrupo idGrupo=${idGrupo6}
-excluirGrupo idGrupo=${idGrupo7}
-
-excluirFuncao idFuncao=${idFuncao}
-excluirFuncao idFuncao=${idFuncao2}
-excluirFuncao idFuncao=${idFuncao3}
-excluirFuncao idFuncao=${idFuncao4}
-excluirFuncao idFuncao=${idFuncao5}
-excluirFuncao idFuncao=${idFuncao6}
-excluirFuncao idFuncao=${idFuncao7}
-
-excluirMenu idMenu=${idMenu}
-excluirMenu idMenu=${idMenu2}
-excluirMenu idMenu=${idMenu3}
-excluirMenu idMenu=${idMenu4}
-excluirMenu idMenu=${idMenu5}
-excluirMenu idMenu=${idMenu6}
-excluirMenu idMenu=${idMenu7}
+#excluirRoteiro idRoteiro=${idRoteiro}
+#excluirRoteiro idRoteiro=${idRoteiro2}
+#excluirRoteiro idRoteiro=${idRoteiro3}
+#excluirRoteiro idRoteiro=${idRoteiro4}
+#excluirRoteiro idRoteiro=${idRoteiro5}
+#excluirRoteiro idRoteiro=${idRoteiro6}
+#excluirRoteiro idRoteiro=${idRoteiro7}
