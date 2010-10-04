@@ -1,9 +1,13 @@
 package br.edu.les.easyCorrection.util;
 
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import br.edu.les.easyCorrection.exceptions.*;
+
+import br.edu.les.easyCorrection.exceptions.AtributoNaoExisteExeption;
 
 
 
@@ -80,6 +84,19 @@ public class easyCorrectionUtil {
 		c.set(Calendar.SECOND,0);
 		c.set(Calendar.MILLISECOND,0);
 		return c.getTime();
+	}
+	
+	public static Date formataData(String data) throws Exception {   
+		if (data == null || data.equals(""))  
+			return null;
+		Date date = null;  
+		try {  
+			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
+			date = (java.util.Date)formatter.parse(data);  
+		} catch (ParseException e) {              
+			throw e;  
+		}  
+		return date;  
 	}
 	
 	/**
