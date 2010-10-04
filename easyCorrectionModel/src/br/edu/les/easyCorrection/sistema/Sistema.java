@@ -2,6 +2,7 @@ package br.edu.les.easyCorrection.sistema;
 
 import java.util.List;
 
+import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
@@ -170,7 +171,7 @@ public class Sistema {
 		return gerenciadorRoteiros.getRoteiro(roteiroId);
 	}
 	
-	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp){
+	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp) throws CriacaoRoteiroException{
 		return gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
 	}
 
