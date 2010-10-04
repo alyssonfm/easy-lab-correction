@@ -10,6 +10,16 @@ public enum MsgErros {
 			return "O campo \"" + args[0] + "\" nao pode ser vazio.";
 		}
 	},
+	NOMEVAZIO {
+		public String msg(String... args) {
+			return args[0];
+		}
+	},
+	VALORINVALIDO {
+		public String msg(String... args) {
+			return args[0];
+		}
+	},
 	VALOR_DE_ATRIBUTO_INVALIDO{
 		public String msg(String... args){
 			return "O valor \""+args[0]+"\" e invalido para o campo \""+args[1]+"\".";
