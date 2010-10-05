@@ -550,19 +550,29 @@
 			private function verificaUsuario(): void{
 				try{
 					if (currentState != "estadoProfessor"){
-						if(dgUsuarios.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
-							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));	
+						if(primeiroCadastro){
+							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));
 						}
 						else{
-							editarUsuario();		
+							if(dgUsuarios.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
+								facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));	
+							}
+							else{
+								editarUsuario();		
+							}
 						}
 					}
 					else{
-						if(dgUsuariosAlt.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
-							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuarioAlt.text));	
+						if(primeiroCadastro){
+							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuarioAlt.text));
 						}
 						else{
-							editarUsuario();		
+							if(dgUsuariosAlt.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
+								facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuarioAlt.text));	
+							}
+							else{
+								editarUsuario();		
+							}	
 						}
 					}
 				}catch(e: Error){
