@@ -169,7 +169,6 @@
 					tabNav.visible = true;
 					emailValidator.source = inputEmailUsuarioAlt;
 					emailValidator.trigger = inputEmailUsuarioAlt;
-					emailValido = false;
 					listarGrupos();
 				}
 				else{
@@ -877,7 +876,7 @@
             	if (currentState != "estadoProfessor"){
 	                if (StringUtil.trim(inputNomeUsuario.text) != "" && 
 	                	StringUtil.trim(inputLoginUsuario.text) != "" &&
-	                	StringUtil.trim(inputEmailUsuario.text) != "" &&
+	                	emailValido &&
 	                	cbGrupoUsuario.selectedIndex != -1){
 	                	botaoCadastrarUsuario.enabled = true;
 	                	botaoAtualizarUsuario.enabled = true;
@@ -891,7 +890,7 @@
             	else{
             		 if (StringUtil.trim(inputNomeUsuarioAlt.text) != "" && 
 	                	StringUtil.trim(inputLoginUsuarioAlt.text) != "" &&
-	                	StringUtil.trim(inputEmailUsuarioAlt.text) != "" &&
+	                	emailValido &&
 	                	cbGrupoUsuarioAlt.selectedIndex != -1){
 	                	botaoCadastrarUsuarioAlt.enabled = true;
 	                	botaoAtualizarUsuarioAlt.enabled = true;
@@ -927,6 +926,7 @@
 			}
 			
 			private function invalidaEmail(event:ValidationResultEvent):void {
+				emailValido = false;
 				if (currentState != "estadoProfessor"){
                 	botaoCadastrarUsuario.enabled = false;
                 	botaoAtualizarUsuario.enabled = false;
@@ -939,6 +939,11 @@
 	                botaoNovoUsuarioAlt.enabled = false;
 	                botaoRemoverUsuarioAlt.enabled = false;	                
             	}
+			}
+			
+			private function validaEmail(event:ValidationResultEvent):void {
+				emailValido = true;
+				handleValidaUsuario(event);
 			}
 			
 		]]>
@@ -1020,7 +1025,7 @@
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
     	requiredFieldError="Informe o grupo do usuário."/>
     
-    <mx:EmailValidator id="emailValidator" invalid="invalidaEmail(event)" valid="handleValidaUsuario(event)"
+    <mx:EmailValidator id="emailValidator" invalid="invalidaEmail(event)" valid="validaEmail(event)"
 		source="{inputEmailUsuario}" property="text" trigger="{inputEmailUsuario}" 
 		triggerEvent="change"
 		invalidCharError="Seu endereço de email contém caracteres inválidos."
