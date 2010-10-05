@@ -42,26 +42,26 @@ public class FacadeTestUS3Acceptance {
 								String diretorioTestes,
 								String versaoInterface,
 								String versaoTestes) throws Throwable{
-		Roteiro roteiroTemp = new Roteiro();
-		roteiroTemp.setPeriodo(facadeSistema.getPeriodo(periodoId));
-		Periodo periodoTemp = new Periodo();
-		periodoTemp.setId(0);
-		roteiroTemp.setNome(nome); 
-		roteiroTemp.setDescricao(descricao);
-		roteiroTemp.setDataLiberacao(easyCorrectionUtil.formataData(dataLiberacao));
-		roteiroTemp.setDataFinalEntrega(easyCorrectionUtil.formataData(dataFinalEntrega));
-		roteiroTemp.setDataFinalDiscussao(easyCorrectionUtil.formataData(dataFinalDiscussao));
-		roteiroTemp.setNumeroMaximoEnvios(numeroMaximoEnvios);
-		roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
-		roteiroTemp.setPorcentagemTestesAutomaticos(porcentagemTestesAutomaticos);
-		roteiroTemp.setTempoLimiteTestes(tempoLimiteTestes);
-		roteiroTemp.setDiretorioInterface(diretorioInterface);
-		roteiroTemp.setDiretorioTestes(diretorioTestes);
-		roteiroTemp.setVersaoInterface(versaoInterface);
-		roteiroTemp.setVersaoTestes(versaoTestes);
-		periodoTemp.setSemestre("2010.2");
-		Roteiro roteiroCriado = facadeSistema.cadastrarRoteiro(roteiroTemp);
-		return roteiroCriado.getId();
+			Roteiro roteiroTemp = new Roteiro();
+			roteiroTemp.setPeriodo(facadeSistema.getPeriodo(periodoId));
+			Periodo periodoTemp = new Periodo();
+			periodoTemp.setId(0);
+			roteiroTemp.setNome(nome); 
+			roteiroTemp.setDescricao(descricao);
+			roteiroTemp.setDataLiberacao(easyCorrectionUtil.formataData(dataLiberacao));
+			roteiroTemp.setDataFinalEntrega(easyCorrectionUtil.formataData(dataFinalEntrega));
+			roteiroTemp.setDataFinalDiscussao(easyCorrectionUtil.formataData(dataFinalDiscussao));
+			roteiroTemp.setNumeroMaximoEnvios(numeroMaximoEnvios);
+			roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
+			roteiroTemp.setPorcentagemTestesAutomaticos(porcentagemTestesAutomaticos);
+			roteiroTemp.setTempoLimiteTestes(tempoLimiteTestes);
+			roteiroTemp.setDiretorioInterface(diretorioInterface);
+			roteiroTemp.setDiretorioTestes(diretorioTestes);
+			roteiroTemp.setVersaoInterface(versaoInterface);
+			roteiroTemp.setVersaoTestes(versaoTestes);
+			periodoTemp.setSemestre("2010.2");
+			Roteiro roteiroCriado = facadeSistema.cadastrarRoteiro(roteiroTemp);
+			return roteiroCriado.getId();
 	}
 
 	//EasyAcceptOK
