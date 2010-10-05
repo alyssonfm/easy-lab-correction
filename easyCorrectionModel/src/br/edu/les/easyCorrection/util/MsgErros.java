@@ -12,12 +12,12 @@ public enum MsgErros {
 	},
 	NOMEVAZIO {
 		public String msg(String... args) {
-			return args[0];
+			return ""+args[0];
 		}
 	},
 	VALORINVALIDO {
 		public String msg(String... args) {
-			return args[0];
+			return ""+args[0];
 		}
 	},
 	VALOR_DE_ATRIBUTO_INVALIDO{
