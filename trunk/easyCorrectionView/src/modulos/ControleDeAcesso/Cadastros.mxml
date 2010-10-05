@@ -29,7 +29,7 @@
 				<mx:Button x="387.5" y="132.5" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuarioAlt" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="244.5" y="132.5" label="   Atualizar" click="editarUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuarioAlt" height="28"/>
+				<mx:Button x="244.5" y="132.5" label="   Atualizar" click="verificaUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuarioAlt" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="12" y="11.5" text="Grupo:" id="labelGrupoUsuarioAlt"/>
@@ -134,6 +134,7 @@
 			private var primeiroCadastro: Boolean = false;
 			private var monitorLogado: Boolean = false;
 			private var senhaCadastrada: String = "";
+			private var senhaGerada: String = "";
 			
 			[Bindable]
 			private var mensagem:String;
@@ -511,12 +512,7 @@
 				primeiroCadastro = true;
 				usuario = new Usuario();
 				grupoUsuario = new GrupoUsuario();
-				if (currentState != "estadoProfessor"){
-					facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));
-				}
-				else{
-					facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuarioAlt.text));
-				}
+				verificaUsuario();
 			}
 			
 			private function getUsuarioPorLogin_result(event:ResultEvent): void{
@@ -525,7 +521,40 @@
 			}
 			
 			private function falhaUsuarioExistente(event:FaultEvent):void {
+				if(primeiroCadastro){
+					if (currentState != "estadoProfessor"){
+						if(inputSenhaUsuario.text.length == 0){
+							facade.getOperation("gerarSenha").send(6,"");		
+						}
+						else{
+							editarUsuario();
+						}
+					}else{
+						if(inputSenhaUsuarioAlt.text.length == 0){
+							facade.getOperation("gerarSenha").send(6,"");
+						}
+						else{
+							editarUsuario();
+						}
+					}
+				}
+				else{
+					editarUsuario();		
+				}
+			}
+			
+			private function gerarSenha_result(event:ResultEvent): void{
+				senhaGerada = event.result as String;
 				editarUsuario();
+			}
+			
+			private function verificaUsuario(): void{
+				if (currentState != "estadoProfessor"){
+					facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));
+				}
+				else{
+					facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuarioAlt.text));
+				}
 			}
 			
 			private function editarUsuario(): void{
@@ -544,7 +573,12 @@
 								usuario.senha = dgUsuarios.selectedItem.usuario.senha;
 							}	
 						}else{
-							usuario.senha = StringUtil.trim(inputSenhaUsuario.text);	
+							if(primeiroCadastro && inputSenhaUsuario.text.length == 0){
+								usuario.senha = senhaGerada;
+							}
+							else{
+								usuario.senha = StringUtil.trim(inputSenhaUsuario.text);
+							}	
 						}
 						usuario.login = StringUtil.trim(inputLoginUsuario.text);
 						usuario.nome = StringUtil.trim(inputNomeUsuario.text);
@@ -568,7 +602,12 @@
 								usuario.senha = dgUsuariosAlt.selectedItem.usuario.senha;
 							}	
 						}else{
-							usuario.senha = StringUtil.trim(inputSenhaUsuarioAlt.text);	
+							if(primeiroCadastro && inputSenhaUsuarioAlt.text.length == 0){
+								usuario.senha = senhaGerada;
+							}
+							else{
+								usuario.senha = StringUtil.trim(inputSenhaUsuarioAlt.text);
+							}	
 						}
 						usuario.login = StringUtil.trim(inputLoginUsuarioAlt.text);
 						usuario.nome = StringUtil.trim(inputNomeUsuarioAlt.text);
@@ -624,7 +663,7 @@
 			
 			private function envioEmails(grupoUsuarioP: GrupoUsuario):void {
 				if(senhaCadastrada == ""){
-					senhaCadastrada = grupoUsuarioP.usuario.login;
+					senhaCadastrada = senhaGerada;
 				}
 				mensagem = "<BR>Parabéns, você foi cadastrado no sistema Easy Lab Correction da disciplina Laboratório de Estrutura de Dados.</BR>" +
 						"<BR></BR>" +				
@@ -637,11 +676,11 @@
 						"<BR></BR>" +
 						"<BR>Atenciosamente,</BR>" +
 						"<BR>Easy Lab Correction</BR>";
-						
+				
 				mensagem = Util.geraCodigosHTML(mensagem);
 				contato = grupoUsuarioP.usuario.email;
 				nomeUsuario = grupoUsuarioP.usuario.nome;
-				//servicoEnviarEmail.send();
+				servicoEnviarEmail.send();
 				
 			}
 			
@@ -922,6 +961,7 @@
 		<mx:method name="excluirFuncao" result="excluirFuncao_result()" fault="falha(event)"/>
 		<mx:method name="excluirGrupo" result="excluirGrupo_result()" fault="falhaGrupo(event)"/>
 		<mx:method name="excluirUsuario" result="excluirGrupoUsuario_result()" fault="falhaRemove(event)"/>
+		<mx:method name="gerarSenha" result="gerarSenha_result(event)" fault="falha(event)"/>
 		
 	</mx:RemoteObject>
 	
@@ -1004,7 +1044,7 @@
 			<mx:Button x="243.5" y="132.5" label="   Salvar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuario" height="28" enabled="false"/>
 			<mx:Button x="100.5" y="132.5" label="   Novo" width="135" height="28" id="botaoNovoUsuario" click="mudaCadastrar()" icon="@Embed(source='../../image/novo.png')"/>
 			<mx:Button x="386.5" y="132.5" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuario" height="28"/>
-			<mx:Button x="243.5" y="132.5" label="   Atualizar" click="editarUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuario" height="28"/>
+			<mx:Button x="243.5" y="132.5" label="   Atualizar" click="verificaUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuario" height="28"/>
 			<mx:Label x="10" y="11.5" text="Grupo:" id="labelGrupoUsuario"/>
 			<mx:Label x="10" y="43" text="Nome:" id="labelNomeUsuario"/>
 			<mx:Label x="12" y="72.5" text="Login:" id="labelLoginUsuario"/>
