@@ -548,21 +548,25 @@
 			}
 			
 			private function verificaUsuario(): void{
-				if (currentState != "estadoProfessor"){
-					if(dgUsuarios.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
-						facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));	
+				try{
+					if (currentState != "estadoProfessor"){
+						if(dgUsuarios.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
+							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));	
+						}
+						else{
+							editarUsuario();		
+						}
 					}
 					else{
-						editarUsuario();		
+						if(dgUsuariosAlt.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
+							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuarioAlt.text));	
+						}
+						else{
+							editarUsuario();		
+						}
 					}
-				}
-				else{
-					if(dgUsuariosAlt.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
-						facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuarioAlt.text));	
-					}
-					else{
-						editarUsuario();		
-					}
+				}catch(e: Error){
+					editarUsuario();
 				}
 			}
 			
