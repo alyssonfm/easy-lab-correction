@@ -179,6 +179,11 @@ public class Sistema {
 	public Roteiro editarRoteiro(Roteiro roteiroTemp) throws EdicaoRoteiroException{
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
+	
+
+	public Roteiro bloquearRoteiro(Roteiro roteiroTemp) {
+		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp);
+	}
 
 	public void excluirRoteiro(Roteiro roteiro) {
 		gerenciadorRoteiros.excluirRoteiro(roteiro);
