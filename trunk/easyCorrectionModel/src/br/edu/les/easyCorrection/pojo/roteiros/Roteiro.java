@@ -13,112 +13,140 @@ public class Roteiro {
 	private Date dataLiberacao;
 	private Date dataFinalEntrega;
 	private Date dataFinalDiscussao;
+	private Integer numeroMaximoParticipantes;
 	private Integer numeroMaximoEnvios;
 	private double penalidadeDiasAtraso;
 	private double porcentagemTestesAutomaticos;
 	private Integer tempoLimiteTestes;
 	private String diretorioInterface;
 	private String diretorioTestes;
-	private String versaoInterface;
-	private String versaoTestes;
+	private boolean bloqueado;
 	
+	public Integer getNumeroMaximoParticipantes() {
+		return numeroMaximoParticipantes;
+	}
+	
+	public void setNumeroMaximoParticipantes(Integer numeroMaximoParticipantes) {
+		this.numeroMaximoParticipantes = numeroMaximoParticipantes;
+	}
+	
+	public boolean isBloqueado() {
+		return bloqueado;
+	}
+	
+	public void setBloqueado(boolean bloqueado) {
+		this.bloqueado = bloqueado;
+	}
 	
 	public Integer getId() {
 		return id;
 	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
 	public Periodo getPeriodo() {
 		return periodo;
 	}
+	
 	public void setPeriodo(Periodo periodo) {
 		this.periodo = periodo;
 	}
+	
 	public String getNome() {
 		return nome;
 	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
 	public String getDescricao() {
 		return descricao;
 	}
+	
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	
 	public Date getDataLiberacao() {
 		return dataLiberacao;
 	}
+	
 	public void setDataLiberacao(Date dataLiberacao) {
 		this.dataLiberacao = dataLiberacao;
 	}
+	
 	public Date getDataFinalEntrega() {
 		return dataFinalEntrega;
 	}
+	
 	public void setDataFinalEntrega(Date dataFinalEntrega) {
 		this.dataFinalEntrega = dataFinalEntrega;
 	}
+	
 	public Date getDataFinalDiscussao() {
 		return dataFinalDiscussao;
 	}
+	
 	public void setDataFinalDiscussao(Date dataFinalDiscussao) {
 		this.dataFinalDiscussao = dataFinalDiscussao;
 	}
+	
 	public Integer getNumeroMaximoEnvios() {
 		return numeroMaximoEnvios;
 	}
+	
 	public void setNumeroMaximoEnvios(Integer numeroMaximoEnvios) {
 		this.numeroMaximoEnvios = numeroMaximoEnvios;
 	}
+	
 	public double getPenalidadeDiasAtraso() {
 		return penalidadeDiasAtraso;
 	}
+	
 	public void setPenalidadeDiasAtraso(double penalidadeDiasAtraso) {
 		this.penalidadeDiasAtraso = penalidadeDiasAtraso;
 	}
+	
 	public double getPorcentagemTestesAutomaticos() {
 		return porcentagemTestesAutomaticos;
 	}
+	
 	public void setPorcentagemTestesAutomaticos(double porcentagemTestesAutomaticos) {
 		this.porcentagemTestesAutomaticos = porcentagemTestesAutomaticos;
 	}
+	
 	public Integer getTempoLimiteTestes() {
 		return tempoLimiteTestes;
 	}
+	
 	public void setTempoLimiteTestes(Integer tempoLimiteTestes) {
 		this.tempoLimiteTestes = tempoLimiteTestes;
 	}
+	
 	public String getDiretorioInterface() {
 		return diretorioInterface;
 	}
+	
 	public void setDiretorioInterface(String diretorioInterface) {
 		this.diretorioInterface = diretorioInterface;
 	}
+	
 	public String getDiretorioTestes() {
 		return diretorioTestes;
 	}
+	
 	public void setDiretorioTestes(String diretorioTestes) {
 		this.diretorioTestes = diretorioTestes;
 	}
-	public String getVersaoInterface() {
-		return versaoInterface;
-	}
-	public void setVersaoInterface(String versaoInterface) {
-		this.versaoInterface = versaoInterface;
-	}
-	public String getVersaoTestes() {
-		return versaoTestes;
-	}
-	public void setVersaoTestes(String versaoTestes) {
-		this.versaoTestes = versaoTestes;
-	}
-	
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (bloqueado ? 1231 : 1237);
 		result = prime
 				* result
 				+ ((dataFinalDiscussao == null) ? 0 : dataFinalDiscussao
@@ -142,6 +170,10 @@ public class Roteiro {
 				* result
 				+ ((numeroMaximoEnvios == null) ? 0 : numeroMaximoEnvios
 						.hashCode());
+		result = prime
+				* result
+				+ ((numeroMaximoParticipantes == null) ? 0
+						: numeroMaximoParticipantes.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(penalidadeDiasAtraso);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -152,12 +184,9 @@ public class Roteiro {
 				* result
 				+ ((tempoLimiteTestes == null) ? 0 : tempoLimiteTestes
 						.hashCode());
-		result = prime * result
-				+ ((versaoInterface == null) ? 0 : versaoInterface.hashCode());
-		result = prime * result
-				+ ((versaoTestes == null) ? 0 : versaoTestes.hashCode());
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -167,6 +196,8 @@ public class Roteiro {
 		if (getClass() != obj.getClass())
 			return false;
 		Roteiro other = (Roteiro) obj;
+		if (bloqueado != other.bloqueado)
+			return false;
 		if (dataFinalDiscussao == null) {
 			if (other.dataFinalDiscussao != null)
 				return false;
@@ -212,6 +243,12 @@ public class Roteiro {
 				return false;
 		} else if (!numeroMaximoEnvios.equals(other.numeroMaximoEnvios))
 			return false;
+		if (numeroMaximoParticipantes == null) {
+			if (other.numeroMaximoParticipantes != null)
+				return false;
+		} else if (!numeroMaximoParticipantes
+				.equals(other.numeroMaximoParticipantes))
+			return false;
 		if (Double.doubleToLongBits(penalidadeDiasAtraso) != Double
 				.doubleToLongBits(other.penalidadeDiasAtraso))
 			return false;
@@ -228,23 +265,6 @@ public class Roteiro {
 				return false;
 		} else if (!tempoLimiteTestes.equals(other.tempoLimiteTestes))
 			return false;
-		if (versaoInterface == null) {
-			if (other.versaoInterface != null)
-				return false;
-		} else if (!versaoInterface.equals(other.versaoInterface))
-			return false;
-		if (versaoTestes == null) {
-			if (other.versaoTestes != null)
-				return false;
-		} else if (!versaoTestes.equals(other.versaoTestes))
-			return false;
 		return true;
 	}
-	
-	
-	
-	
-	
-	
-
 }
