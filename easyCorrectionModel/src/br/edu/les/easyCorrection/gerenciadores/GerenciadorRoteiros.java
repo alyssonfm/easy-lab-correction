@@ -11,6 +11,11 @@ import br.edu.les.easyCorrection.util.MsgErros;
 
 public class GerenciadorRoteiros {
 
+	public final int TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT = 10000;
+	public final int NUMERO_MAXIMO_ENVIOS_DEFAULT = 3;
+	public final double PENALIDADE_DIA_ATRASO_DEFAULT = 0.5;
+	public final double PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT = 1;
+	
 	public Periodo getPeriodo(int periodoId){
 		return DAOFactory.DEFAULT.buildPeriodoDAO().getById(periodoId);
 	}
@@ -19,6 +24,28 @@ public class GerenciadorRoteiros {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(roteiroId);
 	}
 
+
+	/*
+	 * Pseudo codigo do metodo:
+	 * 	Pesquisa roteiro pelo nome (os nomes devem ser atributos únicos) - ver isso
+	 * 	Se já existir:
+	 * 		Pega o estado atual do objeto (criar metodo para dizer qual o estado)
+	 * 		
+	 * 		metodo_de_validacao_do_roteiro_estado_altera() // se passar dessa linha é um roteiro válido
+	 * 		OU
+	 * 		metodo_de_validacao_do_roteiro_estado_bloqueia() // se passar dessa linha é um roteiro válido
+	 * 		OU
+	 * 		metodo_de_validacao_do_roteiro_estado_fechado() // se passar dessa linha é um roteiro válido
+	 * 
+	 * 		save_changes()
+	 * 
+	 * 	Se não existir:
+	 * 		
+	 * 		metodo_de_validacao_do_roteiro_estado_cria() // se passar dessa linha é um roteiro válido
+	 * 		
+	 * 		save_changes() 		
+	 */
+	
 	@SuppressWarnings("deprecation")
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp) throws CriacaoRoteiroException {
 		Date dataAtual = new Date();
@@ -35,10 +62,10 @@ public class GerenciadorRoteiros {
 		else if(roteiroTemp.getNome() != null || roteiroTemp.getNome() != "" && !roteiroTemp.getDataLiberacao().before(dataAtual) || roteiroTemp.getDataLiberacao() != null 
 				&& roteiroTemp.getDataFinalEntrega() == dataAux 
 				&& roteiroTemp.getDataFinalDiscussao() == dataAux2
-				&& roteiroTemp.getNumeroMaximoEnvios() == 3
-				&& roteiroTemp.getPorcentagemTestesAutomaticos()==1
-				&& roteiroTemp.getPenalidadeDiasAtraso() == 0.5
-				&& roteiroTemp.getTempoLimiteTestes() == 10000){
+				&& roteiroTemp.getNumeroMaximoEnvios() == NUMERO_MAXIMO_ENVIOS_DEFAULT
+				&& roteiroTemp.getPorcentagemTestesAutomaticos()== PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
+				&& roteiroTemp.getPenalidadeDiasAtraso() == PENALIDADE_DIA_ATRASO_DEFAULT
+				&& roteiroTemp.getTempoLimiteTestes() == TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT){
 			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
 			System.out.println("Roteiro criado com sucesso");
 			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);			
@@ -66,11 +93,11 @@ public class GerenciadorRoteiros {
 				&& roteiroTemp.getDataFinalEntrega() != null 
 				&& roteiroTemp.getDataFinalDiscussao() != dataAux2
 				&& roteiroTemp.getDataFinalDiscussao() != null
-				&& roteiroTemp.getNumeroMaximoEnvios() != 3
+				&& roteiroTemp.getNumeroMaximoEnvios() != NUMERO_MAXIMO_ENVIOS_DEFAULT
 				&& roteiroTemp.getNumeroMaximoEnvios() != null
-				&& roteiroTemp.getPorcentagemTestesAutomaticos()!=1
-				&& roteiroTemp.getPenalidadeDiasAtraso() != 0.5
-				&& roteiroTemp.getTempoLimiteTestes() != 10000
+				&& roteiroTemp.getPorcentagemTestesAutomaticos()!= PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
+				&& roteiroTemp.getPenalidadeDiasAtraso() != PENALIDADE_DIA_ATRASO_DEFAULT
+				&& roteiroTemp.getTempoLimiteTestes() != TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT
 				&& roteiroTemp.getTempoLimiteTestes() != null
 				){
 			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
@@ -82,11 +109,11 @@ public class GerenciadorRoteiros {
 				&& roteiroTemp.getDataFinalEntrega() != null 
 				&& roteiroTemp.getDataFinalDiscussao() != dataAux2
 				&& roteiroTemp.getDataFinalDiscussao() != null
-				&& roteiroTemp.getNumeroMaximoEnvios() != 3
+				&& roteiroTemp.getNumeroMaximoEnvios() != NUMERO_MAXIMO_ENVIOS_DEFAULT
 				&& roteiroTemp.getNumeroMaximoEnvios() != null
-				&& roteiroTemp.getPorcentagemTestesAutomaticos()!=1
-				&& roteiroTemp.getPenalidadeDiasAtraso() != 0.5
-				&& roteiroTemp.getTempoLimiteTestes() != 10000
+				&& roteiroTemp.getPorcentagemTestesAutomaticos()!= PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
+				&& roteiroTemp.getPenalidadeDiasAtraso() != PENALIDADE_DIA_ATRASO_DEFAULT
+				&& roteiroTemp.getTempoLimiteTestes() != TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT
 				&& roteiroTemp.getTempoLimiteTestes() != null
 				&& (roteiroTemp.getDiretorioTestes() == null || roteiroTemp.getDiretorioTestes() == "")){
 			throw new CriacaoRoteiroException("Formato do Arquivo de Testes Automaticos nao eh .zip nem .java. O Roteiro nao pode ser criado/atualizado!");
@@ -96,11 +123,11 @@ public class GerenciadorRoteiros {
 				&& roteiroTemp.getDataFinalEntrega() != null 
 				&& roteiroTemp.getDataFinalDiscussao() != dataAux2
 				&& roteiroTemp.getDataFinalDiscussao() != null
-				&& roteiroTemp.getNumeroMaximoEnvios() != 3
+				&& roteiroTemp.getNumeroMaximoEnvios() != NUMERO_MAXIMO_ENVIOS_DEFAULT
 				&& roteiroTemp.getNumeroMaximoEnvios() != null
-				&& roteiroTemp.getPorcentagemTestesAutomaticos()!=1
-				&& roteiroTemp.getPenalidadeDiasAtraso() != 0.5
-				&& roteiroTemp.getTempoLimiteTestes() != 10000
+				&& roteiroTemp.getPorcentagemTestesAutomaticos()!= PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
+				&& roteiroTemp.getPenalidadeDiasAtraso() != PENALIDADE_DIA_ATRASO_DEFAULT
+				&& roteiroTemp.getTempoLimiteTestes() != TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT
 				&& roteiroTemp.getTempoLimiteTestes() != null
 				&& (roteiroTemp.getDiretorioInterface() == null || roteiroTemp.getDiretorioInterface() == "")){
 			throw new CriacaoRoteiroException("Formato do arquivo da interface deve ser .java. O Roteiro nao pode ser criado/atualizado!");
