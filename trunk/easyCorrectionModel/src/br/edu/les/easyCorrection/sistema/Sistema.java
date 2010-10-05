@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
+import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
@@ -173,6 +174,10 @@ public class Sistema {
 	
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp) throws CriacaoRoteiroException{
 		return gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
+	}
+	
+	public Roteiro editarRoteiro(Roteiro roteiroTemp) throws EdicaoRoteiroException{
+		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 
 	public void excluirRoteiro(Roteiro roteiro) {
