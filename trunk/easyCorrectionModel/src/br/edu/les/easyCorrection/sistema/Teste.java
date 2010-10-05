@@ -28,8 +28,8 @@ public class Teste {
 		r.setPeriodo(new Periodo());
 		r.setPorcentagemTestesAutomaticos(0.8);
 		r.setTempoLimiteTestes(1000);
-		r.setVersaoInterface("Versao 0");
-		r.setVersaoTestes("Versao 0");
+		r.setNumeroMaximoParticipantes(3);
+		r.setBloqueado(false);
 		facade.cadastrarRoteiro(r);
 		
 	}
