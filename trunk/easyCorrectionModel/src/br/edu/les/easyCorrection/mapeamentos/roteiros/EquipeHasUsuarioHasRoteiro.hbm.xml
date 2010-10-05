@@ -14,7 +14,7 @@
 
 		
 		<many-to-one name="equipe"	class="br.edu.les.easyCorrection.pojo.sistema.Equipe" column="equipe_id" cascade = "none" insert="false" update="false"/>
-		<many-to-one name="roteiro"	class="br.edu.les.easyCorrection.pojo.sistema.Roteiro" column="roteiro_id" cascade = "none" insert="false" update="false"/>
+		<many-to-one name="roteiro"	class="br.edu.les.easyCorrection.pojo.roteiros.Roteiro" column="roteiro_id" cascade = "none" insert="false" update="false"/>
 		<many-to-one name="usuario"	class="br.edu.les.easyCorrection.pojo.acesso.Usuario" column="usuario_id" cascade = "none" insert="false" update="false"/>
 		
 	</class>
