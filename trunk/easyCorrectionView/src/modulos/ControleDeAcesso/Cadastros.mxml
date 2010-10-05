@@ -549,10 +549,20 @@
 			
 			private function verificaUsuario(): void{
 				if (currentState != "estadoProfessor"){
-					facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));
+					if(dgUsuarios.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
+						facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));	
+					}
+					else{
+						editarUsuario();		
+					}
 				}
 				else{
-					facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuarioAlt.text));
+					if(dgUsuariosAlt.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
+						facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuarioAlt.text));	
+					}
+					else{
+						editarUsuario();		
+					}
 				}
 			}
 			
