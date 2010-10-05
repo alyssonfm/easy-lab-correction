@@ -66,64 +66,72 @@ public class GerenciadorRoteiros {
 		Date dataAux2 = roteiroTemp.getDataLiberacao();
 		dataAux.setDate(dataAux.getDate() + 7);
 		dataAux2.setDate(dataAux2.getDate() + 21);
+		
 		if (roteiroTemp.getNome() == "" || roteiroTemp.getNome() == null) {
 			throw new CriacaoRoteiroException(
 					MsgErros.NOMEVAZIO
-							.msg("Nome da atividade invalido. O Roteiro nao pode ser criado!"));
-		} else if (roteiroTemp.getDataLiberacao().before(dataAtual)
-				|| roteiroTemp.getDataLiberacao() == null) {
+							.msg("Nome da atividade inválido. O Roteiro não pôde ser criado!"));
+		} else if (roteiroTemp.getDataLiberacao() == null
+				|| roteiroTemp.getDataLiberacao().before(dataAtual)) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("Data de Liberacao invalida. O roteiro nao pode ser ser criado!"));
-		} else if (roteiroTemp.getNome() != null
-				|| roteiroTemp.getNome() != ""
-				&& !roteiroTemp.getDataLiberacao().before(dataAtual)
-				|| roteiroTemp.getDataLiberacao() != null
-				&& roteiroTemp.getDataFinalEntrega() == dataAux
-				&& roteiroTemp.getDataFinalDiscussao() == dataAux2
-				&& roteiroTemp.getNumeroMaximoEnvios() == NUMERO_MAXIMO_ENVIOS_DEFAULT
-				&& roteiroTemp.getPorcentagemTestesAutomaticos() == PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
-				&& roteiroTemp.getPenalidadeDiasAtraso() == PENALIDADE_DIA_ATRASO_DEFAULT
-				&& roteiroTemp.getTempoLimiteTestes() == TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT) {
-			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
-			System.out.println("Roteiro criado com sucesso");
-			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
-		} else if (roteiroTemp.getDataFinalEntrega().before(
-				roteiroTemp.getDataLiberacao())
-				|| roteiroTemp.getDataFinalEntrega() == null) {
+							.msg("Data de Liberação inválida. O roteiro não pôde ser ser criado!"));
+		} else if (roteiroTemp.getDataFinalEntrega() == null
+				|| roteiroTemp.getDataFinalEntrega().before(roteiroTemp.getDataLiberacao())) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("Data Limite para Entrega anterior a Data de Liberacao. O Roteiro nao pode ser criado/atualizado!"));
-		} else if (roteiroTemp.getDataFinalDiscussao().before(
-				roteiroTemp.getDataFinalEntrega())
-				|| roteiroTemp.getDataFinalDiscussao() == null) {
+							.msg("Data Limite para Entrega anterior à Data de Liberação. O Roteiro não pôde ser criado/atualizado!"));
+		} else if (roteiroTemp.getDataFinalDiscussao() == null 
+				|| roteiroTemp.getDataFinalDiscussao().before(roteiroTemp.getDataFinalEntrega())) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("Data Limite para Discussao anterior a Data Limite para Entrega. O Roteiro nao pode ser criado/atualizado!"));
-		} else if (roteiroTemp.getNumeroMaximoEnvios() <= 0
-				|| roteiroTemp.getNumeroMaximoEnvios() == null) {
+		} else if (roteiroTemp.getNumeroMaximoEnvios() == null || roteiroTemp.getNumeroMaximoEnvios() <= 0) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("O numero maximo de integrantes deve ser sempre maior ou igual a 1 integrante. O Roteiro nao pode ser criado/atualizado!"));
-		} else if (roteiroTemp.getNumeroMaximoEnvios() <= 0
-				|| roteiroTemp.getNumeroMaximoEnvios() == null) {
+		} else if (roteiroTemp.getNumeroMaximoEnvios() == null || roteiroTemp.getNumeroMaximoEnvios() <= 0) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("O numero maximo de envios deve ser sempre maior ou igual a 1. Roteiro nao pode ser criado/atualizado!"));
+							.msg("O número máximo de envios deve ser sempre maior ou igual a 1. Roteiro não pôde ser criado/atualizado!"));
 		} else if (roteiroTemp.getPenalidadeDiasAtraso() < 0.0
 				|| roteiroTemp.getPenalidadeDiasAtraso() > 10.0) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("A Penalidade por dia de atraso deve ser sempre maior ou igual a 0,0 e menor ou igual a 10,0. O Roteiro nao pode ser criado/atualizado!"));
-		} else if (roteiroTemp.getTempoLimiteTestes() < 0
+		}
+		else if((roteiroTemp.getNome() != null
+				|| roteiroTemp.getNome() != "")
+				&& (!roteiroTemp.getDataLiberacao().before(dataAtual)
+				|| roteiroTemp.getDataLiberacao() != null)
+				&& roteiroTemp.getDataFinalEntrega() != dataAux
+				&& roteiroTemp.getDataFinalEntrega() != null
+				&& roteiroTemp.getDataFinalDiscussao() != dataAux2
+				&& roteiroTemp.getDataFinalDiscussao() != null
+				&& roteiroTemp.getNumeroMaximoEnvios() >= 1
+				&& roteiroTemp.getNumeroMaximoEnvios() != null
+				&& (roteiroTemp.getPorcentagemTestesAutomaticos() < 0
+				|| roteiroTemp.getPorcentagemTestesAutomaticos() > 100)
+				&& roteiroTemp.getPenalidadeDiasAtraso() > 0.0
+				&& roteiroTemp.getPenalidadeDiasAtraso() > 10.0
+				&& roteiroTemp.getTempoLimiteTestes() >= 0
+				&& roteiroTemp.getTempoLimiteTestes() != null
+				){
+			throw new CriacaoRoteiroException(
+					MsgErros.VALORINVALIDO
+							.msg("Porcentagem automática da avaliação deve ser sempre >= 0 e <= 100. " +
+									"O Roteiro não pôde ser criado/atualizado!"));
+		}
+		
+		else if (roteiroTemp.getTempoLimiteTestes() < 0
 				|| roteiroTemp.getTempoLimiteTestes() == null) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("Time-limit de execução dos testes por método inválido, deve ser sempre >= 0. O Roteiro nao pode ser criado/atualizado!"));
-		} else if (roteiroTemp.getNome() != null
-				|| roteiroTemp.getNome() != ""
-				&& !roteiroTemp.getDataLiberacao().before(dataAtual)
-				|| roteiroTemp.getDataLiberacao() != null
+							.msg("Time-limit de execução dos testes por método inválido, deve ser sempre >= 0. O roteiro não pôde ser criado/atualizado!"));
+		} else if ((roteiroTemp.getNome() != null
+				|| roteiroTemp.getNome() != "")
+				&& (!roteiroTemp.getDataLiberacao().before(dataAtual)
+				|| roteiroTemp.getDataLiberacao() != null)
 				&& roteiroTemp.getDataFinalEntrega() != dataAux
 				&& roteiroTemp.getDataFinalEntrega() != null
 				&& roteiroTemp.getDataFinalDiscussao() != dataAux2
@@ -137,10 +145,10 @@ public class GerenciadorRoteiros {
 			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
 			System.out.println("Roteiro criado/atualizado com sucesso!");
 			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
-		} else if (roteiroTemp.getNome() != null
-				|| roteiroTemp.getNome() != ""
-				&& !roteiroTemp.getDataLiberacao().before(dataAtual)
-				|| roteiroTemp.getDataLiberacao() != null
+		} else if ((roteiroTemp.getNome() != null
+				|| roteiroTemp.getNome() != "")
+				&& (!roteiroTemp.getDataLiberacao().before(dataAtual)
+				|| roteiroTemp.getDataLiberacao() != null)
 				&& roteiroTemp.getDataFinalEntrega() != dataAux
 				&& roteiroTemp.getDataFinalEntrega() != null
 				&& roteiroTemp.getDataFinalDiscussao() != dataAux2
@@ -155,10 +163,10 @@ public class GerenciadorRoteiros {
 						.getDiretorioTestes() == "")) {
 			throw new CriacaoRoteiroException(
 					"Formato do Arquivo de Testes Automaticos nao eh .zip nem .java. O Roteiro nao pode ser criado/atualizado!");
-		} else if (roteiroTemp.getNome() != null
-				|| roteiroTemp.getNome() != ""
-				&& !roteiroTemp.getDataLiberacao().before(dataAtual)
-				|| roteiroTemp.getDataLiberacao() != null
+		} else if ((roteiroTemp.getNome() != null
+				|| roteiroTemp.getNome() != "")
+				&& (!roteiroTemp.getDataLiberacao().before(dataAtual)
+				|| roteiroTemp.getDataLiberacao() != null)
 				&& roteiroTemp.getDataFinalEntrega() != dataAux
 				&& roteiroTemp.getDataFinalEntrega() != null
 				&& roteiroTemp.getDataFinalDiscussao() != dataAux2
@@ -180,7 +188,24 @@ public class GerenciadorRoteiros {
 						|| roteiroTemp.getPorcentagemTestesAutomaticos() < 0 || roteiroTemp
 						.getPorcentagemTestesAutomaticos() > 100)) {
 			throw new CriacaoRoteiroException("Roteiro nao pode ser liberado");
-		} else {
+		}
+		
+		else if ((roteiroTemp.getNome() != null
+			|| roteiroTemp.getNome() != "")
+			&& (!roteiroTemp.getDataLiberacao().before(dataAtual)
+			|| roteiroTemp.getDataLiberacao() != null)
+			&& roteiroTemp.getDataFinalEntrega() == dataAux
+			&& roteiroTemp.getDataFinalDiscussao() == dataAux2
+			&& roteiroTemp.getNumeroMaximoEnvios() == NUMERO_MAXIMO_ENVIOS_DEFAULT
+			&& roteiroTemp.getPorcentagemTestesAutomaticos() == PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
+			&& roteiroTemp.getPenalidadeDiasAtraso() == PENALIDADE_DIA_ATRASO_DEFAULT
+			&& roteiroTemp.getTempoLimiteTestes() == TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT) {
+			
+			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
+			System.out.println("Roteiro criado com sucesso");
+			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
+		
+		}else {
 			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
 			System.out.println("Roteiro criado/atualizado com sucesso!");
 			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
@@ -266,5 +291,5 @@ public class GerenciadorRoteiros {
 	public boolean validaRoteiroEstadoFechado(Roteiro roteiro) {
 		return true;
 	}
-
+	
 }
