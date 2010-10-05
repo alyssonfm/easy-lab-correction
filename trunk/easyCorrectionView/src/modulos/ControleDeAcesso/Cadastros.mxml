@@ -593,7 +593,8 @@
 							if(StringUtil.trim(inputSenhaUsuario.text) != ""){
 								usuario.senha = StringUtil.trim(inputSenhaUsuario.text);
 							}else{
-								usuario.senha = dgUsuarios.selectedItem.usuario.senha;
+								if(primeiroCadastro) usuario.senha = senhaGerada;
+								else usuario.senha = dgUsuarios.selectedItem.usuario.senha;
 							}	
 						}else{
 							if(primeiroCadastro && inputSenhaUsuario.text.length == 0){
@@ -622,7 +623,8 @@
 							if(StringUtil.trim(inputSenhaUsuarioAlt.text) != ""){
 								usuario.senha = StringUtil.trim(inputSenhaUsuarioAlt.text);
 							}else{
-								usuario.senha = dgUsuariosAlt.selectedItem.usuario.senha;
+								if(primeiroCadastro) usuario.senha = senhaGerada;
+								else usuario.senha = dgUsuariosAlt.selectedItem.usuario.senha;
 							}	
 						}else{
 							if(primeiroCadastro && inputSenhaUsuarioAlt.text.length == 0){
