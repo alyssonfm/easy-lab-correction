@@ -97,7 +97,7 @@ public class FacadeTestUS3Acceptance {
 		roteiroTemp.setDiretorioTestes(diretorioTestes);
 		roteiroTemp.setVersaoInterface(versaoInterface);
 		roteiroTemp.setVersaoTestes(versaoTestes);
-		Roteiro rotAtualizado = facadeSistema.cadastrarRoteiro(roteiroTemp);
+		Roteiro rotAtualizado = facadeSistema.editarRoteiro(roteiroTemp);
 		return rotAtualizado.getId();
 	}
 

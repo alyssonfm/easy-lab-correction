@@ -360,6 +360,15 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public Roteiro editarRoteiro(Roteiro roteiro) throws Throwable{
+		try {
+			return sistema.editarRoteiro(roteiro);
+		} catch (Throwable e) {
+			log.error("cadastrarRoteiro()", e);
+			throw e;
+		}
+	}
 
 	public Roteiro getRoteiro(int idRoteiro) throws Throwable {
 		try {
