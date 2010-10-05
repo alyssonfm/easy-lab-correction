@@ -370,6 +370,16 @@ public class Facade {
 		}
 	}
 
+
+	public Roteiro bloquearRoteiro(Roteiro roteiro) throws Throwable {
+		try {
+			return sistema.bloquearRoteiro(roteiro);
+		} catch (Throwable e) {
+			log.error("getRoteiro()", e);
+			throw e;
+		}
+	}
+	
 	public Roteiro getRoteiro(int idRoteiro) throws Throwable {
 		try {
 			return sistema.getRoteiro(idRoteiro);
