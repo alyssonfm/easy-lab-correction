@@ -140,7 +140,7 @@ public class Sistema {
 		return gerenciadorAcesso.getGrupoPorNome(nome);
 	}
 	
-	/*---------------------------------------------------------------------------------*/
+	/*-------------------------------------- USUARIOS -------------------------------------------*/
 	
 	public Usuario atualizarUsuario(Usuario usuario) throws EasyCorrectionException{
 		return gerenciadorAcesso.atualizarUsuario(usuario);
