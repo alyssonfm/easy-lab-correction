@@ -40,8 +40,8 @@ public class FacadeTestUS3Acceptance {
 								int tempoLimiteTestes,
 								String diretorioInterface,
 								String diretorioTestes,
-								String versaoInterface,
-								String versaoTestes) throws Throwable{
+								int numeroMaximoParticipantes,
+								boolean bloqueado) throws Throwable{
 			Roteiro roteiroTemp = new Roteiro();
 			roteiroTemp.setPeriodo(facadeSistema.getPeriodo(periodoId));
 			Periodo periodoTemp = new Periodo();
@@ -57,8 +57,8 @@ public class FacadeTestUS3Acceptance {
 			roteiroTemp.setTempoLimiteTestes(tempoLimiteTestes);
 			roteiroTemp.setDiretorioInterface(diretorioInterface);
 			roteiroTemp.setDiretorioTestes(diretorioTestes);
-			roteiroTemp.setVersaoInterface(versaoInterface);
-			roteiroTemp.setVersaoTestes(versaoTestes);
+			roteiroTemp.setNumeroMaximoParticipantes(numeroMaximoParticipantes);
+			roteiroTemp.setBloqueado(bloqueado);
 			periodoTemp.setSemestre("2010.2");
 			Roteiro roteiroCriado = facadeSistema.cadastrarRoteiro(roteiroTemp);
 			return roteiroCriado.getId();
@@ -78,8 +78,8 @@ public class FacadeTestUS3Acceptance {
 							 int tempoLimiteTestes,
 							 String diretorioInterface,
 							 String diretorioTestes,
-							 String versaoInterface,
-							 String versaoTestes) throws Throwable {
+							 int numeroMaximoParticipantes,
+							 boolean bloqueado) throws Throwable {
 		
 		Roteiro roteiroTemp = facadeSistema.getRoteiro(roteiroId);
 		roteiroTemp.setId(roteiroId);
@@ -95,8 +95,8 @@ public class FacadeTestUS3Acceptance {
 		roteiroTemp.setTempoLimiteTestes(tempoLimiteTestes);
 		roteiroTemp.setDiretorioInterface(diretorioInterface);
 		roteiroTemp.setDiretorioTestes(diretorioTestes);
-		roteiroTemp.setVersaoInterface(versaoInterface);
-		roteiroTemp.setVersaoTestes(versaoTestes);
+		roteiroTemp.setNumeroMaximoParticipantes(numeroMaximoParticipantes);
+		roteiroTemp.setBloqueado(bloqueado);
 		Roteiro rotAtualizado = facadeSistema.editarRoteiro(roteiroTemp);
 		return rotAtualizado.getId();
 	}
