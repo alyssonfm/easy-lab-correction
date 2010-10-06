@@ -5,10 +5,12 @@ import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.MsgErros;
+import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 
 public class GerenciadorRoteiros {
 
@@ -94,7 +96,7 @@ public class GerenciadorRoteiros {
 	 * save_changes()
 	 */
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
-			throws EdicaoRoteiroException {
+			throws EasyCorrectionException {
 
 		int estadoAtualRoteiro = computaEstadoRoteiro(roteiroTemp);
 
@@ -114,9 +116,11 @@ public class GerenciadorRoteiros {
 			throw new EdicaoRoteiroException(MsgErros.OPER_NAO_REALIZADA
 					.msg("A edicao do roteiro nao pôde ser realizada!"));
 		}
-
-		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
-		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
+		Roteiro r = DAOFactory.DEFAULT.buildRoteiroDAO().getById(roteiroTemp.getId());
+		r = (Roteiro)SwapperAtributosReflect.swapObject(r, roteiroTemp, Roteiro.class);
+		DAOFactory.DEFAULT.buildRoteiroDAO().update(r);
+		roteiroTemp.setId(r.getId());
+		return roteiroTemp;
 	}
 
 	private int computaEstadoRoteiro(Roteiro roteiroTemp) {
