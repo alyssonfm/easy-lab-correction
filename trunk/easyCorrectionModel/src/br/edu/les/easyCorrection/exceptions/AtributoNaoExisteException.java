@@ -1,17 +1,17 @@
 package br.edu.les.easyCorrection.exceptions;
 
-public class AtributoNaoExisteExeption extends RuntimeException {
+public class AtributoNaoExisteException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public AtributoNaoExisteExeption() {
+	public AtributoNaoExisteException() {
 		super();
 	}
 
-	public AtributoNaoExisteExeption(String msg) {
+	public AtributoNaoExisteException(String msg) {
 		super(msg);
 	}
 
