@@ -127,8 +127,7 @@
 			<mx:method name="getRoteiros" result="getRoteiros_result(event)" fault="falha(event)"/>
 		</mx:RemoteObject>
 		<mx:Button x="298.05" y="10" click="criaRoteiro()" label="   Novo Roteiro" width="183.9" icon="@Embed(source='../../image/novo.png')" height="28" id="botaoNovoRoteiro" cornerRadius="20"/>
-		<mx:Button x="298" y="456" click="salvarAgendamento()" label="   Salvar Agenda" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSalvarAgenda"/>
-		<mx:DataGrid x="10" y="46" width="760" height="402" id="dg_agenda" labelFunction="labelGrid" itemClick="chamaEditarRoteiro()">
+		<mx:DataGrid x="10" y="46" width="760" height="438" id="dg_agenda" labelFunction="labelGrid" itemClick="chamaEditarRoteiro()">
 			<mx:columns>
 				<mx:DataGridColumn headerText="Roteiro" width="80"/>
 				<mx:DataGridColumn headerText="Data de Liberação" width="80"/>
