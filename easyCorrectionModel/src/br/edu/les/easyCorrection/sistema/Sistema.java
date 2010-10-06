@@ -176,6 +176,10 @@ public class Sistema {
 		return gerenciadorRoteiros.getRoteiro(roteiroId);
 	}
 	
+	public List<Roteiro> getRoteiros(){
+		return gerenciadorRoteiros.getRoteiros();
+	}
+	
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp) throws CriacaoRoteiroException{
 		return gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
 	}
