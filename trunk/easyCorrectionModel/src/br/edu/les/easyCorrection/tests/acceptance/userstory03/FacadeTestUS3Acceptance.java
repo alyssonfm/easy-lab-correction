@@ -98,6 +98,11 @@ public class FacadeTestUS3Acceptance {
 		Roteiro rotAtualizado = facadeSistema.editarRoteiro(roteiroTemp);
 		return rotAtualizado.getId();
 	}
+	
+	//EasyAcceptOK
+	public void bloquearRoteiro(int roteiroId) throws Throwable {
+		facadeSistema.bloquearRoteiro(facadeSistema.getRoteiro(roteiroId));
+	}
 
 	//EasyAcceptOK
 	public void excluirRoteiro(int idRoteiro) throws Throwable {
