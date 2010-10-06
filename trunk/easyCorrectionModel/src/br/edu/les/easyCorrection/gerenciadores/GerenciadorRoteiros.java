@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
+import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
-import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.MsgErros;
-import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 
 public class GerenciadorRoteiros {
 
@@ -19,44 +19,44 @@ public class GerenciadorRoteiros {
 	public final double PENALIDADE_DIA_ATRASO_DEFAULT = 0.5;
 	public final double PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT = 1;
 
-	/*
-	 * Estado anterior a criacao de um roteiro
-	 */
-	public final int ROTEIRO_EM_CRIACAO = 10;
+	public final int ESTADO_INEXISTENTE = 0;
 	/*
 	 * Estado posterior a criacao do roteiro, mas anterior a data de liberacao
 	 * deste
 	 */
-	public final int ROTEIRO_EM_ALTERACAO = 20;
+	public final int ROTEIRO_CRIADO = 1;
 	/*
 	 * Estado posterior a data de liberacao do roteiro, mas anterior a data de
 	 * fechamento (entrega) deste
 	 */
-	public final int ROTEIRO_LIBERADO = 30;
+	public final int ROTEIRO_LIBERADO = 2;
 	/*
 	 * Estado posterior a data de entrega do roteiro
 	 */
-	public final int ROTEIRO_FECHADO = 40;
+	public final int ROTEIRO_FECHADO = 3;
+
 	/*
-	 * Estado provisorio do roteiro, pode acontecer a qualquer momento apos a
-	 * criacao deste. Esse estado eh totalmente equivalente ao
-	 * ROTEIRO_EM_ALTERACAO
+	 * String a qual receberah o nome do metodo chamado: - Se foi
+	 * cadastraRoteiro, recebe "criado" - Se foi editaRoteiro, recebe
+	 * "atualizado"
+	 * 
+	 * Isso permite-nos reusar o codigo de validacao dos roteiros
 	 */
-	public final int ROTEIRO_BLOQUEADO = 50;
+	String criacaoOuAtualizacaoMsg = "NULL";
 
 	public Periodo getPeriodo(int periodoId) {
 		return DAOFactory.DEFAULT.buildPeriodoDAO().getById(periodoId);
 	}
-	
+
 	public List<Periodo> getPeriodoAtual() {
 		return DAOFactory.DEFAULT.buildPeriodoDAO().findAll();
 	}
-	
+
 	public Roteiro getRoteiro(int roteiroId) {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(roteiroId);
 	}
-	
-	public List<Roteiro> getRoteiros(){
+
+	public List<Roteiro> getRoteiros() {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().findAll();
 	}
 
@@ -67,218 +67,274 @@ public class GerenciadorRoteiros {
 	public List<Roteiro> listarRoteiros() {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().findAll();
 	}
-	
+
 	/*
 	 * Pseudo codigo do metodo:
 	 * 
-	 * valida_roteiro_antes_da_cria
-	 * 		save_changes()
-	 * exception
+	 * valida_roteiro_antes_da_cria save_changes() exception
 	 */
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
-			throws CriacaoRoteiroException {
-		if (validaRoteiroEstadoCriacao(roteiroTemp)) {
+			throws CriacaoRoteiroException, CampoVazioException {
+
+		this.criacaoOuAtualizacaoMsg = "atualizado";
+
+		if (validaRoteiroEmCriacao(roteiroTemp)) {
+			// As frases de sucesso são implementadas na GUI, por isso mantemos
+			// essa flag aqui. Para termos uma certeza de que, mesmo sem gui, o
+			// roteiro foi criado com sucesso
+			System.out.println("Roteiro criado com sucesso!");
+
 			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
 			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
-		}
-		else{
-			throw new CriacaoRoteiroException("Roteiro nao pode ser criado") ;
+		} else {
+			throw new CriacaoRoteiroException("Roteiro não pôde ser criado");
 		}
 	}
 
-	/*
-	 * Pega o estado atual do objeto (criar metodo para dizer qual o estado)
-	 * 
-	 * metodo_de_validacao_do_roteiro_estado_altera() OU
-	 * metodo_de_validacao_do_roteiro_estado_bloqueia() OU
-	 * metodo_de_validacao_do_roteiro_estado_fechado()
-	 * 
-	 * save_changes()
-	 */
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
-			throws EasyCorrectionException {
+			throws EdicaoRoteiroException, CampoVazioException {
 
 		int estadoAtualRoteiro = computaEstadoRoteiro(roteiroTemp);
+		this.criacaoOuAtualizacaoMsg = "atualizado";
 
-		if (estadoAtualRoteiro == ROTEIRO_EM_ALTERACAO) {
-			if (validaRoteiroEstadoAlteracao(roteiroTemp)) {
-				// ...
+		if (estadoAtualRoteiro == ROTEIRO_CRIADO) {
+			if (validaRoteiroEstadoCriado(roteiroTemp)) {
+				// OK, passou pelos casos de excecao, pode seguir em frente! =)
 			}
 		} else if (estadoAtualRoteiro == ROTEIRO_LIBERADO) {
-			if (validaRoteiroEstadoLiberado(roteiroTemp)) {
-				// ...
+			if (validaRoteiroEstadoLiberado(roteiroTemp)
+					&& validaRoteiroEstadoCriado(roteiroTemp)) {
+				// OK, passou pelos casos de excecao, pode seguir em frente! =)
 			}
 		} else if (estadoAtualRoteiro == ROTEIRO_FECHADO) {
 			if (validaRoteiroEstadoFechado(roteiroTemp)) {
-				// ...
+				// Nunca deve chegar aqui! Caso chegue...
+				throw new EdicaoRoteiroException(
+						"Roteiros fechados não podem ser editados!");
 			}
 		} else {
 			throw new EdicaoRoteiroException(MsgErros.OPER_NAO_REALIZADA
-					.msg("A edicao do roteiro nao pôde ser realizada!"));
+					.msg("A edição do roteiro não pôde ser realizada!"));
 		}
-		Roteiro r = DAOFactory.DEFAULT.buildRoteiroDAO().getById(roteiroTemp.getId());
-		r = (Roteiro)SwapperAtributosReflect.swapObject(r, roteiroTemp, Roteiro.class);
-		DAOFactory.DEFAULT.buildRoteiroDAO().update(r);
-		roteiroTemp.setId(r.getId());
-		return roteiroTemp;
+
+		// As frases de sucesso são implementadas na GUI, por isso mantemos
+		// essa flag aqui. Para termos uma certeza de que, mesmo sem gui, o
+		// roteiro foi atualizado com sucesso
+		System.out.println("Roteiro atualizado com sucesso!");
+
+		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
+		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
 	}
 
 	private int computaEstadoRoteiro(Roteiro roteiroTemp) {
 		Date dataAtual = new Date();
-		if (dataAtual.before(roteiroTemp.getDataLiberacao())) {
-			return ROTEIRO_EM_ALTERACAO;
+		if (roteiroTemp.isBloqueado()
+				|| dataAtual.before(roteiroTemp.getDataLiberacao())) {
+			return ROTEIRO_CRIADO;
 		} else if (dataAtual.after(roteiroTemp.getDataLiberacao())
 				&& dataAtual.before(roteiroTemp.getDataFinalEntrega())) {
 			return ROTEIRO_LIBERADO;
 		} else if (dataAtual.after(roteiroTemp.getDataFinalEntrega())) {
 			return ROTEIRO_FECHADO;
 		} else {
-			return 0;
+			return ESTADO_INEXISTENTE;
 		}
 	}
 
-	public Roteiro bloquearRoteiro(Roteiro roteiroTemp) {
-		// modifica o estado atual do roteiro para BLOQUEADO
-		return null;
+	/*
+	 * REVER ISSO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 */
+	public Roteiro bloquearRoteiro(Roteiro roteiro) {
+
+		// Apenas para garantias que houve sucesso
+		System.out.println("Roteiro " + roteiro.getNome()
+				+ " bloqueado com sucesso!");
+
+		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
+		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
+	}
+
+	public Roteiro liberarRoteiro(Roteiro roteiro)
+			throws LiberaRoteiroException {
+
+		Date dataAtual = new Date();
+
+		if (roteiro.getDataLiberacao().equals(dataAtual)
+				&& (roteiro.getDiretorioInterface() == null
+						|| roteiro.getNumeroMaximoParticipantes() <= 0
+						|| roteiro.getNumeroMaximoEnvios() <= 0 || ((roteiro
+						.getPorcentagemTestesAutomaticos() > 0 || roteiro
+						.getPorcentagemTestesAutomaticos() <= 100) && roteiro
+						.getDiretorioTestes() == null))) {
+			throw new LiberaRoteiroException(
+					"Roteiro "
+							+ roteiro.getNome()
+							+ " não pôde ser liberado! Roteiro não pôde ser liberado na data "
+							+ roteiro.getDataLiberacao()
+							+ ", devido a falhas em sua especificação."
+							+ System.getProperty("line.separator")
+							+ "Ver descrição do roteiro aqui <link>."
+							+ System.getProperty("line.separator")
+							+ System.getProperty("line.separator")
+							+ "Easy Lab Correction");
+		} else if (roteiro.isBloqueado()) {
+			throw new LiberaRoteiroException("Roteiro bloquado para liberação!");
+		}
+
+		else {
+
+			// Apenas para garantias que houve sucesso
+			System.out.println("Roteiro " + roteiro.getNome()
+					+ " liberado com sucesso!");
+
+			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
+			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
+		}
 	}
 
 	/*
 	 * Metodos de validacao de Roteiros
 	 */
 
-	public boolean validaRoteiroEstadoCriacao(Roteiro roteiroTemp)
-			throws CriacaoRoteiroException {
+	public boolean validaRoteiroEmCriacao(Roteiro roteiro)
+			throws CriacaoRoteiroException, CampoVazioException {
+
 		Date dataAtual = new Date();
-		Date dataAux = roteiroTemp.getDataLiberacao();
-		Date dataAux2 = roteiroTemp.getDataLiberacao();
-		dataAux.setDate(dataAux.getDate() + 7);
-		dataAux2.setDate(dataAux2.getDate() + 21);
-		if (roteiroTemp.getNome() == "" || roteiroTemp.getNome() == null) {
-			throw new CriacaoRoteiroException(
-					MsgErros.NOMEVAZIO
-							.msg("Nome da atividade invalido. O Roteiro nao pode ser criado!"));
-		} else if (roteiroTemp.getDataLiberacao().before(dataAtual)
-				|| roteiroTemp.getDataLiberacao() == null) {
-			throw new CriacaoRoteiroException(
-					MsgErros.VALORINVALIDO
-							.msg("Data de Liberacao invalida. O roteiro nao pode ser ser criado!"));
-		} else if (roteiroTemp.getNome() != null
-				|| roteiroTemp.getNome() != ""
-				&& !roteiroTemp.getDataLiberacao().before(dataAtual)
-				|| roteiroTemp.getDataLiberacao() != null
-				&& roteiroTemp.getDataFinalEntrega() == dataAux
-				&& roteiroTemp.getDataFinalDiscussao() == dataAux2
-				&& roteiroTemp.getNumeroMaximoEnvios() == NUMERO_MAXIMO_ENVIOS_DEFAULT
-				&& roteiroTemp.getPorcentagemTestesAutomaticos() == PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
-				&& roteiroTemp.getPenalidadeDiasAtraso() == PENALIDADE_DIA_ATRASO_DEFAULT
-				&& roteiroTemp.getTempoLimiteTestes() == TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT) {
-			return true;
-		} else if (roteiroTemp.getDataFinalEntrega().before(
-				roteiroTemp.getDataLiberacao())
-				|| roteiroTemp.getDataFinalEntrega() == null) {
+
+		// Teste inicial para atributos nulos
+		if (roteiro.getNome() == null || roteiro.getDataLiberacao() == null
+				|| roteiro.getDescricao() == null
+				|| roteiro.getDataFinalEntrega() == null
+				|| roteiro.getDataFinalDiscussao() == null
+				|| roteiro.getNumeroMaximoParticipantes() == null
+				|| roteiro.getNumeroMaximoEnvios() == null
+				|| roteiro.getTempoLimiteTestes() == null
+				|| roteiro.getDiretorioTestes() == null
+				|| roteiro.getDiretorioInterface() == null) {
+			throw new CampoVazioException("Atributos nulos!");
+		}
+
+		if (roteiro.getNome() == "") {
+			throw new CriacaoRoteiroException(MsgErros.NOMEVAZIO
+					.msg("Nome da atividade invalido. O Roteiro nao pode ser "
+							+ criacaoOuAtualizacaoMsg + "!"));
+
+		} else if (roteiro.getDataLiberacao().before(dataAtual)) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("Data Limite para Entrega anterior a Data de Liberacao. O Roteiro nao pode ser criado!"));
-		} else if (roteiroTemp.getDataFinalDiscussao().before(
-				roteiroTemp.getDataFinalEntrega())
-				|| roteiroTemp.getDataFinalDiscussao() == null) {
+							.msg("Data de Libeção inválida. O roteiro nao pôde ser ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+		} else if (roteiro.getDataFinalEntrega().before(
+				roteiro.getDataLiberacao())) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("Data Limite para Discussao anterior a Data Limite para Entrega. O Roteiro nao pode ser criado!"));
-		} else if (roteiroTemp.getNumeroMaximoEnvios() <= 0
-				|| roteiroTemp.getNumeroMaximoEnvios() == null) {
+							.msg("Data Limite para Entrega anterior à Data de Liberação. O Roteiro não pôde ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+		} else if (roteiro.getDataFinalDiscussao().before(
+				roteiro.getDataFinalEntrega())) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("O numero maximo de integrantes deve ser sempre maior ou igual a 1 integrante. O Roteiro nao pode ser criado/atualizado!"));
-		} else if (roteiroTemp.getNumeroMaximoEnvios() <= 0
-				|| roteiroTemp.getNumeroMaximoEnvios() == null) {
+							.msg("Data Limite para Discussao anterior à Data Limite para Entrega. O Roteiro não pôde ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+		} else if (roteiro.getNumeroMaximoParticipantes() <= 0) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("O numero maximo de envios deve ser sempre maior ou igual a 1. Roteiro nao pode ser criado!"));
-		} else if (roteiroTemp.getPenalidadeDiasAtraso() < 0.0
-				|| roteiroTemp.getPenalidadeDiasAtraso() > 10.0) {
+							.msg("O número máximo de integrantes deve ser sempre maior ou igual a 1 integrante. O Roteiro não pôde ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+		} else if (roteiro.getNumeroMaximoEnvios() <= 0) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("A Penalidade por dia de atraso deve ser sempre maior ou igual a 0,0 e menor ou igual a 10,0. O Roteiro nao pode ser criado!"));
-		} else if (roteiroTemp.getTempoLimiteTestes() < 0
-				|| roteiroTemp.getTempoLimiteTestes() == null) {
+							.msg("O número máximo de envios deve ser sempre maior ou igual a 1. O Roteiro não pôde ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+		} else if (roteiro.getPenalidadeDiasAtraso() < 0.0
+				|| roteiro.getPenalidadeDiasAtraso() > 10.0) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("Time-limit de execução dos testes por método inválido, deve ser sempre >= 0. O Roteiro nao pode ser criado/atualizado!"));
-		} else if (roteiroTemp.getNome() != null
-				|| roteiroTemp.getNome() != ""
-				&& !roteiroTemp.getDataLiberacao().before(dataAtual)
-				|| roteiroTemp.getDataLiberacao() != null
-				&& roteiroTemp.getDataFinalEntrega() != dataAux
-				&& roteiroTemp.getDataFinalEntrega() != null
-				&& roteiroTemp.getDataFinalDiscussao() != dataAux2
-				&& roteiroTemp.getDataFinalDiscussao() != null
-				&& roteiroTemp.getNumeroMaximoEnvios() != NUMERO_MAXIMO_ENVIOS_DEFAULT
-				&& roteiroTemp.getNumeroMaximoEnvios() != null
-				&& roteiroTemp.getPorcentagemTestesAutomaticos() != PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
-				&& roteiroTemp.getPenalidadeDiasAtraso() != PENALIDADE_DIA_ATRASO_DEFAULT
-				&& roteiroTemp.getTempoLimiteTestes() != TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT
-				&& roteiroTemp.getTempoLimiteTestes() != null) {
-			return true;
-		} else if (roteiroTemp.getNome() != null
-				|| roteiroTemp.getNome() != ""
-				&& !roteiroTemp.getDataLiberacao().before(dataAtual)
-				|| roteiroTemp.getDataLiberacao() != null
-				&& roteiroTemp.getDataFinalEntrega() != dataAux
-				&& roteiroTemp.getDataFinalEntrega() != null
-				&& roteiroTemp.getDataFinalDiscussao() != dataAux2
-				&& roteiroTemp.getDataFinalDiscussao() != null
-				&& roteiroTemp.getNumeroMaximoEnvios() != NUMERO_MAXIMO_ENVIOS_DEFAULT
-				&& roteiroTemp.getNumeroMaximoEnvios() != null
-				&& roteiroTemp.getPorcentagemTestesAutomaticos() != PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
-				&& roteiroTemp.getPenalidadeDiasAtraso() != PENALIDADE_DIA_ATRASO_DEFAULT
-				&& roteiroTemp.getTempoLimiteTestes() != TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT
-				&& roteiroTemp.getTempoLimiteTestes() != null
-				&& (roteiroTemp.getDiretorioTestes() == null || roteiroTemp
-						.getDiretorioTestes() == "")) {
+							.msg("A Penalidade por dia de atraso deve ser sempre maior ou igual a 0,0 e menor ou igual a 10,0. O Roteiro não pôde ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+		} else if (roteiro.getPorcentagemTestesAutomaticos() < 0
+				|| roteiro.getPorcentagemTestesAutomaticos() > 1) {
 			throw new CriacaoRoteiroException(
-					"Formato do Arquivo de Testes Automaticos nao eh .zip nem .java. O Roteiro nao pode ser criado!");
-		} else if (roteiroTemp.getNome() != null
-				|| roteiroTemp.getNome() != ""
-				&& !roteiroTemp.getDataLiberacao().before(dataAtual)
-				|| roteiroTemp.getDataLiberacao() != null
-				&& roteiroTemp.getDataFinalEntrega() != dataAux
-				&& roteiroTemp.getDataFinalEntrega() != null
-				&& roteiroTemp.getDataFinalDiscussao() != dataAux2
-				&& roteiroTemp.getDataFinalDiscussao() != null
-				&& roteiroTemp.getNumeroMaximoEnvios() != NUMERO_MAXIMO_ENVIOS_DEFAULT
-				&& roteiroTemp.getNumeroMaximoEnvios() != null
-				&& roteiroTemp.getPorcentagemTestesAutomaticos() != PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
-				&& roteiroTemp.getPenalidadeDiasAtraso() != PENALIDADE_DIA_ATRASO_DEFAULT
-				&& roteiroTemp.getTempoLimiteTestes() != TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT
-				&& roteiroTemp.getTempoLimiteTestes() != null
-				&& (roteiroTemp.getDiretorioInterface() == null || roteiroTemp
-						.getDiretorioInterface() == "")) {
+					MsgErros.VALORINVALIDO
+							.msg("A Porcentagem automática por dia de atraso deve ser sempre maior ou igual a 0 e menor ou igual a 1. O Roteiro não pôde ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+		} else if (roteiro.getTempoLimiteTestes() < 0) {
 			throw new CriacaoRoteiroException(
-					"Formato do arquivo da interface deve ser .java. O Roteiro nao pode ser criado!");
-		} else if (roteiroTemp.getDataLiberacao() == dataAtual
-				&& (roteiroTemp.getDiretorioInterface() == null
-						|| roteiroTemp.getNumeroMaximoEnvios() <= 0
-						|| roteiroTemp.getDiretorioInterface() == null
-						|| roteiroTemp.getPorcentagemTestesAutomaticos() < 0 || roteiroTemp
-						.getPorcentagemTestesAutomaticos() > 100)) {
-			throw new CriacaoRoteiroException("Roteiro nao pode ser liberado");
+					MsgErros.VALORINVALIDO
+							.msg("Time-limit de execução dos testes por método inválido, deve ser sempre >= 0. O Roteiro não pôde ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+		} else if (roteiro.getPorcentagemTestesAutomaticos() == 0
+				&& roteiro.getTempoLimiteTestes() > 0) {
+			throw new CriacaoRoteiroException(
+					MsgErros.VALORINVALIDO
+							.msg("Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O Roteiro não pôde ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+			// } else if () {
+			// throw new CriacaoRoteiroException(
+			// "Formato do Arquivo de Testes Automaticos nao eh .zip nem .java. O Roteiro não pôde ser "
+			// + criacaoOuAtualizacaoMsg + "!");
+			//
+			// } else if () {
+			// throw new CriacaoRoteiroException(
+			// "Formato do arquivo da interface deve ser .java. O Roteiro não pôde ser "+
+			// criacaoOuAtualizacaoMsg + "!");
+
 		} else {
 			return true;
 		}
 
 	}
 
-	public boolean validaRoteiroEstadoAlteracao(Roteiro roteiro) {
+	public boolean validaRoteiroEstadoCriado(Roteiro roteiro)
+			throws EdicaoRoteiroException, CampoVazioException {
+		try {
+			return validaRoteiroEmCriacao(roteiro);
+		} catch (CriacaoRoteiroException e) {
+			throw new EdicaoRoteiroException(e.getMessage());
+		}
+	}
+
+	public boolean validaRoteiroEstadoLiberado(Roteiro roteiro)
+			throws EdicaoRoteiroException {
+
+		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
+		Roteiro roteiroNoBD = DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
+
+		if (!roteiro.getNome().equals(roteiroNoBD.getNome())) {
+			throw new EdicaoRoteiroException(
+					MsgErros.ERRO_ALTERACAO
+							.msg("Não é possível modificar o nome do roteiro após sua liberação!"));
+		} else if (!roteiro.getDataLiberacao().equals(
+				roteiroNoBD.getDataLiberacao())) {
+			throw new EdicaoRoteiroException(
+					MsgErros.ERRO_ALTERACAO
+							.msg("Não é possível modificar a data de liberação após a liberação já haver ocorrido!"));
+		}
+
 		return true;
 	}
 
-	public boolean validaRoteiroEstadoLiberado(Roteiro roteiro) {
-		return true;
-	}
+	public boolean validaRoteiroEstadoFechado(Roteiro roteiro)
+			throws EdicaoRoteiroException {
 
-	public boolean validaRoteiroEstadoFechado(Roteiro roteiro) {
-		return true;
+		Date dataAtual = new Date();
+
+		if (!roteiro.getDataFinalEntrega().before(dataAtual)) {
+			throw new EdicaoRoteiroException(
+					MsgErros.ERRO_ALTERACAO
+							.msg("Não é possível editar um Roteiro após a data de entrega do mesmo!"));
+		} else {
+			return true;
+		}
 	}
 
 }
