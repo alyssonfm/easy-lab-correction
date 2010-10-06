@@ -184,7 +184,7 @@ public class Sistema {
 		return gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
 	}
 	
-	public Roteiro editarRoteiro(Roteiro roteiroTemp) throws EdicaoRoteiroException{
+	public Roteiro editarRoteiro(Roteiro roteiroTemp) throws EasyCorrectionException{
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 	
