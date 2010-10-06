@@ -80,6 +80,17 @@ package bean.Utilitarios {
 			
 		}
 		
+		public static function formataDataStringEmDate(data:String):Date{
+			var dat:Date = new Date();
+			var datStr:String = "";
+			var arr:Array = new Array();
+			arr = data.split("/");
+			datStr = arr[2]+"/"+arr[1]+"/"+arr[0];
+			dat = new Date(Date.parse(datStr));
+			dat.setHours(12,0,0,0);
+			return  dat;
+		}
+		
 		public static function gerarSenha(tamanho: int): String{
 			var randTexto: String = "";
 			var chars: String = "1234567890" + "abcdefghijklmnopqrstuvywxz";
