@@ -6,6 +6,7 @@ import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
@@ -22,177 +23,187 @@ public class Sistema {
 	private GerenciadorAcesso gerenciadorAcesso;
 	private GerenciadorRoteiros gerenciadorRoteiros;
 
-	public Sistema(){
+	public Sistema() {
 		gerenciadorAcesso = new GerenciadorAcesso();
 		gerenciadorRoteiros = new GerenciadorRoteiros();
 	}
-	
-	public void excluirMenu(Menu menu) throws EasyCorrectionException{
+
+	public void excluirMenu(Menu menu) throws EasyCorrectionException {
 		gerenciadorAcesso.excluirMenu(menu);
 	}
-	
-	public void excluirFuncao(Funcao funcao) throws EasyCorrectionException{
+
+	public void excluirFuncao(Funcao funcao) throws EasyCorrectionException {
 		gerenciadorAcesso.excluirFuncao(funcao);
 	}
-	
-	public void excluirGrupo(Grupo grupo) throws EasyCorrectionException{
+
+	public void excluirGrupo(Grupo grupo) throws EasyCorrectionException {
 		gerenciadorAcesso.excluirGrupo(grupo);
 	}
-	
-	public void excluirUsuario(GrupoUsuario grupoUsuario) throws EasyCorrectionException{
+
+	public void excluirUsuario(GrupoUsuario grupoUsuario)
+			throws EasyCorrectionException {
 		gerenciadorAcesso.excluirUsuario(grupoUsuario);
 	}
-	
-/******************************************** Controle de Acesso EasyCorrection *********************************************/
 
-	
-	public Funcao getFuncao(Integer id){
+	/******************************************** Controle de Acesso EasyCorrection *********************************************/
+
+	public Funcao getFuncao(Integer id) {
 		return gerenciadorAcesso.getFuncao(id);
 	}
-	
-	public Grupo getGrupo(Integer id){
+
+	public Grupo getGrupo(Integer id) {
 		return gerenciadorAcesso.getGrupo(id);
 	}
-	
-	public GrupoUsuario getGrupoUsuario(Integer id){
+
+	public GrupoUsuario getGrupoUsuario(Integer id) {
 		return gerenciadorAcesso.getGrupoUsuario(id);
 	}
-	
-	public Menu getMenu(Integer id){
+
+	public Menu getMenu(Integer id) {
 		return gerenciadorAcesso.getMenu(id);
-	} 
-	
-	public Permissao getPermissao(Integer id){
+	}
+
+	public Permissao getPermissao(Integer id) {
 		return gerenciadorAcesso.getPermissao(id);
 	}
-	
-	public Usuario getUsuario(Integer id){
+
+	public Usuario getUsuario(Integer id) {
 		return gerenciadorAcesso.getUsuario(id);
 	}
-	
-	public Usuario getUsuarioPorLogin(String login){
+
+	public Usuario getUsuarioPorLogin(String login) {
 		return gerenciadorAcesso.getUsuarioPorLogin(login);
 	}
-	
-	public Funcao cadastrarFuncao(Funcao funcao) throws EasyCorrectionException{
+
+	public Funcao cadastrarFuncao(Funcao funcao) throws EasyCorrectionException {
 		return gerenciadorAcesso.cadastrarFuncao(funcao);
 	}
-	
-	public Grupo cadastrarGrupo(Grupo grupo) throws EasyCorrectionException{
+
+	public Grupo cadastrarGrupo(Grupo grupo) throws EasyCorrectionException {
 		return gerenciadorAcesso.cadastrarGrupo(grupo);
 	}
-	
-	public GrupoUsuario cadastrarGrupoUsuario(GrupoUsuario grupoUsuario) throws EasyCorrectionException{
+
+	public GrupoUsuario cadastrarGrupoUsuario(GrupoUsuario grupoUsuario)
+			throws EasyCorrectionException {
 		return gerenciadorAcesso.cadastrarGrupoUsuario(grupoUsuario);
 	}
-	
-	public Menu cadastrarMenu(Menu menu) throws EasyCorrectionException{
+
+	public Menu cadastrarMenu(Menu menu) throws EasyCorrectionException {
 		return gerenciadorAcesso.cadastrarMenu(menu);
 	}
-	
-	public List<Permissao> cadastrarPermissao(List <Permissao> permissoes) throws EasyCorrectionException{
+
+	public List<Permissao> cadastrarPermissao(List<Permissao> permissoes)
+			throws EasyCorrectionException {
 		return gerenciadorAcesso.cadastrarPermissao(permissoes);
 	}
-	
-	public GrupoUsuario cadastrarUsuario(GrupoUsuario grupoUsuario) throws EasyCorrectionException{
+
+	public GrupoUsuario cadastrarUsuario(GrupoUsuario grupoUsuario)
+			throws EasyCorrectionException {
 		return gerenciadorAcesso.cadastrarUsuario(grupoUsuario);
 	}
-	
-	public List<Usuario> listarUsuarios(){
+
+	public List<Usuario> listarUsuarios() {
 		return gerenciadorAcesso.listarUsuarios();
 	}
-	
-	public List<Grupo> listarGrupo(){
+
+	public List<Grupo> listarGrupo() {
 		return gerenciadorAcesso.listarGrupo();
 	}
-	
-	public List<Funcao> listarFuncao(){
+
+	public List<Funcao> listarFuncao() {
 		return gerenciadorAcesso.listarFuncao();
 	}
-	
-	public List<Menu> listarMenu(){
+
+	public List<Menu> listarMenu() {
 		return gerenciadorAcesso.listarMenu();
 	}
-	
-	public List<Funcao> validaUsuario(Usuario usuario){
+
+	public List<Funcao> validaUsuario(Usuario usuario) {
 		return gerenciadorAcesso.validaUsuario(usuario);
 	}
-	
-	public List <GrupoUsuario> listarGrupoUsuarios(){
+
+	public List<GrupoUsuario> listarGrupoUsuarios() {
 		return gerenciadorAcesso.listarGrupoUsuario();
 	}
-	
-	public List <Permissao> consultarPermissoesPorGrupo(Integer idGrupo){
+
+	public List<Permissao> consultarPermissoesPorGrupo(Integer idGrupo) {
 		return gerenciadorAcesso.consultarPermissoesPorGrupo(idGrupo);
 	}
-	
-	public List<Permissao> cadastraPermissaoGrupo(Grupo g, List<Funcao> lista) throws Throwable {
+
+	public List<Permissao> cadastraPermissaoGrupo(Grupo g, List<Funcao> lista)
+			throws Throwable {
 		return gerenciadorAcesso.cadastraPermissaoGrupo(g, lista);
 	}
-	
-	public List <Menu> listarMenusOrdenados(){
+
+	public List<Menu> listarMenusOrdenados() {
 		return gerenciadorAcesso.listarMenusOrdenados();
 	}
-	
-	public List <Funcao> consultarFuncaoPorMenu(Integer idMenu){
+
+	public List<Funcao> consultarFuncaoPorMenu(Integer idMenu) {
 		return gerenciadorAcesso.consultarFuncaoPorMenu(idMenu);
 	}
-	
-	public Grupo getGrupoPorNome(String nome){
+
+	public Grupo getGrupoPorNome(String nome) {
 		return gerenciadorAcesso.getGrupoPorNome(nome);
 	}
-	
+
 	/*-------------------------------------- USUARIOS -------------------------------------------*/
-	
-	public Usuario atualizarUsuario(Usuario usuario) throws EasyCorrectionException{
+
+	public Usuario atualizarUsuario(Usuario usuario)
+			throws EasyCorrectionException {
 		return gerenciadorAcesso.atualizarUsuario(usuario);
 	}
-	
-	public Usuario consultarUsuarioPorLogin(String login){
+
+	public Usuario consultarUsuarioPorLogin(String login) {
 		return gerenciadorAcesso.consultarUsuarioPorLogin(login);
 	}
-	
-	public List <GrupoUsuario> consultarUsuarioPorGrupo(Integer idGrupo){
+
+	public List<GrupoUsuario> consultarUsuarioPorGrupo(Integer idGrupo) {
 		return gerenciadorAcesso.consultarUsuarioPorGrupo(idGrupo);
 	}
 
-	public List<GrupoUsuario> getGrupoUsuarioPorUsuario(Integer idUsuario){
+	public List<GrupoUsuario> getGrupoUsuarioPorUsuario(Integer idUsuario) {
 		return gerenciadorAcesso.getGrupoUsuarioPorUsuario(idUsuario);
 	}
-	
-	public Usuario alterarSenha(Usuario usuario, String novaSenha){
+
+	public Usuario alterarSenha(Usuario usuario, String novaSenha) {
 		return gerenciadorAcesso.alterarSenha(usuario, novaSenha);
 	}
 
-	/******************************************** Controle de Roteiros EasyLabCorrection *********************************************/	
-	public Periodo getPeriodo(int periodoId){
+	/******************************************** Controle de Roteiros EasyLabCorrection *********************************************/
+	public Periodo getPeriodo(int periodoId) {
 		return gerenciadorRoteiros.getPeriodo(periodoId);
 	}
-	
+
 	public List<Periodo> getPeriodoAtual() {
 		return gerenciadorRoteiros.getPeriodoAtual();
 	}
-	
-	public Roteiro getRoteiro(int roteiroId){
+
+	public Roteiro getRoteiro(int roteiroId) {
 		return gerenciadorRoteiros.getRoteiro(roteiroId);
 	}
-	
-	public List<Roteiro> getRoteiros(){
+
+	public List<Roteiro> getRoteiros() {
 		return gerenciadorRoteiros.getRoteiros();
 	}
-	
+
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
-			throws CriacaoRoteiroException, CampoVazioException{
+			throws CriacaoRoteiroException, CampoVazioException {
 		return gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
 	}
-	
-	public Roteiro editarRoteiro(Roteiro roteiroTemp) throws EdicaoRoteiroException, CampoVazioException{
+
+	public Roteiro editarRoteiro(Roteiro roteiroTemp)
+			throws EdicaoRoteiroException, CampoVazioException {
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
-	
 
 	public Roteiro bloquearRoteiro(Roteiro roteiroTemp) {
 		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp);
+	}
+
+	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
+			throws LiberaRoteiroException {
+		return gerenciadorRoteiros.liberarRoteiro(roteiroTemp);
 	}
 
 	public void excluirRoteiro(Roteiro roteiro) {

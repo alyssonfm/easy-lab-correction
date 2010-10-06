@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
@@ -20,330 +21,343 @@ public class Facade {
 
 	private Sistema sistema;
 	static Logger log = Logger.getLogger("br.les.edu.facade");
-	
-	public Facade(){
+
+	public Facade() {
 		sistema = new Sistema();
-		
+
 	}
-	
-/******************************************************************* Controle de Acesso **********************************************************************
- * @throws Throwable */
-	public Funcao getFuncao(Integer id) throws Throwable{
-		try{
+
+	/*******************************************************************
+	 * Controle de Acesso
+	 * **********************************************************************
+	 * 
+	 * @throws Throwable
+	 */
+	public Funcao getFuncao(Integer id) throws Throwable {
+		try {
 			return sistema.getFuncao(id);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getFuncao()", e);
 			throw e;
 		}
 	}
-	
-	public Grupo getGrupo(Integer id) throws Throwable{
-		try{
+
+	public Grupo getGrupo(Integer id) throws Throwable {
+		try {
 			return sistema.getGrupo(id);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getGrupo()", e);
 			throw e;
 		}
 	}
-	
-	public GrupoUsuario getGrupoUsuario(Integer id) throws Throwable{
-		try{
+
+	public GrupoUsuario getGrupoUsuario(Integer id) throws Throwable {
+		try {
 			return sistema.getGrupoUsuario(id);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getGrupoUsuario()", e);
 			throw e;
 		}
 	}
-	
-	public Menu getMenu(Integer id) throws Throwable{
-		try{
+
+	public Menu getMenu(Integer id) throws Throwable {
+		try {
 			return sistema.getMenu(id);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getMenu()", e);
 			throw e;
 		}
-	} 
-	
-	public Permissao getPermissao(Integer id) throws Throwable{
-		try{
+	}
+
+	public Permissao getPermissao(Integer id) throws Throwable {
+		try {
 			return sistema.getPermissao(id);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getPermissao()", e);
 			throw e;
 		}
 	}
-	
-	public Usuario getUsuario(Integer id) throws Throwable{
-		try{
+
+	public Usuario getUsuario(Integer id) throws Throwable {
+		try {
 			return sistema.getUsuario(id);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getUsuario()", e);
 			throw e;
 		}
 	}
-	
-	public Usuario getUsuarioPorLogin(String login) throws Throwable{
-		try{
+
+	public Usuario getUsuarioPorLogin(String login) throws Throwable {
+		try {
 			return sistema.getUsuarioPorLogin(login);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getUsuarioPorLogin()", e);
 			throw e;
 		}
 	}
-	
-	public Funcao cadastrarFuncao(Funcao funcao) throws Throwable{
-		try{
+
+	public Funcao cadastrarFuncao(Funcao funcao) throws Throwable {
+		try {
 			return sistema.cadastrarFuncao(funcao);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("cadastrarFuncao()", e);
 			throw e;
 		}
 	}
-	
-	public Grupo cadastrarGrupo(Grupo grupo) throws Throwable{
-		try{
+
+	public Grupo cadastrarGrupo(Grupo grupo) throws Throwable {
+		try {
 			return sistema.cadastrarGrupo(grupo);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("cadastrarGrupo()", e);
 			throw e;
 		}
 	}
-	
-	public GrupoUsuario cadastrarGrupoUsuario(GrupoUsuario grupoUsuario) throws Throwable{
-		try{
+
+	public GrupoUsuario cadastrarGrupoUsuario(GrupoUsuario grupoUsuario)
+			throws Throwable {
+		try {
 			return sistema.cadastrarGrupoUsuario(grupoUsuario);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("cadastrarGrupoUsuario()", e);
 			throw e;
 		}
 	}
-	
-	public Menu cadastrarMenu(Menu menu) throws Throwable{
-		try{
+
+	public Menu cadastrarMenu(Menu menu) throws Throwable {
+		try {
 			return sistema.cadastrarMenu(menu);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("cadastrarMenu()", e);
 			throw e;
 		}
 	}
-	
-	public List <Permissao> cadastrarPermissao(List <Permissao> permissoes) throws Throwable{
-		try{
+
+	public List<Permissao> cadastrarPermissao(List<Permissao> permissoes)
+			throws Throwable {
+		try {
 			return sistema.cadastrarPermissao(permissoes);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("cadastrarPermissao()", e);
 			throw e;
 		}
 	}
-	
-	public GrupoUsuario cadastrarUsuario(GrupoUsuario grupoUsuario) throws Throwable{
-		try{
+
+	public GrupoUsuario cadastrarUsuario(GrupoUsuario grupoUsuario)
+			throws Throwable {
+		try {
 			return sistema.cadastrarUsuario(grupoUsuario);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("cadastrarUsuario()", e);
 			throw e;
 		}
 	}
-	
-	public List<Funcao> validaUsuario(Usuario usuario) throws Throwable{
-		try{
+
+	public List<Funcao> validaUsuario(Usuario usuario) throws Throwable {
+		try {
 			return sistema.validaUsuario(usuario);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("validaUsuario()", e);
 			throw e;
 		}
 	}
-	
-	public List<Usuario> listarUsuarios() throws Throwable{
-		try{
+
+	public List<Usuario> listarUsuarios() throws Throwable {
+		try {
 			return sistema.listarUsuarios();
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("listarUsuarios()", e);
 			throw e;
 		}
 	}
-	
-	public List<Grupo> listarGrupos() throws Throwable{
-		try{
+
+	public List<Grupo> listarGrupos() throws Throwable {
+		try {
 			return sistema.listarGrupo();
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("listarGrupo()", e);
 			throw e;
 		}
 	}
-	
-	public List<Funcao> listarFuncoes() throws Throwable{
-		try{
+
+	public List<Funcao> listarFuncoes() throws Throwable {
+		try {
 			return sistema.listarFuncao();
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("listarFuncao()", e);
 			throw e;
 		}
 	}
-	
-	public List<Menu> listarMenus() throws Throwable{
-		try{
+
+	public List<Menu> listarMenus() throws Throwable {
+		try {
 			return sistema.listarMenu();
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("listarMenus()", e);
 			throw e;
 		}
 	}
 
-	public void excluirMenu(Menu menu) throws Throwable{
-		try{
+	public void excluirMenu(Menu menu) throws Throwable {
+		try {
 			sistema.excluirMenu(menu);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("excluirMenu()", e);
 			throw e;
 		}
 	}
-	
-	public void excluirFuncao(Funcao funcao) throws Throwable{
-		try{
+
+	public void excluirFuncao(Funcao funcao) throws Throwable {
+		try {
 			sistema.excluirFuncao(funcao);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("excluirFuncao()", e);
 			throw e;
 		}
 	}
-	
-	public void excluirGrupo(Grupo grupo) throws Throwable{
-		try{
+
+	public void excluirGrupo(Grupo grupo) throws Throwable {
+		try {
 			sistema.excluirGrupo(grupo);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("excluirGrupo()", e);
 			throw e;
 		}
 	}
-	
-	public void excluirUsuario(GrupoUsuario grupoUsuario) throws Throwable{
-		try{
+
+	public void excluirUsuario(GrupoUsuario grupoUsuario) throws Throwable {
+		try {
 			sistema.excluirUsuario(grupoUsuario);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("excluirUsuario()", e);
 			throw e;
 		}
 	}
-	
-	public List <GrupoUsuario> listarGrupoUsuarios() throws Throwable{
-		try{
+
+	public List<GrupoUsuario> listarGrupoUsuarios() throws Throwable {
+		try {
 			return sistema.listarGrupoUsuarios();
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("listarGrupoUsuarios()", e);
 			throw e;
 		}
 	}
-	
-	public List <Permissao> consultarPermissoesPorGrupo(Integer idGrupo) throws Throwable{
-		try{
+
+	public List<Permissao> consultarPermissoesPorGrupo(Integer idGrupo)
+			throws Throwable {
+		try {
 			return sistema.consultarPermissoesPorGrupo(idGrupo);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("consultarPermissoesPorGrupo()", e);
 			throw e;
 		}
 	}
-	
-	public List <Permissao> cadastraPermissaoGrupo(Grupo g, List<Funcao> lista) throws Throwable {
-		try{
+
+	public List<Permissao> cadastraPermissaoGrupo(Grupo g, List<Funcao> lista)
+			throws Throwable {
+		try {
 			return sistema.cadastraPermissaoGrupo(g, lista);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("cadastraPermissaoGrupo()", e);
 			throw e;
 		}
 	}
-	
-	public List <Menu> listarMenusOrdenados() throws Throwable{
-		try{
+
+	public List<Menu> listarMenusOrdenados() throws Throwable {
+		try {
 			return sistema.listarMenusOrdenados();
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("listarMenusOrdenados()", e);
 			throw e;
 		}
 	}
-	
-	public List <Funcao> consultarFuncaoPorMenu(Integer idMenu) throws Throwable{
-		try{
+
+	public List<Funcao> consultarFuncaoPorMenu(Integer idMenu) throws Throwable {
+		try {
 			return sistema.consultarFuncaoPorMenu(idMenu);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("listarMenusOrdenados()", e);
 			throw e;
 		}
 	}
-	
-	public Grupo getGrupoPorNome(String nome) throws Throwable{
-		try{
+
+	public Grupo getGrupoPorNome(String nome) throws Throwable {
+		try {
 			return sistema.getGrupoPorNome(nome);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getGrupoPorNome()", e);
 			throw e;
 		}
 	}
-	
-	public Usuario atualizarUsuario(Usuario usuario) throws Throwable{
-		try{
+
+	public Usuario atualizarUsuario(Usuario usuario) throws Throwable {
+		try {
 			return sistema.atualizarUsuario(usuario);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("atualizarUsuario()", e);
 			throw e;
 		}
 	}
-	
-	public Usuario consultarUsuarioPorLogin(String login) throws Throwable{
-		try{
+
+	public Usuario consultarUsuarioPorLogin(String login) throws Throwable {
+		try {
 			return sistema.consultarUsuarioPorLogin(login);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getProfessorPorUsuario()", e);
 			throw e;
 		}
-	}	
-	
-	public List <GrupoUsuario> consultarUsuarioPorGrupo(Integer idGrupo) throws Throwable{
-		try{
+	}
+
+	public List<GrupoUsuario> consultarUsuarioPorGrupo(Integer idGrupo)
+			throws Throwable {
+		try {
 			return sistema.consultarUsuarioPorGrupo(idGrupo);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("consultarUsuarioPorGrupo()", e);
 			throw e;
 		}
 	}
-	
-	public List<GrupoUsuario> getGrupoUsuarioPorUsuario(Integer idUsuario) throws Throwable{
-		try{
+
+	public List<GrupoUsuario> getGrupoUsuarioPorUsuario(Integer idUsuario)
+			throws Throwable {
+		try {
 			return sistema.getGrupoUsuarioPorUsuario(idUsuario);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getGrupoUsuarioPorUsuario()", e);
 			throw e;
 		}
 	}
-	
-	public Date getDataNow() throws Throwable{
-		try{
+
+	public Date getDataNow() throws Throwable {
+		try {
 			return easyCorrectionUtil.getDataNow();
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getDataNow()", e);
 			throw e;
 		}
 	}
-	
-	public String gerarSenha(int numDigitos, String nomeUsuario) throws Throwable{
-		try{
+
+	public String gerarSenha(int numDigitos, String nomeUsuario)
+			throws Throwable {
+		try {
 			return GeradorSenhas.gerarSenha(numDigitos, nomeUsuario);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("gerarSenha()", e);
 			throw e;
 		}
 	}
-	
-	public Usuario alterarSenha(Usuario usuario, String novaSenha) throws Throwable{
-		try{
+
+	public Usuario alterarSenha(Usuario usuario, String novaSenha)
+			throws Throwable {
+		try {
 			return sistema.alterarSenha(usuario, novaSenha);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("alterarSenha()", e);
 			throw e;
 		}
 	}
-	
-	public Periodo getPeriodo(int periodoId) throws Throwable{
+
+	public Periodo getPeriodo(int periodoId) throws Throwable {
 		try {
 			return sistema.getPeriodo(periodoId);
 		} catch (Throwable e) {
@@ -351,17 +365,17 @@ public class Facade {
 			throw e;
 		}
 	}
-	
+
 	public List<Periodo> getPeriodoAtual() throws Throwable {
-		try{
+		try {
 			return sistema.getPeriodoAtual();
 		} catch (Throwable e) {
 			log.error("getPeriodoAtual()", e);
 			throw e;
 		}
 	}
-	
-	public Roteiro cadastrarRoteiro(Roteiro roteiro) throws Throwable{
+
+	public Roteiro cadastrarRoteiro(Roteiro roteiro) throws Throwable {
 		try {
 			return sistema.cadastrarRoteiro(roteiro);
 		} catch (Throwable e) {
@@ -369,8 +383,8 @@ public class Facade {
 			throw e;
 		}
 	}
-	
-	public Roteiro editarRoteiro(Roteiro roteiro) throws Throwable{
+
+	public Roteiro editarRoteiro(Roteiro roteiro) throws Throwable {
 		try {
 			return sistema.editarRoteiro(roteiro);
 		} catch (Throwable e) {
@@ -378,7 +392,6 @@ public class Facade {
 			throw e;
 		}
 	}
-
 
 	public Roteiro bloquearRoteiro(Roteiro roteiro) throws Throwable {
 		try {
@@ -388,7 +401,12 @@ public class Facade {
 			throw e;
 		}
 	}
-	
+
+	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
+			throws LiberaRoteiroException {
+		return sistema.liberarRoteiro(roteiroTemp);
+	}
+
 	public Roteiro getRoteiro(int idRoteiro) throws Throwable {
 		try {
 			return sistema.getRoteiro(idRoteiro);
@@ -397,9 +415,9 @@ public class Facade {
 			throw e;
 		}
 	}
-	
-	public List<Roteiro> getRoteiros() throws Throwable{
-		try{
+
+	public List<Roteiro> getRoteiros() throws Throwable {
+		try {
 			return sistema.getRoteiros();
 		} catch (Throwable e) {
 			log.error("getRoteiros()", e);
@@ -407,7 +425,7 @@ public class Facade {
 		}
 	}
 
-	public List<Roteiro> listarRoteiros() throws Throwable{
+	public List<Roteiro> listarRoteiros() throws Throwable {
 		try {
 			return sistema.listarRoteiros();
 		} catch (Throwable e) {
@@ -416,10 +434,10 @@ public class Facade {
 		}
 	}
 
-	public void excluirRoteiro(Roteiro roteiro) throws Throwable{
-		try{
+	public void excluirRoteiro(Roteiro roteiro) throws Throwable {
+		try {
 			sistema.excluirRoteiro(roteiro);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("excluirRoteiro()", e);
 			throw e;
 		}
