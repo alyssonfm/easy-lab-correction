@@ -53,6 +53,10 @@ public class GerenciadorRoteiros {
 	public Roteiro getRoteiro(int roteiroId) {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(roteiroId);
 	}
+	
+	public List<Roteiro> getRoteiros(){
+		return DAOFactory.DEFAULT.buildRoteiroDAO().findAll();
+	}
 
 	public void excluirRoteiro(Roteiro roteiro) {
 		DAOFactory.DEFAULT.buildRoteiroDAO().delete(roteiro);
