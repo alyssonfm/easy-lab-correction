@@ -11,8 +11,15 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import eventos.ObjetoEvent;
+				import bean.Utilitarios.Util;
+				import mx.skins.halo.NumericStepperUpSkin;
+				import bean.roteiros.Roteiro;
+				import mx.collections.ArrayCollection;
+				import bean.Utilitarios.CastDeEntidades;
 				import eventos.UsuarioEvent;
 				import bean.acesso.*;
+				import bean.sistema.*;
 				import eventos.RespostaLoginEvent;
 				import eventos.FechaPopupEvent;
 				import mx.utils.Base64Decoder;
@@ -32,6 +39,11 @@
 				private var fileRefInterface:FileReference;
 				private var requestInterface: URLRequest;
 				private const FILE_UPLOAD_URL:String = "http://les.edu.br/easyLabCorrection/";
+				
+				private var periodo:Periodo = new Periodo();
+				private var roteiro:Roteiro = new Roteiro();
+				private var bloqueado:Boolean = false;
+				private var estado:*;
 	            
 	            private function falha(event:FaultEvent):void {
 					var mensagem:String;
@@ -49,6 +61,7 @@
 				}
 				
 				private function fechaJanela():void {
+					dispatchEvent(new ObjetoEvent(""));
 					dispatchEvent(new FechaPopupEvent(this));
 				}
 				
@@ -65,8 +78,42 @@
 				private function init():void {
 					
 					facade.channelSet = ControladorDeModulos.criaCanal();
-					var estado: String = String(ControladorDeModulos.getParam());
-					
+					estado = ControladorDeModulos.getParam();
+					getPeriodoAtual();
+					if(estado != null){
+						pegaRoteiro();
+						botaoAtualizarRoteiro.visible = true;
+						botaoCadastrarRoteiro.visible = false;
+					}else{
+						botaoAtualizarRoteiro.visible = false;
+						botaoCadastrarRoteiro.visible = true;
+					}
+				}
+				
+				private function pegaRoteiro():void{
+					roteiro = new Roteiro();
+					roteiro = CastDeEntidades.castRoteiro(estado);
+					inputDescricao.text = roteiro.descricao;
+					if(roteiro.bloqueado){
+						botaoBloquear.label = "Desbloquear";
+					}else{
+						botaoBloquear.label = "Bloquear";
+					}
+					dfDataDiscussao.selectedDate = dfDataDiscussao as Date;
+					dfDataDiscussao.text = Util.formataData(roteiro.dataFinalDiscussao);
+					dfDataMaxima.selectedDate = roteiro.dataFinalEntrega as Date;
+					dfDataMaxima.text = Util.formataData(roteiro.dataFinalEntrega);
+					dfDataLiberacao.selectedDate = roteiro.dataLiberacao as Date;
+					dfDataLiberacao.text = Util.formataData(roteiro.dataLiberacao);
+					inputDescricao.text = roteiro.descricao;
+					caminhoInterface.text = roteiro.diretorioInterface;
+					caminhoTestes.text = roteiro.diretorioTestes;
+					inputTitulo.text = roteiro.nome;
+					inputNumeroMaxEnvios.text = String(roteiro.numeroMaximoEnvios);
+					inputMaximoEquipe.text = String(roteiro.numeroMaximoParticipantes);
+					inputPenalidade.text = String(roteiro.penalidadeDiasAtraso);
+					inputPorcentagem.text = String(roteiro.porcentagemTestesAutomaticos);
+					inputTempoLimite.text = String(roteiro.tempoLimiteTestes);
 				}
 				
 				private function escolheArquivoTestes(): void{
@@ -122,11 +169,77 @@
 				public function envioCompletoInterface(evt:Event):void {
 					requestInterface = new URLRequest(FILE_UPLOAD_URL);
 				}
+				
+				private function getPeriodoAtual():void{
+					facade.getOperation("getPeriodoAtual").send()
+				}
+				
+				private function getPeriodoAtual_result(event:ResultEvent):void{
+					periodo = new Periodo();
+					periodo = CastDeEntidades.castPeriodo(ArrayCollection(event.result).getItemAt(0));
+				}
+				
+				private function preencheRoteiro():void{
+					roteiro.bloqueado = bloqueado;
+					roteiro.dataFinalDiscussao= Util.formataDataStringEmDate(dfDataDiscussao.text);
+					roteiro.dataFinalEntrega = Util.formataDataStringEmDate(dfDataMaxima.text);
+					roteiro.dataLiberacao = Util.formataDataStringEmDate(dfDataLiberacao.text);
+					roteiro.descricao = inputDescricao.text;
+					roteiro.diretorioInterface = caminhoInterface.text;
+					roteiro.diretorioTestes = caminhoTestes.text;
+					roteiro.nome = inputTitulo.text;
+					roteiro.numeroMaximoEnvios = int(inputNumeroMaxEnvios.text);
+					roteiro.numeroMaximoParticipantes = int(inputMaximoEquipe.text);
+					roteiro.penalidadeDiasAtraso = Util.formataTextValorToNumber(inputPenalidade.text);
+					roteiro.periodo = periodo;
+					roteiro.porcentagemTestesAutomaticos = Util.formataTextValorToNumber(inputPorcentagem.text);
+					roteiro.tempoLimiteTestes = int(inputTempoLimite.text);
+				}
+				
+				private function editarRoteiro():void{
+					if(roteiro.id != 0){
+						preencheRoteiro();
+						facade.getOperation("editarRoteiro").send(CastDeEntidades.castRoteiro(roteiro));
+					}	
+				}
+				
+				private function editarRoteiro_result(event:ResultEvent):void{
+					
+				}
+				
+				private function cadastrarRoteiro():void{
+					roteiro = new Roteiro();
+					preencheRoteiro();
+					facade.getOperation("cadastrarRoteiro").send(CastDeEntidades.castRoteiro(roteiro));
+				}
+				
+				private function cadastrarRoteiro_result(event:ResultEvent):void{
+					roteiro = new Roteiro();
+					roteiro = CastDeEntidades.castRoteiro(event.result);
+					var variables:URLVariables = new URLVariables();
+					variables.nomeArquivo = roteiro.diretorioInterface;
+					requestInterface.data = variables;
+					fileRefInterface.upload(requestInterface);
+				}
+				
+				private function bloqueiaRoteiro():void{
+					if(botaoBloquear.label == "Bloquear"){
+						bloqueado = true;
+						botaoBloquear.label = "Desbloquear";
+					}else if(botaoBloquear.label == "Desbloquear"){
+						bloqueado = false;
+						botaoBloquear.label = "Bloquear";
+						
+					}
+				}
+				
 			]]>
 		</mx:Script>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
-			
+			<mx:method name="getPeriodoAtual" result="getPeriodoAtual_result(event)" fault="falha(event)"/>
+			<mx:method name="cadastrarRoteiro" result="cadastrarRoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="editarRoteiro" result="editarRoteiro_result(event)" fault="falha(event)"/>
 		</mx:RemoteObject>
 		
 		<mx:Label text="Título:" fontWeight="bold"
@@ -138,31 +251,44 @@
 		<mx:Label text="Descrição:" fontWeight="bold"
 			textAlign="left" width="79" x="10" y="50" id="labelDescricao"/>
 		<mx:TextInput x="62" y="8" id="inputTitulo" width="438" maxChars="250"/>
-		<extra:DecimalInput x="285" y="328" id="inputAutomatica" width="91" restrict="[0-9]" maxChars="3"/>
+		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
+		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
+		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"
+		toolTip="" x="641" y="10" width="129" id="dfDataLiberacao"/>
+		<mx:TextArea x="10" y="78" width="760" height="122" id="inputDescricao" maxChars="5000"/>
+		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
+		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
+		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"
+		toolTip="" x="247" y="223" width="129" id="dfDataMaxima"/>
+		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
+		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
+		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"
+		toolTip="" x="641" y="223" width="129" id="dfDataDiscussao"/>
+		<mx:TextInput x="247" y="251" id="inputMaximoEquipe" width="129" restrict="[0-9]" maxChars="2"/>
+		<mx:TextInput x="641" y="251" id="inputNumeroMaxEnvios" width="129" restrict="[0-9]" maxChars="2"/>
+		<extra:DecimalInput x="247" y="281"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalidade" width="129"/>
+		<mx:Button x="415" y="279" label="Bloquear" width="183.9" height="28" id="botaoBloquear" click="bloqueiaRoteiro()"/>
+		<extra:DecimalInput x="285" y="328"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPorcentagem" width="91"/>
+		<mx:TextInput x="641" y="330" id="inputTempoLimite" width="112" restrict="[0-9]" maxChars="2"/>
 		<mx:Label text="Máximo de integrantes por equipe:" fontWeight="bold"
 			textAlign="left" width="239" x="10" y="253" id="labelAutomatica0"/>
 		<mx:Label text="Penalidade por dia de atraso:" fontWeight="bold"
 			textAlign="left" width="201" x="10" y="283"/>
-		<extra:DecimalInput x="247" y="281" id="inputAutomatica1" width="129" restrict="[0-9]" maxChars="3"/>
 		<mx:Label text="Número máximo de envios:" fontWeight="bold"
 			textAlign="left" width="191" x="415" y="253" id="labelAutomatica3"/>
-		<mx:TextInput x="641" y="251" id="inputAutomatica2" width="129" restrict="[0-9]" maxChars="2"/>
 		<mx:Label text="Time-limit dos teste por método:" fontWeight="bold"
 			textAlign="left" width="224" x="415" y="332" id="labelAutomatica5"/>
 		<mx:Label text="s" fontWeight="bold"
 			textAlign="left" width="18" x="758" y="332" id="labelAutomatica6"/>
-		<mx:TextInput x="641" y="330" id="inputAutomatica3" width="112" restrict="[0-9]" maxChars="2"/>
-		<mx:TextInput x="247" y="251" id="inputAutomatica0" width="129" restrict="[0-9]" maxChars="2"/>
 		<mx:Label text="Data Máxima para entrega:" fontWeight="bold"
 			textAlign="left" width="191" x="10" y="225" id="labelAutomatica1"/>
 		<mx:Label text="Data Máxima para discussão:" fontWeight="bold"
 			textAlign="left" width="201" x="415" y="225" id="labelAutomatica2"/>
-		<mx:DateField x="641" y="223" width="129"/>
 		<mx:Label text="Data da liberação:" fontWeight="bold"
 			textAlign="left" width="131" x="508" y="12" id="labelAutomatica4"/>
-		<mx:DateField x="641" y="10" width="129"/>
-		<mx:DateField x="247" y="223" width="129"/>
-		<mx:TextArea x="10" y="78" width="760" height="122" id="inputDescricao" maxChars="5000"/>
 		<mx:HRule x="10" y="364" width="760"/>
 		<mx:HRule x="10" y="208" width="760"/>
 		<mx:HRule x="10" y="317" width="760"/>
@@ -171,7 +297,9 @@
 		<mx:Label x="10" y="406" width="760" id="caminhoTestes" textAlign="center" text="Arquivos.zip"/>
 		<mx:LinkButton x="273.05" y="438" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="anexarInterface" click="escolheArquivoInterface()"/>
 		<mx:Label x="10" y="470" width="760" id="caminhoInterface" textAlign="center" text="Interface.java"/>
-		<mx:Button x="298.05" y="510" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoCadastrarProjeto" click="cadastraRoteiro()"/>
+		<mx:Button x="298" y="510" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="botaoAtualizarRoteiro" click="editarRoteiro()"/>
+		<mx:Button x="298" y="510" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoCadastrarRoteiro" click="cadastrarRoteiro()"/>
+		
 		
 		
 </les:ModuleTitleWindow>

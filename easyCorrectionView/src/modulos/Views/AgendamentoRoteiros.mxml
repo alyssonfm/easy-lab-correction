@@ -11,6 +11,10 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import eventos.ObjetoEvent;
+				import mx.managers.SystemManager;
+				import bean.Utilitarios.Util;
+				import mx.collections.ArrayCollection;
 				import eventos.UsuarioEvent;
 				import bean.acesso.*;
 				import eventos.RespostaLoginEvent;
@@ -60,31 +64,75 @@
 					
 					facade.channelSet = ControladorDeModulos.criaCanal();
 					var estado: String = String(ControladorDeModulos.getParam());
+					systemManager.addEventListener(ObjetoEvent.ObjetoEventConst, atualizaLista);
+					getRoteiros();
 					
 				}
 				
-				private function chamaTelaCadastraRoteiro():void{
-					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
+				private function atualizaLista(event:ObjetoEvent):void{
+					getRoteiros();
 				}
 				
 				private function salvarAgendamento():void{
 					dispatchEvent(new FechaPopupEvent(this));
 				}
 				
+				private function getRoteiros():void{
+					facade.getOperation("getRoteiros").send();
+				}
+				
+				private function getRoteiros_result(event:ResultEvent):void{
+					dg_agenda.dataProvider = new ArrayCollection();
+					dg_agenda.dataProvider = event.result;
+				}
+				
+				private function labelGrid(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Roteiro":
+						sLabel = item.nome;
+						break;
+					case "Data de Liberação":
+						sLabel = Util.formataData(item.dataLiberacao);
+						break;
+					case "Data de Entrega":
+						sLabel = Util.formataData(item.dataFinalEntrega);
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function chamaEditarRoteiro():void{
+				if(dg_agenda.selectedItem != null){
+					var param:* = dg_agenda.selectedItem;
+					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, param);
+				}else{
+					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
+				}
+			}
+			
+			private function criaRoteiro():void{
+				ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
+			}
+			
+			
+				
+				
 				
 			]]>
 		</mx:Script>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
-			
+			<mx:method name="getRoteiros" result="getRoteiros_result(event)" fault="falha(event)"/>
 		</mx:RemoteObject>
-		<mx:Button x="298.05" y="10" click="chamaTelaCadastraRoteiro()" label="   Novo Roteiro" width="183.9" icon="@Embed(source='../../image/novo.png')" height="28" id="botaoNovoRoteiro" cornerRadius="20"/>
+		<mx:Button x="298.05" y="10" click="criaRoteiro()" label="   Novo Roteiro" width="183.9" icon="@Embed(source='../../image/novo.png')" height="28" id="botaoNovoRoteiro" cornerRadius="20"/>
 		<mx:Button x="298" y="456" click="salvarAgendamento()" label="   Salvar Agenda" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSalvarAgenda"/>
-		<mx:DataGrid x="10" y="46" width="760" height="402" id="dg_agenda">
+		<mx:DataGrid x="10" y="46" width="760" height="402" id="dg_agenda" labelFunction="labelGrid" itemClick="chamaEditarRoteiro()">
 			<mx:columns>
 				<mx:DataGridColumn headerText="Roteiro" width="80"/>
-				<mx:DataGridColumn headerText="Data Inicial" width="80"/>
-				<mx:DataGridColumn headerText="Data Final" width="80"/>
+				<mx:DataGridColumn headerText="Data de Liberação" width="80"/>
+				<mx:DataGridColumn headerText="Data de Entrega" width="80"/>
 			</mx:columns>
 		</mx:DataGrid>
 		
