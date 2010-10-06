@@ -352,6 +352,15 @@ public class Facade {
 		}
 	}
 	
+	public List<Periodo> getPeriodoAtual() throws Throwable {
+		try{
+			return sistema.getPeriodoAtual();
+		} catch (Throwable e) {
+			log.error("getPeriodoAtual()", e);
+			throw e;
+		}
+	}
+	
 	public Roteiro cadastrarRoteiro(Roteiro roteiro) throws Throwable{
 		try {
 			return sistema.cadastrarRoteiro(roteiro);

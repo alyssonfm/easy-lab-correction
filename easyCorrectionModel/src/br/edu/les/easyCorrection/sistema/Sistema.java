@@ -168,6 +168,10 @@ public class Sistema {
 		return gerenciadorRoteiros.getPeriodo(periodoId);
 	}
 	
+	public List<Periodo> getPeriodoAtual() {
+		return gerenciadorRoteiros.getPeriodoAtual();
+	}
+	
 	public Roteiro getRoteiro(int roteiroId){
 		return gerenciadorRoteiros.getRoteiro(roteiroId);
 	}
