@@ -2,6 +2,7 @@ package br.edu.les.easyCorrection.sistema;
 
 import java.util.List;
 
+import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
@@ -180,11 +181,12 @@ public class Sistema {
 		return gerenciadorRoteiros.getRoteiros();
 	}
 	
-	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp) throws CriacaoRoteiroException{
+	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
+			throws CriacaoRoteiroException, CampoVazioException{
 		return gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
 	}
 	
-	public Roteiro editarRoteiro(Roteiro roteiroTemp) throws EasyCorrectionException{
+	public Roteiro editarRoteiro(Roteiro roteiroTemp) throws EdicaoRoteiroException, CampoVazioException{
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 	
