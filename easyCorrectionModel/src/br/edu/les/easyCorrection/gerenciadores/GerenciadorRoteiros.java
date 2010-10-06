@@ -79,12 +79,13 @@ public class GerenciadorRoteiros {
 		this.criacaoOuAtualizacaoMsg = "atualizado";
 
 		if (validaRoteiroEmCriacao(roteiroTemp)) {
+			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
+			
 			// As frases de sucesso são implementadas na GUI, por isso mantemos
 			// essa flag aqui. Para termos uma certeza de que, mesmo sem gui, o
 			// roteiro foi criado com sucesso
 			System.out.println("Roteiro criado com sucesso!");
-
-			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
+			
 			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
 		} else {
 			throw new CriacaoRoteiroException("Roteiro não pôde ser criado");
@@ -222,7 +223,7 @@ public class GerenciadorRoteiros {
 		} else if (roteiro.getDataLiberacao().before(dataAtual)) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("Data de Libeção inválida. O roteiro nao pôde ser ser "
+							.msg("Data de Liberação inválida. O roteiro nao pôde ser ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (roteiro.getDataFinalEntrega().before(
