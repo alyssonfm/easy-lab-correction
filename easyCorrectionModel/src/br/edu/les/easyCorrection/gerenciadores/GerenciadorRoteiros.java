@@ -45,7 +45,11 @@ public class GerenciadorRoteiros {
 	public Periodo getPeriodo(int periodoId) {
 		return DAOFactory.DEFAULT.buildPeriodoDAO().getById(periodoId);
 	}
-
+	
+	public List<Periodo> getPeriodoAtual() {
+		return DAOFactory.DEFAULT.buildPeriodoDAO().findAll();
+	}
+	
 	public Roteiro getRoteiro(int roteiroId) {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(roteiroId);
 	}
