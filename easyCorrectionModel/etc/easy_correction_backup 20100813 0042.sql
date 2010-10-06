@@ -29,10 +29,10 @@ DROP TABLE IF EXISTS `avaliacao`;
 CREATE TABLE `avaliacao` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `submissao_id` int(10) unsigned NOT NULL,
-  `nota_automatica` decimal(2,1) NOT NULL,
-  `nota_correcao` decimal(2,1) NOT NULL,
+  `nota_automatica` decimal(10,2) NOT NULL,
+  `nota_correcao` decimal(10,2) NOT NULL,
   `resultado_execucao_testes` text,
-  `penalidade` decimal(2,1) DEFAULT NULL,
+  `penalidade` decimal(10,2) DEFAULT NULL,
   `data_avaliacao` datetime NOT NULL,
   `usuario_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
@@ -152,7 +152,7 @@ INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES
  (1,'Cadastros','acesso',1),
  (2,'Permissões','defPerm',1),
  (4,'Criação','agendaRoteiros',4),
- (5,'Atribuição de Atividades','atribuicaoDeRoteiros',3),
+ (5,'Atribuiação de Atividades','atribuicaoDeRoteiros',3),
  (6,'Penalidades','penalidades',3),
  (7,'Visualizar Notas','notas',3),
  (8,'Submissão','submissaoDeRoteiros',4),
@@ -302,7 +302,7 @@ INSERT INTO `permissao` (`id`,`grupo_id`,`funcao_id`) VALUES
 
 DROP TABLE IF EXISTS `roteiro`;
 CREATE TABLE `roteiro` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `periodo_id` int(10) unsigned NOT NULL,
   `nome` varchar(255) NOT NULL,
   `descricao` text,
@@ -310,8 +310,8 @@ CREATE TABLE `roteiro` (
   `data_final_entrega` date NOT NULL,
   `data_final_discussao` date NOT NULL,
   `numero_maximo_envios` int(10) unsigned NOT NULL,
-  `penalidade_dia_atraso` decimal(2,1) NOT NULL,
-  `porcentagem_testes_automaticos` decimal(2,1) NOT NULL,
+  `penalidade_dias_atraso` decimal(10,2) NOT NULL,
+  `porcentagem_testes_automaticos` decimal(10,2) NOT NULL,
   `tempo_limite_testes` int(10) unsigned NOT NULL,
   `diretorio_interface` varchar(255) DEFAULT NULL,
   `diretorio_testes` varchar(255) DEFAULT NULL,
@@ -320,7 +320,7 @@ CREATE TABLE `roteiro` (
   PRIMARY KEY (`id`),
   KEY `roteiro_FKIndex1` (`periodo_id`),
   CONSTRAINT `roteiro_ibfk_1` FOREIGN KEY (`periodo_id`) REFERENCES `periodo` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `roteiro`
