@@ -44,22 +44,20 @@ public class FacadeTestUS3Acceptance {
 								boolean bloqueado) throws Throwable{
 			Roteiro roteiroTemp = new Roteiro();
 			roteiroTemp.setPeriodo(facadeSistema.getPeriodo(periodoId));
-			Periodo periodoTemp = new Periodo();
-			periodoTemp.setId(0);
+			roteiroTemp.setId(0);
 			roteiroTemp.setNome(nome); 
 			roteiroTemp.setDescricao(descricao);
 			roteiroTemp.setDataLiberacao(easyCorrectionUtil.formataData(dataLiberacao));
 			roteiroTemp.setDataFinalEntrega(easyCorrectionUtil.formataData(dataFinalEntrega));
 			roteiroTemp.setDataFinalDiscussao(easyCorrectionUtil.formataData(dataFinalDiscussao));
-			roteiroTemp.setNumeroMaximoEnvios(numeroMaximoEnvios);
+			roteiroTemp.setNumeroMaximoEnvios(Integer.valueOf(numeroMaximoEnvios));
 			roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
 			roteiroTemp.setPorcentagemTestesAutomaticos(porcentagemTestesAutomaticos);
-			roteiroTemp.setTempoLimiteTestes(tempoLimiteTestes);
+			roteiroTemp.setTempoLimiteTestes(Integer.valueOf(tempoLimiteTestes));
 			roteiroTemp.setDiretorioInterface(diretorioInterface);
 			roteiroTemp.setDiretorioTestes(diretorioTestes);
-			roteiroTemp.setNumeroMaximoParticipantes(numeroMaximoParticipantes);
+			roteiroTemp.setNumeroMaximoParticipantes(Integer.valueOf(numeroMaximoParticipantes));
 			roteiroTemp.setBloqueado(bloqueado);
-			periodoTemp.setSemestre("2010.2");
 			Roteiro roteiroCriado = facadeSistema.cadastrarRoteiro(roteiroTemp);
 			return roteiroCriado.getId();
 	}
@@ -89,13 +87,13 @@ public class FacadeTestUS3Acceptance {
 		roteiroTemp.setDataLiberacao(easyCorrectionUtil.formataData(dataLiberacao));
 		roteiroTemp.setDataFinalEntrega(easyCorrectionUtil.formataData(dataFinalEntrega));
 		roteiroTemp.setDataFinalDiscussao(easyCorrectionUtil.formataData(dataFinalDiscussao));
-		roteiroTemp.setNumeroMaximoEnvios(numeroMaximoEnvios);
+		roteiroTemp.setNumeroMaximoEnvios(Integer.valueOf(numeroMaximoEnvios));
 		roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
 		roteiroTemp.setPorcentagemTestesAutomaticos(porcentagemTestesAutomaticos);
-		roteiroTemp.setTempoLimiteTestes(tempoLimiteTestes);
+		roteiroTemp.setTempoLimiteTestes(Integer.valueOf(tempoLimiteTestes));
 		roteiroTemp.setDiretorioInterface(diretorioInterface);
 		roteiroTemp.setDiretorioTestes(diretorioTestes);
-		roteiroTemp.setNumeroMaximoParticipantes(numeroMaximoParticipantes);
+		roteiroTemp.setNumeroMaximoParticipantes(Integer.valueOf(numeroMaximoParticipantes));
 		roteiroTemp.setBloqueado(bloqueado);
 		Roteiro rotAtualizado = facadeSistema.editarRoteiro(roteiroTemp);
 		return rotAtualizado.getId();
