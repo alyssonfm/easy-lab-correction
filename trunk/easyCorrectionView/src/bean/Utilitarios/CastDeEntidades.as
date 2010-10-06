@@ -2,6 +2,8 @@
 package bean.Utilitarios {
 
 	import bean.acesso.*;
+	import bean.roteiros.*;
+	import bean.sistema.*;
 
 	public class CastDeEntidades {				
 		
@@ -93,6 +95,47 @@ package bean.Utilitarios {
 					p.grupo = CastDeEntidades.castGrupo(objeto.grupo);
 					p.idPermissao = objeto.idPermissao;
 					return p;
+				}
+			}
+			return objeto;
+		}		
+		
+		public static function castPeriodo(objeto: *):Periodo{
+			if (objeto != null) {
+				if(objeto == undefined){
+					objeto = null;
+				}else{
+					var p:Periodo = new Periodo();
+					p.id = objeto.id;
+					p.semestre = objeto.semestre;
+					return p;
+				}
+			}
+			return objeto;
+		}		
+		
+		public static function castRoteiro(objeto: *):Roteiro{
+			if (objeto != null) {
+				if(objeto == undefined){
+					objeto = null;
+				}else{
+					var r:Roteiro = new Roteiro();
+					r.id = objeto.id;
+					r.bloqueado = objeto.bloqueado;
+					r.dataFinalDiscussao = objeto.dataFinalDiscussao;
+					r.dataFinalEntrega = objeto.dataFinalEntrega;
+					r.dataLiberacao = objeto.dataLiberacao;
+					r.descricao = objeto.descricao;
+					r.diretorioInterface = objeto.diretorioInterface;
+					r.diretorioTestes = objeto.diretorioTestes;
+					r.nome = objeto.nome;
+					r.numeroMaximoEnvios = objeto.numeroMaximoEnvios;
+					r.numeroMaximoParticipantes = objeto.numeroMaximoParticipantes;
+					r.penalidadeDiasAtraso = objeto.penalidadeDiasAtraso;
+					r.periodo = castPeriodo(objeto.periodo);
+					r.porcentagemTestesAutomaticos = objeto.porcentagemTestesAutomaticos;
+					r.tempoLimiteTestes = objeto.tempoLimiteTestes;
+					return r;
 				}
 			}
 			return objeto;
