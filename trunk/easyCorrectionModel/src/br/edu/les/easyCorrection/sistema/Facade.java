@@ -384,7 +384,7 @@ public class Facade {
 		try {
 			return sistema.bloquearRoteiro(roteiro);
 		} catch (Throwable e) {
-			log.error("getRoteiro()", e);
+			log.error("bloquearRoteiro()", e);
 			throw e;
 		}
 	}
@@ -394,6 +394,15 @@ public class Facade {
 			return sistema.getRoteiro(idRoteiro);
 		} catch (Throwable e) {
 			log.error("getRoteiro()", e);
+			throw e;
+		}
+	}
+	
+	public List<Roteiro> getRoteiros() throws Throwable{
+		try{
+			return sistema.getRoteiros();
+		} catch (Throwable e) {
+			log.error("getRoteiros()", e);
 			throw e;
 		}
 	}
