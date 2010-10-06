@@ -200,7 +200,7 @@ CREATE TABLE `grupo_usuario` (
   KEY `FK_grupo_usuario_usuario` (`id_usuario`),
   CONSTRAINT `FK_grupo_usuario_grupo` FOREIGN KEY (`id_grupo`) REFERENCES `grupo` (`id`),
   CONSTRAINT `FK_grupo_usuario_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `grupo_usuario`
@@ -208,7 +208,10 @@ CREATE TABLE `grupo_usuario` (
 
 /*!40000 ALTER TABLE `grupo_usuario` DISABLE KEYS */;
 INSERT INTO `grupo_usuario` (`id`,`id_usuario`,`id_grupo`) VALUES 
- (1,1,1);
+ (1,1,1),
+ (39,33,1),
+ (42,36,4),
+ (43,37,1);
 /*!40000 ALTER TABLE `grupo_usuario` ENABLE KEYS */;
 
 
@@ -224,7 +227,7 @@ CREATE TABLE `menu` (
   PRIMARY KEY (`id`),
   KEY `Index_nome` (`nome`),
   KEY `Index_rotulo` (`titulo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `menu`
@@ -299,7 +302,7 @@ INSERT INTO `permissao` (`id`,`grupo_id`,`funcao_id`) VALUES
 
 DROP TABLE IF EXISTS `roteiro`;
 CREATE TABLE `roteiro` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL,
   `periodo_id` int(10) unsigned NOT NULL,
   `nome` varchar(255) NOT NULL,
   `descricao` text,
@@ -312,8 +315,8 @@ CREATE TABLE `roteiro` (
   `tempo_limite_testes` int(10) unsigned NOT NULL,
   `diretorio_interface` varchar(255) DEFAULT NULL,
   `diretorio_testes` varchar(255) DEFAULT NULL,
-  `versao_interface` varchar(50) DEFAULT NULL,
-  `versao_testes` varchar(50) DEFAULT NULL,
+  `numero_maximo_participantes` int(10) unsigned DEFAULT NULL,
+  `bloqueado` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `roteiro_FKIndex1` (`periodo_id`),
   CONSTRAINT `roteiro_ibfk_1` FOREIGN KEY (`periodo_id`) REFERENCES `periodo` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -368,7 +371,7 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `Index_login` (`login`),
   KEY `FK_usuario_periodo` (`periodo_id`),
   CONSTRAINT `FK_usuario_periodo` FOREIGN KEY (`periodo_id`) REFERENCES `periodo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `usuario`
@@ -376,7 +379,10 @@ CREATE TABLE `usuario` (
 
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`,`email`,`periodo_id`) VALUES 
- (1,'demas','Demetrio Gomes Mestre','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',1);
+ (1,'demas','Augusto','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',NULL),
+ (33,'augusto','Augusto','d9b1d7db4cd6e70935368a1efb10e377','demetriogm@gmail.com',NULL),
+ (36,'demetriogm','Demetrio Gomes','5a656a920322c1aaf33410dc28967ae','demetriogm@gmail.com',NULL),
+ (37,'alysson','alysson','d9b1d7db4cd6e70935368a1efb10e377','demetriogm@gmail.com',NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
