@@ -13,7 +13,13 @@ Testes de Aceitação:
 Testes de Unidade: 
  - Tecnologia: JUnit
  - Passos:
- 	1: Vá na pasta src/br/edu/les/easyCorrection/tests/unit/gerenciadores
- 	2: Abra o arquivo GerenciadorRoteirosTest.java
- 	3: Execute o arquivo de testes (estamos utilizando JUnit 4).
- 	4: Verifique os resultados gerados na execução dos testes
+ 	1: Vá na pasta desejada após a raiz: 
+ 		src/br/edu/les/easyCorrection/tests/unit/
+ 	2: Seleciona-se o pacote que deseja-se testar (a hierarquia de pacotes é a mesma do /src do projeto)
+ 	3: Abra a classe *.java desejada
+ 	4: Execute-a (lembrar de adicionar o JUnit 4 ao classpath)
+ 	5: Verifique os resultados gerados na execução dos testes
+ 	
+ 	OBS.: consideramos que alguma IDE (Eclipse, NetBeans, etc) está sendo usada.
+ 	Assim a compilação, execução e a análise do resultado será facilitada.
+ 	

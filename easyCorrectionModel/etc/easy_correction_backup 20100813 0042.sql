@@ -152,7 +152,7 @@ INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES
  (1,'Cadastros','acesso',1),
  (2,'Permissões','defPerm',1),
  (4,'Criação','agendaRoteiros',4),
- (5,'Atribuiação de Atividades','atribuicaoDeRoteiros',3),
+ (5,'Atribuição de Atividades','atribuicaoDeRoteiros',3),
  (6,'Penalidades','penalidades',3),
  (7,'Visualizar Notas','notas',3),
  (8,'Submissão','submissaoDeRoteiros',4),
