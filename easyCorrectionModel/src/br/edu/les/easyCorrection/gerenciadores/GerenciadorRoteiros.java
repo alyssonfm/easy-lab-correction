@@ -1,5 +1,6 @@
 package br.edu.les.easyCorrection.gerenciadores;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -76,16 +77,16 @@ public class GerenciadorRoteiros {
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
 			throws CriacaoRoteiroException, CampoVazioException {
 
-		this.criacaoOuAtualizacaoMsg = "atualizado";
+		this.criacaoOuAtualizacaoMsg = "criado";
 
 		if (validaRoteiroEmCriacao(roteiroTemp)) {
 			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
-			
+
 			// As frases de sucesso são implementadas na GUI, por isso mantemos
 			// essa flag aqui. Para termos uma certeza de que, mesmo sem gui, o
 			// roteiro foi criado com sucesso
 			System.out.println("Roteiro criado com sucesso!");
-			
+
 			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
 		} else {
 			throw new CriacaoRoteiroException("Roteiro não pôde ser criado");
@@ -215,15 +216,15 @@ public class GerenciadorRoteiros {
 			throw new CampoVazioException("Atributos nulos!");
 		}
 
-		if (roteiro.getNome() == "") {
+		if (roteiro.getNome().equals("")) {
 			throw new CriacaoRoteiroException(MsgErros.NOMEVAZIO
-					.msg("Nome da atividade invalido. O Roteiro nao pode ser "
+					.msg("Nome da atividade inválido. O Roteiro não pôde ser "
 							+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (roteiro.getDataLiberacao().before(dataAtual)) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("Data de Liberação inválida. O roteiro nao pôde ser ser "
+							.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (roteiro.getDataFinalEntrega().before(
@@ -237,7 +238,7 @@ public class GerenciadorRoteiros {
 				roteiro.getDataFinalEntrega())) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("Data Limite para Discussao anterior à Data Limite para Entrega. O Roteiro não pôde ser "
+							.msg("Data Limite para Discussão anterior à Data Limite para Entrega. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (roteiro.getNumeroMaximoParticipantes() <= 0) {
@@ -279,20 +280,57 @@ public class GerenciadorRoteiros {
 							.msg("Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-			// } else if () {
-			// throw new CriacaoRoteiroException(
-			// "Formato do Arquivo de Testes Automaticos nao eh .zip nem .java. O Roteiro não pôde ser "
-			// + criacaoOuAtualizacaoMsg + "!");
-			//
-			// } else if () {
-			// throw new CriacaoRoteiroException(
-			// "Formato do arquivo da interface deve ser .java. O Roteiro não pôde ser "+
-			// criacaoOuAtualizacaoMsg + "!");
+		} else if (checkDiretorioTestesFileExtension(roteiro
+				.getDiretorioTestes())) {
+			throw new CriacaoRoteiroException(
+					"Formato do Arquivo de Testes Automáticos não é .zip nem .java. O Roteiro não pôde ser "
+							+ criacaoOuAtualizacaoMsg + "!");
+
+		} else if (checkDiretorioInterfaceFileExtension(roteiro
+				.getDiretorioInterface())) {
+			throw new CriacaoRoteiroException(
+					"Formato do arquivo da interface deve ser .java. O Roteiro não pôde ser "
+							+ criacaoOuAtualizacaoMsg + "!");
 
 		} else {
 			return true;
 		}
 
+	}
+
+	private boolean checkDiretorioTestesFileExtension(String testeFileName) {
+
+		File f = new File(testeFileName);
+
+		if (f.isFile()) {
+			if (testeFileName.endsWith(".zip")
+					|| testeFileName.endsWith(".java")) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			// se nao eh um arquivo, apenas o diretorio, ou seja, nao foi
+			// passado nada, OK
+			return true;
+		}
+	}
+
+	private boolean checkDiretorioInterfaceFileExtension(String testeFileName) {
+
+		File f = new File(testeFileName);
+
+		if (f.isFile()) {
+			if (testeFileName.endsWith(".java")) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			// se nao eh um arquivo, apenas o diretorio, ou seja, nao foi
+			// passado nada, OK
+			return true;
+		}
 	}
 
 	public boolean validaRoteiroEstadoCriado(Roteiro roteiro)

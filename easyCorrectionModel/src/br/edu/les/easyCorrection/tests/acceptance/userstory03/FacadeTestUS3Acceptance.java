@@ -1,5 +1,6 @@
 package br.edu.les.easyCorrection.tests.acceptance.userstory03;
 
+import java.util.Calendar;
 import java.util.List;
 
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
@@ -99,6 +100,11 @@ public class FacadeTestUS3Acceptance {
 	}
 	
 	//EasyAcceptOK
+	public void liberarRoteiro(int roteiroId) throws Throwable {
+		facadeSistema.liberarRoteiro(facadeSistema.getRoteiro(roteiroId));
+	}
+	
+	//EasyAcceptOK
 	public void bloquearRoteiro(int roteiroId) throws Throwable {
 		facadeSistema.bloquearRoteiro(facadeSistema.getRoteiro(roteiroId));
 	}
@@ -128,6 +134,12 @@ public class FacadeTestUS3Acceptance {
 	//EasyAcceptOK
 	public Roteiro getRoteiro(int idRoteiro) throws Throwable {
 		return facadeSistema.getRoteiro(idRoteiro);
+	}
+	
+	
+	// UTIL
+	public String getDataAtual() {
+		return (Calendar.DAY_OF_MONTH + "/" + Calendar.MONTH + "/" + (Calendar.YEAR + 1900));
 	}
 	
 }
