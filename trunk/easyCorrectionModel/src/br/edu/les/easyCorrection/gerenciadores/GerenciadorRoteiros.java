@@ -1,6 +1,7 @@
 package br.edu.les.easyCorrection.gerenciadores;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,10 +16,8 @@ import br.edu.les.easyCorrection.util.MsgErros;
 
 public class GerenciadorRoteiros {
 
-	public final int TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT = 10000;
-	public final int NUMERO_MAXIMO_ENVIOS_DEFAULT = 3;
-	public final double PENALIDADE_DIA_ATRASO_DEFAULT = 0.5;
-	public final double PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT = 1;
+	public final double PENALIDADE_DIA_ATRASO_DEFAULT = -1;
+	public final double PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT = -1;
 
 	public final int ESTADO_INEXISTENTE = 0;
 	/*
@@ -199,95 +198,118 @@ public class GerenciadorRoteiros {
 	 */
 
 	public boolean validaRoteiroEmCriacao(Roteiro roteiro)
-			throws CriacaoRoteiroException, CampoVazioException {
+			throws CriacaoRoteiroException {
+
+		// System.out.println("++++ROTEIRO+++");
+		// System.out.println("Nome: " + roteiro.getNome());
+		// System.out.println("Liberacao:  " + roteiro.getDataLiberacao());
+		// System.out.println("Descricao: " + roteiro.getDescricao());
+		// System.out.println("Entrega: " + roteiro.getDataFinalEntrega());
+		// System.out
+		// .println("Data Discussao: " + roteiro.getDataFinalDiscussao());
+		// System.out.println("Max Envios: " + roteiro.getNumeroMaximoEnvios());
+		// System.out.println("Max Participantes: "
+		// + roteiro.getNumeroMaximoParticipantes());
+		// System.out.println("Porcento Testes: "
+		// + roteiro.getPorcentagemTestesAutomaticos());
+		// System.out.println("Penalidades: " +
+		// roteiro.getPenalidadeDiasAtraso());
+		// System.out.println("TimeLimit Testes: "
+		// + roteiro.getTempoLimiteTestes());
+		// System.out.println("Dir Testes: " + roteiro.getDiretorioTestes());
+		// System.out.println("Dir Interface: " +
+		// roteiro.getDiretorioInterface());
+		// System.out.println();
 
 		Date dataAtual = new Date();
 
-		// Teste inicial para atributos nulos
-		if (roteiro.getNome() == null || roteiro.getDataLiberacao() == null
-				|| roteiro.getDescricao() == null
-				|| roteiro.getDataFinalEntrega() == null
-				|| roteiro.getDataFinalDiscussao() == null
-				|| roteiro.getNumeroMaximoParticipantes() == null
-				|| roteiro.getNumeroMaximoEnvios() == null
-				|| roteiro.getTempoLimiteTestes() == null
-				|| roteiro.getDiretorioTestes() == null
-				|| roteiro.getDiretorioInterface() == null) {
-			throw new CampoVazioException("Atributos nulos!");
-		}
-
-		if (roteiro.getNome().equals("")) {
+		if (roteiro.getNome() == null || roteiro.getNome().equals("")) {
 			throw new CriacaoRoteiroException(MsgErros.NOMEVAZIO
 					.msg("Nome da atividade inválido. O Roteiro não pôde ser "
 							+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getDataLiberacao().before(dataAtual)) {
+		} else if (roteiro.getDataLiberacao() == null
+				|| roteiro.getDataLiberacao().before(dataAtual)) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getDataFinalEntrega().before(
-				roteiro.getDataLiberacao())) {
+		} else if (roteiro.getDataFinalEntrega() != null
+				&& roteiro.getDataFinalEntrega().before(
+						roteiro.getDataLiberacao())) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("Data Limite para Entrega anterior à Data de Liberação. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getDataFinalDiscussao().before(
-				roteiro.getDataFinalEntrega())) {
+		} else if (roteiro.getDataFinalDiscussao() != null
+				&& roteiro.getDataFinalDiscussao().before(
+						roteiro.getDataFinalEntrega())) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("Data Limite para Discussão anterior à Data Limite para Entrega. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getNumeroMaximoParticipantes() <= 0) {
+		} else if (roteiro.getNumeroMaximoParticipantes() != null
+				&& roteiro.getNumeroMaximoParticipantes() <= 0) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("O número máximo de integrantes deve ser sempre maior ou igual a 1 integrante. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getNumeroMaximoEnvios() <= 0) {
+		} else if (roteiro.getNumeroMaximoEnvios() != null
+				&& roteiro.getNumeroMaximoEnvios() <= 0) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("O número máximo de envios deve ser sempre maior ou igual a 1. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getPenalidadeDiasAtraso() < 0.0
+		} else if (roteiro.getPenalidadeDiasAtraso() != PENALIDADE_DIA_ATRASO_DEFAULT
+				&& roteiro.getPenalidadeDiasAtraso() < 0.0
 				|| roteiro.getPenalidadeDiasAtraso() > 10.0) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("A Penalidade por dia de atraso deve ser sempre maior ou igual a 0,0 e menor ou igual a 10,0. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getPorcentagemTestesAutomaticos() < 0
-				|| roteiro.getPorcentagemTestesAutomaticos() > 1) {
+		} else if (roteiro.getPorcentagemTestesAutomaticos() != PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
+				&& (roteiro.getPorcentagemTestesAutomaticos() < 0 || roteiro
+						.getPorcentagemTestesAutomaticos() > 100)) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("A Porcentagem automática por dia de atraso deve ser sempre maior ou igual a 0 e menor ou igual a 1. O Roteiro não pôde ser "
+							.msg("A Porcentagem automática da avaliação deve ser sempre >= 0 e <= 100. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getTempoLimiteTestes() < 0) {
+		} else if (roteiro.getTempoLimiteTestes() != null
+				&& ((roteiro.getPorcentagemTestesAutomaticos() > 0 && roteiro
+						.getPorcentagemTestesAutomaticos() <= 1)
+				&& roteiro.getTempoLimiteTestes() < 0)) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
-							.msg("Time-limit de execução dos testes por método inválido, deve ser sempre >= 0. O Roteiro não pôde ser "
+							.msg("Time-limit de execução dos testes por método inválido, deve ser sempre > 0 quando a Porcentagem Automática de Avaliação for > 0 e <= 100. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getPorcentagemTestesAutomaticos() == 0
+		} else if (roteiro.getPorcentagemTestesAutomaticos() != PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
+				&& roteiro.getTempoLimiteTestes() != null
+				&& roteiro.getPorcentagemTestesAutomaticos() == 0
 				&& roteiro.getTempoLimiteTestes() > 0) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
-
-		} else if (checkDiretorioTestesFileExtension(roteiro
-				.getDiretorioTestes())) {
+		} else if ((roteiro.getDiretorioTestes() != null && roteiro
+				.getDiretorioTestes().equals(""))
+				&& !checkDiretorioTestesFileExtension(new File(roteiro
+						.getDiretorioTestes()))) {
 			throw new CriacaoRoteiroException(
-					"Formato do Arquivo de Testes Automáticos não é .zip nem .java. O Roteiro não pôde ser "
+					"Alguns arquivos de Testes Automáticos não possuíam a extensão .java. O Roteiro não pôde ser "
 							+ criacaoOuAtualizacaoMsg + "!");
 
-		} else if (checkDiretorioInterfaceFileExtension(roteiro
-				.getDiretorioInterface())) {
+		} else if ((roteiro.getDiretorioInterface() != null && roteiro
+				.getDiretorioInterface().equals(""))
+				&& !checkDiretorioInterfaceFileExtension(roteiro
+						.getDiretorioInterface())) {
 			throw new CriacaoRoteiroException(
 					"Formato do arquivo da interface deve ser .java. O Roteiro não pôde ser "
 							+ criacaoOuAtualizacaoMsg + "!");
@@ -298,22 +320,21 @@ public class GerenciadorRoteiros {
 
 	}
 
-	private boolean checkDiretorioTestesFileExtension(String testeFileName) {
+	private boolean checkDiretorioTestesFileExtension(File testeDirectory) {
 
-		File f = new File(testeFileName);
+		File[] allFiles = testeDirectory.listFiles();
 
-		if (f.isFile()) {
-			if (testeFileName.endsWith(".zip")
-					|| testeFileName.endsWith(".java")) {
-				return true;
+		for (File file : allFiles) {
+			if (file.isDirectory()) {
+				return checkDiretorioTestesFileExtension(file);
+			} else if (file.isFile()
+					&& !file.getAbsolutePath().endsWith(".java")) {
+				return false;
 			} else {
 				return false;
 			}
-		} else {
-			// se nao eh um arquivo, apenas o diretorio, ou seja, nao foi
-			// passado nada, OK
-			return true;
 		}
+		return true;
 	}
 
 	private boolean checkDiretorioInterfaceFileExtension(String testeFileName) {
@@ -327,9 +348,7 @@ public class GerenciadorRoteiros {
 				return false;
 			}
 		} else {
-			// se nao eh um arquivo, apenas o diretorio, ou seja, nao foi
-			// passado nada, OK
-			return true;
+			return false;
 		}
 	}
 

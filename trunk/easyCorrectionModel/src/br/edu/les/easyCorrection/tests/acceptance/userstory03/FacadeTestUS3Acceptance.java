@@ -42,6 +42,7 @@ public class FacadeTestUS3Acceptance {
 								String diretorioTestes,
 								int numeroMaximoParticipantes,
 								boolean bloqueado) throws Throwable{
+			
 			Roteiro roteiroTemp = new Roteiro();
 			roteiroTemp.setPeriodo(facadeSistema.getPeriodo(periodoId));
 			roteiroTemp.setId(0);
@@ -50,14 +51,31 @@ public class FacadeTestUS3Acceptance {
 			roteiroTemp.setDataLiberacao(easyCorrectionUtil.formataData(dataLiberacao));
 			roteiroTemp.setDataFinalEntrega(easyCorrectionUtil.formataData(dataFinalEntrega));
 			roteiroTemp.setDataFinalDiscussao(easyCorrectionUtil.formataData(dataFinalDiscussao));
-			roteiroTemp.setNumeroMaximoEnvios(Integer.valueOf(numeroMaximoEnvios));
-			roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
-			roteiroTemp.setPorcentagemTestesAutomaticos(porcentagemTestesAutomaticos);
-			roteiroTemp.setTempoLimiteTestes(Integer.valueOf(tempoLimiteTestes));
 			roteiroTemp.setDiretorioInterface(diretorioInterface);
 			roteiroTemp.setDiretorioTestes(diretorioTestes);
-			roteiroTemp.setNumeroMaximoParticipantes(Integer.valueOf(numeroMaximoParticipantes));
 			roteiroTemp.setBloqueado(bloqueado);
+			
+			// doubleOnes
+			roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
+			roteiroTemp.setPorcentagemTestesAutomaticos(porcentagemTestesAutomaticos);
+			
+			// convencoes
+			if (numeroMaximoEnvios == -1){
+				roteiroTemp.setNumeroMaximoEnvios(null);
+			}else{
+				roteiroTemp.setNumeroMaximoEnvios(Integer.valueOf(numeroMaximoEnvios));
+			}
+			if (tempoLimiteTestes == -1){
+				roteiroTemp.setTempoLimiteTestes(null);
+			}else{
+				roteiroTemp.setTempoLimiteTestes(Integer.valueOf(tempoLimiteTestes));
+			}
+			if (numeroMaximoParticipantes == -1){
+				roteiroTemp.setNumeroMaximoParticipantes(null);
+			}else{
+				roteiroTemp.setNumeroMaximoParticipantes(Integer.valueOf(numeroMaximoParticipantes));
+			}
+			
 			Roteiro roteiroCriado = facadeSistema.cadastrarRoteiro(roteiroTemp);
 			return roteiroCriado.getId();
 	}
@@ -77,7 +95,7 @@ public class FacadeTestUS3Acceptance {
 							 String diretorioInterface,
 							 String diretorioTestes,
 							 int numeroMaximoParticipantes,
-							 boolean bloqueado) throws Throwable {
+							 boolean isBloqueado) throws Throwable {
 		
 		Roteiro roteiroTemp = facadeSistema.getRoteiro(roteiroId);
 		roteiroTemp.setId(roteiroId);
@@ -87,14 +105,33 @@ public class FacadeTestUS3Acceptance {
 		roteiroTemp.setDataLiberacao(easyCorrectionUtil.formataData(dataLiberacao));
 		roteiroTemp.setDataFinalEntrega(easyCorrectionUtil.formataData(dataFinalEntrega));
 		roteiroTemp.setDataFinalDiscussao(easyCorrectionUtil.formataData(dataFinalDiscussao));
-		roteiroTemp.setNumeroMaximoEnvios(Integer.valueOf(numeroMaximoEnvios));
-		roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
-		roteiroTemp.setPorcentagemTestesAutomaticos(porcentagemTestesAutomaticos);
-		roteiroTemp.setTempoLimiteTestes(Integer.valueOf(tempoLimiteTestes));
+		
 		roteiroTemp.setDiretorioInterface(diretorioInterface);
 		roteiroTemp.setDiretorioTestes(diretorioTestes);
-		roteiroTemp.setNumeroMaximoParticipantes(Integer.valueOf(numeroMaximoParticipantes));
-		roteiroTemp.setBloqueado(bloqueado);
+		roteiroTemp.setBloqueado(isBloqueado);
+
+		// doubleOnes
+		roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
+		roteiroTemp.setPorcentagemTestesAutomaticos(porcentagemTestesAutomaticos);
+		
+		// convencoes
+		if (numeroMaximoEnvios == -1){
+			roteiroTemp.setNumeroMaximoEnvios(null);
+		}else{
+			roteiroTemp.setNumeroMaximoEnvios(Integer.valueOf(numeroMaximoEnvios));
+		}
+		if (tempoLimiteTestes == -1){
+			roteiroTemp.setTempoLimiteTestes(null);
+		}else{
+			roteiroTemp.setTempoLimiteTestes(Integer.valueOf(tempoLimiteTestes));
+		}
+		if (numeroMaximoParticipantes == -1){
+			roteiroTemp.setNumeroMaximoParticipantes(null);
+		}else{
+			roteiroTemp.setNumeroMaximoParticipantes(Integer.valueOf(numeroMaximoParticipantes));
+		}
+		
+		
 		Roteiro rotAtualizado = facadeSistema.editarRoteiro(roteiroTemp);
 		return rotAtualizado.getId();
 	}
@@ -141,7 +178,26 @@ public class FacadeTestUS3Acceptance {
 	public String getDataAtual() {
 		return (Calendar.DAY_OF_MONTH + "/" + Calendar.MONTH + "/" + (Calendar.YEAR + 1900));
 	}
+
+	// TODO
+	public String getDiretorioTestes(){
+		return "OPS";
+	}
 	
+	// TODO
+	public String getDiretorioTestesDiff(){
+		return "OPS";
+	}
+	
+	// TODO
+	public String getPathInterfaceFileNotJava(){
+		return "OPS";
+	}
+	
+	// TODO
+	public String getPathInterfaceFile(){
+		return "OPS";
+	}
 }
 
 
