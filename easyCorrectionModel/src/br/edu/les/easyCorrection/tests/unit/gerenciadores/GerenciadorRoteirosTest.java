@@ -64,10 +64,8 @@ public class GerenciadorRoteirosTest {
 			Assert.assertEquals(r2.getDescricao(), r.getDescricao());
 			Assert.assertEquals(r2.getPenalidadeDiasAtraso(), gr.PENALIDADE_DIA_ATRASO_DEFAULT);
 			Assert.assertEquals(r2.getPorcentagemTestesAutomaticos(), gr.PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT);
-			Assert.assertEquals(r2.getTempoLimiteTestes().intValue(), gr.TEMPO_LIMITE_EXECUCAO_TESTES_DEFAULT);
 			Assert.assertEquals(r2.getDataFinalEntrega(), d);
 			Assert.assertEquals(r2.getDataFinalDiscussao(), d1);
-			Assert.assertEquals(r2.getNumeroMaximoEnvios().intValue(), gr.NUMERO_MAXIMO_ENVIOS_DEFAULT);
 		} catch (EasyCorrectionException e) {
 			e.getMessage();
 		}

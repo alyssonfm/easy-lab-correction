@@ -3,12 +3,14 @@ Como executar os testes?
 Testes de Aceitação:
  - Tecnologia: EasyAccept
  - Passos:
- 	1:
- 	2:
- 	3:
- 	4:
- 	5:
- 	
+ 	1: Vá na pasta desejada após a raiz: 
+ 		src/br/edu/les/easyCorrection/tests/acceptance/
+ 	2: Abra o arquivo TestRunner.java
+ 	3: Escolha a US a ser testada
+ 	3: Comente os testes que não deseja realizar (dividos por US) 
+ 	4: Vá no arquivo Constants.java 
+ 	5: Modifique o caminho do script de teste desde a raiz do seu sistema operacional até o script da US escolhida
+	6: o script de teste está dividido por userstories (ex.: /acceptance/userstory03/us3_CriacaoRoteiros.eas)
  
 Testes de Unidade: 
  - Tecnologia: JUnit
