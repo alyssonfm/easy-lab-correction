@@ -18,23 +18,6 @@
 		<property name="format_sql">false</property>	
 		<property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
 
-
-
-
-		<!-- Condiguração do c3p0
-		<property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
-		<property name="hibernate.c3p0.min_size">2</property>
-		<property name="hibernate.c3p0.max_size">10</property>
-		<property name="hibernate.c3p0.timeout">600</property>
-		<property name="hibernate.c3p0.max_statements">50</property>
-		<property name="hibernate.c3p0.idle_test_period">300</property>
-		<property name="hibernate.c3p0.acquire_increment">2</property>
-		<property name="hibernate.max_fetch_depth">3</property>
-		<property name="hibernate.c3p0.preferredTestQuery">SELECT 1</property> 
-		<property name="hibernate.c3p0.maxConnectionAge">60</property>
-		<property name="hibernate.c3p0.acquireRetryAttempts">60</property>
-		<property name="hibernate.c3p0.testConnectionOnCheckout">true</property>
- -->
 <!-- Mapeamentos do Controle de Acesso easyCorrection  -->
 		<mapping resource="br/edu/les/easyCorrection/mapeamentos/acesso/Menu.hbm.xml" />
 		<mapping resource="br/edu/les/easyCorrection/mapeamentos/acesso/Funcao.hbm.xml" />
@@ -49,7 +32,6 @@
 		<mapping resource="br/edu/les/easyCorrection/mapeamentos/sistema/Chat.hbm.xml" />
 		<mapping resource="br/edu/les/easyCorrection/mapeamentos/sistema/Equipe.hbm.xml" />
 		<mapping resource="br/edu/les/easyCorrection/mapeamentos/sistema/EquipeHasUsuarioHasRoteiro.hbm.xml" />
-		<mapping resource="br/edu/les/easyCorrection/mapeamentos/sistema/Roteiro.hbm.xml" />
 		<mapping resource="br/edu/les/easyCorrection/mapeamentos/sistema/Submissao.hbm.xml" /> --> 
 		
 		<!--  Mapeamento para o teste de Augusto -->
