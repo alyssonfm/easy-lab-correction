@@ -6,7 +6,6 @@ import org.hibernate.Session;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
 import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
@@ -43,9 +42,7 @@ public class SubmissaoHibernateDAO extends
 	}
 	
 	public static Submissao instanciaSubmissao(Submissao s) throws CampoVazioException{
-		s.setEquipe(EquipeHibernateDAO.instanciaEquipe(s.getEquipe()));
-		s.setRoteiro(RoteiroHibernateDAO.instanciaRoteiro(s.getRoteiro()));
-		s.setUsuario(UsuarioHibernateDAO.instanciaUsuario(s.getUsuario()));
+		s.setEquipeHasUsuarioHasRoteiro(EquipeHasUsuarioHasRoteiroHibernateDAO.instanciaEquipeHasUsuarioHasRoteiro(s.getEquipeHasUsuarioHasRoteiro()));
 		s = MyPersistenceLayer.deproxy(s, Submissao.class);
 		return s;
 	}
