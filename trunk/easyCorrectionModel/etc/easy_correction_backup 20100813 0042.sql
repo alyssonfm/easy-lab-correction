@@ -110,7 +110,9 @@ CREATE TABLE `equipe_has_usuario_has_roteiro` (
   `equipe_id` int(10) unsigned NOT NULL,
   `usuario_id` int(10) unsigned NOT NULL,
   `roteiro_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`equipe_id`,`usuario_id`,`roteiro_id`) USING BTREE,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  KEY `FK_equipe_has_usuario_has_roteiro_equipe` (`equipe_id`),
   KEY `FK_equipe_has_usuario_has_roteiro_usuario` (`usuario_id`),
   KEY `FK_equipe_has_usuario_has_roteiro_roteiro` (`roteiro_id`),
   CONSTRAINT `FK_equipe_has_usuario_has_roteiro_equipe` FOREIGN KEY (`equipe_id`) REFERENCES `equipe` (`id`),
@@ -150,7 +152,7 @@ CREATE TABLE `funcao` (
 /*!40000 ALTER TABLE `funcao` DISABLE KEYS */;
 INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES 
  (1,'Cadastros','acesso',1),
- (2,'Permissões','defPerm',1),
+ (2,'Permissõs','defPerm',1),
  (4,'Criação','agendaRoteiros',4),
  (5,'Atribuição de Atividades','atribuicaoDeRoteiros',3),
  (6,'Penalidades','penalidades',3),
@@ -305,7 +307,7 @@ CREATE TABLE `roteiro` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `periodo_id` int(10) unsigned NOT NULL,
   `nome` varchar(255) NOT NULL,
-  `descricao` text DEFAULT NULL,
+  `descricao` text,
   `data_liberacao` date NOT NULL,
   `data_final_entrega` date DEFAULT NULL,
   `data_final_discussao` date DEFAULT NULL,
@@ -320,7 +322,7 @@ CREATE TABLE `roteiro` (
   PRIMARY KEY (`id`),
   KEY `roteiro_FKIndex1` (`periodo_id`),
   CONSTRAINT `roteiro_ibfk_1` FOREIGN KEY (`periodo_id`) REFERENCES `periodo` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `roteiro`
@@ -339,12 +341,11 @@ CREATE TABLE `submissao` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `url` text NOT NULL,
   `estado` varchar(50) DEFAULT NULL,
-  `equipe_id` int(10) unsigned NOT NULL,
-  `roteiro_id` int(10) unsigned NOT NULL,
-  `usuario_id` int(10) unsigned NOT NULL,
   `data_submissao` datetime NOT NULL,
+  `equipe_has_usuario_has_roteiro_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_submissao_equipe_has_usuario_has_roteiro` (`equipe_id`,`usuario_id`,`roteiro_id`)
+  KEY `FK_submissao_equipe_has_usuario_has_roteiro` (`equipe_has_usuario_has_roteiro_id`),
+  CONSTRAINT `FK_submissao_equipe_has_usuario_has_roteiro` FOREIGN KEY (`equipe_has_usuario_has_roteiro_id`) REFERENCES `equipe_has_usuario_has_roteiro` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=FIXED;
 
 --
