@@ -203,10 +203,6 @@
 					}	
 				}
 				
-				private function editarRoteiro_result(event:ResultEvent):void{
-					
-				}
-				
 				private function cadastrarRoteiro():void{
 					roteiro = new Roteiro();
 					preencheRoteiro();
@@ -239,7 +235,7 @@
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="getPeriodoAtual" result="getPeriodoAtual_result(event)" fault="falha(event)"/>
 			<mx:method name="cadastrarRoteiro" result="cadastrarRoteiro_result(event)" fault="falha(event)"/>
-			<mx:method name="editarRoteiro" result="editarRoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="editarRoteiro" result="cadastrarRoteiro_result(event)" fault="falha(event)"/>
 		</mx:RemoteObject>
 		
 		<mx:Label text="Título:" fontWeight="bold"
