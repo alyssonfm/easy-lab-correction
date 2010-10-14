@@ -2,6 +2,7 @@ package br.edu.les.easyCorrection.DAO.hibernate.sistema;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
@@ -26,6 +27,17 @@ public class EquipeHasUsuarioHasRoteiroHibernateDAO extends
 		super(s);
 		// TODO Auto-generated constructor stub
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<EquipeHasUsuarioHasRoteiro> findByUsuarioERoteiro(Integer idUsuario, Integer idRoteiro) {
+		Query q = getSession().createQuery("from EquipeHasUsuarioHasRoteiro where usuario.id = :idUsuario and roteiro.id = :idRoteiro");
+		q.setParameter("idUsuario",idUsuario);
+		q.setParameter("idUsuario",idRoteiro);
+		q.setCacheable(true);
+		List <EquipeHasUsuarioHasRoteiro> lista = q.list();
+		return instanciaLista(lista);
+	}
+	
 
 	@Override
 	public List<EquipeHasUsuarioHasRoteiro> instanciaLista(List<EquipeHasUsuarioHasRoteiro> lista) {
