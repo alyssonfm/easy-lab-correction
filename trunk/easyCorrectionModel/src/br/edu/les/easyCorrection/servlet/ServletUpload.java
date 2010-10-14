@@ -163,6 +163,11 @@ public class ServletUpload extends HttpServlet {
 		catch(Exception e){}
 	}
 	
+	/*protected void fazUploadUnZip(HttpServletRequest request, HttpServletResponse response, ServletOutputStream out) throws ServletException, IOException {
+		fazUpload(request, response);
+		unZip(out);
+	}*/
+	
 	@SuppressWarnings("unchecked")
 	protected void fazUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//String uploadDir = this.getServletContext().getRealPath(local);
