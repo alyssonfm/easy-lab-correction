@@ -12,7 +12,9 @@ import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
+import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.GeradorSenhas;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
@@ -439,6 +441,24 @@ public class Facade {
 			sistema.excluirRoteiro(roteiro);
 		} catch (Throwable e) {
 			log.error("excluirRoteiro()", e);
+			throw e;
+		}
+	}
+	
+	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(Integer idUsuario, Integer idRoteiro) throws Throwable{
+		try{
+			return sistema.getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(idUsuario, idRoteiro);
+		} catch (Throwable e) {
+			log.error("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()", e);
+			throw e;
+		}
+	}
+	
+	public Submissao submeteRoteiro(Submissao submissao) throws Throwable{
+		try{
+			return sistema.submeteRoteiro(submissao);
+		} catch (Throwable e) {
+			log.error("submeteRoteiro()", e);
 			throw e;
 		}
 	}
