@@ -6,7 +6,7 @@
 						xmlns:les="modulos.sistema.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="800" height="330" creationComplete="init()" title="Submissão de Roteiro" showCloseButton="true" close="fechaJanela()" layout="absolute">
+	width="696" height="390" creationComplete="init()" title="Submissão de Roteiro" showCloseButton="true" close="fechaJanela()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -71,7 +71,7 @@
 			   	 	fileRef.addEventListener(Event.SELECT, arquivoSelecionado);
 			   	 	fileRef.addEventListener(Event.COMPLETE, envioCompleto);
 			   	 	fileRef.addEventListener(IOErrorEvent.IO_ERROR, erroEnvio);
-			    	fileRef.browse(new Array(new FileFilter("Testes","*.java;")));
+			    	fileRef.browse(new Array(new FileFilter("Roteiro","*.zip;")));
 				}
 				
 				public function erroEnvio(evt:Event):void {
@@ -96,6 +96,7 @@
 					dispatchEvent(new FechaPopupEvent(this));
 				}
 				
+				
 			]]>
 		</mx:Script>
 				
@@ -103,12 +104,15 @@
 			
 		</mx:RemoteObject>
 		<mx:Label text="Resultados:" fontWeight="bold"
-			textAlign="left" width="121" x="10" y="121" id="labelDescricao"/>
-		<mx:TextArea x="10" y="149" width="760" height="127" id="inputDescricao"/>
-		<mx:LinkButton x="263.5" y="10" label="   Anexar Roteiro" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivo()"/>
-		<mx:Label x="10" y="38" width="760" id="caminho" textAlign="center" text="Arquivos.zip"/>
-		<mx:Button x="298.05" y="74" label="   Submeter Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSubmeterRoteiro" click="cadastraRoteiro()"/>
-		<mx:HRule x="10" y="110" width="760" height="3"/>
+			textAlign="left" width="121" x="10" y="177" id="labelDescricao"/>
+		<mx:TextArea x="10" y="205" width="634" height="127" id="inputDescricao"/>
+		<mx:LinkButton x="197.55" y="55" label="   Anexar Roteiro" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivo()"/>
+		<mx:Label x="10" y="88" width="634" id="caminho" textAlign="center"/>
+		<mx:Label x="10" y="10" width="69" id="caminho0" textAlign="left" text="Roteiros:" fontWeight="bold"/>
+		<mx:Button x="229" y="124" label="   Submeter Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSubmeterRoteiro" click="cadastraRoteiro()"/>
+		<mx:HRule x="10" y="160" width="634" height="9"/>
+		<mx:HRule x="10" y="38" width="634" height="10"/>
+		<mx:ComboBox x="76" y="8" width="568" id="comboRoteiro"></mx:ComboBox>
 		
 		
 </les:ModuleTitleWindow>
