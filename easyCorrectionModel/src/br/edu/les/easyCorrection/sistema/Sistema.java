@@ -15,7 +15,9 @@ import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
+import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 
 public class Sistema {
@@ -212,5 +214,13 @@ public class Sistema {
 
 	public List<Roteiro> listarRoteiros() {
 		return gerenciadorRoteiros.listarRoteiros();
+	}
+	
+	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(Integer idUsuario, Integer idRoteiro){
+		return gerenciadorRoteiros.getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(idUsuario, idRoteiro);
+	}
+	
+	public Submissao submeteRoteiro(Submissao submissao){
+		return gerenciadorRoteiros.submeteRoteiro(submissao);
 	}
 }
