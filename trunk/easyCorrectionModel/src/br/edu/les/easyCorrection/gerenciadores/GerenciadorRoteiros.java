@@ -206,27 +206,6 @@ public class GerenciadorRoteiros {
 	public boolean validaRoteiroEmCriacao(Roteiro roteiro)
 			throws CriacaoRoteiroException {
 
-		// System.out.println("++++ROTEIRO+++");
-		// System.out.println("Nome: " + roteiro.getNome());
-		// System.out.println("Liberacao:  " + roteiro.getDataLiberacao());
-		// System.out.println("Descricao: " + roteiro.getDescricao());
-		// System.out.println("Entrega: " + roteiro.getDataFinalEntrega());
-		// System.out
-		// .println("Data Discussao: " + roteiro.getDataFinalDiscussao());
-		// System.out.println("Max Envios: " + roteiro.getNumeroMaximoEnvios());
-		// System.out.println("Max Participantes: "
-		// + roteiro.getNumeroMaximoParticipantes());
-		// System.out.println("Porcento Testes: "
-		// + roteiro.getPorcentagemTestesAutomaticos());
-		// System.out.println("Penalidades: " +
-		// roteiro.getPenalidadeDiasAtraso());
-		// System.out.println("TimeLimit Testes: "
-		// + roteiro.getTempoLimiteTestes());
-		// System.out.println("Dir Testes: " + roteiro.getDiretorioTestes());
-		// System.out.println("Dir Interface: " +
-		// roteiro.getDiretorioInterface());
-		// System.out.println();
-
 		Date dataAtual = new Date();
 
 		if (roteiro.getNome() == null || roteiro.getNome().equals("")) {
@@ -287,24 +266,25 @@ public class GerenciadorRoteiros {
 							.msg("A Porcentagem automática da avaliação deve ser sempre >= 0 e <= 100. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getTempoLimiteTestes() != null
+		} else if ((roteiro.getTempoLimiteTestes() != null && roteiro
+				.getPorcentagemTestesAutomaticos() != PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT)
 				&& ((roteiro.getPorcentagemTestesAutomaticos() > 0 && roteiro
-						.getPorcentagemTestesAutomaticos() <= 1)
-				&& roteiro.getTempoLimiteTestes() < 0)) {
+						.getPorcentagemTestesAutomaticos() <= 100) && roteiro
+						.getTempoLimiteTestes() <= 0)) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("Time-limit de execução dos testes por método inválido, deve ser sempre > 0 quando a Porcentagem Automática de Avaliação for > 0 e <= 100. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
-		} else if (roteiro.getPorcentagemTestesAutomaticos() != PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
-				&& roteiro.getTempoLimiteTestes() != null
-				&& roteiro.getPorcentagemTestesAutomaticos() == 0
-				&& roteiro.getTempoLimiteTestes() > 0) {
+		} else if ((roteiro.getPorcentagemTestesAutomaticos() != PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT && roteiro
+				.getTempoLimiteTestes() != null)
+				&& (roteiro.getPorcentagemTestesAutomaticos() == 0
+				&& roteiro.getTempoLimiteTestes() != 0)) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
-		} else if ((roteiro.getDiretorioTestes() != null && roteiro
+		} else if ((roteiro.getDiretorioTestes() != null && ! roteiro
 				.getDiretorioTestes().equals(""))
 				&& !checkDiretorioTestesFileExtension(new File(roteiro
 						.getDiretorioTestes()))) {
@@ -312,7 +292,7 @@ public class GerenciadorRoteiros {
 					"Alguns arquivos de Testes Automáticos não possuíam a extensão .java. O Roteiro não pôde ser "
 							+ criacaoOuAtualizacaoMsg + "!");
 
-		} else if ((roteiro.getDiretorioInterface() != null && roteiro
+		} else if ((roteiro.getDiretorioInterface() != null && !roteiro
 				.getDiretorioInterface().equals(""))
 				&& !checkDiretorioInterfaceFileExtension(roteiro
 						.getDiretorioInterface())) {

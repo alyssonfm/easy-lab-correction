@@ -152,7 +152,7 @@ CREATE TABLE `funcao` (
 /*!40000 ALTER TABLE `funcao` DISABLE KEYS */;
 INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES 
  (1,'Cadastros','acesso',1),
- (2,'Permissõs','defPerm',1),
+ (2,'Permissões','defPerm',1),
  (4,'Criação','agendaRoteiros',4),
  (5,'Atribuição de Atividades','atribuicaoDeRoteiros',3),
  (6,'Penalidades','penalidades',3),

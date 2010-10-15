@@ -178,10 +178,10 @@ public class FacadeTestUS3Acceptance {
 	public String getDataAtual() {
 		return (Calendar.DAY_OF_MONTH + "/" + Calendar.MONTH + "/" + (Calendar.YEAR + 1900));
 	}
-
-	// TODO
-	public String getDiretorioTestes(){
-		return "OPS";
+	
+	// UTIL
+	public String getDataAtualPlus(int dias) {
+		return ((Calendar.DAY_OF_MONTH + dias) + "/" + Calendar.MONTH + "/" + (Calendar.YEAR + 1900));
 	}
 	
 	// TODO
