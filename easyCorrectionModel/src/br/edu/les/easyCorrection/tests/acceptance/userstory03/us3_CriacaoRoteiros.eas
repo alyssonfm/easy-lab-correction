@@ -32,129 +32,77 @@ numeroMaximoParticipantes=-1 bloqueado=false
 
 #ID do Teste: d
 expectError "Data Limite para Entrega anterior à Data de Liberação. O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="16/10/2010" dataFinalDiscussao="" numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1 bloqueado=false
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="16/10/2010" dataFinalDiscussao="" numeroMaximoEnvios=-1 \
+penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1 bloqueado=false
 
 #ID do Teste: e
 expectError "Data Limite para Discussão anterior à Data Limite para Entrega. O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="25/10/2010" numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1 bloqueado=false
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="25/10/2010" numeroMaximoEnvios=-1 \
+penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1 bloqueado=false
 
 #ID do Teste: f
 expectError "O número máximo de integrantes deve ser sempre maior ou igual a 1 integrante. O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1000 bloqueado=false
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=-1 \
+penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1000 bloqueado=false
 
 #ID do Teste: g
 expectError "O número máximo de envios deve ser sempre maior ou igual a 1. O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=0 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=0 \
+penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: h
 expectError "A Penalidade por dia de atraso deve ser sempre maior ou igual a 0,0 e menor ou igual a 10,0. O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 penalidadeDiasAtraso=15 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=15 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: i
 expectError "A Porcentagem automática da avaliação deve ser sempre >= 0 e <= 100. O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=150 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=150 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: j
 expectError "Time-limit de execução dos testes por método inválido, deve ser sempre > 0 quando a Porcentagem Automática de Avaliação for > 0 e <= 100. O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=-1000 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=-1000 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: k
 expectError "Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao="" dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=0 tempoLimiteTestes=10 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+periodoId=1 nome="Roteiro2" descricao="" dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=0 tempoLimiteTestes=10 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: l
 idRoteiro2=cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao="" dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+periodoId=1 nome="Roteiro2" descricao="" dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: m
-expectError "Alguns arquivos de Testes Automáticos não possuíam a extensão .java.  O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface=null diretorioTestes=getDiretorioTestes numeroMaximoParticipantes=3 bloqueado=false
-
-#ID do Teste: p
-expectError "Formato do arquivo da interface deve ser .java. O roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface=getPathInterfaceFileNotJava diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
-
-#ID do Teste: q
-idRoteiro3=cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface=getPathInterfaceFile diretorioTestes=getDiretorioTestes numeroMaximoParticipantes=3 bloqueado=false
-
-#####################################################################################
-# US 03: Edição de Roteiros
-#####################################################################################
-
-# Setup de um Roteiro Base para as edições
-idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro1" descricao="" dataLiberacao="20/10/2010" dataFinalEntrega="" \
-dataFinalDiscussao="" numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 \
-diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1 bloqueado=false
-
-# Edições em si
-
-#ID do Teste: a
-expectError "Nome da atividade inválido. O Roteiro não pôde ser atualizado!" \
-editarRoteiro roteiroId=${idRoteiro1} periodoId=1 nome="" descricao="" dataLiberacao="20/10/2010" dataFinalEntrega="" dataFinalDiscussao="" \
-numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface=null \
-diretorioTestes=null numeroMaximoParticipantes=-1 bloqueado=false
-
-#ID do Teste: b
-expectError "Data de Liberação inválida. O roteiro não pôde ser ser atualizado!" editarRoteiro roteiroId=${idRoteiro1} periodoId=1 \
-nome="Roteiro1" descricao=null dataLiberacao="" dataFinalEntrega="" dataFinalDiscussao="" numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 \
-porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface=null diretorioTestes=null numeroMaximoParticipantes=-1 bloqueado=false
-
-#ID do Teste: c
-idRoteiro1=editarRoteiro roteiroId=${idRoteiro1} periodoId=1 nome="Roteiro1" descricao=null dataLiberacao="12/10/2010" dataFinalEntrega="" dataFinalDiscussao="" \
-numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface=null diretorioTestes=null \
-numeroMaximoParticipantes=-1 bloqueado=false
-
-#ID do Teste: d
-expectError "Data Limite para Entrega anterior à Data de Liberação. O Roteiro não pôde ser atualizado!" editarRoteiro roteiroId=${idRoteiro1}\
-periodoId=1 nome="Roteiro2" descricao="Descricao1" dataLiberacao="12/10/2010" dataFinalEntrega="08/10/2010" \
-dataFinalDiscussao="14/10/2010" numeroMaximoEnvios=8 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=0.5 \
-tempoLimiteTestes=10 diretorioInterface="/home/demetriogm/Interface" diretorioTestes="/home/demetriogm/Testes" \
-numeroMaximoParticipantes=3 bloqueado=false
+expectError "Algum arquivo no diretório de Testes Automáticos não possui extensão .java. O Roteiro não pôde ser criado!" cadastrarRoteiro \
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" \
+diretorioTestes="F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/invalidExtensionFile/" numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: n
-idRoteiro1=editarRoteiro roteiroId=${idRoteiro1}\
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \ 
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" diretorioTestes=getDiretorioTestes \ 
-numeroMaximoParticipantes=3 bloqueado=false
+expectError "Não foi encontrado o arquivo LabTestSuite.java na raiz do diretório de Testes Automáticos. O Roteiro não pôde ser criado!" cadastrarRoteiro \
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" \
+diretorioTestes="F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/validExtensionFile/withoutTestSuite" numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: o
-idRoteiro4=editarRoteiro roteiroId=${idRoteiro3} \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \ 
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" diretorioTestes=getDiretorioTestesDiff \ 
-numeroMaximoParticipantes=3 bloqueado=false
+idRoteiro3=cadastrarRoteiro \
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" \
+diretorioTestes="F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/validExtensionFile/withTestSuite" numeroMaximoParticipantes=3 bloqueado=false
 
-#ID do Teste: r
-idRoteiro6=cadastrarRoteiro periodoId=1 nome="RoteiroParaLiberar" descricao="" dataLiberacao=getDataAtual dataFinalEntrega="20/10/2010" dataFinalDiscussao="1/11/2010" numeroMaximoEnvios=4 penalidadeDiasAtraso=0 porcentagemTestesAutomaticos=0 tempoLimiteTestes=0 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=4 bloqueado=false
-expectError "Roteiro RoteiroParaLiberar não pôde ser liberado, devido a falhas em sua especificação! Roteiro não pôde ser liberado na data 12/10/2010.\n Ver descrição do roteiro aqui <link>.\n\nEasy Lab Correction" liberarRoteiro roteiroId=${idRoteiro6}
+#ID do Teste: p
+expectError "O formato do arquivo da Interface Java deve ser .java. O roteiro não pôde ser criado!" cadastrarRoteiro \
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/LabInterface.xml" diretorioTestes="F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/validExtensionFile/withTestSuite/" numeroMaximoParticipantes=3 bloqueado=false
 
-idRoteiro6=cadastrarRoteiro periodoId=1 nome="RoteiroParaLiberar" descricao="" dataLiberacao=getDataAtual dataFinalEntrega="20/10/2010" dataFinalDiscussao="1/11/2010" numeroMaximoEnvios=3 penalidadeDiasAtraso=0 porcentagemTestesAutomaticos=0 tempoLimiteTestes=0 diretorioInterface="/home/leda2/Interface/if.java" diretorioTestes="" numeroMaximoParticipantes=0 bloqueado=false
-expectError "Roteiro RoteiroParaLiberar não pôde ser liberado, devido a falhas em sua especificação! Roteiro não pôde ser liberado na data 12/10/2010.\n Ver descrição do roteiro aqui <link>.\n\nEasy Lab Correction" liberarRoteiro roteiroId=${idRoteiro6}
-
-idRoteiro6=cadastrarRoteiro periodoId=1 nome="RoteiroParaLiberar" descricao="" dataLiberacao=getDataAtual dataFinalEntrega="20/10/2010" dataFinalDiscussao="1/11/2010" numeroMaximoEnvios=0 penalidadeDiasAtraso=0 porcentagemTestesAutomaticos=0 tempoLimiteTestes=0 diretorioInterface="/home/leda2/Interface/if.java" diretorioTestes="" numeroMaximoParticipantes=2 bloqueado=false
-expectError "Roteiro RoteiroParaLiberar não pôde ser liberado, devido a falhas em sua especificação! Roteiro não pôde ser liberado na data 12/10/2010.\n Ver descrição do roteiro aqui <link>.\n\nEasy Lab Correction" liberarRoteiro roteiroId=${idRoteiro6}
-
-idRoteiro6=cadastrarRoteiro periodoId=1 nome="RoteiroParaLiberar" descricao="" dataLiberacao=getDataAtual dataFinalEntrega="20/10/2010" dataFinalDiscussao="1/11/2010" numeroMaximoEnvios=2 penalidadeDiasAtraso=0 porcentagemTestesAutomaticos=50 tempoLimiteTestes=10 diretorioInterface="/home/leda2/Interface/if.java" diretorioTestes="" numeroMaximoParticipantes=2 bloqueado=false
-expectError "Roteiro RoteiroParaLiberar não pôde ser liberado, devido a falhas em sua especificação! Roteiro não pôde ser liberado na data 12/10/2010.\n Ver descrição do roteiro aqui <link>.\n\nEasy Lab Correction" liberarRoteiro roteiroId=${idRoteiro6}
-
-#ID do Teste: s
-idRoteiro6=cadastrarRoteiro periodoId=1 nome="RoteiroParaLiberar" descricao="" dataLiberacao=getDataAtual dataFinalEntrega="20/10/2010" dataFinalDiscussao="1/11/2010" numeroMaximoEnvios=4 penalidadeDiasAtraso=0 porcentagemTestesAutomaticos=50 tempoLimiteTestes=0 diretorioInterface="/home/leda2/Interface/if.java" diretorioTestes="/home/leda2/testes/Junit.zip" numeroMaximoParticipantes=4 bloqueado=false
-expectError "Roteiro RoteiroParaLiberar liberado! Roteiro liberado com sucesso na data <data>.\n Ver descrição do roteiro aqui <link>.\n\nEasy Lab Correction" liberarRoteiro roteiroId=${idRoteiro6}
-
-#ID do Teste: t
-idRoteiro5=bloquearRoteiro roteiroId=${idRoteiro5}
-
-#ID do Teste: u
-idRoteiro7=cadastrarRoteiro periodoId=1 nome="RoteiroParaLiberar" descricao="" dataLiberacao=getDataAtual dataFinalEntrega="20/10/2010" dataFinalDiscussao="1/11/2010" numeroMaximoEnvios=4 penalidadeDiasAtraso=0 porcentagemTestesAutomaticos=50 tempoLimiteTestes=0 diretorioInterface="/home/leda2/Interface/if.java" diretorioTestes="/home/leda2/testes/Junit.zip" numeroMaximoParticipantes=4 bloqueado=true
-expectError "Roteiro bloqueado para liberação!" liberarRoteiro roteiroId=${idRoteiro7}
-
-#ID do Teste: v
-expectError "Não é possível modificar o nome do Roteiro após sua liberação" idRoteiro4=editarRoteiro roteiroId=${idRoteiro3} periodoId=1 nome="NovoNome" descricao="" dataLiberacao="1/10/2010" dataFinalEntrega="10/10/2010" dataFinalDiscussao="12/10/2010" numeroMaximoEnvios=2 penalidadeDiasAtraso=3 porcentagemTestesAutomaticos=40 tempoLimiteTestes=10 diretorioInterface="/home/leda2/Interface" diretorioTestes="/home/leda2/testes" numeroMaximoParticipantes=3 bloqueado=false 
-
-#ID do Teste: w
-idRoteiro7=cadastrarRoteiro periodoId=1 nome="RoteiroParaLiberar" descricao="" dataLiberacao="1/9/2010" dataFinalEntrega="10/9/2010" dataFinalDiscussao="1/11/2010" numeroMaximoEnvios=4 penalidadeDiasAtraso=0 porcentagemTestesAutomaticos=50 tempoLimiteTestes=0 diretorioInterface="/home/leda2/Interface/if.java" diretorioTestes="/home/leda2/testes/Junit.zip" numeroMaximoParticipantes=4 bloqueado=false
-expectError "Não é possível editar um Roteiro após a data de entrega do mesmo!" idRoteiro7=editarRoteiro roteiroId=${idRoteiro7} periodoId=1 nome="NovoNome" descricao="" dataLiberacao="1/10/2010" dataFinalEntrega="10/10/2010" dataFinalDiscussao="12/10/2010" numeroMaximoEnvios=2 penalidadeDiasAtraso=3 porcentagemTestesAutomaticos=40 tempoLimiteTestes=10 diretorioInterface="/home/leda2/Interface" diretorioTestes="/home/leda2/testes" numeroMaximoParticipantes=3 bloqueado=false
-
+#ID do Teste: q
+idRoteiro4=cadastrarRoteiro \
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="20/10/2010" dataFinalEntrega="30/10/2010" dataFinalDiscussao="20/11/2010" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/LabInterface.java" \
+diretorioTestes="F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/validExtensionFile/withTestSuite" numeroMaximoParticipantes=3 bloqueado=false
 
 
 #####################################################################################
@@ -165,6 +113,25 @@ excluirRoteiro idRoteiro=${idRoteiro1}
 excluirRoteiro idRoteiro=${idRoteiro2}
 excluirRoteiro idRoteiro=${idRoteiro3}
 excluirRoteiro idRoteiro=${idRoteiro4}
-excluirRoteiro idRoteiro=${idRoteiro5}
-excluirRoteiro idRoteiro=${idRoteiro6}
-excluirRoteiro idRoteiro=${idRoteiro7}
+
+#####################################################################################
+# US 03: Edição de Roteiros
+#####################################################################################
+
+# Setup de um Roteiro Base para as edições
+idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro1" descricao="" dataLiberacao="20/10/2010" dataFinalEntrega="" \
+dataFinalDiscussao="" numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 \
+diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1 bloqueado=false
+
+# Edições que podem ser também criações (essas funcionalidades foram parcialmente testadas acima)
+
+#ID do Teste: a
+expectError "Nome da atividade inválido. O Roteiro não pôde ser atualizado!" \
+editarRoteiro roteiroId=${idRoteiro1} periodoId=1 nome="" descricao="" dataLiberacao="20/10/2010" dataFinalEntrega="" dataFinalDiscussao="" \
+numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface=null \
+diretorioTestes=null numeroMaximoParticipantes=-1 bloqueado=false
+
+# Funcionalidades unicamente de edição
+
+#ID do Teste: s
+#expectError: "O Roteiro Roteiro1 não pôde ser liberado na data 20/10/2010 devido a falhas em sua especificação!" liberarRoteiro roteiroId=${idRoteiro1}

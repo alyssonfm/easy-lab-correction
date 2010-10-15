@@ -1,23 +1,20 @@
 package br.edu.les.easyCorrection.gerenciadores;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Date;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
-import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
-import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
-import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.MsgErros;
-import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class GerenciadorRoteiros {
@@ -148,9 +145,6 @@ public class GerenciadorRoteiros {
 		}
 	}
 
-	/*
-	 * REVER ISSO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 */
 	public Roteiro bloquearRoteiro(Roteiro roteiro) {
 
 		// Apenas para garantias que houve sucesso
@@ -174,16 +168,9 @@ public class GerenciadorRoteiros {
 						.getPorcentagemTestesAutomaticos() <= 100) && roteiro
 						.getDiretorioTestes() == null))) {
 			throw new LiberaRoteiroException(
-					"Roteiro "
-							+ roteiro.getNome()
-							+ " não pôde ser liberado! Roteiro não pôde ser liberado na data "
+					"O Roteiro " + roteiro.getNome() + " não pôde ser liberado na data "
 							+ roteiro.getDataLiberacao()
-							+ ", devido a falhas em sua especificação."
-							+ System.getProperty("line.separator")
-							+ "Ver descrição do roteiro aqui <link>."
-							+ System.getProperty("line.separator")
-							+ System.getProperty("line.separator")
-							+ "Easy Lab Correction");
+							+ ", devido a falhas em sua especificação!");
 		} else if (roteiro.isBloqueado()) {
 			throw new LiberaRoteiroException("Roteiro bloquado para liberação!");
 		}
@@ -278,26 +265,35 @@ public class GerenciadorRoteiros {
 
 		} else if ((roteiro.getPorcentagemTestesAutomaticos() != PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT && roteiro
 				.getTempoLimiteTestes() != null)
-				&& (roteiro.getPorcentagemTestesAutomaticos() == 0
-				&& roteiro.getTempoLimiteTestes() != 0)) {
+				&& (roteiro.getPorcentagemTestesAutomaticos() == 0 && roteiro
+						.getTempoLimiteTestes() != 0)) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
-		} else if ((roteiro.getDiretorioTestes() != null && ! roteiro
+		} else if ((roteiro.getDiretorioTestes() != null && !roteiro
 				.getDiretorioTestes().equals(""))
-				&& !checkDiretorioTestesFileExtension(new File(roteiro
+				&& !checkDiretorioTestesJavaFileExtension(new File(roteiro
 						.getDiretorioTestes()))) {
 			throw new CriacaoRoteiroException(
-					"Alguns arquivos de Testes Automáticos não possuíam a extensão .java. O Roteiro não pôde ser "
+					"Algum arquivo no diretório de Testes Automáticos não possui extensão .java. O Roteiro não pôde ser "
 							+ criacaoOuAtualizacaoMsg + "!");
 
-		} else if ((roteiro.getDiretorioInterface() != null && !roteiro
+		} else if ((roteiro.getDiretorioTestes() != null && !roteiro
+				.getDiretorioTestes().equals(""))
+				&& !isSuiteInTestDirectoryRoot(new File(roteiro
+						.getDiretorioTestes()))) {
+			throw new CriacaoRoteiroException(
+					"Não foi encontrado o arquivo LabTestSuite.java na raiz do diretório de Testes Automáticos. O Roteiro não pôde ser "
+							+ criacaoOuAtualizacaoMsg + "!");
+		}
+
+		else if ((roteiro.getDiretorioInterface() != null && !roteiro
 				.getDiretorioInterface().equals(""))
 				&& !checkDiretorioInterfaceFileExtension(roteiro
 						.getDiretorioInterface())) {
 			throw new CriacaoRoteiroException(
-					"Formato do arquivo da interface deve ser .java. O Roteiro não pôde ser "
+					"O formato do arquivo da Interface Java deve ser .java. O roteiro não pôde ser "
 							+ criacaoOuAtualizacaoMsg + "!");
 
 		} else {
@@ -306,21 +302,36 @@ public class GerenciadorRoteiros {
 
 	}
 
-	private boolean checkDiretorioTestesFileExtension(File testeDirectory) {
+	private boolean checkDiretorioTestesJavaFileExtension(File testeDirectory) {
 
-		File[] allFiles = testeDirectory.listFiles();
-
-		for (File file : allFiles) {
-			if (file.isDirectory()) {
-				return checkDiretorioTestesFileExtension(file);
-			} else if (file.isFile()
-					&& !file.getAbsolutePath().endsWith(".java")) {
-				return false;
-			} else {
-				return false;
+		// It returns only files that end with `.java'.
+		FilenameFilter filter = new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return !name.endsWith(".java");
 			}
+		};
+
+		String[] filteredFiles = testeDirectory.list(filter);
+
+		return (filteredFiles.length > 0) ? false : true;
+	}
+
+	private boolean isSuiteInTestDirectoryRoot(File testeDirectory) {
+
+		// It returns only files that end with `.java'.
+		FilenameFilter filter = new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.equalsIgnoreCase("LabTestSuite.java");
+			}
+		};
+
+		String[] filteredFiles = testeDirectory.list(filter);
+
+		if (filteredFiles == null) {
+			return false;
 		}
-		return true;
+
+		return (filteredFiles.length == 1) ? true : false;
 	}
 
 	private boolean checkDiretorioInterfaceFileExtension(String testeFileName) {
@@ -380,28 +391,39 @@ public class GerenciadorRoteiros {
 			return true;
 		}
 	}
-	
-	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(Integer idUsuario, Integer idRoteiro){
-		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO().findByUsuarioERoteiro(idUsuario, idRoteiro);
-		if(lista.isEmpty()){
+
+	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
+			Integer idUsuario, Integer idRoteiro) {
+		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT
+				.buildEquipeHasUsuarioHasRoteiroDAO().findByUsuarioERoteiro(
+						idUsuario, idRoteiro);
+		if (lista.isEmpty()) {
 			return null;
 		}
 		return lista.get(0);
 	}
-	
-	public Integer numeroSubmissoes(Submissao submissao){
-		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO().findByEquipeERoteiro(submissao.getEquipeHasUsuarioHasRoteiro().getEquipe().getId(), submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getId());
+
+	public Integer numeroSubmissoes(Submissao submissao) {
+		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO()
+				.findByEquipeERoteiro(
+						submissao.getEquipeHasUsuarioHasRoteiro().getEquipe()
+								.getId(),
+						submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro()
+								.getId());
 		return lista.size();
 	}
-	
-	public Submissao submeteRoteiro(Submissao submissao){
-		if(!easyCorrectionUtil.isNull(submissao)){
-			if(numeroSubmissoes(submissao)<=(submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getNumeroMaximoEnvios())){
-				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(submissao);
+
+	public Submissao submeteRoteiro(Submissao submissao) {
+		if (!easyCorrectionUtil.isNull(submissao)) {
+			if (numeroSubmissoes(submissao) <= (submissao
+					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
+					.getNumeroMaximoEnvios())) {
+				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(
+						submissao);
 				submissao.setId(id);
 			}
 		}
-			return submissao;
+		return submissao;
 	}
 
 }
