@@ -109,7 +109,7 @@ expect "nomeAlterado1" getAtributoGrupoListaGrupos id=${idGrupo} atributo=nome
 expect "nomeAlterado3" getAtributoGrupoListaGrupos id=${idGrupo3} atributo=nome
 expect "Grupo Inexistente." getAtributoGrupoListaGrupos id=999 atributo=nome
 
-# ------- Setup de Usuário -----------
+# ------- Setup de Usuario -----------
 
 idGrupoUsuario=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste1" login="usuariot1" senha="123" email="usuario@gmail.com"
 expect ${idGrupoUsuario} getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=idGrupoUsuario
@@ -121,13 +121,13 @@ expect "UsuarioTeste1" getAtributoGrupoUsuario id=${idGrupoUsuario} atributo=nom
 
 idGrupoUsuario2=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste2" login="usuariot2" senha="usuariot2" email="usuarioTeste2@gmail.com"
 expectDifferent ${idGrupoUsuario} echo ${iGrupoUsuario2}
+
 idGrupoUsuario3=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste3" login="usuariot3" senha="usuariot3" email="us@oi.com.br"
 expectError "usuario nao foi encontrado(a)." getUsuario id=999
-idGrupoUsuario4=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste4" login="usuariot4" senha="usuariot4" email="us@yahoo.com.br"
 
+idGrupoUsuario4=cadastrarUsuario grupoId=${idGrupo} nome="UsuarioTeste4" login="usuariot4" senha="usuariot4" email="us@yahoo.com.br"
 expect ${idGrupoUsuario} editarUsuario id=${idGrupoUsuario} grupoId=${idGrupo} nome="UsuarioTesteAlterado" login="usuariot1" senha="UsuarioTesteAlterada" email="UsuarioTesteAlterado@gmail.com"
 expect ${idGrupoUsuario2} editarUsuario id=${idGrupoUsuario2} grupoId=${idGrupo} nome="UsuarioTeste2Alterado" login="usuariot2" senha="UsuarioTeste2Alterada" email="UsuarioTeste2Alterado@gmail.com"
-
 expect ${idGrupoUsuario} getAtributoGrupoUsuarioListaFuncoes id=${idGrupoUsuario} atributo=idGrupoUsuario
 
 #####################################################################################
