@@ -82,7 +82,7 @@ public class GerenciadorRoteiros {
 
 		this.criacaoOuAtualizacaoMsg = "criado";
 
-		if (validaRoteiroEmCriacao(roteiroTemp)) {
+		if (validaRoteiroEmCriacaoEAlteracao(roteiroTemp)) {
 			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
 
 			// As frases de sucesso são implementadas na GUI, por isso mantemos
@@ -132,14 +132,20 @@ public class GerenciadorRoteiros {
 	}
 
 	private int computaEstadoRoteiro(Roteiro roteiroTemp) {
-		Date dataAtual = new Date();
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		
 		if (roteiroTemp.isBloqueado()
-				|| dataAtual.before(roteiroTemp.getDataLiberacao())) {
+				|| calendar.getTime().before(roteiroTemp.getDataLiberacao())) {
 			return ROTEIRO_CRIADO;
-		} else if (dataAtual.after(roteiroTemp.getDataLiberacao())
-				&& dataAtual.before(roteiroTemp.getDataFinalEntrega())) {
+		} else if (calendar.getTime().after(roteiroTemp.getDataLiberacao())
+				&& calendar.getTime().before(roteiroTemp.getDataFinalEntrega())) {
 			return ROTEIRO_LIBERADO;
-		} else if (dataAtual.after(roteiroTemp.getDataFinalEntrega())) {
+		} else if (calendar.getTime().after(roteiroTemp.getDataFinalEntrega())) {
 			return ROTEIRO_FECHADO;
 		} else {
 			return ESTADO_INEXISTENTE;
@@ -159,9 +165,9 @@ public class GerenciadorRoteiros {
 	public Roteiro liberarRoteiro(Roteiro roteiro)
 			throws LiberaRoteiroException {
 
-		Date dataAtual = new Date();
+		Date dataAtual = Calendar.getInstance().getTime();
 
-		if (roteiro.getDataLiberacao().equals(dataAtual)
+		if (roteiro.getDataLiberacao().before(dataAtual)
 				&& (roteiro.getDiretorioInterface() == null
 						|| roteiro.getNumeroMaximoParticipantes() <= 0
 						|| roteiro.getNumeroMaximoEnvios() <= 0 || ((roteiro
@@ -169,9 +175,7 @@ public class GerenciadorRoteiros {
 						.getPorcentagemTestesAutomaticos() <= 100) && roteiro
 						.getDiretorioTestes() == null))) {
 			throw new LiberaRoteiroException(
-					"O Roteiro " + roteiro.getNome() + " não pôde ser liberado na data "
-							+ roteiro.getDataLiberacao()
-							+ ", devido a falhas em sua especificação!");
+					"O Roteiro " + roteiro.getNome() + " não pôde ser liberado devido a falhas em sua especificação!");
 		} else if (roteiro.isBloqueado()) {
 			throw new LiberaRoteiroException("Roteiro bloquado para liberação!");
 		}
@@ -191,7 +195,7 @@ public class GerenciadorRoteiros {
 	 * Metodos de validacao de Roteiros
 	 */
 
-	public boolean validaRoteiroEmCriacao(Roteiro roteiro)
+	public boolean validaRoteiroEmCriacaoEAlteracao(Roteiro roteiro)
 			throws CriacaoRoteiroException {
 
 		Calendar calendar = Calendar.getInstance();
@@ -358,7 +362,7 @@ public class GerenciadorRoteiros {
 	public boolean validaRoteiroEstadoCriado(Roteiro roteiro)
 			throws EdicaoRoteiroException, CampoVazioException {
 		try {
-			return validaRoteiroEmCriacao(roteiro);
+			return validaRoteiroEmCriacaoEAlteracao(roteiro);
 		} catch (CriacaoRoteiroException e) {
 			throw new EdicaoRoteiroException(e.getMessage());
 		}
@@ -387,7 +391,7 @@ public class GerenciadorRoteiros {
 	public boolean validaRoteiroEstadoFechado(Roteiro roteiro)
 			throws EdicaoRoteiroException {
 
-		Date dataAtual = new Date();
+		Date dataAtual = Calendar.getInstance().getTime();
 
 		if (!roteiro.getDataFinalEntrega().before(dataAtual)) {
 			throw new EdicaoRoteiroException(
@@ -397,39 +401,4 @@ public class GerenciadorRoteiros {
 			return true;
 		}
 	}
-
-	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
-			Integer idUsuario, Integer idRoteiro) {
-		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT
-				.buildEquipeHasUsuarioHasRoteiroDAO().findByUsuarioERoteiro(
-						idUsuario, idRoteiro);
-		if (lista.isEmpty()) {
-			return null;
-		}
-		return lista.get(0);
-	}
-
-	public Integer numeroSubmissoes(Submissao submissao) {
-		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO()
-				.findByEquipeERoteiro(
-						submissao.getEquipeHasUsuarioHasRoteiro().getEquipe()
-								.getId(),
-						submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro()
-								.getId());
-		return lista.size();
-	}
-
-	public Submissao submeteRoteiro(Submissao submissao) {
-		if (!easyCorrectionUtil.isNull(submissao)) {
-			if (numeroSubmissoes(submissao) <= (submissao
-					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
-					.getNumeroMaximoEnvios())) {
-				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(
-						submissao);
-				submissao.setId(id);
-			}
-		}
-		return submissao;
-	}
-
 }

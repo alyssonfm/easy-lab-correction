@@ -9,6 +9,7 @@ import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
+import br.edu.les.easyCorrection.gerenciadores.GerenciadorSubmissoes;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
@@ -24,6 +25,7 @@ public class Sistema {
 
 	private GerenciadorAcesso gerenciadorAcesso;
 	private GerenciadorRoteiros gerenciadorRoteiros;
+	private GerenciadorSubmissoes gerenciadorSubmissoes;
 
 	public Sistema() {
 		gerenciadorAcesso = new GerenciadorAcesso();
@@ -172,7 +174,7 @@ public class Sistema {
 		return gerenciadorAcesso.alterarSenha(usuario, novaSenha);
 	}
 
-	/******************************************** Controle de Roteiros EasyLabCorrection *********************************************/
+	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
 	public Periodo getPeriodo(int periodoId) {
 		return gerenciadorRoteiros.getPeriodo(periodoId);
 	}
@@ -215,12 +217,17 @@ public class Sistema {
 	public List<Roteiro> listarRoteiros() {
 		return gerenciadorRoteiros.listarRoteiros();
 	}
-	
-	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(Integer idUsuario, Integer idRoteiro){
-		return gerenciadorRoteiros.getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(idUsuario, idRoteiro);
+
+	/******************************************** Controle de Submissão de Roteiros EasyLabCorrection *********************************************/
+
+	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
+			Integer idUsuario, Integer idRoteiro) {
+		return gerenciadorSubmissoes
+				.getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(idUsuario,
+						idRoteiro);
 	}
-	
-	public Submissao submeteRoteiro(Submissao submissao){
-		return gerenciadorRoteiros.submeteRoteiro(submissao);
+
+	public Submissao submeteRoteiro(Submissao submissao) {
+		return gerenciadorSubmissoes.submeteRoteiro(submissao);
 	}
 }

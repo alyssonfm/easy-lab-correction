@@ -11,6 +11,10 @@ Testes de Aceitação:
  	4: Vá no arquivo Constants.java 
  	5: Modifique o caminho do script de teste desde a raiz do seu sistema operacional até o script da US escolhida
 	6: o script de teste está dividido por userstories (ex.: /acceptance/userstory03/us3_CriacaoRoteiros.eas)
+	
+ - Lembrar:
+ 	* Os caminhos dos arquivos devem ser modificados
+ 	* As datas dos testes devem ser adicionadas de valores para que fiquem todas após a data atual
  
 Testes de Unidade: 
  - Tecnologia: JUnit
