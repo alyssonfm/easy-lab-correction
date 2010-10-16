@@ -72,7 +72,7 @@ public enum MsgErros {
 	} ,
 	OPER_NAO_REALIZADA{
 		public String msg(String... args){
-			return "Operacao de \""+args[0]+"\"nao realizada. "+args[1];
+			return "Operacao de \""+args[0]+"\"nao realizada.";
 		}
 	},
 
