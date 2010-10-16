@@ -2,6 +2,7 @@ package br.edu.les.easyCorrection.gerenciadores;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -193,15 +194,20 @@ public class GerenciadorRoteiros {
 	public boolean validaRoteiroEmCriacao(Roteiro roteiro)
 			throws CriacaoRoteiroException {
 
-		Date dataAtual = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
 
+		
 		if (roteiro.getNome() == null || roteiro.getNome().equals("")) {
 			throw new CriacaoRoteiroException(MsgErros.NOMEVAZIO
 					.msg("Nome da atividade inválido. O Roteiro não pôde ser "
 							+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (roteiro.getDataLiberacao() == null
-				|| roteiro.getDataLiberacao().before(dataAtual)) {
+				|| roteiro.getDataLiberacao().before(calendar.getTime())) {
 			throw new CriacaoRoteiroException(
 					MsgErros.VALORINVALIDO
 							.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
@@ -307,7 +313,7 @@ public class GerenciadorRoteiros {
 		// It returns only files that end with `.java'.
 		FilenameFilter filter = new FilenameFilter() {
 			public boolean accept(File dir, String name) {
-				return !name.endsWith(".java");
+				return !(name.endsWith(".java") || name.endsWith(".svn"));
 			}
 		};
 

@@ -1,0 +1,27 @@
+#--------------------------------------------------------------------------------------------
+# Teste de Aceitacao do sistema easyLabCorrection
+# Equipe de Desenvolvimento:
+# ----- Alysson Filgueira
+# ----- Augusto Macedo
+# ----- Demetrio Mestre
+#--------------------------------------------------------------------------------------------
+
+#####################################################################################
+# US 04: Submissão de Roteiros
+#####################################################################################
+
+# Roteiro Base o qual terá as soluções submetidas
+
+idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro base" descricao="Roteiro Base para testes" dataLiberacao="15/10/2010" dataFinalEntrega="20/10/2010" dataFinalDiscussao="25/10/2010" \
+numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
+diretorioInterface="F:/Augusto/Eclipse_EE/flex_workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/LabInterface.java" \
+diretorioTestes="F:/Augusto/Eclipse_EE/flex_workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/validExtensionFile/withTestSuite" \
+numeroMaximoParticipantes=2 bloqueado=false
+
+# usuarioNames={user1,user2,user3} 
+
+#####################################################################################
+# Para ver as alteracoes no Banco de Dados comente as linhas seguintes.
+#####################################################################################
+
+excluirRoteiro idRoteiro=${idRoteiro1}
