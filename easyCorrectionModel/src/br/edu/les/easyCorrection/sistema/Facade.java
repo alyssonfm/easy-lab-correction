@@ -359,6 +359,11 @@ public class Facade {
 		}
 	}
 
+	/*******************************************************************
+	 * Facade Sistema (em geral)
+	 * **********************************************************************
+	 */
+
 	public Periodo getPeriodo(int periodoId) throws Throwable {
 		try {
 			return sistema.getPeriodo(periodoId);
@@ -377,6 +382,11 @@ public class Facade {
 		}
 	}
 
+	/*******************************************************************
+	 * Facade Roteiros
+	 * **********************************************************************
+	 */
+	
 	public Roteiro cadastrarRoteiro(Roteiro roteiro) throws Throwable {
 		try {
 			return sistema.cadastrarRoteiro(roteiro);
@@ -444,18 +454,26 @@ public class Facade {
 			throw e;
 		}
 	}
+
+	/*******************************************************************
+	 * Facade Submissoes
+	 * **********************************************************************
+	 */
 	
-	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(Integer idUsuario, Integer idRoteiro) throws Throwable{
-		try{
-			return sistema.getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(idUsuario, idRoteiro);
+	
+	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
+			Integer idUsuario, Integer idRoteiro) throws Throwable {
+		try {
+			return sistema.getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
+					idUsuario, idRoteiro);
 		} catch (Throwable e) {
 			log.error("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()", e);
 			throw e;
 		}
 	}
-	
-	public Submissao submeteRoteiro(Submissao submissao) throws Throwable{
-		try{
+
+	public Submissao submeteRoteiro(Submissao submissao) throws Throwable {
+		try {
 			return sistema.submeteRoteiro(submissao);
 		} catch (Throwable e) {
 			log.error("submeteRoteiro()", e);

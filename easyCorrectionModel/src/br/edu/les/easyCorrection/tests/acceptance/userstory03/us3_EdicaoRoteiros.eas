@@ -1,0 +1,54 @@
+#--------------------------------------------------------------------------------------------
+# Teste de Aceitacao do sistema easyLabCorrection
+# Equipe de Desenvolvimento:
+# ----- Alysson Filgueira
+# ----- Augusto Macedo
+# ----- Demetrio Mestre
+#--------------------------------------------------------------------------------------------
+
+#####################################################################################
+# US 03: Edição de Roteiros
+#####################################################################################
+
+# Setup de um Roteiro Base para as edições
+idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro1" descricao= dataLiberacao="+7_DIAS" dataFinalEntrega= \
+dataFinalDiscussao= numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 \
+diretorioInterface= diretorioTestes= numeroMaximoParticipantes=-1 bloqueado=false
+
+# Edições que podem ser também criações (essas funcionalidades foram parcialmente testadas na criação)
+
+#ID do Teste: a
+expectError "Nome da atividade inválido. O Roteiro não pôde ser atualizado!" \
+editarRoteiro roteiroId=${idRoteiro1} periodoId=1 nome= descricao= dataLiberacao="+7_DIAS" dataFinalEntrega= dataFinalDiscussao= \
+numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface= \
+diretorioTestes= numeroMaximoParticipantes=-1 bloqueado=false
+
+# Funcionalidades unicamente de edição
+
+#ID do Teste: s
+# Editamos a data do roteiro para o dia atual (AGORA) e liberamos o roteiro
+
+idRoteiro1=editarRoteiro roteiroId=${idRoteiro1} periodoId=1 nome="Roteiro1" descricao= dataLiberacao="AGORA" dataFinalEntrega= dataFinalDiscussao= \
+numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface= \
+diretorioTestes= numeroMaximoParticipantes=-1 bloqueado=false
+
+#Mudar para a data de hoje
+expectError "O Roteiro Roteiro1 não pôde ser liberado devido a falhas em sua especificação!" liberarRoteiro idRoteiro=${idRoteiro1}
+
+#ID do Teste: t
+# Criamos um roteiro que será liberado no exato momento da criação
+
+idRoteiro2=cadastrarRoteiro \
+periodoId=1 nome="Roteiro2" descricao= dataLiberacao="AGORA" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="INTERFACE_OK" \
+diretorioTestes="TESTES_COM_SUITE_OK" numeroMaximoParticipantes=3 bloqueado=false
+
+#Mudar para a data de hoje
+idRoteiro3=liberarRoteiro idRoteiro=${idRoteiro2}
+
+
+#####################################################################################
+# Para ver as alteracoes no Banco de Dados comente as linhas seguintes.
+#####################################################################################
+
+#excluirRoteiro idRoteiro=${idRoteiro1}

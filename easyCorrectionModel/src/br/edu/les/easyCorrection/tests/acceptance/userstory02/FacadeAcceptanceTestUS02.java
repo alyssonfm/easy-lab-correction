@@ -5,7 +5,7 @@ import br.edu.les.easyCorrection.pojo.acesso.*;
 import br.edu.les.easyCorrection.sistema.Facade;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
-public class FacadeAcceptanceTestUS02 {
+public class FacadeAcceptanceTestUS02{
 	
 	private Facade facadeSistema;
 
