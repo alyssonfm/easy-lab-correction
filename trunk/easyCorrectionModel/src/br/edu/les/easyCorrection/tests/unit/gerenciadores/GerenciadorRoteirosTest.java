@@ -4,7 +4,10 @@ import java.util.Date;
 
 import org.junit.*;
 
+import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
+import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 
@@ -12,7 +15,7 @@ import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 public class GerenciadorRoteirosTest {
 
 	private GerenciadorRoteiros gr;
-	private Roteiro r;
+	private Roteiro r, r2, r3;
 
 	@Before
 	public void setup() {
@@ -35,8 +38,8 @@ public class GerenciadorRoteirosTest {
 		Assert.assertEquals(r.getDiretorioInterface(), null);
 		Assert.assertEquals(r.getDiretorioTestes(), null);
 		Assert.assertEquals(r.getNome(), null);
-		Assert.assertEquals(r.getPenalidadeDiasAtraso(), null);
-		Assert.assertEquals(r.getPorcentagemTestesAutomaticos(), null);
+		Assert.assertEquals(r.getPenalidadeDiasAtraso(), 0.0, 0.0001);
+		Assert.assertEquals(r.getPorcentagemTestesAutomaticos(), 0.0, 0.0001);
 		Assert.assertEquals(r.getDataFinalDiscussao(), null);
 		Assert.assertEquals(r.getDataFinalEntrega(), null);
 		Assert.assertEquals(r.getDataLiberacao(), null);
@@ -60,13 +63,13 @@ public class GerenciadorRoteirosTest {
 			Date d1 = new Date();
 			d.setDate(r.getDataLiberacao().getDate()+7);
 			d1.setDate(r.getDataLiberacao().getDate()+21);
-			Roteiro r2 = gr.cadastrarRoteiro(r);
+			r2 = gr.cadastrarRoteiro(r);
 			Assert.assertEquals(r2.getDescricao(), r.getDescricao());
-			Assert.assertEquals(r2.getPenalidadeDiasAtraso(), gr.PENALIDADE_DIA_ATRASO_DEFAULT);
-			Assert.assertEquals(r2.getPorcentagemTestesAutomaticos(), gr.PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT);
+			Assert.assertEquals(r2.getPenalidadeDiasAtraso(), gr.PENALIDADE_DIA_ATRASO_DEFAULT, 1.0);
+			Assert.assertEquals(r2.getPorcentagemTestesAutomaticos(), gr.PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT, 1.0);
 			Assert.assertEquals(r2.getDataFinalEntrega(), d);
 			Assert.assertEquals(r2.getDataFinalDiscussao(), d1);
-		} catch (EasyCorrectionException e) {
+		} catch (Exception e) {
 			e.getMessage();
 		}
 	}
@@ -75,17 +78,57 @@ public class GerenciadorRoteirosTest {
 	@Test
 	public void creates(){
 		try {
-			r.setId(1);
-			r.setBloqueado(false);
-			r.setNome("Roteiro Teste");
-			r.setDataLiberacao(new Date(2010, 10, 7));
-			r.setDescricao("Roteiro de testes de unidade para a release 1");
-			Assert.assertEquals(gr.cadastrarRoteiro(r).getClass(), Roteiro.class);
-			Assert.assertTrue(gr.validaRoteiroEstadoLiberado(r));
+			r3 = new Roteiro();
+			r3.setId(5);
+			r3.setBloqueado(false);
+			r3.setNome("Roteiro Teste");
+			r3.setDataLiberacao(new Date(2010, 10, 7));
+			r3.setDescricao("Roteiro de testes de unidade para a release 1");
+			gr.cadastrarRoteiro(r3);
+			Assert.assertEquals(gr.cadastrarRoteiro(r3).getClass(), Roteiro.class);
+			Assert.assertTrue(gr.validaRoteiroEstadoLiberado(r3));
 		} catch (EasyCorrectionException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	@Test
+	public void bloquear(){
+		gr.bloquearRoteiro(r);
+		Assert.assertTrue(r.isBloqueado());
+	}
+	
+	@Test
+	public void liberar(){
+		r.setDataLiberacao(new Date());
+		try {
+			gr.liberarRoteiro(r);
+			Assert.assertFalse(r.isBloqueado());
+		} catch (LiberaRoteiroException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void edits(){
+		r.setDataLiberacao(new Date());
+		r.setDataFinalEntrega(new Date(2010, 11, 30));
+		try {
+			gr.editarRoteiro(r);
+			
+		} catch (EdicaoRoteiroException e) {
+			e.printStackTrace();
+		} catch (CampoVazioException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void deletes(){
+		gr.excluirRoteiro(r);
+		gr.excluirRoteiro(r2);
+		gr.excluirRoteiro(r3);
+	}
 	
 }
