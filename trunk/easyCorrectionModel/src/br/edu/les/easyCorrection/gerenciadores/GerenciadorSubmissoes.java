@@ -7,7 +7,7 @@ import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
-public class GerenciadorSubmissoes {
+public class GerenciadorSubmissoes extends GerenciadorRoteiros{
 
 	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
 			Integer idUsuario, Integer idRoteiro) {

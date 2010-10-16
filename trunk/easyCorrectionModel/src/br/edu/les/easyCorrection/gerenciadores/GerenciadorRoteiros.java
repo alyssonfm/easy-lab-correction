@@ -131,7 +131,7 @@ public class GerenciadorRoteiros {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
 	}
 
-	private int computaEstadoRoteiro(Roteiro roteiroTemp) {
+	protected int computaEstadoRoteiro(Roteiro roteiroTemp) {
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
