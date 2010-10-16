@@ -1,13 +1,13 @@
 package br.edu.les.easyCorrection.tests.acceptance.userstory03;
 
-import java.util.Calendar;
 import java.util.List;
 
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.sistema.Facade;
+import br.edu.les.easyCorrection.tests.acceptance.userstory02.FacadeAcceptanceTestUS02;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
-public class FacadeTestUS3Acceptance {
+public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02{
 
 	private Facade facadeSistema;
 
