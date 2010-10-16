@@ -19,6 +19,9 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 
 	// ******************************************* Criação de Roteiros
 	// *****************************************
+	
+	// default testes: periodo2010.2/testes/roteiro01/(*.zip)
+	// default testes: periodo2010.2/interface/roteiro01/(.java)
 
 	public int cadastrarRoteiro(int periodoId, String nome, String descricao,
 			String dataLiberacao, String dataFinalEntrega,

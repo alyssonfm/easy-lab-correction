@@ -23,8 +23,17 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 
 	// ******************************************* SUBMISSOES
 	// *****************************************
-
-	public int criaEquipeParaRoteiro(int[] userIds, int equipeId,
+	
+	/*
+	 * todo
+	 * getListaRoteiros
+	 * getEquipes
+	 * getUsuarios
+	 * criaEquipeParaRoteiroComUsuario (com o máximo de integrantes)
+	 * removerEquipeParaRoteiroComUsuario (remove se está em alguma)
+	 */
+	
+	public int criaEquipeParaRoteiroComUsuario(int userId, int equipeId,
 			int roteiroId, String nomeEquipe) {
 
 		Equipe equipeTemp = new Equipe();
@@ -34,26 +43,33 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 
 		EquipeHasUsuarioHasRoteiro equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
 		ChaveCompostaTernariaInteger chaveComposta = new ChaveCompostaTernariaInteger();
-		chaveComposta.setKey1(userIds[0]);
+		chaveComposta.setKey1(userId);
 		chaveComposta.setKey2(equipeId);
 		chaveComposta.setKey3(roteiroId);
 		equipeHasUsuarioHasRoteiro.setId(chaveComposta);
 		equipeHasUsuarioHasRoteiro.setEquipe(equipeTemp);
 		equipeHasUsuarioHasRoteiro.setRoteiro(getRoteiro(roteiroId));
-		equipeHasUsuarioHasRoteiro.setUsuario(getUsuario(userIds[0]));
+		equipeHasUsuarioHasRoteiro.setUsuario(getUsuario(userId));
 
-		Equipe equipeCriada = facadeSistema.criaEquipeParaRoteiro(equipeTemp,
+		Equipe equipeCriada = facadeSistema.criaEquipeParaRoteiro(
 				equipeHasUsuarioHasRoteiro);
 		return equipeCriada.getId();
 	}
 
-	public int submeteSolucaoParaRoteiro(int equipeHasUsuarioHasRoteiroId) {
+	/*
+	 * todo
+	 * url: periodo2010.2/submissoes/roteiro1/equipe1/
+	 * 
+	 * nao tem o que testar, dá sempre true nessa US
+	 */
+	
+	public int submeteSolucaoDeRoteiro(int equipeHasUsuarioHasRoteiroId) {
 
 		Submissao submissaoTemp = new Submissao();
 		submissaoTemp.setId(0);
 		submissaoTemp.setDataSubmissao(Calendar.getInstance().getTime());
-		submissaoTemp.setEstado("ESTADO");
-		submissaoTemp.setUrl("URL");
+		//nao seta: submissaoTemp.setEstado("ESTADO"); // erro compilacao, sucesso, etc 
+		submissaoTemp.setUrl("URL"); //
 		submissaoTemp
 				.setEquipeHasUsuarioHasRoteiro(getEquipeHasUsuarioHasRoteiro(equipeHasUsuarioHasRoteiroId));
 
