@@ -163,3 +163,7 @@ diretorioTestes="TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
 #####################################################################################
 
 #excluirRoteiro idRoteiro=${idRoteiro1}
+#excluirRoteiro idRoteiro=${idRoteiro2}
+#excluirRoteiro idRoteiro=${idRoteiro3}
+#excluirRoteiro idRoteiro=${idRoteiro4}
+#excluirRoteiro idRoteiro=${idRoteiro5}
