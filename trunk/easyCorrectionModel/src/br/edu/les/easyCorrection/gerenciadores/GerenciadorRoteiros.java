@@ -138,7 +138,8 @@ public class GerenciadorRoteiros {
 		// essa flag aqui. Para termos uma certeza de que, mesmo sem gui, o
 		// roteiro foi atualizado com sucesso
 		System.out.println("Roteiro atualizado com sucesso!");
-
+		
+		//TODO o save nao atualiza objetos e sim salva, para atualizar tem que usar o comando update
 		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
 		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
 	}
@@ -377,5 +378,10 @@ public class GerenciadorRoteiros {
 		} else {
 			return true;
 		}
+	}
+	
+	public List<Roteiro> getRoteirosLiberados(){
+		Date dataAtual = easyCorrectionUtil.getDataNow(); 
+		return DAOFactory.DEFAULT.buildRoteiroDAO().findByRoteiroLiberado(dataAtual);
 	}
 }
