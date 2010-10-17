@@ -1,7 +1,9 @@
 package br.edu.les.easyCorrection.DAO.hibernate.sistema;
 
+import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
@@ -25,7 +27,16 @@ public class RoteiroHibernateDAO extends
 		super(s);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Roteiro> findByRoteiroLiberado(Date dataAtual) {
+		Query q = getSession().createQuery("from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntraga >= :dataAtual");
+		q.setParameter("dataAtual",dataAtual);
+		q.setCacheable(true);
+		List <Roteiro> lista = q.list();
+		return instanciaLista(lista);
+	}
+	
 	@Override
 	public List<Roteiro> instanciaLista(List<Roteiro> lista) {
 		try {
