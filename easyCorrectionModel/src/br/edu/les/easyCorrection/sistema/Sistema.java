@@ -221,6 +221,10 @@ public class Sistema {
 	public List<Roteiro> listarRoteiros() {
 		return gerenciadorRoteiros.listarRoteiros();
 	}
+	
+	public List<Roteiro> getRoteirosLiberados(){
+		return gerenciadorRoteiros.getRoteirosLiberados();
+	}
 
 	/******************************************** Controle de Submissão de Roteiros EasyLabCorrection *********************************************/
 

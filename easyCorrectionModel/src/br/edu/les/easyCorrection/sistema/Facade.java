@@ -12,6 +12,7 @@ import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
@@ -464,6 +465,15 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public List<Roteiro> getRoteirosLiberados() throws Throwable{
+		try{
+			return sistema.getRoteirosLiberados();
+		} catch (Throwable e) {
+			log.error("getRoteirosLiberados()", e);
+			throw e;
+		}
+	}
 
 	/*******************************************************************
 	 * Facade Submissoes
@@ -489,5 +499,27 @@ public class Facade {
 			log.error("submeteRoteiro()", e);
 			throw e;
 		}
+	}
+
+	public Equipe criaEquipeParaRoteiro(
+			EquipeHasUsuarioHasRoteiro equipeHasUsuarioHasRoteiro) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Submissao submeteSolucaoRoteiro(Submissao submissaoTemp) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiro(
+			int equipeHasUsuarioHasRoteiroId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Equipe getEquipe(int equipeId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
