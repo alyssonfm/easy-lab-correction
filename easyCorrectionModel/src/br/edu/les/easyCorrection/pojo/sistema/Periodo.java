@@ -51,6 +51,9 @@ public class Periodo {
 		return true;
 	}
 	
+	public String toString() {
+		return semestre;
+	}
 	
 
 }

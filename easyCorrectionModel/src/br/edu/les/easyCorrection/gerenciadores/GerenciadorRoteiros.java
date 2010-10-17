@@ -23,7 +23,12 @@ public class GerenciadorRoteiros {
 	public final double PENALIDADE_DIA_ATRASO_DEFAULT = -1;
 	public final double PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT = -1;
 
-	public final int ESTADO_INEXISTENTE = 0;
+	public final int ESTADO_INEXISTENTE = -1;
+
+	/*
+	 * Estado prévio à criacao do roteiro
+	 */
+	public final int ROTEIRO_EM_CRIACAO = 0;
 	/*
 	 * Estado posterior a criacao do roteiro, mas anterior a data de liberacao
 	 * deste
@@ -102,13 +107,20 @@ public class GerenciadorRoteiros {
 		int estadoAtualRoteiro = computaEstadoRoteiro(roteiroTemp);
 		this.criacaoOuAtualizacaoMsg = "atualizado";
 
-		if (estadoAtualRoteiro == ROTEIRO_CRIADO) {
+		if (estadoAtualRoteiro == ROTEIRO_EM_CRIACAO) {
 			if (validaRoteiroEstadoCriado(roteiroTemp)) {
+				// OK, passou pelos casos de excecao, pode seguir em frente! =)
+			}
+		}
+		if (estadoAtualRoteiro == ROTEIRO_CRIADO) {
+			if (validaRoteiroEstadoCriado(roteiroTemp)
+					&& validaDirTestesEInterface(roteiroTemp)) {
 				// OK, passou pelos casos de excecao, pode seguir em frente! =)
 			}
 		} else if (estadoAtualRoteiro == ROTEIRO_LIBERADO) {
 			if (validaRoteiroEstadoLiberado(roteiroTemp)
-					&& validaRoteiroEstadoCriado(roteiroTemp)) {
+					&& validaRoteiroEstadoCriado(roteiroTemp)
+					&& validaDirTestesEInterface(roteiroTemp)) {
 				// OK, passou pelos casos de excecao, pode seguir em frente! =)
 			}
 		} else if (estadoAtualRoteiro == ROTEIRO_FECHADO) {
@@ -118,7 +130,7 @@ public class GerenciadorRoteiros {
 						"Roteiros fechados não podem ser editados!");
 			}
 		} else {
-			throw new EdicaoRoteiroException(MsgErros.OPER_NAO_REALIZADA
+			throw new EdicaoRoteiroException(MsgErros.VALORINVALIDO
 					.msg("A edição do roteiro não pôde ser realizada!"));
 		}
 
@@ -131,15 +143,40 @@ public class GerenciadorRoteiros {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
 	}
 
-	protected int computaEstadoRoteiro(Roteiro roteiroTemp) {
+	private boolean validaDirTestesEInterface(Roteiro roteiro)
+			throws EdicaoRoteiroException {
 		
+		String testesDirDefault = "periodo" + roteiro.getPeriodo().toString()
+				+ "/testes/roteiroID_" + roteiro.getId() + "/";
+		String interfaceDirDefault = "periodo"
+				+ roteiro.getPeriodo().toString() + "/interface/roteiroID_"
+				+ roteiro.getId() + "/";
+
+		if ((roteiro.getDiretorioTestes() != null && !roteiro
+				.getDiretorioTestes().equals(""))
+				&& !roteiro.getDiretorioTestes().equals(testesDirDefault)) {
+			throw new EdicaoRoteiroException(
+					"Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/roteiroID_<numero>/'. O Roteiro não pôde ser atualizado!");
+		} else if ((roteiro.getDiretorioInterface() != null && !roteiro
+				.getDiretorioInterface().equals(""))
+				&& !roteiro.getDiretorioInterface().equals(interfaceDirDefault)) {
+			throw new EdicaoRoteiroException(
+					"Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/roteiroID_<numero>/'. O Roteiro não pôde ser atualizado!");
+		}
+		return true;
+	}
+
+	protected int computaEstadoRoteiro(Roteiro roteiroTemp) {
+
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
-		
-		if (roteiroTemp.isBloqueado()
+
+		if (roteiroTemp.getDataLiberacao() == null || roteiroTemp.getId() == 0) {
+			return ROTEIRO_EM_CRIACAO;
+		} else if (roteiroTemp.isBloqueado()
 				|| calendar.getTime().before(roteiroTemp.getDataLiberacao())) {
 			return ROTEIRO_CRIADO;
 		} else if (calendar.getTime().after(roteiroTemp.getDataLiberacao())
@@ -161,6 +198,16 @@ public class GerenciadorRoteiros {
 		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
 		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
 	}
+	
+	public Roteiro desbloquearRoteiro(Roteiro roteiro) {
+
+		// Apenas para garantias que houve sucesso
+		System.out.println("Roteiro " + roteiro.getNome()
+				+ " desbloqueado com sucesso!");
+
+		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
+		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
+	}
 
 	public Roteiro liberarRoteiro(Roteiro roteiro)
 			throws LiberaRoteiroException {
@@ -175,7 +222,9 @@ public class GerenciadorRoteiros {
 						.getPorcentagemTestesAutomaticos() <= 100) && roteiro
 						.getDiretorioTestes() == null))) {
 			throw new LiberaRoteiroException(
-					"O Roteiro " + roteiro.getNome() + " não pôde ser liberado devido a falhas em sua especificação!");
+					"O Roteiro "
+							+ roteiro.getNome()
+							+ " não pôde ser liberado devido a falhas em sua especificação!");
 		} else if (roteiro.isBloqueado()) {
 			throw new LiberaRoteiroException("Roteiro bloquado para liberação!");
 		}
@@ -204,7 +253,6 @@ public class GerenciadorRoteiros {
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 
-		
 		if (roteiro.getNome() == null || roteiro.getNome().equals("")) {
 			throw new CriacaoRoteiroException(MsgErros.NOMEVAZIO
 					.msg("Nome da atividade inválido. O Roteiro não pôde ser "
@@ -281,82 +329,11 @@ public class GerenciadorRoteiros {
 					MsgErros.VALORINVALIDO
 							.msg("Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
-		} else if ((roteiro.getDiretorioTestes() != null && !roteiro
-				.getDiretorioTestes().equals(""))
-				&& !checkDiretorioTestesJavaFileExtension(new File(roteiro
-						.getDiretorioTestes()))) {
-			throw new CriacaoRoteiroException(
-					"Algum arquivo no diretório de Testes Automáticos não possui extensão .java. O Roteiro não pôde ser "
-							+ criacaoOuAtualizacaoMsg + "!");
-
-		} else if ((roteiro.getDiretorioTestes() != null && !roteiro
-				.getDiretorioTestes().equals(""))
-				&& !isSuiteInTestDirectoryRoot(new File(roteiro
-						.getDiretorioTestes()))) {
-			throw new CriacaoRoteiroException(
-					"Não foi encontrado o arquivo LabTestSuite.java na raiz do diretório de Testes Automáticos. O Roteiro não pôde ser "
-							+ criacaoOuAtualizacaoMsg + "!");
-		}
-
-		else if ((roteiro.getDiretorioInterface() != null && !roteiro
-				.getDiretorioInterface().equals(""))
-				&& !checkDiretorioInterfaceFileExtension(roteiro
-						.getDiretorioInterface())) {
-			throw new CriacaoRoteiroException(
-					"O formato do arquivo da Interface Java deve ser .java. O roteiro não pôde ser "
-							+ criacaoOuAtualizacaoMsg + "!");
 
 		} else {
 			return true;
 		}
 
-	}
-
-	private boolean checkDiretorioTestesJavaFileExtension(File testeDirectory) {
-
-		// It returns only files that end with `.java'.
-		FilenameFilter filter = new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return !(name.endsWith(".java") || name.endsWith(".svn"));
-			}
-		};
-
-		String[] filteredFiles = testeDirectory.list(filter);
-
-		return (filteredFiles.length > 0) ? false : true;
-	}
-
-	private boolean isSuiteInTestDirectoryRoot(File testeDirectory) {
-
-		// It returns only files that end with `.java'.
-		FilenameFilter filter = new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.equalsIgnoreCase("LabTestSuite.java");
-			}
-		};
-
-		String[] filteredFiles = testeDirectory.list(filter);
-
-		if (filteredFiles == null) {
-			return false;
-		}
-
-		return (filteredFiles.length == 1) ? true : false;
-	}
-
-	private boolean checkDiretorioInterfaceFileExtension(String testeFileName) {
-
-		File f = new File(testeFileName);
-
-		if (f.isFile()) {
-			if (testeFileName.endsWith(".java")) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
 	}
 
 	public boolean validaRoteiroEstadoCriado(Roteiro roteiro)
@@ -371,19 +348,19 @@ public class GerenciadorRoteiros {
 	public boolean validaRoteiroEstadoLiberado(Roteiro roteiro)
 			throws EdicaoRoteiroException {
 
-		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
-		Roteiro roteiroNoBD = DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
-
-		if (!roteiro.getNome().equals(roteiroNoBD.getNome())) {
-			throw new EdicaoRoteiroException(
-					MsgErros.ERRO_ALTERACAO
-							.msg("Não é possível modificar o nome do roteiro após sua liberação!"));
-		} else if (!roteiro.getDataLiberacao().equals(
-				roteiroNoBD.getDataLiberacao())) {
-			throw new EdicaoRoteiroException(
-					MsgErros.ERRO_ALTERACAO
-							.msg("Não é possível modificar a data de liberação após a liberação já haver ocorrido!"));
-		}
+//		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
+//		Roteiro roteiroNoBD = DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
+//
+//		if (!roteiro.getNome().equals(roteiroNoBD.getNome())) {
+//			throw new EdicaoRoteiroException(
+//					MsgErros.ERRO_ALTERACAO
+//							.msg("Não é possível modificar o nome do roteiro após sua liberação!"));
+//		} else if (!roteiro.getDataLiberacao().equals(
+//				roteiroNoBD.getDataLiberacao())) {
+//			throw new EdicaoRoteiroException(
+//					MsgErros.ERRO_ALTERACAO
+//							.msg("Não é possível modificar a data de liberação após a liberação já haver ocorrido!"));
+//		}
 
 		return true;
 	}
@@ -391,11 +368,11 @@ public class GerenciadorRoteiros {
 	public boolean validaRoteiroEstadoFechado(Roteiro roteiro)
 			throws EdicaoRoteiroException {
 
-		Date dataAtual = Calendar.getInstance().getTime();
+		Calendar calendar = Calendar.getInstance();
 
-		if (!roteiro.getDataFinalEntrega().before(dataAtual)) {
+		if (roteiro.getDataFinalEntrega().before(calendar.getTime())) {
 			throw new EdicaoRoteiroException(
-					MsgErros.ERRO_ALTERACAO
+					MsgErros.VALORINVALIDO
 							.msg("Não é possível editar um Roteiro após a data de entrega do mesmo!"));
 		} else {
 			return true;

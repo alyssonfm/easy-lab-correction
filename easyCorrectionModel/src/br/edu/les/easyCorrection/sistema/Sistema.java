@@ -205,6 +205,10 @@ public class Sistema {
 		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp);
 	}
 
+	public Roteiro desbloquearRoteiro(Roteiro roteiroTemp) {
+		return gerenciadorRoteiros.desbloquearRoteiro(roteiroTemp);
+	}
+	
 	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
 			throws LiberaRoteiroException {
 		return gerenciadorRoteiros.liberarRoteiro(roteiroTemp);

@@ -19,16 +19,12 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 
 	// ******************************************* Criação de Roteiros
 	// *****************************************
-	
-	// default testes: periodo2010.2/testes/roteiro01/(*.zip)
-	// default testes: periodo2010.2/interface/roteiro01/(.java)
 
 	public int cadastrarRoteiro(int periodoId, String nome, String descricao,
 			String dataLiberacao, String dataFinalEntrega,
 			String dataFinalDiscussao, int numeroMaximoEnvios,
 			double penalidadeDiasAtraso, double porcentagemTestesAutomaticos,
-			int tempoLimiteTestes, String diretorioInterface,
-			String diretorioTestes, int numeroMaximoParticipantes,
+			int tempoLimiteTestes, int numeroMaximoParticipantes,
 			boolean bloqueado) throws Throwable {
 
 		Roteiro roteiroTemp = new Roteiro();
@@ -39,8 +35,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 		roteiroTemp.setDataLiberacao(translateData(dataLiberacao));
 		roteiroTemp.setDataFinalEntrega(translateData(dataFinalEntrega));
 		roteiroTemp.setDataFinalDiscussao(translateData(dataFinalDiscussao));
-		roteiroTemp.setDiretorioInterface(translateDirectory(diretorioInterface));
-		roteiroTemp.setDiretorioTestes(translateDirectory(diretorioTestes));
+
 		roteiroTemp.setBloqueado(bloqueado);
 
 		// doubleOnes
@@ -93,8 +88,10 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 		roteiroTemp.setDataFinalEntrega(translateData(dataFinalEntrega));
 		roteiroTemp.setDataFinalDiscussao(translateData(dataFinalDiscussao));
 
-		roteiroTemp.setDiretorioInterface(translateDirectory(diretorioInterface));
-		roteiroTemp.setDiretorioTestes(translateDirectory(diretorioTestes));
+		roteiroTemp.setDiretorioInterface(translateDirectory(
+				diretorioInterface, roteiroTemp));
+		roteiroTemp.setDiretorioTestes(translateDirectory(diretorioTestes,
+				roteiroTemp));
 		roteiroTemp.setBloqueado(isBloqueado);
 
 		// doubleOnes
@@ -135,8 +132,21 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 	}
 
 	// EasyAcceptOK
-	public void bloquearRoteiro(int roteiroId) throws Throwable {
-		facadeSistema.bloquearRoteiro(facadeSistema.getRoteiro(roteiroId));
+	public int bloquearRoteiro(int roteiroId) throws Throwable {
+		Roteiro roteiroTemp = facadeSistema.getRoteiro(roteiroId);
+		roteiroTemp.setBloqueado(true);
+
+		Roteiro rotBloqueado = facadeSistema.bloquearRoteiro(roteiroTemp);
+		return rotBloqueado.getId();
+	}
+
+	// EasyAcceptOK
+	public int desbloquearRoteiro(int roteiroId) throws Throwable {
+		Roteiro roteiroTemp = facadeSistema.getRoteiro(roteiroId);
+		roteiroTemp.setBloqueado(false);
+
+		Roteiro rotDesbloqueado = facadeSistema.desbloquearRoteiro(roteiroTemp);
+		return rotDesbloqueado.getId();
 	}
 
 	// EasyAcceptOK
@@ -190,6 +200,10 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 
 		if (dataCodificada == null || dataCodificada.equals("")) {
 			return null;
+		} else if (dataCodificada.equalsIgnoreCase("-21_DIAS")) {
+			calendar.add(Calendar.DAY_OF_MONTH, -7);
+		} else if (dataCodificada.equalsIgnoreCase("-14_DIAS")) {
+			calendar.add(Calendar.DAY_OF_MONTH, -7);
 		} else if (dataCodificada.equalsIgnoreCase("-7_DIAS")) {
 			calendar.add(Calendar.DAY_OF_MONTH, -7);
 		} else if (dataCodificada.equalsIgnoreCase("+7_DIAS")) {
@@ -204,20 +218,22 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 		return calendar.getTime();
 	}
 
-	public String translateDirectory(String dirCodificado) {
+	public String translateDirectory(String dirCodificado, Roteiro rot) {
 		String result;
 		if (dirCodificado == null) {
 			return null;
-		} else if (dirCodificado.equals("TESTES_EXTENSAO_INVALIDA")) {
-			result = "F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/invalidExtensionFile/";
-		} else if (dirCodificado.equals("TESTES_SEM_SUITE")) {
-			result = "F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/validExtensionFile/withoutTestSuite";
-		} else if (dirCodificado.equals("TESTES_COM_SUITE_OK")) {
-			result = "F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/validExtensionFile/withTestSuite";
-		} else if (dirCodificado.equals("INTERFACE_OK")) {
-			result = "F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/LabInterface.java";
-		} else if (dirCodificado.equals("INTERFACE_EXTENSAO_ERRADA")) {
-			result = "F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/LabInterface.xml";
+		} else if (dirCodificado.equals("TESTES_DIFF_DEFAULT")) {
+			result = "periodo" + rot.getPeriodo().toString()
+					+ "/testes/roteiroID/" + rot.getId() + "/";
+		} else if (dirCodificado.equals("TESTES_DEFAULT_OK")) {
+			result = "periodo" + rot.getPeriodo().toString()
+					+ "/testes/roteiroID_" + rot.getId() + "/";
+		} else if (dirCodificado.equals("INTERFACE_DIFF_DEFAULT")) {
+			result = "periodo" + rot.getPeriodo().toString()
+					+ "/INTERFACE/roteiroID_" + rot.getId() + "/";
+		} else if (dirCodificado.equals("INTERFACE_DEFAULT_OK")) {
+			result = "periodo" + rot.getPeriodo().toString()
+					+ "/interface/roteiroID_" + rot.getId() + "/";
 		} else {
 			result = "";
 		}
