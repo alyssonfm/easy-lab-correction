@@ -13,8 +13,7 @@ Testes de Aceitação:
 	6: o script de teste está dividido por userstories (ex.: /acceptance/userstory03/us3_CriacaoRoteiros.eas)
 	
  - Lembrar:
- 	* Os caminhos dos arquivos devem ser modificados
- 	* As datas dos testes devem ser adicionadas de valores para que fiquem todas após a data atual
+ 	* Os caminhos dos arquivos devem ser modificados no método de diretórios. Como também na classe de Constants.
  
 Testes de Unidade: 
  - Tecnologia: JUnit
