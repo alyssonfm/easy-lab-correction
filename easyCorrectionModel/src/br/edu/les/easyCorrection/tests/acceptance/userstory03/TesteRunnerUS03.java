@@ -8,14 +8,11 @@ import easyaccept.EasyAcceptFacade;
 
 public class TesteRunnerUS03 {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		List<String> files = new ArrayList<String>();
 		EasyAcceptFacade eaFacade;
 
-//		files.add(Constants.dirAcceptanceTestsUS3 + "us3_CriacaoRoteiros.eas");
+		files.add(Constants.dirAcceptanceTestsUS3 + "us3_CriacaoRoteiros.eas");
 		files.add(Constants.dirAcceptanceTestsUS3 + "us3_EdicaoRoteiros.eas");
 		FacadeTestUS3Acceptance testFacadeUS3 = new FacadeTestUS3Acceptance();
 		eaFacade = new EasyAcceptFacade(testFacadeUS3, files);
