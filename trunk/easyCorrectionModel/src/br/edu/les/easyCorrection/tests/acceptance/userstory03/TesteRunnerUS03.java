@@ -22,17 +22,4 @@ public class TesteRunnerUS03 {
 		eaFacade.executeTests();
 		System.out.println(eaFacade.getCompleteResults());
 	}
-
-	// public static void main(String[] args) {
-	// File f = new File(
-	// "F:/Eclipse_Java_EE/workspace_flex/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/validExtensionFile/withTestSuite");
-	//
-	// for (String string : f.list()) {
-	// if (string == null) {
-	// System.out.println("NULL String!");
-	// } else {
-	// System.out.println(string);
-	// }
-	// }
-	// }
 }

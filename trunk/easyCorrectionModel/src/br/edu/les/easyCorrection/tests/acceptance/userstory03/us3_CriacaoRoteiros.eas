@@ -17,92 +17,63 @@
 #ID do Teste: a
 expectError "Nome da atividade inválido. O Roteiro não pôde ser criado!" \
 cadastrarRoteiro periodoId=1 nome="" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="" dataFinalDiscussao="" \
-numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface=null \
-diretorioTestes=null numeroMaximoParticipantes=-1 bloqueado=false
+numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 \
+ numeroMaximoParticipantes=-1 bloqueado=false
 
 #ID do Teste: b
 expectError "Data de Liberação inválida. O roteiro não pôde ser ser criado!" cadastrarRoteiro periodoId=1 nome="Roteiro1" descricao=null \
 dataLiberacao="" dataFinalEntrega="" dataFinalDiscussao="" numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 \
-tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1 bloqueado=false
+tempoLimiteTestes=-1 numeroMaximoParticipantes=-1 bloqueado=false
 
 #ID do Teste: c
 idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro c" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="" dataFinalDiscussao="" \
-numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" \
+numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1   \
 numeroMaximoParticipantes=-1 bloqueado=false
 
 #ID do Teste: d
 expectError "Data Limite para Entrega anterior à Data de Liberação. O Roteiro não pôde ser criado!" cadastrarRoteiro \
 periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+14_DIAS" dataFinalEntrega="+7_DIAS" dataFinalDiscussao="" numeroMaximoEnvios=-1 \
-penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1 bloqueado=false
+penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 numeroMaximoParticipantes=-1 bloqueado=false
 
 #ID do Teste: e
 expectError "Data Limite para Discussão anterior à Data Limite para Entrega. O Roteiro não pôde ser criado!" cadastrarRoteiro \
 periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+21_DIAS" dataFinalDiscussao="+14_DIAS" numeroMaximoEnvios=-1 \
-penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1 bloqueado=false
+penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 numeroMaximoParticipantes=-1 bloqueado=false
 
 #ID do Teste: f
 expectError "O número máximo de integrantes deve ser sempre maior ou igual a 1 integrante. O Roteiro não pôde ser criado!" cadastrarRoteiro \
 periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=-1 \
-penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=-1000 bloqueado=false
+penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 numeroMaximoParticipantes=-1000 bloqueado=false
 
 #ID do Teste: g
 expectError "O número máximo de envios deve ser sempre maior ou igual a 1. O Roteiro não pôde ser criado!" cadastrarRoteiro \
 periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=0 \
-penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: h
 expectError "A Penalidade por dia de atraso deve ser sempre maior ou igual a 0,0 e menor ou igual a 10,0. O Roteiro não pôde ser criado!" cadastrarRoteiro \
 periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
-penalidadeDiasAtraso=15 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+penalidadeDiasAtraso=15 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: i
 expectError "A Porcentagem automática da avaliação deve ser sempre >= 0 e <= 100. O Roteiro não pôde ser criado!" cadastrarRoteiro \
 periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=150 tempoLimiteTestes=-1 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=150 tempoLimiteTestes=-1 numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: j
 expectError "Time-limit de execução dos testes por método inválido, deve ser sempre > 0 quando a Porcentagem Automática de Avaliação for > 0 e <= 100. O Roteiro não pôde ser criado!" cadastrarRoteiro \
 periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=-1000 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=-1000 numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: k
 expectError "Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O Roteiro não pôde ser criado!" cadastrarRoteiro \
 periodoId=1 nome="Roteiro2" descricao="" dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=0 tempoLimiteTestes=10 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=0 tempoLimiteTestes=10 numeroMaximoParticipantes=3 bloqueado=false
 
 #ID do Teste: l
 idRoteiro2=cadastrarRoteiro \
 periodoId=1 nome="Roteiro2" descricao="" dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
-
-#ID do Teste: m
-expectError "Algum arquivo no diretório de Testes Automáticos não possui extensão .java. O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" \
-diretorioTestes="TESTES_EXTENSAO_INVALIDA" numeroMaximoParticipantes=3 bloqueado=false
-
-#ID do Teste: n
-expectError "Não foi encontrado o arquivo LabTestSuite.java na raiz do diretório de Testes Automáticos. O Roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" \
-diretorioTestes="TESTES_SEM_SUITE" numeroMaximoParticipantes=3 bloqueado=false
-
-#ID do Teste: o
-idRoteiro3=cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" \
-diretorioTestes="TESTES_COM_SUITE_OK" numeroMaximoParticipantes=3 bloqueado=false
-
-#ID do Teste: p
-expectError "O formato do arquivo da Interface Java deve ser .java. O roteiro não pôde ser criado!" cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="INTERFACE_EXTENSAO_ERRADA" diretorioTestes="TESTES_COM_SUITE_OK/" numeroMaximoParticipantes=3 bloqueado=false
-
-#ID do Teste: q
-idRoteiro4=cadastrarRoteiro \
-periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
-penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="INTERFACE_OK" \
-diretorioTestes="TESTES_COM_SUITE_OK" numeroMaximoParticipantes=3 bloqueado=false
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 numeroMaximoParticipantes=3 bloqueado=false
 
 
 #####################################################################################
@@ -111,5 +82,3 @@ diretorioTestes="TESTES_COM_SUITE_OK" numeroMaximoParticipantes=3 bloqueado=fals
 
 excluirRoteiro idRoteiro=${idRoteiro1}
 excluirRoteiro idRoteiro=${idRoteiro2}
-excluirRoteiro idRoteiro=${idRoteiro3}
-excluirRoteiro idRoteiro=${idRoteiro4}
