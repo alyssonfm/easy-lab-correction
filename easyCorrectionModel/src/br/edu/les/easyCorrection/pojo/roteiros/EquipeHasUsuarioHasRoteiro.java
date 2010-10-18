@@ -4,7 +4,7 @@ import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 
 public class EquipeHasUsuarioHasRoteiro {
 	
-	private ChaveCompostaTernariaInteger id;
+	private Integer id;
 	private Equipe equipe;
 	private Roteiro roteiro;
 	private Usuario usuario;
@@ -13,15 +13,11 @@ public class EquipeHasUsuarioHasRoteiro {
 		super();
 	}
 	
-	public EquipeHasUsuarioHasRoteiro(Equipe equipe, Roteiro roteiro, Usuario usuario) {
-		setId(new ChaveCompostaTernariaInteger(equipe.getId(), usuario.getIdUsuario(), roteiro.getId()));
-	}
 	
-	
-	public ChaveCompostaTernariaInteger getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(ChaveCompostaTernariaInteger id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public Equipe getEquipe() {
