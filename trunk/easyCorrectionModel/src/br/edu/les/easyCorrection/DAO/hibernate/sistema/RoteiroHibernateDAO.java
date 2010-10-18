@@ -30,7 +30,7 @@ public class RoteiroHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Roteiro> findByRoteiroLiberado(Date dataAtual) {
-		Query q = getSession().createQuery("from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntraga >= :dataAtual");
+		Query q = getSession().createQuery("from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual");
 		q.setParameter("dataAtual",dataAtual);
 		q.setCacheable(true);
 		List <Roteiro> lista = q.list();
