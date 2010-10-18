@@ -192,12 +192,12 @@ public class Sistema {
 	}
 
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
-			throws CriacaoRoteiroException, CampoVazioException {
+			throws CriacaoRoteiroException {
 		return gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
 	}
 
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
-			throws EdicaoRoteiroException, CampoVazioException {
+			throws EdicaoRoteiroException, CriacaoRoteiroException {
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 
