@@ -36,6 +36,7 @@ public class GerenciadorSubmissoes extends GerenciadorRoteiros{
 			if (numeroSubmissoes(submissao) <= (submissao
 					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
 					.getNumeroMaximoEnvios())) {
+				submissao.setDataSubmissao(easyCorrectionUtil.getDataNow());
 				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(
 						submissao);
 				submissao.setId(id);
