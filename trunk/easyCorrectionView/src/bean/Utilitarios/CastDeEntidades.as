@@ -112,7 +112,57 @@ package bean.Utilitarios {
 				}
 			}
 			return objeto;
+		}
+		
+		public static function castEquipe(objeto: *):Equipe{
+			if (objeto != null) {
+				if(objeto == undefined){
+					objeto = null;
+				}else{
+					var e:Equipe = new Equipe();
+					e.id = objeto.id;
+					e.nome = objeto.nome;
+					return e;
+				}
+			}
+			return objeto;
+		}	
+		
+		public static function castEquipeHasUsuarioHasRoteiro(objeto: *):EquipeHasUsuarioHasRoteiro{
+			if (objeto != null) {
+				if(objeto == undefined){
+					objeto = null;
+				}else{
+					var e:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
+					e.id = objeto.id;
+					e.equipe = castEquipe(objeto.equipe);
+					e.roteiro = castRoteiro(objeto.roteiro);
+					e.usuario = castUsuario(objeto.usuario);
+					return e;
+				}
+			}
+			return objeto;
+		}	
+		
+		public static function castSubmissao(objeto: *):Submissao{
+			if (objeto != null) {
+				if(objeto == undefined){
+					objeto = null;
+				}else{
+					var s:Submissao = new Submissao();
+					s.id = objeto.id;
+					s.dataSubmissao = objeto.dataSubmissao;
+					s.equipeHasUsuarioHasRoteiro = castEquipeHasUsuarioHasRoteiro(objeto.equipeHasUsuarioHasRoteiro);
+					s.estado = objeto.estado;
+					s.url = objeto.url;
+					return s;
+				}
+			}
+			return objeto;
 		}		
+			
+		
+		
 		
 		public static function castRoteiro(objeto: *):Roteiro{
 			if (objeto != null) {
