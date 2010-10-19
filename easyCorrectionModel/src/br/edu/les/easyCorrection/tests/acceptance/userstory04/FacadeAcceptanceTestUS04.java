@@ -52,6 +52,19 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	}
 
 	/**
+	 * Retorna a quantidade de alunos em deteminada equipe para determinado
+	 * roteiro, ao ver o tamanho da lista retornada no método da facade do
+	 * Sistema getAlunosPorEquipe
+	 * 
+	 * @param roteiroID
+	 * @param equipeID
+	 * @return int com a quantidade de alunos
+	 */
+	public int getQuantidadeAlunosPorEquipe(int roteiroID, int equipeID) {
+		return facadeSistema.getAlunosPorEquipe(roteiroID, equipeID).size();
+	}
+
+	/**
 	 * Permite a mudança de equipe de um usuário. O usuário deverá sair da
 	 * equipeDeSaida na qual está alocado e ir para a equipeDeEntrada, caso
 	 * obedeca a especificação de mudança de equipe. Maiores detalhes ver link
@@ -75,7 +88,8 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	}
 
 	/*
-	 * url deve ser: periodo<semestre>/submissoes/roteiro<roteiroId>/<nomeEquipe>/
+	 * url deve ser:
+	 * periodo<semestre>/submissoes/roteiro<roteiroId>/<nomeEquipe>/
 	 */
 
 	public int setURLServidorParaSubmissao(int submissaoID, String novaURL) {
@@ -91,7 +105,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	/*
 	 * UTIL
 	 */
-	
+
 	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiro(
 			int equipeHasUsuarioHasRoteiroId) {
 
@@ -102,5 +116,5 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	public Equipe getEquipe(int equipeId) {
 		return facadeSistema.getEquipe(equipeId);
 	}
-	
+
 }
