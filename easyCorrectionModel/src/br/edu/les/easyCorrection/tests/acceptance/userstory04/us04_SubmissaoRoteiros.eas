@@ -48,7 +48,7 @@ idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro 1" descricao="Roteiro de T
 numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
 numeroMaximoParticipantes=2 bloqueado=false
 
-expectError "Não há equipes alocadas pois O Roteiro <nomeDoRoteiro> ainda não foi liberado!" getQuantidadeEquipesAlocadas roteiroID=${idRoteiro1} 
+expectError "Não há equipes alocadas pois o Roteiro <nomeDoRoteiro> ainda não foi liberado!" getQuantidadeEquipesAlocadas roteiroID=${idRoteiro1} 
 
 #ID do Teste: e
 
@@ -59,6 +59,8 @@ expect 6 getQuantidadeTotalAlunos
 idRoteiro2=cadastrarRoteiro periodoId=1 nome="Roteiro 2" descricao="Roteiro de Testes 2" dataLiberacao="AGORA" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
 numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
 numeroMaximoParticipantes=1 bloqueado=false
+
+equipeID6=getEquipe equipeId=6
 
 # 6 equipes...
 expect 6 getQuantidadeEquipesAlocadas roteiroId=${idRoteiro2}
@@ -71,8 +73,6 @@ expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeI
 expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID6}
 
 #ID do Teste: f
-
-equipeID6=getEquipe equipeId=6
 
 expectError "Nenhuma equipe pode ser modificada. O Roteiro é individual!" mudarEquipe \
 roteiroId=${idRoteiro2} equipeDeSaidaId=${equipeID6} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
@@ -129,12 +129,13 @@ roteiroId=${idRoteiro3} equipeId=${equipeID6} grupoUsuarioId=${idGrupoUsuarioA} 
 #ID do Teste: m
 
 # expect "O Caminho do servidor para submissões foi atualizado com sucesso!" no System.Out.Println(...)
-submissaoId2=criarSubmissao 
+idSubmissao=criarSubmissao \
 roteiroId=${idRoteiro3} equipeId=${equipeID6} grupoUsuarioId=${idGrupoUsuarioA} url="periodo2010.2/submissoes/roteiro3/Equipe 1/"
 
 #ID do Teste: n
 
-submissaoId=criarSubmissao roteiroId=${idRoteiro3} equipeId=${equipeID6} grupoUsuarioId=${idGrupoUsuarioA} url="periodo2010.2/submissoes/roteiro3/Equipe 1/"
+idSubmissao=criarSubmissao \
+roteiroId=${idRoteiro3} equipeId=${equipeID6} grupoUsuarioId=${idGrupoUsuarioA} url="periodo2010.2/submissoes/roteiro3/Equipe 1/"
 
 expectError "Mudança não realizada! A 1ª submissão de roteiro da equipe já foi realizada." mudarEquipe \
 roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID6} grupoUsuarioId=${idGrupoUsuarioA}
@@ -155,4 +156,4 @@ excluirRoteiro idRoteiro=${idRoteiro1}
 excluirRoteiro idRoteiro=${idRoteiro2}
 excluirRoteiro idRoteiro=${idRoteiro3}
 
-excluirSubmissao idSubmissao=${submissaoId}
+excluirSubmissao submissaoId=${idSubmissao}

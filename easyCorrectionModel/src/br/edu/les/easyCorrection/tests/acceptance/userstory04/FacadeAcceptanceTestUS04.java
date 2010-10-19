@@ -1,8 +1,6 @@
 package br.edu.les.easyCorrection.tests.acceptance.userstory04;
 
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
-import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
-import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.sistema.Facade;
 import br.edu.les.easyCorrection.tests.acceptance.userstory03.FacadeTestUS3Acceptance;
 
@@ -116,6 +114,10 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 		return 0;
 	}
 
+	public int excluirSubmissao (int submissaoId){
+//		return facadeSistema.excluirSubmissao(submissaoId);
+		return 0;
+	}
 	/*
 	 * UTIL
 	 */
