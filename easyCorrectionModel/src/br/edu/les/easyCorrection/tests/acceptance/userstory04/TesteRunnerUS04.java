@@ -17,7 +17,7 @@ public class TesteRunnerUS04 {
 	 EasyAcceptFacade eaFacade;
 
 	 // Teste US04
-	 files.add(Constants.dirTestsAcceptanceUS4 + "us04_SubmissaoRoteiros.eas");
+	 files.add(Constants.dirAcceptanceTestsUS4 + "us04_SubmissaoRoteiros.eas");
 	 FacadeTestUS3Acceptance testFacadeUS3 = new FacadeTestUS3Acceptance();
 	 eaFacade = new EasyAcceptFacade(testFacadeUS3, files);
 	 eaFacade.executeTests();
