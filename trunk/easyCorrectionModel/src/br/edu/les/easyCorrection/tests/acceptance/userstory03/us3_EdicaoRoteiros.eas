@@ -80,7 +80,12 @@ periodoId=1 nome="Roteiro2" descricao="" dataLiberacao="+7_DIAS" dataFinalEntreg
 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" diretorioTestes="" numeroMaximoParticipantes=3 bloqueado=false
 
 
+
+
+
 ######### Funcionalidades unicamente de edição
+
+
 
 #ID do Teste: m
 expectError "Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/roteiroID_<numero>/'. O Roteiro não pôde ser atualizado!" editarRoteiro roteiroId=${idRoteiro1} \
@@ -111,38 +116,26 @@ periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntr
 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="INTERFACE_DEFAULT_OK" \
 diretorioTestes="TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
 
-#ID do Teste: r
-# Editamos a data do roteiro para o dia atual (AGORA) e liberamos o roteiro
+#ID do Teste: t
 
-idRoteiro1=editarRoteiro roteiroId=${idRoteiro1} periodoId=1 nome="Roteiro1" descricao= dataLiberacao="AGORA" dataFinalEntrega= dataFinalDiscussao= \
-numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 diretorioInterface= \
-diretorioTestes= numeroMaximoParticipantes=-1 bloqueado=false
-
-#Mudar para a data de hoje
-expectError "O Roteiro Roteiro1 não pôde ser liberado devido a falhas em sua especificação!" liberarRoteiro idRoteiro=${idRoteiro1}
-
-#ID do Teste: s
 # Editamos um roteiro para ser liberado hoje mesmo
-
 idRoteiro2=editarRoteiro roteiroId=${idRoteiro1} \
 periodoId=1 nome="Roteiro2" descricao= dataLiberacao="AGORA" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="INTERFACE_DEFAULT_OK" \
 diretorioTestes="TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
 
-#Mudar para a data de hoje
 idRoteiro3=liberarRoteiro idRoteiro=${idRoteiro2}
 
-#ID do Teste: t 
-
-# Bloqueamos um roteiro no estado LIBERADO (idRoteiro3)
+# Bloqueamos o roteiro no estado LIBERADO (idRoteiro3)
 idRoteiro3=bloquearRoteiro idRoteiro=${idRoteiro3}
 
-# Criamos um novo roteiro (estado CRIADO) e bloqueamos
+# Criamos um novo roteiro (estado CRIADO)
 idRoteiro4=editarRoteiro roteiroId=${idRoteiro1} \
 periodoId=1 nome="Roteiro4" descricao= dataLiberacao="AGORA" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="INTERFACE_DEFAULT_OK" \
 diretorioTestes="TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
 
+# Bloqueamos o roteiro no estado CRIADO (idRoteiro4)
 idRoteiro4=bloquearRoteiro idRoteiro=${idRoteiro4}
 
 
