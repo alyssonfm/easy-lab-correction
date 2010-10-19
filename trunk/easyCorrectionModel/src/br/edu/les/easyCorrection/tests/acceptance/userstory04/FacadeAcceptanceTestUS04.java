@@ -1,17 +1,10 @@
 package br.edu.les.easyCorrection.tests.acceptance.userstory04;
 
-import java.util.Calendar;
-import java.util.List;
-
-import br.edu.les.easyCorrection.pojo.acesso.Usuario;
-import br.edu.les.easyCorrection.pojo.roteiros.ChaveCompostaTernariaInteger;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
-import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.sistema.Facade;
 import br.edu.les.easyCorrection.tests.acceptance.userstory03.FacadeTestUS3Acceptance;
-import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 
@@ -23,62 +16,82 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 
 	// ******************************************* SUBMISSOES
 	// *****************************************
-	
+
 	/*
-	 * todo
-	 * getListaRoteiros
-	 * getEquipes
-	 * getUsuarios
+	 * todo getListaRoteiros getEquipes getUsuarios
 	 * criaEquipeParaRoteiroComUsuario (com o máximo de integrantes)
 	 * removerEquipeParaRoteiroComUsuario (remove se está em alguma)
 	 */
-	
-	public int criaEquipeParaRoteiroComUsuario(int userId, int equipeId,
-			int roteiroId, String nomeEquipe) {
 
-		Equipe equipeTemp = new Equipe();
+	/**
+	 * Apenas a lógica sabe como instanciar uma nova equipe
+	 */
+	public int criaEquipe() {
+		return facadeSistema.criaEquipe();
+	}
 
-		equipeTemp.setId(0);
-		equipeTemp.setNome(nomeEquipe);
+	/**
+	 * Retorna a quantidade total de equipes no BD
+	 * 
+	 * @return int
+	 */
+	public int getQuantidadeEquipesTotal() {
+		return facadeSistema.getQuantidadeEquipesTotal();
+	}
 
-		EquipeHasUsuarioHasRoteiro equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
-		ChaveCompostaTernariaInteger chaveComposta = new ChaveCompostaTernariaInteger();
-		chaveComposta.setKey1(userId);
-		chaveComposta.setKey2(equipeId);
-		chaveComposta.setKey3(roteiroId);
-		equipeHasUsuarioHasRoteiro.setId(chaveComposta);
-		equipeHasUsuarioHasRoteiro.setEquipe(equipeTemp);
-		equipeHasUsuarioHasRoteiro.setRoteiro(getRoteiro(roteiroId));
-		equipeHasUsuarioHasRoteiro.setUsuario(getUsuario(userId));
+	/**
+	 * Retorna a quantidade de equipes alocadas para usuários em um determinado
+	 * roteiro. Alocada significa que possui ao menos um usuário dentro dela
+	 * 
+	 * @param roteiroID
+	 *            - id do roteiro no BD
+	 * @return int com quantidade de equipes alocadas
+	 */
+	public int getQuantidadeEquipesAlocadas(int roteiroID) {
+		return facadeSistema.getQuantidadeEquipesAlocadas(roteiroID);
+	}
 
-		Equipe equipeCriada = facadeSistema.criaEquipeParaRoteiro(
-				equipeHasUsuarioHasRoteiro);
-		return equipeCriada.getId();
+	/**
+	 * Permite a mudança de equipe de um usuário. O usuário deverá sair da
+	 * equipeDeSaida na qual está alocado e ir para a equipeDeEntrada, caso
+	 * obedeca a especificação de mudança de equipe. Maiores detalhes ver link
+	 * abaixo.
+	 * 
+	 * @param usuarioID
+	 * @param equipeDeSaidaID
+	 * @param equipeDeEntradaID
+	 * @param roteiroID
+	 *            - roteiro ao qual a equipe faz parte
+	 * @return id da nova equipe
+	 * 
+	 * @link 
+	 *       https://sites.google.com/site/easylabcorrection/planejamento/planos-
+	 *       de-iteracoes/iteracao-3/-plano-de-testes-de-aceitacao---us04
+	 */
+	public int mudarEquipe(int usuarioID, int equipeDeSaidaID,
+			int equipeDeEntradaID, int roteiroID) {
+		return facadeSistema.mudarEquipe(usuarioID, equipeDeSaidaID,
+				equipeDeEntradaID, roteiroID);
 	}
 
 	/*
-	 * todo
-	 * url: periodo2010.2/submissoes/roteiro1/equipe1/
-	 * 
-	 * nao tem o que testar, dá sempre true nessa US
+	 * todo url: periodo2010.2/submissoes/roteiro1/equipe1/
 	 */
-	
-	public int submeteSolucaoDeRoteiro(int equipeHasUsuarioHasRoteiroId) {
 
-		Submissao submissaoTemp = new Submissao();
-		submissaoTemp.setId(0);
-		submissaoTemp.setDataSubmissao(Calendar.getInstance().getTime());
-		//nao seta: submissaoTemp.setEstado("ESTADO"); // erro compilacao, sucesso, etc 
-		submissaoTemp.setUrl("URL"); //
-		submissaoTemp
-				.setEquipeHasUsuarioHasRoteiro(getEquipeHasUsuarioHasRoteiro(equipeHasUsuarioHasRoteiroId));
+	public int setURLServidorParaSubmissao(int submissaoID, String novaURL) {
 
-		Submissao submissaoRealizada = facadeSistema
-				.submeteSolucaoRoteiro(submissaoTemp);
+		Submissao submissaoAntiga = facadeSistema.getSubmissao(submissaoID);
 
-		return submissaoRealizada.getId();
+		Submissao submissaoAtualizada = facadeSistema
+				.setURLSubmissao(submissaoAntiga);
+
+		return submissaoAtualizada.getId();
 	}
 
+	/*
+	 * UTIL
+	 */
+	
 	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiro(
 			int equipeHasUsuarioHasRoteiroId) {
 
@@ -89,5 +102,5 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	public Equipe getEquipe(int equipeId) {
 		return facadeSistema.getEquipe(equipeId);
 	}
-
+	
 }
