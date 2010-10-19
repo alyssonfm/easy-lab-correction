@@ -1,10 +1,11 @@
 package br.edu.les.easyCorrection.tests.unit.gerenciadores;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.*;
 
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
@@ -74,7 +75,6 @@ public class GerenciadorRoteirosTest {
 		}
 	}
 		
-	@SuppressWarnings("deprecation")
 	@Test
 	public void creates(){
 		try {
@@ -82,11 +82,10 @@ public class GerenciadorRoteirosTest {
 			r3.setId(5);
 			r3.setBloqueado(false);
 			r3.setNome("Roteiro Teste");
-			r3.setDataLiberacao(new Date(2010, 10, 7));
+			r3.setDataLiberacao(Calendar.getInstance().getTime());
 			r3.setDescricao("Roteiro de testes de unidade para a release 1");
 			gr.cadastrarRoteiro(r3);
 			Assert.assertEquals(gr.cadastrarRoteiro(r3).getClass(), Roteiro.class);
-			Assert.assertTrue(gr.validaRoteiroEstadoLiberado(r3));
 		} catch (EasyCorrectionException e) {
 			e.printStackTrace();
 		}
@@ -109,17 +108,20 @@ public class GerenciadorRoteirosTest {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void edits(){
-		r.setDataLiberacao(new Date());
-		r.setDataFinalEntrega(new Date(2010, 11, 30));
 		try {
+			r.setDataLiberacao(Calendar.getInstance().getTime());
+			r.setId(5);
+			Assert.assertTrue(r != null);
+			Assert.assertTrue(gr != null);
+			r.getDataLiberacao();
 			gr.editarRoteiro(r);
+			r.setNome("Roteiro Teste");
 			
 		} catch (EdicaoRoteiroException e) {
 			e.printStackTrace();
-		} catch (CampoVazioException e) {
+		} catch (CriacaoRoteiroException e) {
 			e.printStackTrace();
 		}
 	}
@@ -127,8 +129,6 @@ public class GerenciadorRoteirosTest {
 	@Test
 	public void deletes(){
 		gr.excluirRoteiro(r);
-		gr.excluirRoteiro(r2);
-		gr.excluirRoteiro(r3);
 	}
 	
 }
