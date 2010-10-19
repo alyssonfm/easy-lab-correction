@@ -36,7 +36,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @return int
 	 */
 	public int getQuantidadeEquipesTotal() {
-		return facadeSistema.getQuantidadeEquipesTotal();
+		return facadeSistema.getTodasEquipes().size();
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @return int com quantidade de equipes alocadas
 	 */
 	public int getQuantidadeEquipesAlocadas(int roteiroID) {
-		return facadeSistema.getQuantidadeEquipesAlocadas(roteiroID);
+		return facadeSistema.getEquipesAlocadas(roteiroID).size();
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	}
 
 	/*
-	 * todo url: periodo2010.2/submissoes/roteiro1/equipe1/
+	 * url deve ser: periodo<semestre>/submissoes/roteiro<roteiroId>/<nomeEquipe>/
 	 */
 
 	public int setURLServidorParaSubmissao(int submissaoID, String novaURL) {
