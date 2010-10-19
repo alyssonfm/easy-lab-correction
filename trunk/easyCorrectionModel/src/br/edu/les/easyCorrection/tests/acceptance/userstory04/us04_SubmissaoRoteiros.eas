@@ -18,8 +18,6 @@ diretorioInterface="F:/Augusto/Eclipse_EE/flex_workspace/easyCorrectionModel/src
 diretorioTestes="F:/Augusto/Eclipse_EE/flex_workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/util/validExtensionFile/withTestSuite" \
 numeroMaximoParticipantes=2 bloqueado=false
 
-# usuarioNames={user1,user2,user3} 
-
 #####################################################################################
 # Para ver as alteracoes no Banco de Dados comente as linhas seguintes.
 #####################################################################################
