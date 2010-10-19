@@ -1,134 +1,187 @@
 package br.edu.les.easyCorrection.tests.unit.gerenciadores;
 
 import java.util.Calendar;
-import java.util.Date;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
+import br.edu.les.easyCorrection.exceptions.BloqueiaRoteiroException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
-import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
-import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
+import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 
-
+/**
+ * Nosso foco com testes de unidade está em detectar falhas causadas por
+ * parâmetros fora do conjunto dos valores esperados. Não testaremos situações
+ * de acerto, nem mensagens de retorno, isso tudo já foi considerado nos testes
+ * de aceitação. Para maiores informações contactar os clientes.
+ * 
+ */
 public class GerenciadorRoteirosTest {
 
 	private GerenciadorRoteiros gr;
-	private Roteiro r, r2, r3;
+	private Roteiro roteiroMinimo, roteiroVariavel, roteiroNULL;
 
 	@Before
 	public void setup() {
 		gr = new GerenciadorRoteiros();
-		r = new Roteiro();
+		roteiroMinimo = new Roteiro();
+		roteiroVariavel.setId(0);
+		roteiroMinimo.setNome("Roteiro Teste 1");
+		roteiroMinimo.setDataLiberacao(Calendar.getInstance().getTime());
+
+		roteiroVariavel = new Roteiro();
+		roteiroVariavel.setId(0);
+		roteiroVariavel.setBloqueado(false);
+		roteiroVariavel.setNome("Roteiro Teste 2");
+		roteiroVariavel.setNumeroMaximoEnvios(3);
+		roteiroVariavel.setNumeroMaximoParticipantes(10);
+		roteiroVariavel.setPeriodo(gr.getPeriodo(1));
+		roteiroVariavel.setDataLiberacao(Calendar.getInstance().getTime());
+		roteiroVariavel
+				.setDescricao("Roteiro de testes de unidade para a release 1");
+
+		roteiroNULL = null;
 	}
-	
+
 	@After
 	public void tearDown() {
+		gr = null;
+		roteiroMinimo = null;
+		roteiroVariavel = null;
+	}
+
+	@Test
+	public void cadastrar() {
+		try {
+			gr.cadastrarRoteiro(roteiroNULL);
+		} catch (CriacaoRoteiroException e) {
+			Assert.assertTrue("O Cadastro não deve ser realizado", true);
+		}
+
+		try {
+			Assert
+					.assertTrue(((gr.cadastrarRoteiro(roteiroMinimo)).getId() > 0));
+			Assert.assertTrue("O Cadastro deve ser realizado", true);
+		} catch (CriacaoRoteiroException e) {
+			Assert.assertFalse("O Cadastro deve ser realizado", true);
+		}
+
+		try {
+			Assert
+					.assertTrue(((gr.cadastrarRoteiro(roteiroVariavel)).getId() > 0));
+			Assert.assertTrue("O Cadastro deve ser realizado", true);
+		} catch (CriacaoRoteiroException e) {
+			Assert.assertFalse("O Cadastro deve ser realizado", true);
+		}
+	}
+
+	@Test
+	public void editar() {
+		try {
+			gr.editarRoteiro(roteiroNULL);
+		} catch (EdicaoRoteiroException e) {
+			Assert.assertTrue("A edição não deve ser realizada", true);
+		} catch (CriacaoRoteiroException e) {
+			Assert.assertTrue("A edição não deve ser realizada", true);
+		}
+
+		roteiroMinimo.setNome("OPAAA mudei o nome");
+		roteiroMinimo.setDataLiberacao(Calendar.getInstance().getTime());
+
+		try {
+			Assert.assertTrue(((gr.editarRoteiro(roteiroMinimo)).getId() > 0));
+			Assert.assertTrue("A edição deve ser realizada", true);
+		} catch (EdicaoRoteiroException e) {
+			Assert.assertFalse("A edição deve ser realizada", true);
+		} catch (CriacaoRoteiroException e) {
+			Assert.assertFalse("A edição deve ser realizada", true);
+		}
+
+		roteiroVariavel.setNome("OPAAA mudei o nome");
+		roteiroVariavel.setDataLiberacao(Calendar.getInstance().getTime());
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, 10);
+		roteiroVariavel.setDataFinalEntrega(cal.getTime());
+
+		try {
+			Assert
+					.assertTrue(((gr.editarRoteiro(roteiroVariavel)).getId() > 0));
+			Assert.assertTrue("A edição deve ser realizada", true);
+		} catch (EdicaoRoteiroException e) {
+			Assert.assertFalse("A edição não deve ser realizada", true);
+		} catch (CriacaoRoteiroException e) {
+			Assert.assertFalse("A edição não deve ser realizada", true);
+		}
+	}
+
+	@Test
+	public void bloquear() {
+
+		try {
+			gr.bloquearRoteiro(roteiroNULL);
+		} catch (BloqueiaRoteiroException e) {
+			Assert.assertTrue("O bloqueio não deve ser realizado", true);
+		}
+
+		try {
+			Assert
+					.assertTrue(gr.bloquearRoteiro(roteiroMinimo, true).getId() > 0);
+			Assert.assertTrue("O bloqueio deve ser realizado", true);
+		} catch (BloqueiaRoteiroException e) {
+			Assert.assertFalse("O bloqueio deve ser realizado", true);
+		}
+
+		Assert.assertTrue(roteiroMinimo.isBloqueado());
+
+		try {
+			Assert
+					.assertTrue(gr.bloquearRoteiro(roteiroMinimo, false)
+							.getId() > 0);
+			Assert.assertTrue("O bloqueio deve ser realizado", true);
+		} catch (BloqueiaRoteiroException e) {
+			Assert.assertFalse("O bloqueio deve ser realizado", true);
+		}
+
+		Assert.assertFalse(roteiroMinimo.isBloqueado());
+
+		try {
+			Assert
+					.assertTrue(gr.bloquearRoteiro(roteiroMinimo, false)
+							.getId() > 0);
+		} catch (BloqueiaRoteiroException e) {
+			Assert.assertFalse("O bloqueio não deve ser realizado", true);
+			Assert.assertEquals("O Roteiro já encontra-se desbloqueado!", e
+					.getMessage());
+		}
 
 	}
-	
+
 	@Test
-	public void gets(){
-		Assert.assertEquals(gr.getClass(), GerenciadorRoteiros.class);
-		Assert.assertEquals(gr.getPeriodo(0), null);
-		Assert.assertEquals(gr.getRoteiro(0), null);
-		Assert.assertEquals(r.getClass(), Roteiro.class);
-		Assert.assertEquals(r.getDescricao(), null);
-		Assert.assertEquals(r.getDiretorioInterface(), null);
-		Assert.assertEquals(r.getDiretorioTestes(), null);
-		Assert.assertEquals(r.getNome(), null);
-		Assert.assertEquals(r.getPenalidadeDiasAtraso(), 0.0, 0.0001);
-		Assert.assertEquals(r.getPorcentagemTestesAutomaticos(), 0.0, 0.0001);
-		Assert.assertEquals(r.getDataFinalDiscussao(), null);
-		Assert.assertEquals(r.getDataFinalEntrega(), null);
-		Assert.assertEquals(r.getDataLiberacao(), null);
-		Assert.assertEquals(r.getId(), null);
-		Assert.assertEquals(r.getNumeroMaximoEnvios(), null);
-		Assert.assertEquals(r.getNumeroMaximoParticipantes(), null);
-		Assert.assertEquals(r.getPeriodo(), null);
-		Assert.assertEquals(r.getTempoLimiteTestes(), null);
-	}
-	
-	@SuppressWarnings("deprecation")
-	@Test
-	public void sets(){
-		r.setBloqueado(false);
-		r.setDataLiberacao(new Date());
-		r.setDescricao("Roteiro de testes");
-		r.setNome("Roteiro 01");
-		r.setId(1);
+	public void excluir() {
+
 		try {
-			Date d = new Date(); 
-			Date d1 = new Date();
-			d.setDate(r.getDataLiberacao().getDate()+7);
-			d1.setDate(r.getDataLiberacao().getDate()+21);
-			r2 = gr.cadastrarRoteiro(r);
-			Assert.assertEquals(r2.getDescricao(), r.getDescricao());
-			Assert.assertEquals(r2.getPenalidadeDiasAtraso(), gr.PENALIDADE_DIA_ATRASO_DEFAULT, 1.0);
-			Assert.assertEquals(r2.getPorcentagemTestesAutomaticos(), gr.PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT, 1.0);
-			Assert.assertEquals(r2.getDataFinalEntrega(), d);
-			Assert.assertEquals(r2.getDataFinalDiscussao(), d1);
-		} catch (Exception e) {
-			e.getMessage();
+			gr.excluirRoteiro(roteiroNULL);
+		} catch (ExclusaoRoteiroException e) {
+			Assert.assertTrue("A exclusao não deve ser realizada", true);
+		}
+
+		try {
+			gr.excluirRoteiro(roteiroMinimo);
+			Assert.assertTrue("A exclusao deve ser realizada", true);
+		} catch (ExclusaoRoteiroException e) {
+			Assert.assertFalse("A exclusao não deve ser realizada", true);
+		}
+
+		try {
+			gr.excluirRoteiro(roteiroVariavel);
+			Assert.assertTrue("A exclusao deve ser realizada", true);
+		} catch (ExclusaoRoteiroException e) {
+			Assert.assertFalse("A exclusao não deve ser realizada", true);
 		}
 	}
-		
-	@Test
-	public void creates(){
-		try {
-			r3 = new Roteiro();
-			r3.setId(5);
-			r3.setBloqueado(false);
-			r3.setNome("Roteiro Teste");
-			r3.setDataLiberacao(Calendar.getInstance().getTime());
-			r3.setDescricao("Roteiro de testes de unidade para a release 1");
-			gr.cadastrarRoteiro(r3);
-			Assert.assertEquals(gr.cadastrarRoteiro(r3).getClass(), Roteiro.class);
-		} catch (EasyCorrectionException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void bloquear(){
-		gr.bloquearRoteiro(r);
-		Assert.assertTrue(r.isBloqueado());
-	}
-	
-	@Test
-	public void liberar(){
-		r.setDataLiberacao(new Date());
-		try {
-			gr.liberarRoteiro(r);
-			Assert.assertFalse(r.isBloqueado());
-		} catch (LiberaRoteiroException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void edits(){
-		try {
-			r.setDataLiberacao(Calendar.getInstance().getTime());
-			r.setId(5);
-			Assert.assertTrue(r != null);
-			Assert.assertTrue(gr != null);
-			r.getDataLiberacao();
-			gr.editarRoteiro(r);
-			r.setNome("Roteiro Teste");
-			
-		} catch (EdicaoRoteiroException e) {
-			e.printStackTrace();
-		} catch (CriacaoRoteiroException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void deletes(){
-		gr.excluirRoteiro(r);
-	}
-	
 }
