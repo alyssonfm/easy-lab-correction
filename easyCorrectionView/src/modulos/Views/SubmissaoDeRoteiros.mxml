@@ -112,11 +112,16 @@
 				}
 				
 				public function submeteRoteiro(): void{
-					submissao = new Submissao();
-					submissao.equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
-					submissao.equipeHasUsuarioHasRoteiro = eur;
-					submissao.url = caminho.text;
-					facade.getOperation("submeteRoteiro").send();
+					if(fileRef != null && eur.id != 0){
+						submissao = new Submissao();
+						submissao.equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
+						submissao.equipeHasUsuarioHasRoteiro = eur;
+						submissao.url = caminho.text;
+						facade.getOperation("submeteRoteiro").send(CastDeEntidades.castSubmissao(submissao));
+					}else{
+						var param:Array = new Array(false, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+					}
 				}
 				
 				public function submeteRoteiro_result(event:ResultEvent):void{
@@ -148,6 +153,7 @@
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="getRoteirosLiberados" result="getRoteirosLiberados_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro" result="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="submeteRoteiro" result="submeteRoteiro_result(event)" fault="falha(event)"/>
 			
 		</mx:RemoteObject>
 		
@@ -160,7 +166,7 @@
 		<mx:Button x="229" y="124" label="   Submeter Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSubmeterRoteiro" click="submeteRoteiro()"/>
 		<mx:HRule x="10" y="160" width="634" height="9"/>
 		<mx:HRule x="10" y="38" width="634" height="10"/>
-		<mx:ComboBox x="76" y="8" width="568" id="comboRoteiro" change="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" enter="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()"></mx:ComboBox>
+		<mx:ComboBox x="76" y="8" width="568" id="comboRoteiro" change="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" enter="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" labelField="nome"></mx:ComboBox>
 		
 		
 </les:ModuleTitleWindow>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+-->
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	width="696" height="390" creationComplete="init()" title="Atribuição de Usuários a Equipe" showCloseButton="true" close="fechaJanela()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import mx.charts.CategoryAxis;
+				import mx.collections.ArrayCollection;
+				import net.digitalprimates.fluint.utils.ResultDisplayUtils;
+				import bean.roteiros.EquipeHasUsuarioHasRoteiro;
+				import bean.roteiros.Equipe;
+				import bean.Utilitarios.CastDeEntidades;
+				import bean.roteiros.Submissao;
+				import eventos.UsuarioEvent;
+				import bean.acesso.*;
+				import eventos.RespostaLoginEvent;
+				import eventos.FechaPopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ControladorDeModulos;
+				import mx.binding.utils.BindingUtils;
+				//import eventos.RespostaLoginEvent;
+				//import eventos.FechaPopupEvent;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+				
+	            private var submissao:Submissao = new Submissao();
+	            private var listaEur:ArrayCollection = new ArrayCollection();
+	            private var eur:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
+	            private var usuario:Usuario = new Usuario();
+	            
+	            private function falha(event:FaultEvent):void {
+					var mensagem:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							mensagem = event.fault.faultString;
+						} else {
+							mensagem = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						mensagem = "Serviço indisponível, reinicie a operação.";
+					}
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+				}
+				
+				private function fechaJanela():void {
+					dispatchEvent(new FechaPopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function lancaEvento(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					facade.channelSet = ControladorDeModulos.criaCanal();
+					ControladorDeModulos.getParam();
+					getRoteirosLiberados();
+				}
+				
+				public function getRoteirosLiberados():void{
+					facade.getOperation("getRoteirosLiberados").send()
+				}
+				
+				public function getRoteirosLiberados_result(event:ResultEvent):void{
+					comboRoteiro.dataProvider = event.result;
+					comboRoteiro.selectedIndex = -1;
+					getEquipes();
+				}
+				
+				public function getEquipes():void{
+					facade.getOperation("getEquipes").send();
+				}
+				
+				public function getEquipes_result(event:ResultEvent):void{
+					comboEquipe.dataProvider = event.result;
+					comboEquipe.selectedIndex = -1;
+					getEquipeHasUsuarioHasRoteiros();
+				}
+				
+				public function selecionaEquipe():void{
+					comboEquipe.enabled = true;
+				}
+				
+				public function getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro():void{
+					if(comboRoteiro.selectedItem != null && comboEquipe.selectedItem != null){
+						facade.getOperation("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro").send(
+							comboEquipe.selectedItem.id, comboRoteiro.selectedItem.id)
+					}else{
+						var param:Array = new Array(false, "Selecione o roteiro e a equipe.");
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+					}
+				}
+				
+				private function getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event:ResultEvent):void{
+					dg_equipe_has_usuario_has_roteiro.dataProvider = event.result;
+					verificaSeUsuarioEstaCadastrado();
+				}
+				
+				private function labelGrid(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Nome":
+						sLabel = item.usuario.nome;
+						break;
+					case "Período":
+						if(item.usuario.periodo != null){
+							sLabel = item.usuario.periodo.semestre;
+						}
+						break;
+					case "E-mail":
+						sLabel = item.usuario.email;
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function getEquipeHasUsuarioHasRoteiros():void{
+				facade.getOperation("getEquipeHasUsuarioHasRoteiros").send();
+			}
+			
+			private function getEquipeHasUsuarioHasRoteiros_result(event:ResultEvent):void{
+				listaEur = event.result as ArrayCollection;
+				getUsuario();
+			}
+			
+			private function getUsuario():void{
+				var idUsuario:int = SharedObject.getLocal("sistema", "/").data.idUsuario;
+				facade.getOperation("getUsuario").send(idUsuario);
+			}
+			
+			private function getUsuario_result(event:ResultEvent):void{
+				usuario = new Usuario();
+				usuario = CastDeEntidades.castUsuario(event.result);
+			}
+			
+			private function verificaSeUsuarioEstaCadastrado():void{
+				var idUsuario:int = usuario.idUsuario;
+				var equr:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
+				var tem:Boolean = false;
+				var equipeIgual:Boolean = false;
+				for(var i:int = 0; i < listaEur.length; i++){
+					equr = new EquipeHasUsuarioHasRoteiro();
+					equr = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(listaEur.getItemAt(i));
+					if(equr.usuario.idUsuario == idUsuario){
+						tem = true
+						if(equr.equipe.id == comboEquipe.selectedItem.id){
+							equipeIgual = true;
+						}
+					}
+				}
+				if(tem){
+					botaoEntrar.enabled = false;
+					if(equipeIgual){
+						botaoSair.enabled = true;
+					}else{
+						botaoSair.enabled = false;
+					}
+				}
+				
+			}
+			
+			public function cadastrarEquipeHasRoteiroHasUsuario():void{
+				eur = new EquipeHasUsuarioHasRoteiro();
+				if(comboEquipe.selectedItem != null && comboRoteiro.selectedItem != null){
+					eur.equipe = CastDeEntidades.castEquipe(comboEquipe.selectedItem);
+					eur.roteiro = CastDeEntidades.castRoteiro(comboRoteiro.selectedItem);
+					eur.usuario = CastDeEntidades.castUsuario(usuario);
+				}
+				facade.getOperation("cadastraEquipeHasUsuarioHasRoteiro").send(eur)
+			}
+			
+			private function cadastraEquipeHasUsuarioHasRoteiro_result(event:ResultEvent):void{
+				if(event.result != null){
+					var param:Array = new Array(false, "Usuario cadastrado com sucesso.");
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+				}
+				getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro();
+				
+			}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+		
+			<mx:method name="getRoteirosLiberados" result="getRoteirosLiberados_result(event)" fault="falha(event)"/>
+			<mx:method name="getEquipes" result="getEquipes_result(event)" fault="falha(event)"/>
+			<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="getEquipeHasUsuarioHasRoteiros" result="getEquipeHasUsuarioHasRoteiros_result(event)" fault="falha(event)"/>
+			<mx:method name="cadastraEquipeHasUsuarioHasRoteiro" result="cadastraEquipeHasUsuarioHasRoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="getUsuario" result="getUsuario_result(event)" fault="falha(event)"/>
+			
+		</mx:RemoteObject>
+		
+		<mx:Label x="10" y="10" width="69" id="caminho0" textAlign="left" text="Roteiros:" fontWeight="bold"/>
+		<mx:ComboBox x="76" y="8" width="590" id="comboRoteiro" labelField="nome" change="selecionaEquipe()" enter="selecionaEquipe()"></mx:ComboBox>
+		<mx:Label x="10" y="40" width="69" id="caminho1" textAlign="left" text="Equipe:" fontWeight="bold"/>
+		<mx:ComboBox x="76" y="38" width="590" id="comboEquipe" labelField="nome" change="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro()" enter="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro()" enabled="false"></mx:ComboBox>
+		<mx:DataGrid x="10" y="105" width="656" height="231" id="dg_equipe_has_usuario_has_roteiro" labelFunction="labelGrid">
+				<mx:columns>
+						<mx:DataGridColumn headerText="Nome" dataField="col1"/>
+						<mx:DataGridColumn headerText="Período" dataField="col2"/>
+						<mx:DataGridColumn headerText="E-mail" dataField="col3"/>
+				</mx:columns>
+		</mx:DataGrid>
+		<mx:Button x="196.05" y="69" label="Entrar" width="137.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoEntrar" enabled="true" click="cadastrarEquipeHasRoteiroHasUsuario()"/>
+		<mx:Button x="341.95" y="69" label="Sair" width="137.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSair" enabled="true"/>
+		
+		
+</les:ModuleTitleWindow>
