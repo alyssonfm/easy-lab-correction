@@ -37,6 +37,16 @@ public class RoteiroHibernateDAO extends
 		return instanciaLista(lista);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Roteiro> findByRoteiroLiberado(Date dataAtual, Integer idRoteiro) {
+		Query q = getSession().createQuery("from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual and id = :idRoteiro");
+		q.setParameter("dataAtual",dataAtual);
+		q.setParameter("idRoteiro",idRoteiro);
+		q.setCacheable(true);
+		List <Roteiro> lista = q.list();
+		return instanciaLista(lista);
+	}
+	
 	@Override
 	public List<Roteiro> instanciaLista(List<Roteiro> lista) {
 		try {
