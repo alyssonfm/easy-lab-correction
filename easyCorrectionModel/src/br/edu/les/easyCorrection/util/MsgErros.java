@@ -80,6 +80,11 @@ public enum MsgErros {
 		public String msg(String... args) {
 			return "\""+args[0]+"\" duplicado(a).";
 		}
+	},
+	NUMERO_MAXIMO_PARTICIPANTES{
+		public String msg(String... args) {
+			return "Está equipe já contem o número máximo de participantes. Por favor cadastre-se em outra equipe.";
+		}
 	};
 
 	
