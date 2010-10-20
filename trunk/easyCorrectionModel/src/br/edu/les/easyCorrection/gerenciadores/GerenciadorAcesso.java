@@ -33,55 +33,6 @@ public class GerenciadorAcesso {
 		return menu.get(0);
 	}
 	
-	public Funcao getFuncao(Integer id){
-		List <Funcao> funcao = DAOFactory.DEFAULT.buildFuncaoDAO().findById(id);
-		if(funcao.isEmpty()){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("funcao"));
-		}
-		return funcao.get(0);
-	}
-	
-	public Grupo getGrupo(Integer id){
-		List <Grupo> grupo = DAOFactory.DEFAULT.buildGrupoDAO().findById(id);
-		if(grupo.isEmpty()){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("grupo"));
-		}
-		return grupo.get(0);
-	}
-	
-	public GrupoUsuario getGrupoUsuario(Integer id){
-		List <GrupoUsuario> grupoUsuario = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findById(id);
-		if(grupoUsuario.isEmpty()){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("usuario grupo"));
-		}
-		return grupoUsuario.get(0);
-	}
-	
-	public Permissao getPermissao(Integer id){
-		List <Permissao> permissao = DAOFactory.DEFAULT.buildPermissaoDAO().findById(id);
-		if(permissao.isEmpty()){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("permissao"));
-		}
-		return permissao.get(0);
-	}
-	
-	public Usuario getUsuario(Integer id){
-		List <Usuario> usuario= DAOFactory.DEFAULT.buildUsuarioDAO().findById(id);
-		if(usuario.isEmpty()){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("usuario"));
-		}
-		return usuario.get(0);
-	}
-	
-	public Usuario getUsuarioPorLogin(String login){
-		List <Usuario> usuario= DAOFactory.DEFAULT.buildUsuarioDAO().findByLogin(login);
-		if(usuario.isEmpty()){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("usuario"));
-		}
-		return usuario.get(0);
-	}
-	
-	
 	public Menu consultarMenuPorRotuloENome(String rotulo, String nome){
 		List <Menu> lista = DAOFactory.DEFAULT.buildMenuDAO().findByNomeERotulo(nome, rotulo);
 		if(!lista.isEmpty()){
@@ -90,7 +41,7 @@ public class GerenciadorAcesso {
 			return null;
 		}
 	}
-	
+
 	public Menu cadastrarMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = new Menu();
 		Menu men = new Menu();
@@ -123,16 +74,21 @@ public class GerenciadorAcesso {
 		}
 		return menu;
 	}
-	
-	public Funcao consultarFuncaoNomeERotulo(String nome, String rotulo){
-		List <Funcao> lista = DAOFactory.DEFAULT.buildFuncaoDAO().findByNomeERotulo(nome, rotulo);
-		if(!lista.isEmpty()){
-			return lista.get(0);
-		}else{
-			return null;
-		}
+
+	public void excluirMenu(Menu menu) throws EasyCorrectionException{
+		Menu m = getMenu(menu.getIdMenu());
+		m = (Menu) SwapperAtributosReflect.swapObject(m,menu,Menu.class);
+		DAOFactory.DEFAULT.buildMenuDAO().delete(m);
 	}
-	
+
+	public List <Menu> listarMenusOrdenados(){
+		return DAOFactory.DEFAULT.buildMenuDAO().findAllOrdenado();
+	}
+
+	public List<Menu> listarMenu(){
+		return DAOFactory.DEFAULT.buildMenuDAO().findAll();
+	}
+
 	public Funcao cadastrarFuncao(Funcao funcao) throws EasyCorrectionException {
 		Funcao f = new Funcao();
 		Funcao fun = new Funcao();
@@ -165,16 +121,47 @@ public class GerenciadorAcesso {
 		}
 		return funcao;
 	}
-	
-	public Grupo consultarGrupoPorNome(String nome){
-		
-		List <Grupo> lista = DAOFactory.DEFAULT.buildGrupoDAO().findByNome(nome);
-		if(!lista.isEmpty()){
-			return lista.get(0);
+
+	public Funcao getFuncao(Integer id){
+		List <Funcao> funcao = DAOFactory.DEFAULT.buildFuncaoDAO().findById(id);
+		if(funcao.isEmpty()){
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("funcao"));
 		}
-		return null;
+		return funcao.get(0);
 	}
 	
+	public Funcao consultarFuncaoNomeERotulo(String nome, String rotulo){
+		List <Funcao> lista = DAOFactory.DEFAULT.buildFuncaoDAO().findByNomeERotulo(nome, rotulo);
+		if(!lista.isEmpty()){
+			return lista.get(0);
+		}else{
+			return null;
+		}
+	}
+
+	private boolean containsFuncao(List<Permissao> lista, Funcao funcao) {
+		for(Permissao p: lista ){
+			if(p.getFuncao().getIdFuncao().equals(funcao.getIdFuncao())){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public List<Funcao> listarFuncao(){
+		return DAOFactory.DEFAULT.buildFuncaoDAO().findAll();
+	}
+
+	public void excluirFuncao(Funcao funcao) throws EasyCorrectionException{
+		Funcao f = getFuncao(funcao.getIdFuncao());
+		f = (Funcao) SwapperAtributosReflect.swapObject(f,funcao,Funcao.class);
+		DAOFactory.DEFAULT.buildFuncaoDAO().delete(f);
+	}
+
+	public List <Funcao> consultarFuncaoPorMenu(Integer idMenu){
+		return DAOFactory.DEFAULT.buildFuncaoDAO().findByMenu(idMenu);
+	}
+
 	public Grupo cadastrarGrupo(Grupo grupo) throws EasyCorrectionException {
 		Grupo g = new Grupo();
 		Grupo gr = new Grupo();
@@ -207,32 +194,42 @@ public class GerenciadorAcesso {
 		}
 		return grupo;
 	}
-		
-		
-	
-	public GrupoUsuario cadastrarGrupoUsuario(GrupoUsuario grupoUsuario) throws EasyCorrectionException {
-		GrupoUsuario gUs = new GrupoUsuario();
-		if(!easyCorrectionUtil.isNull(grupoUsuario)){
-			try{
-				gUs = getGrupoUsuarioPorGrupoEUsuario(grupoUsuario.getGrupo().getIdGrupo(), grupoUsuario.getUsuario().getIdUsuario());
-				gUs = (GrupoUsuario) SwapperAtributosReflect.swapObject(gUs,grupoUsuario,GrupoUsuario.class);
-				DAOFactory.DEFAULT.buildGrupoUsuarioDAO().update(gUs);
-			}catch(ObjetoNaoEncontradoException e){
-				Integer id = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().save(grupoUsuario);
-				grupoUsuario.setIdGrupoUsuario(id);
-			}
+
+	public Grupo getGrupo(Integer id){
+		List <Grupo> grupo = DAOFactory.DEFAULT.buildGrupoDAO().findById(id);
+		if(grupo.isEmpty()){
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("grupo"));
 		}
-		return grupoUsuario;
+		return grupo.get(0);
 	}
 	
-	public GrupoUsuario getGrupoUsuarioPorGrupoEUsuario(Integer idGrupo, Integer idUsuario){
-		List <GrupoUsuario> lista = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByUsuarioEGrupo(idGrupo, idUsuario);
+	public List<Grupo> listarGrupo(){
+		return DAOFactory.DEFAULT.buildGrupoDAO().findAll();
+	}
+
+	public void excluirGrupo(Grupo grupo) throws EasyCorrectionException{
+		Grupo g = getGrupo(grupo.getIdGrupo());
+		g = (Grupo) SwapperAtributosReflect.swapObject(g,grupo,Grupo.class);
+		DAOFactory.DEFAULT.buildGrupoDAO().delete(g);
+	}
+
+	public Grupo consultarGrupoPorNome(String nome){
+		
+		List <Grupo> lista = DAOFactory.DEFAULT.buildGrupoDAO().findByNome(nome);
+		if(!lista.isEmpty()){
+			return lista.get(0);
+		}
+		return null;
+	}
+
+	public Grupo getGrupoPorNome(String nome){
+		List <Grupo> lista = DAOFactory.DEFAULT.buildGrupoDAO().findByNome(nome);
 		if(lista.isEmpty()){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("grupo usuario"));
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("grupo"));
 		}
 		return lista.get(0);
 	}
-	
+
 	public List<Permissao> cadastrarPermissao(List <Permissao> permissoes) throws EasyCorrectionException {
 		Permissao p = new Permissao();
 		List <Permissao> lista = new LinkedList<Permissao>();
@@ -257,8 +254,7 @@ public class GerenciadorAcesso {
 		}
 		return lista;
 	}
-	
-	
+
 	public List<Permissao> cadastraPermissaoGrupo(Grupo g, List<Funcao> lista){
 		List<Permissao> permissaoDoGrupoBanco = DAOFactory.DEFAULT.buildPermissaoDAO().findByIdGrupo(g.getIdGrupo());
 		List<Permissao> novaLista = new LinkedList<Permissao>();
@@ -288,18 +284,93 @@ public class GerenciadorAcesso {
 	
 		return novaLista;
 	}
+
+	public Permissao getPermissao(Integer id){
+		List <Permissao> permissao = DAOFactory.DEFAULT.buildPermissaoDAO().findById(id);
+		if(permissao.isEmpty()){
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("permissao"));
+		}
+		return permissao.get(0);
+	}
 	
-	private boolean containsFuncao(List<Permissao> lista, Funcao funcao) {
-		for(Permissao p: lista ){
-			if(p.getFuncao().getIdFuncao().equals(funcao.getIdFuncao())){
-				return true;
+	public List<Funcao> verificaPermissoes(Integer idUsuario){
+		List <Funcao> listaFuncao = new LinkedList<Funcao>();
+		List <GrupoUsuario> listaGU = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByUsuarioId(idUsuario);
+		if(!listaGU.isEmpty()){
+			for(GrupoUsuario gU : listaGU){
+				List <Permissao> listaP = DAOFactory.DEFAULT.buildPermissaoDAO().findByIdGrupo(gU.getGrupo().getIdGrupo());
+				if(!listaP.isEmpty()){
+					for(Permissao p : listaP){
+						if(!verificaRepetido(listaFuncao, p.getFuncao())){
+							listaFuncao.add(p.getFuncao());
+						}
+					}
+				}
 			}
 		}
-		return false;
+		return listaFuncao;
+	}
+
+	public List <Permissao> consultarPermissoesPorGrupo(Integer idGrupo){
+		return DAOFactory.DEFAULT.buildPermissaoDAO().findByIdGrupo(idGrupo);
+	}
+
+	public GrupoUsuario getGrupoUsuario(Integer id){
+		List <GrupoUsuario> grupoUsuario = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findById(id);
+		if(grupoUsuario.isEmpty()){
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("usuario grupo"));
+		}
+		return grupoUsuario.get(0);
+	}
+
+	public GrupoUsuario cadastrarGrupoUsuario(GrupoUsuario grupoUsuario) throws EasyCorrectionException {
+		GrupoUsuario gUs = new GrupoUsuario();
+		if(!easyCorrectionUtil.isNull(grupoUsuario)){
+			try{
+				gUs = getGrupoUsuarioPorGrupoEUsuario(grupoUsuario.getGrupo().getIdGrupo(), grupoUsuario.getUsuario().getIdUsuario());
+				gUs = (GrupoUsuario) SwapperAtributosReflect.swapObject(gUs,grupoUsuario,GrupoUsuario.class);
+				DAOFactory.DEFAULT.buildGrupoUsuarioDAO().update(gUs);
+			}catch(ObjetoNaoEncontradoException e){
+				Integer id = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().save(grupoUsuario);
+				grupoUsuario.setIdGrupoUsuario(id);
+			}
+		}
+		return grupoUsuario;
+	}
+
+	public List<GrupoUsuario> listarGrupoUsuario(){
+		return DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findAllGrupoUsuario();
+	}
+
+	public Usuario getUsuario(Integer id){
+		List <Usuario> usuario= DAOFactory.DEFAULT.buildUsuarioDAO().findById(id);
+		if(usuario.isEmpty()){
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("usuario"));
+		}
+		return usuario.get(0);
+	}
+	
+	public Usuario getUsuarioPorLogin(String login){
+		List <Usuario> usuario= DAOFactory.DEFAULT.buildUsuarioDAO().findByLogin(login);
+		if(usuario.isEmpty()){
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("usuario"));
+		}
+		return usuario.get(0);
 	}
 	
 	
+	public GrupoUsuario getGrupoUsuarioPorGrupoEUsuario(Integer idGrupo, Integer idUsuario){
+		List <GrupoUsuario> lista = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByUsuarioEGrupo(idGrupo, idUsuario);
+		if(lista.isEmpty()){
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("grupo usuario"));
+		}
+		return lista.get(0);
+	}
 	
+	public List<GrupoUsuario> getGrupoUsuarioPorUsuario(Integer idUsuario){
+		return DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByUsuarioId(idUsuario);
+	}
+
 	public Usuario consultarUsuarioPorLogin(String login){
 		List <Usuario> lista = DAOFactory.DEFAULT.buildUsuarioDAO().findByLogin(login);
 		if(!lista.isEmpty()){
@@ -372,20 +443,20 @@ public class GerenciadorAcesso {
 		return us;
 	}
 	
+	public void excluirUsuario(GrupoUsuario grupoUsuario) throws EasyCorrectionException{
+		//Exclui grupoUsuario
+		GrupoUsuario gU = getGrupoUsuario(grupoUsuario.getIdGrupoUsuario());
+		gU = (GrupoUsuario) SwapperAtributosReflect.swapObject(gU,grupoUsuario,GrupoUsuario.class);
+		DAOFactory.DEFAULT.buildGrupoUsuarioDAO().delete(gU);
+	
+		//Exclui usuário
+		Usuario u = getUsuario(grupoUsuario.getUsuario().getIdUsuario());
+		u = (Usuario) SwapperAtributosReflect.swapObject(u,grupoUsuario.getUsuario(),Usuario.class);
+		DAOFactory.DEFAULT.buildUsuarioDAO().delete(u);
+	}
+
 	public List<Usuario> listarUsuarios(){
 		return DAOFactory.DEFAULT.buildUsuarioDAO().findAll();
-	}
-	
-	public List<Grupo> listarGrupo(){
-		return DAOFactory.DEFAULT.buildGrupoDAO().findAll();
-	}
-	
-	public List<Funcao> listarFuncao(){
-		return DAOFactory.DEFAULT.buildFuncaoDAO().findAll();
-	}
-	
-	public List<Menu> listarMenu(){
-		return DAOFactory.DEFAULT.buildMenuDAO().findAll();
 	}
 	
 	public List<Funcao> validaUsuario(Usuario usuario){
@@ -414,24 +485,6 @@ public class GerenciadorAcesso {
 	}
 	
 	
-	public List<Funcao> verificaPermissoes(Integer idUsuario){
-		List <Funcao> listaFuncao = new LinkedList<Funcao>();
-		List <GrupoUsuario> listaGU = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByUsuarioId(idUsuario);
-		if(!listaGU.isEmpty()){
-			for(GrupoUsuario gU : listaGU){
-				List <Permissao> listaP = DAOFactory.DEFAULT.buildPermissaoDAO().findByIdGrupo(gU.getGrupo().getIdGrupo());
-				if(!listaP.isEmpty()){
-					for(Permissao p : listaP){
-						if(!verificaRepetido(listaFuncao, p.getFuncao())){
-							listaFuncao.add(p.getFuncao());
-						}
-					}
-				}
-			}
-		}
-		return listaFuncao;
-	}
-	
 	public boolean verificaRepetido(List <Funcao> lista, Funcao funcao){
 		for(Funcao f : lista){
 			if(f.equals(funcao)){
@@ -441,67 +494,8 @@ public class GerenciadorAcesso {
 		return false;	
 	}
 	
-	public void excluirMenu(Menu menu) throws EasyCorrectionException{
-		Menu m = getMenu(menu.getIdMenu());
-		m = (Menu) SwapperAtributosReflect.swapObject(m,menu,Menu.class);
-		DAOFactory.DEFAULT.buildMenuDAO().delete(m);
-	}
-	
-	public void excluirFuncao(Funcao funcao) throws EasyCorrectionException{
-		Funcao f = getFuncao(funcao.getIdFuncao());
-		f = (Funcao) SwapperAtributosReflect.swapObject(f,funcao,Funcao.class);
-		DAOFactory.DEFAULT.buildFuncaoDAO().delete(f);
-	}
-	
-	public void excluirGrupo(Grupo grupo) throws EasyCorrectionException{
-		Grupo g = getGrupo(grupo.getIdGrupo());
-		g = (Grupo) SwapperAtributosReflect.swapObject(g,grupo,Grupo.class);
-		DAOFactory.DEFAULT.buildGrupoDAO().delete(g);
-	}
-	
-	public void excluirUsuario(GrupoUsuario grupoUsuario) throws EasyCorrectionException{
-		//Exclui grupoUsuario
-		GrupoUsuario gU = getGrupoUsuario(grupoUsuario.getIdGrupoUsuario());
-		gU = (GrupoUsuario) SwapperAtributosReflect.swapObject(gU,grupoUsuario,GrupoUsuario.class);
-		DAOFactory.DEFAULT.buildGrupoUsuarioDAO().delete(gU);
-
-		//Exclui usuário
-		Usuario u = getUsuario(grupoUsuario.getUsuario().getIdUsuario());
-		u = (Usuario) SwapperAtributosReflect.swapObject(u,grupoUsuario.getUsuario(),Usuario.class);
-		DAOFactory.DEFAULT.buildUsuarioDAO().delete(u);
-	}
-	
-	
-	public List<GrupoUsuario> listarGrupoUsuario(){
-		return DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findAllGrupoUsuario();
-	}
-	
-	public List <Permissao> consultarPermissoesPorGrupo(Integer idGrupo){
-		return DAOFactory.DEFAULT.buildPermissaoDAO().findByIdGrupo(idGrupo);
-	}
-	
-	public List <Menu> listarMenusOrdenados(){
-		return DAOFactory.DEFAULT.buildMenuDAO().findAllOrdenado();
-	}
-	
-	public List <Funcao> consultarFuncaoPorMenu(Integer idMenu){
-		return DAOFactory.DEFAULT.buildFuncaoDAO().findByMenu(idMenu);
-	}
-	
-	public Grupo getGrupoPorNome(String nome){
-		List <Grupo> lista = DAOFactory.DEFAULT.buildGrupoDAO().findByNome(nome);
-		if(lista.isEmpty()){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("grupo"));
-		}
-		return lista.get(0);
-	}
-	
 	public List <GrupoUsuario> consultarUsuarioPorGrupo(Integer idGrupo){
 		return DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByGrupo(idGrupo);
-	}
-	
-	public List<GrupoUsuario> getGrupoUsuarioPorUsuario(Integer idUsuario){
-		return DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByUsuarioId(idUsuario);
 	}
 	
 	public Usuario alterarSenha(Usuario usuario, String novaSenha){

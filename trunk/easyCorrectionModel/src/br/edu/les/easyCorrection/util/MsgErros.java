@@ -83,7 +83,7 @@ public enum MsgErros {
 	},
 	NUMERO_MAXIMO_PARTICIPANTES{
 		public String msg(String... args) {
-			return "Está equipe já contem o número máximo de participantes. Por favor cadastre-se em outra equipe.";
+			return "Está equipe já contém o número máximo de participantes. Por favor cadastre-se em outra equipe.";
 		}
 	},
 	ROTEIRO_INEXISTENTE{

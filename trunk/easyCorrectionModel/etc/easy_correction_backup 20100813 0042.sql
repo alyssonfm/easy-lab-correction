@@ -94,17 +94,6 @@ CREATE TABLE `equipe` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 ROW_FORMAT=FIXED;
 
 --
--- Dumping data for table `equipe`
---
-
-/*!40000 ALTER TABLE `equipe` DISABLE KEYS */;
-INSERT INTO `equipe` (`id`,`nome`) VALUES 
- (1,'Equipe A'),
- (2,'Equipe B');
-/*!40000 ALTER TABLE `equipe` ENABLE KEYS */;
-
-
---
 -- Definition of table `equipe_has_usuario_has_roteiro`
 --
 
@@ -122,16 +111,6 @@ CREATE TABLE `equipe_has_usuario_has_roteiro` (
   CONSTRAINT `FK_equipe_has_usuario_has_roteiro_roteiro` FOREIGN KEY (`roteiro_id`) REFERENCES `roteiro` (`id`),
   CONSTRAINT `FK_equipe_has_usuario_has_roteiro_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 ROW_FORMAT=FIXED;
-
---
--- Dumping data for table `equipe_has_usuario_has_roteiro`
---
-
-/*!40000 ALTER TABLE `equipe_has_usuario_has_roteiro` DISABLE KEYS */;
-INSERT INTO `equipe_has_usuario_has_roteiro` (`equipe_id`,`usuario_id`,`roteiro_id`,`id`) VALUES 
- (1,1,2,9);
-/*!40000 ALTER TABLE `equipe_has_usuario_has_roteiro` ENABLE KEYS */;
-
 
 --
 -- Definition of table `funcao`
