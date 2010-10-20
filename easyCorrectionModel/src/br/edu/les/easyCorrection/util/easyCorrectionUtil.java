@@ -36,7 +36,7 @@ public class easyCorrectionUtil {
 	}
 
 	/**
-	 * Verifica se um objeto ï¿½ null
+	 * Verifica se um objeto é null
 	 * 
 	 * @param valor
 	 * @return
@@ -54,20 +54,20 @@ public class easyCorrectionUtil {
 		return getDataNowTimeZero(new Date());
 	}
 
-	public static boolean objetoIdIsNull(Object objeto) {
-		Method m;
-		try {
-			m = objeto.getClass().getMethod("getId");
-			Object valorID = m.invoke(objeto);
-			if (isNull(valorID)) {
-				return true;
-			}
-		} catch (Exception e) {
-			return true;
-		}
-
-		return false;
-	}
+//	public static boolean objetoIdIsNull(Object objeto) {
+//		Method m;
+//		try {
+//			m = objeto.getClass().getMethod("getId");
+//			Object valorID = m.invoke(objeto);
+//			if (isNull(valorID)) {
+//				return true;
+//			}
+//		} catch (Exception e) {
+//			return true;
+//		}
+//
+//		return false;
+//	}
 
 	/**
 	 * Recupera a data Atual

@@ -9,18 +9,16 @@ import easyaccept.EasyAcceptFacade;
 
 public class TesteRunnerUS04 {
 
-	/**
-	 * @param args
-	 */
-	 public static void main(String[] args) {
-	 List<String> files = new ArrayList<String>();
-	 EasyAcceptFacade eaFacade;
+	public static void main(String[] args) {
+		List<String> files = new ArrayList<String>();
+		EasyAcceptFacade eaFacade;
 
-	 // Teste US04
-	 files.add(Constants.dirAcceptanceTestsUS4 + "us04_SubmissaoRoteiros.eas");
-	 FacadeAcceptanceTestUS04 testFacadeUS04 = new FacadeAcceptanceTestUS04();
-	 eaFacade = new EasyAcceptFacade(testFacadeUS04, files);
-	 eaFacade.executeTests();
-	 System.out.println(eaFacade.getCompleteResults());
-	 }
+		// Teste US04
+		files.add(Constants.dirAcceptanceTestsUS4
+				+ "us04_SubmissaoRoteiros.eas");
+		FacadeAcceptanceTestUS04 testFacadeUS04 = new FacadeAcceptanceTestUS04();
+		eaFacade = new EasyAcceptFacade(testFacadeUS04, files);
+		eaFacade.executeTests();
+		System.out.println(eaFacade.getCompleteResults());
+	}
 }
