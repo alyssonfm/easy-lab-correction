@@ -32,7 +32,27 @@ public class EquipeHasUsuarioHasRoteiroHibernateDAO extends
 	public List<EquipeHasUsuarioHasRoteiro> findByUsuarioERoteiro(Integer idUsuario, Integer idRoteiro) {
 		Query q = getSession().createQuery("from EquipeHasUsuarioHasRoteiro where usuario.id = :idUsuario and roteiro.id = :idRoteiro");
 		q.setParameter("idUsuario",idUsuario);
-		q.setParameter("idUsuario",idRoteiro);
+		q.setParameter("idRoteiro",idRoteiro);
+		q.setCacheable(true);
+		List <EquipeHasUsuarioHasRoteiro> lista = q.list();
+		return instanciaLista(lista);
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<EquipeHasUsuarioHasRoteiro> findByEquipeERoteiro(Integer idEquipe, Integer idRoteiro) {
+		Query q = getSession().createQuery("from EquipeHasUsuarioHasRoteiro where equipe.id = :idEquipe and roteiro.id = :idRoteiro");
+		q.setParameter("idEquipe",idEquipe);
+		q.setParameter("idRoteiro",idRoteiro);
+		q.setCacheable(true);
+		List <EquipeHasUsuarioHasRoteiro> lista = q.list();
+		return instanciaLista(lista);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<EquipeHasUsuarioHasRoteiro> findByRoteiro(Integer idRoteiro) {
+		Query q = getSession().createQuery("from EquipeHasUsuarioHasRoteiro where roteiro.id = :idRoteiro");
+		q.setParameter("idRoteiro",idRoteiro);
 		q.setCacheable(true);
 		List <EquipeHasUsuarioHasRoteiro> lista = q.list();
 		return instanciaLista(lista);
