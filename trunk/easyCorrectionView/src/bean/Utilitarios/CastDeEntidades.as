@@ -64,6 +64,7 @@ package bean.Utilitarios {
 					usuario.senha = objeto.senha;
 					usuario.nome = objeto.nome;
 					usuario.email = objeto.email;
+					usuario.periodo = castPeriodo(objeto.periodo);
 					return usuario;
 				}
 			}
