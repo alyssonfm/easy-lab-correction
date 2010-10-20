@@ -2,7 +2,6 @@ package br.edu.les.easyCorrection.sistema;
 
 import java.util.List;
 
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
@@ -16,6 +15,7 @@ import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
@@ -30,6 +30,7 @@ public class Sistema {
 	public Sistema() {
 		gerenciadorAcesso = new GerenciadorAcesso();
 		gerenciadorRoteiros = new GerenciadorRoteiros();
+		gerenciadorSubmissoes = new GerenciadorSubmissoes();
 	}
 
 	public void excluirMenu(Menu menu) throws EasyCorrectionException {
@@ -233,6 +234,22 @@ public class Sistema {
 		return gerenciadorSubmissoes
 				.getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(idUsuario,
 						idRoteiro);
+	}
+	
+	public List<Equipe> getEquipes(){
+		return gerenciadorSubmissoes.getEquipes();
+	}
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros(){
+		return gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiros();
+	}
+	
+	public EquipeHasUsuarioHasRoteiro cadastraEquipeHasUsuarioHasRoteiro(EquipeHasUsuarioHasRoteiro equr) throws EasyCorrectionException {
+		return gerenciadorSubmissoes.cadastraEquipeHasUsuarioHasRoteiro(equr);
+	}
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(Integer idEquipe, Integer idRoteiro){
+		return gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe, idRoteiro);
 	}
 
 	public Submissao submeteRoteiro(Submissao submissao) {

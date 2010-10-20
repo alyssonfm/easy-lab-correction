@@ -12,9 +12,9 @@ public class Teste {
 		Facade facade = new Facade();
 		System.out.println(facade.getRoteirosLiberados());
 		
-		Roteiro r = facade.getRoteiro(1);
+		/*Roteiro r = facade.getRoteiro(1);
 		r.setNome("Roteiro");
-		facade.editarRoteiro(r);
+		facade.editarRoteiro(r);*/
 	}
 	
 	

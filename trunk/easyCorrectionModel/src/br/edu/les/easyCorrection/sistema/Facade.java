@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
@@ -488,6 +489,42 @@ public class Facade {
 					idUsuario, idRoteiro);
 		} catch (Throwable e) {
 			log.error("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()", e);
+			throw e;
+		}
+	}
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(Integer idEquipe, Integer idRoteiro) throws Throwable{
+		try{
+			return sistema.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe, idRoteiro);
+		} catch (Throwable e) {
+			log.error("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro()", e);
+			throw e;
+		}
+	}
+	
+	public List<Equipe> getEquipes() throws Throwable{
+		try{
+			return sistema.getEquipes();
+		} catch (Throwable e) {
+			log.error("getEquipes()", e);
+			throw e;
+		}
+	}
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros() throws Throwable{
+		try{
+			return sistema.getEquipeHasUsuarioHasRoteiros();
+		} catch (Throwable e) {
+			log.error("getEquipeHasUsuarioHasRoteiros()", e);
+			throw e;
+		}
+	}
+	
+	public EquipeHasUsuarioHasRoteiro cadastraEquipeHasUsuarioHasRoteiro(EquipeHasUsuarioHasRoteiro equr) throws Throwable {
+		try{
+			return sistema.cadastraEquipeHasUsuarioHasRoteiro(equr);
+		} catch (Throwable e) {
+			log.error("cadastraEquipeHasUsuarioHasRoteiro()", e);
 			throw e;
 		}
 	}
