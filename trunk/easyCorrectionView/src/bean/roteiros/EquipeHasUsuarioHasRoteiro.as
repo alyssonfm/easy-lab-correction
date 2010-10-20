@@ -10,7 +10,7 @@ package bean.roteiros{
 	public class EquipeHasUsuarioHasRoteiro{
 
 		public var id:int;
-		public var  equipe:Equipe;
+		public var equipe:Equipe;
 		public var roteiro:Roteiro;
 		public var usuario:Usuario;
 		
