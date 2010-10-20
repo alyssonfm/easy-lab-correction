@@ -12,14 +12,13 @@ import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
-public class GerenciadorSubmissoes extends GerenciadorRoteiros{
+public class GerenciadorSubmissoes {
 	
 	private GerenciadorRoteiros gerenciadorRoteiros;
 	
 	public GerenciadorSubmissoes(){
 		super();
 		gerenciadorRoteiros = new GerenciadorRoteiros();
-		
 	}
 	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
 			Integer idUsuario, Integer idRoteiro) {
@@ -128,6 +127,14 @@ public class GerenciadorSubmissoes extends GerenciadorRoteiros{
 		EquipeHasUsuarioHasRoteiro e = getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(equr.getUsuario().getIdUsuario(), equr.getRoteiro().getId());
 		e= (EquipeHasUsuarioHasRoteiro) SwapperAtributosReflect.swapObject(e, equr, EquipeHasUsuarioHasRoteiro.class);
 		DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO().delete(e);
+	}
+	
+	public Submissao getSubmissao(int submissaoId){
+		return DAOFactory.DEFAULT.buildSubmissaoDAO().getById(submissaoId);
+	}
+	public Submissao excluirSubmissao(Submissao sub) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

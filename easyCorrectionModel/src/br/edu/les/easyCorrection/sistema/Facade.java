@@ -563,4 +563,13 @@ public class Facade {
 		}
 	}
 
+	public Submissao getSubmissao(int submissaoId){
+		return sistema.getSubmissao(submissaoId);
+	}
+
+	public Submissao excluirSubmissao(Submissao sub) {
+		return sistema.excluirSubmissao(sub);
+
+	}
+	
 }
