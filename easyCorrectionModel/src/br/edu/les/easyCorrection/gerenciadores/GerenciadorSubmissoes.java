@@ -1,6 +1,5 @@
 package br.edu.les.easyCorrection.gerenciadores;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
@@ -8,7 +7,6 @@ import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
-import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;

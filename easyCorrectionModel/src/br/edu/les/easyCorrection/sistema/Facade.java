@@ -407,24 +407,14 @@ public class Facade {
 		}
 	}
 
-	public Roteiro bloquearRoteiro(Roteiro roteiro) throws Throwable {
+	public Roteiro bloquearRoteiro(Roteiro roteiro, boolean bloqueia) throws Throwable {
 		try {
-			return sistema.bloquearRoteiro(roteiro);
+			return sistema.bloquearRoteiro(roteiro, bloqueia);
 		} catch (Throwable e) {
 			log.error("bloquearRoteiro()", e);
 			throw e;
 		}
 	}
-
-	public Roteiro desbloquearRoteiro(Roteiro roteiro) throws Throwable {
-		try {
-			return sistema.desbloquearRoteiro(roteiro);
-		} catch (Throwable e) {
-			log.error("bloquearRoteiro()", e);
-			throw e;
-		}
-	}
-
 	
 	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
 			throws LiberaRoteiroException {
@@ -436,15 +426,6 @@ public class Facade {
 			return sistema.getRoteiro(idRoteiro);
 		} catch (Throwable e) {
 			log.error("getRoteiro()", e);
-			throw e;
-		}
-	}
-
-	public List<Roteiro> getRoteiros() throws Throwable {
-		try {
-			return sistema.getRoteiros();
-		} catch (Throwable e) {
-			log.error("getRoteiros()", e);
 			throw e;
 		}
 	}

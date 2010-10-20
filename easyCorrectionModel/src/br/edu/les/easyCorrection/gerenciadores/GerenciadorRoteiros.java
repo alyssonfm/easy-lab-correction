@@ -5,12 +5,18 @@ import java.util.Date;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
+import br.edu.les.easyCorrection.exceptions.BloqueiaRoteiroException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
+import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
+import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.MsgErros;
+import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class GerenciadorRoteiros {
@@ -60,10 +66,6 @@ public class GerenciadorRoteiros {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(roteiroId);
 	}
 
-	public List<Roteiro> getRoteiros() {
-		return DAOFactory.DEFAULT.buildRoteiroDAO().findAll();
-	}
-
 	public List<Roteiro> listarRoteiros() {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().findAll();
 	}
@@ -76,14 +78,15 @@ public class GerenciadorRoteiros {
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
 			throws CriacaoRoteiroException {
 
+		if (roteiroTemp == null){
+			throw new CriacaoRoteiroException("Roteiro inexistente!");
+		}
+		
 		this.criacaoOuAtualizacaoMsg = "criado";
 
 		if (validaRoteiroEmCriacao(roteiroTemp)) {
 			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
 
-			// As frases de sucesso são implementadas na GUI, por isso mantemos
-			// essa flag aqui. Para termos uma certeza de que, mesmo sem gui, o
-			// roteiro foi criado com sucesso
 			System.out.println("Roteiro criado com sucesso!");
 
 			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
@@ -95,6 +98,10 @@ public class GerenciadorRoteiros {
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
 			throws EdicaoRoteiroException, CriacaoRoteiroException {
 
+		if (roteiroTemp == null){
+			throw new EdicaoRoteiroException("Roteiro inexistente!");
+		}
+		
 		int estadoAtualRoteiro = computaEstadoRoteiro(roteiroTemp);
 		this.criacaoOuAtualizacaoMsg = "atualizado";
 
@@ -112,16 +119,19 @@ public class GerenciadorRoteiros {
 		}
 
 		// OK, passou pelos casos de excecao, pode seguir em frente! =)
+		Roteiro r;
+		
+		try {
+			r = getRoteiro(roteiroTemp.getId());
+			r = (Roteiro) SwapperAtributosReflect.swapObject(r,roteiroTemp,Roteiro.class);
+			DAOFactory.DEFAULT.buildRoteiroDAO().update(r);
 
-		// As frases de sucesso são implementadas na GUI, por isso mantemos
-		// essa flag aqui. Para termos uma certeza de que, mesmo sem gui, o
-		// roteiro foi atualizado com sucesso
-		System.out.println("Roteiro atualizado com sucesso!");
+			System.out.println("Roteiro atualizado com sucesso!");
 
-		// TODO o save nao atualiza objetos e sim salva, para atualizar tem que
-		// usar o comando update
-		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
-		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
+		} catch (EasyCorrectionException e) {
+			throw new EdicaoRoteiroException("Roteiro inexistente!");
+		}
+		return r;
 	}
 
 	/*
@@ -264,24 +274,45 @@ public class GerenciadorRoteiros {
 		}
 	}
 
-	public Roteiro bloquearRoteiro(Roteiro roteiro) {
+	public Roteiro bloquearRoteiro(Roteiro roteiro, boolean bloqueia)
+			throws BloqueiaRoteiroException {
+		
+		if (roteiro == null) {
+			throw new BloqueiaRoteiroException("Roteiro inexistente!");
+		}
 
-		// Apenas para garantias que houve sucesso
-		System.out.println("Roteiro " + roteiro.getNome()
-				+ " bloqueado com sucesso!");
+		if (bloqueia) {
+			if (roteiro.isBloqueado()) {
+				throw new BloqueiaRoteiroException(
+						"O Roteiro já está bloqueado!");
+			} else {
+				// Apenas para garantia que houve sucesso
+				System.out.println("Roteiro " + roteiro.getNome()
+						+ " bloqueado com sucesso!");
+			}
+		} else {
+			if (roteiro.isBloqueado()) {
+				throw new BloqueiaRoteiroException(
+						"O Roteiro já está desbloqueado!");
+			} else {
+				// Apenas para garantias que houve sucesso
+				System.out.println("Roteiro " + roteiro.getNome()
+						+ " desbloqueado com sucesso!");
+			}
+		}
+		roteiro.setBloqueado(bloqueia);
 
-		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
-		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
-	}
+		Roteiro r;
+		
+		try {
+			r = getRoteiro(roteiro.getId());
+			r = (Roteiro) SwapperAtributosReflect.swapObject(r,roteiro,Roteiro.class);
+			DAOFactory.DEFAULT.buildRoteiroDAO().update(r);
+		} catch (EasyCorrectionException e) {
+			throw new BloqueiaRoteiroException("Roteiro inexistente!");
+		}
 
-	public Roteiro desbloquearRoteiro(Roteiro roteiro) {
-
-		// Apenas para garantias que houve sucesso
-		System.out.println("Roteiro " + roteiro.getNome()
-				+ " desbloqueado com sucesso!");
-
-		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
-		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
+		return r;
 	}
 
 	public Roteiro liberarRoteiro(Roteiro roteiro)
@@ -320,18 +351,22 @@ public class GerenciadorRoteiros {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().findByRoteiroLiberado(
 				dataAtual);
 	}
-	
+
 	public Roteiro getRoteirosLiberado(Integer id) {
 		Date dataAtual = easyCorrectionUtil.getDataNow();
-		List<Roteiro> lista = DAOFactory.DEFAULT.buildRoteiroDAO().findByRoteiroLiberado(
-				dataAtual, id);
-		if(lista.isEmpty()){
+		List<Roteiro> lista = DAOFactory.DEFAULT.buildRoteiroDAO()
+				.findByRoteiroLiberado(dataAtual, id);
+		if (lista.isEmpty()) {
 			return null;
 		}
 		return lista.get(0);
 	}
 
-	public void excluirRoteiro(Roteiro roteiro) {
+	public void excluirRoteiro(Roteiro roteiro) throws ExclusaoRoteiroException {
+		
+		if (roteiro == null){
+			throw new ExclusaoRoteiroException("Roteiro inexistente!");
+		}
 		DAOFactory.DEFAULT.buildRoteiroDAO().delete(roteiro);
 	}
 
