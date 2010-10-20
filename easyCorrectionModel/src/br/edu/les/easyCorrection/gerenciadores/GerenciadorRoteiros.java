@@ -320,6 +320,16 @@ public class GerenciadorRoteiros {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().findByRoteiroLiberado(
 				dataAtual);
 	}
+	
+	public Roteiro getRoteirosLiberado(Integer id) {
+		Date dataAtual = easyCorrectionUtil.getDataNow();
+		List<Roteiro> lista = DAOFactory.DEFAULT.buildRoteiroDAO().findByRoteiroLiberado(
+				dataAtual, id);
+		if(lista.isEmpty()){
+			return null;
+		}
+		return lista.get(0);
+	}
 
 	public void excluirRoteiro(Roteiro roteiro) {
 		DAOFactory.DEFAULT.buildRoteiroDAO().delete(roteiro);

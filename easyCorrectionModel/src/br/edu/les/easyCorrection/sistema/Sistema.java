@@ -240,6 +240,10 @@ public class Sistema {
 		return gerenciadorSubmissoes.getEquipes();
 	}
 	
+	public Equipe getEquipe(int id){
+		return gerenciadorSubmissoes.getEquipe(id);
+	}
+	
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros(){
 		return gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiros();
 	}
@@ -254,5 +258,13 @@ public class Sistema {
 
 	public Submissao submeteRoteiro(Submissao submissao) {
 		return gerenciadorSubmissoes.submeteRoteiro(submissao);
+	}
+	
+	public int getEquipeAlocadas(Integer idRoteiro){
+		return gerenciadorSubmissoes.getEquipeAlocadas(idRoteiro);
+	}
+	
+	public void verificaSeUsuarioEstaCadastrado(EquipeHasUsuarioHasRoteiro eur) throws EasyCorrectionException{
+		gerenciadorSubmissoes.verificaSeUsuarioEstaCadastrado(eur);
 	}
 }

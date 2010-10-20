@@ -1,18 +1,28 @@
 package br.edu.les.easyCorrection.gerenciadores;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
+import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
+import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class GerenciadorSubmissoes extends GerenciadorRoteiros{
-
+	
+	private GerenciadorRoteiros gerenciadorRoteiros;
+	
+	public GerenciadorSubmissoes(){
+		super();
+		gerenciadorRoteiros = new GerenciadorRoteiros();
+		
+	}
 	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
 			Integer idUsuario, Integer idRoteiro) {
 		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT
@@ -24,8 +34,51 @@ public class GerenciadorSubmissoes extends GerenciadorRoteiros{
 		return lista.get(0);
 	}
 	
+	public Equipe getEquipe(int id){
+		Equipe equipe = DAOFactory.DEFAULT.buildEquipeDAO().getById(id);
+		if(easyCorrectionUtil.isNull(equipe)){
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("equipe"));
+		}
+		return equipe;
+	}
+	
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(Integer idEquipe, Integer idRoteiro){
 		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO().findByEquipeERoteiro(idEquipe, idRoteiro); 
+	}
+	
+	public void verificaSeUsuarioEstaCadastrado(EquipeHasUsuarioHasRoteiro eur) throws EasyCorrectionException{
+		List<EquipeHasUsuarioHasRoteiro> lista = getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(eur.getEquipe().getId(), eur.getRoteiro().getId());
+		boolean tem = false;
+		boolean equipeIgual = false;
+		for(EquipeHasUsuarioHasRoteiro equr:lista){
+			if(equr.getUsuario().getIdUsuario().equals(eur.getUsuario().getIdUsuario())){
+				tem = true;
+				if(equr.getEquipe().getId().equals(eur.getEquipe().getId())){
+					equipeIgual = true;
+				}
+			}
+		}
+		if(tem){
+			if(equipeIgual){
+				excluiEquipeHasRoteiroHasUsuario(eur);
+			}
+		}else{
+			cadastraEquipeHasUsuarioHasRoteiro(eur);
+		}
+	}
+	
+	public int getEquipeAlocadas(Integer idRoteiro){
+		if(!easyCorrectionUtil.isNull(idRoteiro)){
+			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INEXISTENTE.msg(""));
+		}
+		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO().findByRoteiro(idRoteiro);
+		for(EquipeHasUsuarioHasRoteiro equr:lista){
+			if(!equr.getRoteiro().getId().equals(gerenciadorRoteiros.getRoteirosLiberado(equr.getRoteiro().getId()).getId())){
+				throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_NAO_LIBERADO.msg(equr.getRoteiro().getNome()));
+			}
+		}
+		return lista.size();
+
 	}
 	
 	public List<Equipe> getEquipes(){

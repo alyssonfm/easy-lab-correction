@@ -493,6 +493,15 @@ public class Facade {
 		}
 	}
 	
+	public Equipe getEquipe(int id) throws Throwable{
+		try{
+			return sistema.getEquipe(id);
+		} catch (Throwable e) {
+			log.error("getEquipe()", e);
+			throw e;
+		}
+	}
+	
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(Integer idEquipe, Integer idRoteiro) throws Throwable{
 		try{
 			return sistema.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe, idRoteiro);
@@ -516,6 +525,15 @@ public class Facade {
 			return sistema.getEquipeHasUsuarioHasRoteiros();
 		} catch (Throwable e) {
 			log.error("getEquipeHasUsuarioHasRoteiros()", e);
+			throw e;
+		}
+	}
+	
+	public int getEquipeAlocadas(Integer idRoteiro) throws Throwable{
+		try{
+			return sistema.getEquipeAlocadas(idRoteiro);
+		}catch (Throwable e) {
+			log.error("getEquipeAlocadas()", e);
 			throw e;
 		}
 	}
@@ -554,9 +572,14 @@ public class Facade {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public Equipe getEquipe(int equipeId) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void verificaSeUsuarioEstaCadastrado(EquipeHasUsuarioHasRoteiro eur) throws Throwable{
+		try{
+			sistema.verificaSeUsuarioEstaCadastrado(eur);
+		}catch (Throwable e) {
+			log.error("verificaSeUsuarioEstaCadastrado()", e);
+			throw e;
+		}
 	}
+
 }

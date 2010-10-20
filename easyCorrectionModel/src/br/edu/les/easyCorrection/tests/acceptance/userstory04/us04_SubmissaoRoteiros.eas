@@ -35,7 +35,7 @@ expect 5 getQuantidadeTotalEquipes
 idGrupoUsuarioE=cadastrarUsuario grupoId=${idGrupo} nome="AlunoE" login="alunoE" senha="123123" email="e@hotmail.com"
 idGrupoUsuarioF=cadastrarUsuario grupoId=${idGrupo} nome="AlunoF" login="alunoF" senha="123123" email="f@hotmail.com"
 
-expect 10 getQuantidadeTotalEquipes
+expect 5 getQuantidadeTotalEquipes
 
 #ID do Teste: c
 

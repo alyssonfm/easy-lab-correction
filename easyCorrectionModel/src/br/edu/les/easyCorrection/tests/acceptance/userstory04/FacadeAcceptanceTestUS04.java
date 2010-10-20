@@ -10,6 +10,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 
 	public FacadeAcceptanceTestUS04() {
 		super();
+		facadeSistema = new Facade();
 	}
 
 	// ******************************************* SUBMISSOES
@@ -33,10 +34,10 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * Retorna a quantidade total de equipes no BD
 	 * 
 	 * @return int
+	 * @throws Throwable 
 	 */
-	public int getQuantidadeTotalEquipes() {
-		// return facadeSistema.getTodasEquipes().size();
-		return 5;
+	public int getQuantidadeTotalEquipes() throws Throwable {
+		return facadeSistema.getEquipes().size();
 	}
 
 	/**
@@ -46,10 +47,10 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @param roteiroId
 	 *            - id do roteiro no BD
 	 * @return int com quantidade de equipes alocadas
+	 * @throws Throwable 
 	 */
-	public int getQuantidadeEquipesAlocadas(int roteiroId) {
-		// return facadeSistema.getEquipesAlocadas(roteiroId).size();
-		return 0;
+	public int getQuantidadeEquipesAlocadas(Integer roteiroId) throws Throwable {
+		return facadeSistema.getEquipeAlocadas(roteiroId);
 	}
 
 	/**
@@ -122,7 +123,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * UTIL
 	 */
 
-	public Equipe getEquipe(int equipeId) {
+	public Equipe getEquipe(int equipeId) throws Throwable {
 		return facadeSistema.getEquipe(equipeId);
 	}
 

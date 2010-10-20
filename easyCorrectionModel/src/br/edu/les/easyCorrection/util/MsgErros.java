@@ -85,8 +85,18 @@ public enum MsgErros {
 		public String msg(String... args) {
 			return "Está equipe já contem o número máximo de participantes. Por favor cadastre-se em outra equipe.";
 		}
+	},
+	ROTEIRO_INEXISTENTE{
+		public String msg(String... args) {
+			return "Não foi possível terminar a consulta! Roteiro inexistente.";
+		}
+	},
+	ROTEIRO_NAO_LIBERADO{
+		public String msg(String... args) {
+			return "Não há equipes alocadas pois o Roteiro " +args[0]+ " ainda não foi liberado!";
+		}
 	};
-
+	
 	
 	public String msg(String... args) {
 		return "ERRO 499";
