@@ -282,6 +282,9 @@ private function menuItemPressionado(event: MenuEvent):void  {
      if (event.item.@data == "chat") {
      	ControladorDeModulos.criaModulo("modulos/Views/Chat.swf", this, "");
      }
+     if (event.item.@data == "criaEquipe") {
+     	ControladorDeModulos.criaModulo("modulos/Views/CriaEquipe.swf", this, "");
+     }
 }
 
 /**
