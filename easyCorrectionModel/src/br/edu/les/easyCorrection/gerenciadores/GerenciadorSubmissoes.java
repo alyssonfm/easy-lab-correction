@@ -76,7 +76,6 @@ public class GerenciadorSubmissoes extends GerenciadorRoteiros{
 			}
 		}
 		return lista.size();
-
 	}
 	
 	public List<Equipe> getEquipes(){
