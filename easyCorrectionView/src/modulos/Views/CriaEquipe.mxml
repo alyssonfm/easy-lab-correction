@@ -166,12 +166,15 @@
 					}
 				}
 				if(tem){
-					botaoEntrar.enabled = false;
+					botao.label = "Entrar";
+					botao.enabled = false;
 					if(equipeIgual){
-						botaoSair.enabled = true;
-					}else{
-						botaoSair.enabled = false;
+						botao.label = "Sair";
+						botao.enabled = true;
 					}
+				}else{
+					botao.label = "Entrar";
+					botao.enabled = true;
 				}
 				
 			}
@@ -183,7 +186,7 @@
 					eur.roteiro = CastDeEntidades.castRoteiro(comboRoteiro.selectedItem);
 					eur.usuario = CastDeEntidades.castUsuario(usuario);
 				}
-				facade.getOperation("cadastraEquipeHasUsuarioHasRoteiro").send(eur)
+				facade.getOperation("verificaSeUsuarioEstaCadastrado").send(eur)
 			}
 			
 			private function cadastraEquipeHasUsuarioHasRoteiro_result(event:ResultEvent):void{
@@ -204,7 +207,7 @@
 			<mx:method name="getEquipes" result="getEquipes_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiros" result="getEquipeHasUsuarioHasRoteiros_result(event)" fault="falha(event)"/>
-			<mx:method name="cadastraEquipeHasUsuarioHasRoteiro" result="cadastraEquipeHasUsuarioHasRoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="verificaSeUsuarioEstaCadastrado" result="cadastraEquipeHasUsuarioHasRoteiro_result(event)" fault="falha(event)"/>
 			<mx:method name="getUsuario" result="getUsuario_result(event)" fault="falha(event)"/>
 			
 		</mx:RemoteObject>
@@ -220,8 +223,8 @@
 						<mx:DataGridColumn headerText="E-mail" dataField="col3"/>
 				</mx:columns>
 		</mx:DataGrid>
-		<mx:Button x="196.05" y="69" label="Entrar" width="137.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoEntrar" enabled="true" click="cadastrarEquipeHasRoteiroHasUsuario()"/>
-		<mx:Button x="341.95" y="69" label="Sair" width="137.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSair" enabled="true"/>
+		<mx:Button x="269" y="69" label="Entrar" width="137.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botao" enabled="true" click="cadastrarEquipeHasRoteiroHasUsuario()"/>
+		<mx:Button x="341.95" y="69" label="Sair" width="137.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSair" enabled="true" visible="false"/>
 		
 		
 </les:ModuleTitleWindow>

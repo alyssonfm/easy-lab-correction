@@ -34,7 +34,7 @@
 				private var fileRef:FileReference;
 				private var request: URLRequest;
 				//private const FILE_UPLOAD_URL:String = "http://les.edu.br/easyLabCorrection/";
-				private const FILE_UPLOAD_URL:String = "http://localhost:8080/easyLabCorrection/";
+				private const FILE_UPLOAD_URL:String = "http://localhost:8080/easyCorrection/";
 	            private var submissao:Submissao = new Submissao();
 	            private var eur:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
 	            
@@ -116,7 +116,7 @@
 						submissao = new Submissao();
 						submissao.equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
 						submissao.equipeHasUsuarioHasRoteiro = eur;
-						submissao.url = caminho.text;
+						submissao.url = "submissao" + eur.id + ".zip";
 						facade.getOperation("submeteRoteiro").send(CastDeEntidades.castSubmissao(submissao));
 					}else{
 						var param:Array = new Array(false, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
@@ -131,6 +131,7 @@
 						if(fileRef != null || request != null){
 							var variables:URLVariables = new URLVariables();
 							variables.url = submissao.url;
+							variables.nomeArquivo = submissao.url;
 							request.data = variables;
 							fileRef.upload(request);
 						}
