@@ -34,11 +34,13 @@
 				import mx.rpc.events.ResultEvent;
 				import mx.rpc.events.FaultEvent;
 				
+				private static const millisecondsPerDay : int = 1000 * 60 * 60 * 24;
+				
 				private var fileRefTestes:FileReference;
 				private var requestTestes: URLRequest;
 				private var fileRefInterface:FileReference;
 				private var requestInterface: URLRequest;
-				private const FILE_UPLOAD_URL:String = "http://les.edu.br/easyLabCorrection/";
+				private const FILE_UPLOAD_URL:String = "http://localhost:8080/easyCorrection/";
 				
 				private var periodo:Periodo = new Periodo();
 				private var roteiro:Roteiro = new Roteiro();
@@ -79,6 +81,8 @@
 					
 					facade.channelSet = ControladorDeModulos.criaCanal();
 					estado = ControladorDeModulos.getParam();
+					dfDataMaxima.selectedDate = new Date(new Date().getTime()+(7*millisecondsPerDay));
+					dfDataDiscussao.selectedDate = new Date(new Date().getTime()+(21*millisecondsPerDay));
 					getPeriodoAtual();
 					if(estado != null){
 						pegaRoteiro();
@@ -121,7 +125,7 @@
 			   	 	fileRefTestes.addEventListener(Event.SELECT, arquivoSelecionadoTestes);
 			   	 	fileRefTestes.addEventListener(Event.COMPLETE, envioCompletoTestes);
 			   	 	fileRefTestes.addEventListener(IOErrorEvent.IO_ERROR, erroEnvioTestes);
-			    	fileRefTestes.browse(new Array(new FileFilter("Testes","*.java")));
+			    	fileRefTestes.browse(new Array(new FileFilter("Testes","*.zip")));
 				}
 				
 				public function erroEnvioTestes(evt:Event):void {
@@ -138,8 +142,11 @@
 				
 				public function envioCompletoTestes(evt:Event):void {
 					requestTestes = new URLRequest(FILE_UPLOAD_URL);
-			       	var param:Array = new Array(false, "Arquivo de Testes enviado com sucesso.");
-					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+					var variables:URLVariables = new URLVariables();
+					variables.url = roteiro.diretorioInterface;
+					variables.nomeArquivo = roteiro.nome + "interface.java";
+					requestInterface.data = variables;
+					fileRefInterface.upload(requestInterface);
 				}
 				
 				public function cadastraRoteiro(): void{
@@ -167,11 +174,12 @@
 				}
 				
 				public function envioCompletoInterface(evt:Event):void {
-					requestInterface = new URLRequest(FILE_UPLOAD_URL);
+					var param:Array = new Array(false, "Roteiro Cadastrado/Atualizado com sucesso.");
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 				}
 				
 				private function getPeriodoAtual():void{
-					facade.getOperation("getPeriodoAtual").send()
+					facade.getOperation("getPeriodoAtual").send();
 				}
 				
 				private function getPeriodoAtual_result(event:ResultEvent):void{
@@ -213,9 +221,10 @@
 					roteiro = new Roteiro();
 					roteiro = CastDeEntidades.castRoteiro(event.result);
 					var variables:URLVariables = new URLVariables();
-					variables.nomeArquivo = roteiro.diretorioInterface;
-					requestInterface.data = variables;
-					fileRefInterface.upload(requestInterface);
+					variables.url = roteiro.diretorioTestes;
+					variables.nomeArquivo = roteiro.nome + " testes.zip";
+					requestTestes.data = variables;
+					fileRefTestes.upload(requestTestes);
 				}
 				
 				private function bloqueiaRoteiro():void{
@@ -227,6 +236,12 @@
 						botaoBloquear.label = "Bloquear";
 						
 					}
+				}
+				
+				private function atualizaDatasDefaut():void{
+					var dataAux: String = dfDataLiberacao.text;
+					dfDataMaxima.selectedDate = new Date(dfDataLiberacao.selectedDate.getTime()+(7*millisecondsPerDay));
+					dfDataDiscussao.selectedDate = new Date(dfDataLiberacao.selectedDate.getTime()+(21*millisecondsPerDay));
 				}
 				
 			]]>
@@ -250,8 +265,9 @@
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"
-		toolTip="" x="641" y="10" width="129" id="dfDataLiberacao"/>
+		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"		
+		toolTip="" x="641" y="10" width="129" id="dfDataLiberacao" text="{df.format(new Date())}" change="atualizaDatasDefaut()"/>
+		<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
 		<mx:TextArea x="10" y="78" width="760" height="122" id="inputDescricao" maxChars="5000"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
@@ -263,12 +279,12 @@
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
 		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"
 		toolTip="" x="641" y="223" width="129" id="dfDataDiscussao"/>
-		<mx:TextInput x="247" y="251" id="inputMaximoEquipe" width="129" restrict="[0-9]" maxChars="2"/>
-		<mx:TextInput x="641" y="251" id="inputNumeroMaxEnvios" width="129" restrict="[0-9]" maxChars="2"/>
-		<extra:DecimalInput x="247" y="281"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalidade" width="129"/>
-		<mx:Button x="415" y="279" label="Bloquear" width="183.9" height="28" id="botaoBloquear" click="bloqueiaRoteiro()"/>
-		<extra:DecimalInput x="285" y="328"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPorcentagem" width="91"/>
-		<mx:TextInput x="641" y="330" id="inputTempoLimite" width="112" restrict="[0-9]" maxChars="2"/>
+		<mx:TextInput x="247" y="251" id="inputMaximoEquipe" width="129" restrict="[0-9]" maxChars="2" text="1"/>
+		<mx:TextInput x="641" y="251" id="inputNumeroMaxEnvios" width="129" restrict="[0-9]" maxChars="2" text="3"/>
+		<extra:DecimalInput x="247" y="281"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalidade" width="129" text="0.5"/>
+		<mx:Button x="394" y="510" label="Bloquear" width="183.9" height="28" id="botaoBloquear" click="bloqueiaRoteiro()"/>
+		<extra:DecimalInput x="285" y="328"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPorcentagem" width="91" text="100"/>
+		<mx:TextInput x="641" y="330" id="inputTempoLimite" width="112" restrict="[0-9]" maxChars="2" text="10"/>
 		<mx:Label text="Máximo de integrantes por equipe:" fontWeight="bold"
 			textAlign="left" width="239" x="10" y="253" id="labelAutomatica0"/>
 		<mx:Label text="Penalidade por dia de atraso:" fontWeight="bold"
@@ -290,11 +306,11 @@
 		<mx:HRule x="10" y="317" width="760"/>
 		<mx:HRule x="10" y="40" width="760"/>
 		<mx:LinkButton x="263.55" y="374" label="   Anexar Testes Automáticos" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivoTestes()"/>
-		<mx:Label x="10" y="406" width="760" id="caminhoTestes" textAlign="center" text="Arquivos.zip"/>
+		<mx:Label x="10" y="406" width="760" id="caminhoTestes" textAlign="center"/>
 		<mx:LinkButton x="273.05" y="438" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="anexarInterface" click="escolheArquivoInterface()"/>
-		<mx:Label x="10" y="470" width="760" id="caminhoInterface" textAlign="center" text="Interface.java"/>
-		<mx:Button x="298" y="510" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="botaoAtualizarRoteiro" click="editarRoteiro()"/>
-		<mx:Button x="298" y="510" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoCadastrarRoteiro" click="cadastrarRoteiro()"/>
+		<mx:Label x="10" y="470" width="760" id="caminhoInterface" textAlign="center"/>
+		<mx:Button x="202.1" y="510" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="botaoAtualizarRoteiro" click="editarRoteiro()"/>
+		<mx:Button x="202.1" y="510" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoCadastrarRoteiro" click="cadastrarRoteiro()"/>
 		
 		
 		
