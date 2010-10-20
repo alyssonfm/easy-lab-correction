@@ -6,6 +6,10 @@ public class Equipe {
 	private Integer id;
 	private String nome;
 	
+	public Equipe(){
+		super();
+	}
+	
 	
 	public Integer getId() {
 		return id;
