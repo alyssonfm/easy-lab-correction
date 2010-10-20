@@ -1,6 +1,6 @@
 // ActionScript file
 package bean.acesso {
-	import mx.collections.ArrayCollection;
+	import bean.sistema.Periodo;
 	
 
 	[Bindable]
@@ -18,5 +18,6 @@ package bean.acesso {
 		
 		public var email: String;
 		
+		public var periodo:Periodo;
 	}
 }
