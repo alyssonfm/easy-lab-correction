@@ -262,4 +262,12 @@ public class Sistema {
 	public void verificaSeUsuarioEstaCadastrado(EquipeHasUsuarioHasRoteiro eur) throws EasyCorrectionException{
 		gerenciadorSubmissoes.verificaSeUsuarioEstaCadastrado(eur);
 	}
+	
+	public Submissao getSubmissao(int submissaoId){
+		return gerenciadorSubmissoes.getSubmissao(submissaoId);
+	}
+
+	public Submissao excluirSubmissao(Submissao sub) {
+		return gerenciadorSubmissoes.excluirSubmissao(sub);
+	}
 }

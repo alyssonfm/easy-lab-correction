@@ -1,6 +1,12 @@
 package br.edu.les.easyCorrection.tests.acceptance.userstory04;
 
+import java.util.Calendar;
+
+import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
+import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
+import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
+import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.sistema.Facade;
 import br.edu.les.easyCorrection.tests.acceptance.userstory03.FacadeTestUS3Acceptance;
 
@@ -34,7 +40,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * Retorna a quantidade total de equipes no BD
 	 * 
 	 * @return int
-	 * @throws Throwable 
+	 * @throws Throwable
 	 */
 	public int getQuantidadeTotalEquipes() throws Throwable {
 		return facadeSistema.getEquipes().size();
@@ -47,7 +53,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @param roteiroId
 	 *            - id do roteiro no BD
 	 * @return int com quantidade de equipes alocadas
-	 * @throws Throwable 
+	 * @throws Throwable
 	 */
 	public int getQuantidadeEquipesAlocadas(Integer roteiroId) throws Throwable {
 		return facadeSistema.getEquipeAlocadas(roteiroId);
@@ -74,7 +80,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @return int com a quantidade de alunos do sistema
 	 */
 	public int getQuantidadeTotalAlunos() {
-		//return facadeSistema.getUsuariosPorGrupo(4).size();
+		// return facadeSistema.getUsuariosPorGrupo(4).size();
 		return 0;
 	}
 
@@ -107,18 +113,37 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * tabela do BD como um log da submissão. A URL passada como parâmetro deve
 	 * ter a seguinte estrutura:
 	 * periodo<semestre>/submissoes/roteiro<roteiroId>/<nomeEquipe>/
+	 * @throws Throwable 
 	 */
-	public int criarSubmissao(int roteiroId, int equipeId, int grupoUsuarioId,
-			String url) {
-		// return facadeSistema.criarSubmissao(roteiroId, equipeId,
-		// grupoUsuarioId, url);
-		return 0;
+	public int criarSubmissao(int roteiroId, int equipeId, int usuarioId,
+			String url) throws Throwable {
+
+		Submissao sub = new Submissao();
+		sub.setDataSubmissao(Calendar.getInstance().getTime());
+
+		EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
+		Equipe equipe = getEquipe(equipeId);
+		Roteiro roteiro = getRoteiro(roteiroId);
+		Usuario usuario = getUsuario(usuarioId);
+		eur.setEquipe(equipe);
+		eur.setRoteiro(roteiro);
+		eur.setUsuario(usuario);
+		eur.setId(0);
+		sub.setEquipeHasUsuarioHasRoteiro(eur);
+
+		sub.setId(0);
+		sub.setUrl(url);
+
+		Submissao resultado = facadeSistema.submeteRoteiro(sub);
+		return resultado.getId();
 	}
 
-	public int excluirSubmissao (int submissaoId){
-//		return facadeSistema.excluirSubmissao(submissaoId);
-		return 0;
+	public int excluirSubmissao(int submissaoId) {
+		Submissao sub = getSubmissao(submissaoId);
+		Submissao resultado = facadeSistema.excluirSubmissao(sub);
+		return resultado.getId();
 	}
+
 	/*
 	 * UTIL
 	 */
@@ -127,6 +152,10 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 		return facadeSistema.getEquipe(equipeId);
 	}
 
+	public Submissao getSubmissao(int submissaoId){
+		return facadeSistema.getSubmissao(submissaoId);
+	}
+	
 	public int getAlunoGrupoID() {
 		return 4;
 	}
