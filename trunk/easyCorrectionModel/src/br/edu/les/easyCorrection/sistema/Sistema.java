@@ -2,9 +2,11 @@ package br.edu.les.easyCorrection.sistema;
 
 import java.util.List;
 
+import br.edu.les.easyCorrection.exceptions.BloqueiaRoteiroException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
@@ -188,10 +190,6 @@ public class Sistema {
 		return gerenciadorRoteiros.getRoteiro(roteiroId);
 	}
 
-	public List<Roteiro> getRoteiros() {
-		return gerenciadorRoteiros.getRoteiros();
-	}
-
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
 			throws CriacaoRoteiroException {
 		return gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
@@ -202,12 +200,9 @@ public class Sistema {
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 
-	public Roteiro bloquearRoteiro(Roteiro roteiroTemp) {
-		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp);
-	}
-
-	public Roteiro desbloquearRoteiro(Roteiro roteiroTemp) {
-		return gerenciadorRoteiros.desbloquearRoteiro(roteiroTemp);
+	public Roteiro bloquearRoteiro(Roteiro roteiroTemp, boolean bloqueia)
+			throws BloqueiaRoteiroException {
+		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp, bloqueia);
 	}
 	
 	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
@@ -215,7 +210,7 @@ public class Sistema {
 		return gerenciadorRoteiros.liberarRoteiro(roteiroTemp);
 	}
 
-	public void excluirRoteiro(Roteiro roteiro) {
+	public void excluirRoteiro(Roteiro roteiro) throws ExclusaoRoteiroException {
 		gerenciadorRoteiros.excluirRoteiro(roteiro);
 	}
 

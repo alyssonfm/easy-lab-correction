@@ -30,7 +30,7 @@ public class GerenciadorRoteirosTest {
 	public void setup() {
 		gr = new GerenciadorRoteiros();
 		roteiroMinimo = new Roteiro();
-		roteiroVariavel.setId(0);
+		roteiroMinimo.setId(0);
 		roteiroMinimo.setNome("Roteiro Teste 1");
 		roteiroMinimo.setDataLiberacao(Calendar.getInstance().getTime());
 
@@ -64,8 +64,7 @@ public class GerenciadorRoteirosTest {
 		}
 
 		try {
-			Assert
-					.assertTrue(((gr.cadastrarRoteiro(roteiroMinimo)).getId() > 0));
+			gr.cadastrarRoteiro(roteiroMinimo);
 			Assert.assertTrue("O Cadastro deve ser realizado", true);
 		} catch (CriacaoRoteiroException e) {
 			Assert.assertFalse("O Cadastro deve ser realizado", true);
@@ -118,12 +117,12 @@ public class GerenciadorRoteirosTest {
 			Assert.assertFalse("A edição não deve ser realizada", true);
 		}
 	}
-	/*
+	
 	@Test
 	public void bloquear() {
 
 		try {
-			gr.bloquearRoteiro(roteiroNULL);
+			gr.bloquearRoteiro(roteiroNULL, true);
 		} catch (BloqueiaRoteiroException e) {
 			Assert.assertTrue("O bloqueio não deve ser realizado", true);
 		}
@@ -155,12 +154,12 @@ public class GerenciadorRoteirosTest {
 							.getId() > 0);
 		} catch (BloqueiaRoteiroException e) {
 			Assert.assertFalse("O bloqueio não deve ser realizado", true);
-			Assert.assertEquals("O Roteiro já encontra-se desbloqueado!", e
+			Assert.assertEquals("O Roteiro já está desbloqueado!", e
 					.getMessage());
 		}
 
 	}
-
+/*
 	@Test
 	public void excluir() {
 
