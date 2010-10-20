@@ -29,9 +29,9 @@ public class SubmissaoHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Submissao> findByEquipeERoteiro(Integer idEquipe, Integer idRoteiro) {
-		Query q = getSession().createQuery("from Submissao where equipeHasUsuarioHasRoteiro.equipe.id = :idUsuario and equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
+		Query q = getSession().createQuery("from Submissao where equipeHasUsuarioHasRoteiro.equipe.id = :idEquipe and equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
 		q.setParameter("idEquipe",idEquipe);
-		q.setParameter("idUsuario",idRoteiro);
+		q.setParameter("idRoteiro",idRoteiro);
 		q.setCacheable(true);
 		List <Submissao> lista = q.list();
 		return instanciaLista(lista);
