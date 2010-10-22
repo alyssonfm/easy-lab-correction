@@ -569,7 +569,10 @@ public class Facade {
 
 	public Submissao excluirSubmissao(Submissao sub) {
 		return sistema.excluirSubmissao(sub);
+	}
 
+	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
+		return sistema.cadastrarEquipe(e);
 	}
 	
 }

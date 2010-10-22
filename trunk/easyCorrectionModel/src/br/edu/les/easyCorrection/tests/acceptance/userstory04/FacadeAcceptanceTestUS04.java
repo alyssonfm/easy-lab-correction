@@ -2,6 +2,7 @@ package br.edu.les.easyCorrection.tests.acceptance.userstory04;
 
 import java.util.Calendar;
 
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
@@ -30,10 +31,12 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 
 	/**
 	 * Apenas a lógica sabe como instanciar uma nova equipe
+	 * @throws EasyCorrectionException 
 	 */
-	public int criaEquipe() {
-		// return facadeSistema.criaEquipe();
-		return 0;
+	public int criaEquipe() throws EasyCorrectionException {
+		Equipe e = new Equipe();
+		Equipe equipeFinal = facadeSistema.cadastrarEquipe(e);
+		return equipeFinal.getId();
 	}
 
 	/**
