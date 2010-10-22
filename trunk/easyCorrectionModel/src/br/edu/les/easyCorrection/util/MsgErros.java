@@ -95,6 +95,16 @@ public enum MsgErros {
 		public String msg(String... args) {
 			return "Não há equipes alocadas pois o Roteiro " +args[0]+ " ainda não foi liberado!";
 		}
+	},
+	EMAIL{
+		public String msg(String... args) {
+			return "Não é possível cadastrar o usuário, este e-mail já existe.";
+		}
+	},
+	LOGIN{
+		public String msg(String... args) {
+			return "Não é possível cadastrar o usuário, este login já existe.";
+		}
 	};
 	
 	
