@@ -65,12 +65,12 @@ public class GerenciadorSubmissoes {
 	}
 	
 	public int getEquipeAlocadas(Integer idRoteiro){
-		if(!easyCorrectionUtil.isNull(idRoteiro)){
+		if(easyCorrectionUtil.isNull(idRoteiro)){
 			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INEXISTENTE.msg(""));
 		}
 		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO().findByRoteiro(idRoteiro);
 		for(EquipeHasUsuarioHasRoteiro equr:lista){
-			if(!equr.getRoteiro().getId().equals(gerenciadorRoteiros.getRoteirosLiberado(equr.getRoteiro().getId()).getId())){
+			if(!equr.getRoteiro().getId().equals(gerenciadorRoteiros.getRoteiroLiberado(equr.getRoteiro().getId()).getId())){
 				throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_NAO_LIBERADO.msg(equr.getRoteiro().getNome()));
 			}
 		}

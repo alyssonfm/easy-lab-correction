@@ -78,10 +78,10 @@ public class GerenciadorRoteiros {
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
 			throws CriacaoRoteiroException {
 
-		if (roteiroTemp == null){
+		if (roteiroTemp == null) {
 			throw new CriacaoRoteiroException("Roteiro inexistente!");
 		}
-		
+
 		this.criacaoOuAtualizacaoMsg = "criado";
 
 		if (validaRoteiroEmCriacao(roteiroTemp)) {
@@ -98,10 +98,10 @@ public class GerenciadorRoteiros {
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
 			throws EdicaoRoteiroException, CriacaoRoteiroException {
 
-		if (roteiroTemp == null){
+		if (roteiroTemp == null) {
 			throw new EdicaoRoteiroException("Roteiro inexistente!");
 		}
-		
+
 		int estadoAtualRoteiro = computaEstadoRoteiro(roteiroTemp);
 		this.criacaoOuAtualizacaoMsg = "atualizado";
 
@@ -120,10 +120,11 @@ public class GerenciadorRoteiros {
 
 		// OK, passou pelos casos de excecao, pode seguir em frente! =)
 		Roteiro r;
-		
+
 		try {
 			r = getRoteiro(roteiroTemp.getId());
-			r = (Roteiro) SwapperAtributosReflect.swapObject(r,roteiroTemp,Roteiro.class);
+			r = (Roteiro) SwapperAtributosReflect.swapObject(r, roteiroTemp,
+					Roteiro.class);
 			DAOFactory.DEFAULT.buildRoteiroDAO().update(r);
 
 			System.out.println("Roteiro atualizado com sucesso!");
@@ -276,7 +277,7 @@ public class GerenciadorRoteiros {
 
 	public Roteiro bloquearRoteiro(Roteiro roteiro, boolean bloqueia)
 			throws BloqueiaRoteiroException {
-		
+
 		if (roteiro == null) {
 			throw new BloqueiaRoteiroException("Roteiro inexistente!");
 		}
@@ -303,10 +304,11 @@ public class GerenciadorRoteiros {
 		roteiro.setBloqueado(bloqueia);
 
 		Roteiro r;
-		
+
 		try {
 			r = getRoteiro(roteiro.getId());
-			r = (Roteiro) SwapperAtributosReflect.swapObject(r,roteiro,Roteiro.class);
+			r = (Roteiro) SwapperAtributosReflect.swapObject(r, roteiro,
+					Roteiro.class);
 			DAOFactory.DEFAULT.buildRoteiroDAO().update(r);
 		} catch (EasyCorrectionException e) {
 			throw new BloqueiaRoteiroException("Roteiro inexistente!");
@@ -315,6 +317,9 @@ public class GerenciadorRoteiros {
 		return r;
 	}
 
+	/*
+	 * Esse método serah utilizado mais tarde!
+	 */
 	public Roteiro liberarRoteiro(Roteiro roteiro)
 			throws LiberaRoteiroException {
 
@@ -352,7 +357,7 @@ public class GerenciadorRoteiros {
 				dataAtual);
 	}
 
-	public Roteiro getRoteirosLiberado(Integer id) {
+	public Roteiro getRoteiroLiberado(Integer id) {
 		Date dataAtual = easyCorrectionUtil.getDataNow();
 		List<Roteiro> lista = DAOFactory.DEFAULT.buildRoteiroDAO()
 				.findByRoteiroLiberado(dataAtual, id);
@@ -363,8 +368,8 @@ public class GerenciadorRoteiros {
 	}
 
 	public void excluirRoteiro(Roteiro roteiro) throws ExclusaoRoteiroException {
-		
-		if (roteiro == null){
+
+		if (roteiro == null) {
 			throw new ExclusaoRoteiroException("Roteiro inexistente!");
 		}
 		DAOFactory.DEFAULT.buildRoteiroDAO().delete(roteiro);
