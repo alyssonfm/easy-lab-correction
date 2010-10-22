@@ -13,13 +13,14 @@ import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class GerenciadorSubmissoes {
-	
+
 	private GerenciadorRoteiros gerenciadorRoteiros;
-	
-	public GerenciadorSubmissoes(){
+
+	public GerenciadorSubmissoes() {
 		super();
 		gerenciadorRoteiros = new GerenciadorRoteiros();
 	}
+
 	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
 			Integer idUsuario, Integer idRoteiro) {
 		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT
@@ -30,65 +31,81 @@ public class GerenciadorSubmissoes {
 		}
 		return lista.get(0);
 	}
-	
-	public Equipe getEquipe(int id){
+
+	public Equipe getEquipe(int id) {
 		Equipe equipe = DAOFactory.DEFAULT.buildEquipeDAO().getById(id);
-		if(easyCorrectionUtil.isNull(equipe)){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("equipe"));
+		if (easyCorrectionUtil.isNull(equipe)) {
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
+					.msg("equipe"));
 		}
 		return equipe;
 	}
-	
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(Integer idEquipe, Integer idRoteiro){
-		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO().findByEquipeERoteiro(idEquipe, idRoteiro); 
+
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
+			Integer idEquipe, Integer idRoteiro) {
+		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
+				.findByEquipeERoteiro(idEquipe, idRoteiro);
 	}
-	
-	public void verificaSeUsuarioEstaCadastrado(EquipeHasUsuarioHasRoteiro eur) throws EasyCorrectionException{
-		List<EquipeHasUsuarioHasRoteiro> lista = getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(eur.getEquipe().getId(), eur.getRoteiro().getId());
+
+	public void verificaSeUsuarioEstaCadastrado(EquipeHasUsuarioHasRoteiro eur)
+			throws EasyCorrectionException {
+		List<EquipeHasUsuarioHasRoteiro> lista = getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
+				eur.getEquipe().getId(), eur.getRoteiro().getId());
 		boolean tem = false;
 		boolean equipeIgual = false;
-		for(EquipeHasUsuarioHasRoteiro equr:lista){
-			if(equr.getUsuario().getIdUsuario().equals(eur.getUsuario().getIdUsuario())){
+		for (EquipeHasUsuarioHasRoteiro equr : lista) {
+			if (equr.getUsuario().getIdUsuario().equals(
+					eur.getUsuario().getIdUsuario())) {
 				tem = true;
-				if(equr.getEquipe().getId().equals(eur.getEquipe().getId())){
+				if (equr.getEquipe().getId().equals(eur.getEquipe().getId())) {
 					equipeIgual = true;
 				}
 			}
 		}
-		if(tem){
-			if(equipeIgual){
+		if (tem) {
+			if (equipeIgual) {
 				excluiEquipeHasRoteiroHasUsuario(eur);
 			}
-		}else{
+		} else {
 			cadastraEquipeHasUsuarioHasRoteiro(eur);
 		}
 	}
-	
-	public int getEquipeAlocadas(Integer idRoteiro){
-		if(easyCorrectionUtil.isNull(idRoteiro)){
-			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INEXISTENTE.msg(""));
+
+	public int getEquipeAlocadas(Integer idRoteiro) {
+		if (easyCorrectionUtil.isNull(idRoteiro)) {
+			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INEXISTENTE
+					.msg(""));
 		}
-		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO().findByRoteiro(idRoteiro);
-		for(EquipeHasUsuarioHasRoteiro equr:lista){
-			if(!equr.getRoteiro().getId().equals(gerenciadorRoteiros.getRoteiroLiberado(equr.getRoteiro().getId()).getId())){
-				throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_NAO_LIBERADO.msg(equr.getRoteiro().getNome()));
+		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT
+				.buildEquipeHasUsuarioHasRoteiroDAO().findByRoteiro(idRoteiro);
+		for (EquipeHasUsuarioHasRoteiro equr : lista) {
+			if (!equr.getRoteiro().getId().equals(
+					gerenciadorRoteiros.getRoteiroLiberado(
+							equr.getRoteiro().getId()).getId())) {
+				throw new ObjetoNaoEncontradoException(
+						MsgErros.ROTEIRO_NAO_LIBERADO.msg(equr.getRoteiro()
+								.getNome()));
 			}
 		}
 		return lista.size();
 	}
-	
-	public List<Equipe> getEquipes(){
+
+	public List<Equipe> getEquipes() {
 		return DAOFactory.DEFAULT.buildEquipeDAO().findAll();
 	}
-	
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros(){
-		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO().findAll();
+
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros() {
+		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
+				.findAll();
 	}
 
-	
 	public Integer numeroSubmissoes(Submissao submissao) {
-		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO().findByEquipeERoteiro(submissao.getEquipeHasUsuarioHasRoteiro().getEquipe().getId(),
-		submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getId());
+		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO()
+				.findByEquipeERoteiro(
+						submissao.getEquipeHasUsuarioHasRoteiro().getEquipe()
+								.getId(),
+						submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro()
+								.getId());
 		return lista.size();
 	}
 
@@ -105,48 +122,59 @@ public class GerenciadorSubmissoes {
 		}
 		return submissao;
 	}
-	
-	
-	public void verificaSeEquipePossuiMaximoParticipantes(EquipeHasUsuarioHasRoteiro equr) throws EasyCorrectionException{
-		List<EquipeHasUsuarioHasRoteiro> lista = getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(equr.getEquipe().getId(), equr.getRoteiro().getId());
-		if(lista.size() >= equr.getRoteiro().getNumeroMaximoParticipantes()){
-			throw new EasyCorrectionException(MsgErros.NUMERO_MAXIMO_PARTICIPANTES.msg(""));
+
+	public void verificaSeEquipePossuiMaximoParticipantes(
+			EquipeHasUsuarioHasRoteiro equr) throws EasyCorrectionException {
+		List<EquipeHasUsuarioHasRoteiro> lista = getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
+				equr.getEquipe().getId(), equr.getRoteiro().getId());
+		if (lista.size() >= equr.getRoteiro().getNumeroMaximoParticipantes()) {
+			throw new EasyCorrectionException(
+					MsgErros.NUMERO_MAXIMO_PARTICIPANTES.msg(""));
 		}
-		
+
 	}
-	public EquipeHasUsuarioHasRoteiro cadastraEquipeHasUsuarioHasRoteiro(EquipeHasUsuarioHasRoteiro equr) throws EasyCorrectionException {
+
+	public EquipeHasUsuarioHasRoteiro cadastraEquipeHasUsuarioHasRoteiro(
+			EquipeHasUsuarioHasRoteiro equr) throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(equr)) {
 			verificaSeEquipePossuiMaximoParticipantes(equr);
-			Integer id = DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO().save(equr);
+			Integer id = DAOFactory.DEFAULT
+					.buildEquipeHasUsuarioHasRoteiroDAO().save(equr);
 			equr.setId(id);
 		}
 		return equr;
 	}
-	
+
 	public Equipe cadastraEquipe(Equipe e) throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(e)) {
-			// TODO: montar o nome da equipe aqui: pega a equipe com maior id no banco e concatena: "Equipe " + id
-			List<Equipe> lista = DAOFactory.DEFAULT.buildEquipeDAO().findByNome(e.getNome());
-			if(lista.isEmpty()){
+			// TODO: montar o nome da equipe aqui: pega a equipe com maior id no
+			// banco, lê seu número e concatena: "Equipe " + (número + 1)
+			List<Equipe> lista = DAOFactory.DEFAULT.buildEquipeDAO()
+					.findByNome(e.getNome());
+			if (lista.isEmpty()) {
 				Integer id = DAOFactory.DEFAULT.buildEquipeDAO().save(e);
 				e.setId(id);
 			}
 		}
 		return e;
 	}
-	
-	public void excluiEquipeHasRoteiroHasUsuario(EquipeHasUsuarioHasRoteiro equr) throws EasyCorrectionException{
-		EquipeHasUsuarioHasRoteiro e = getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(equr.getUsuario().getIdUsuario(), equr.getRoteiro().getId());
-		e= (EquipeHasUsuarioHasRoteiro) SwapperAtributosReflect.swapObject(e, equr, EquipeHasUsuarioHasRoteiro.class);
+
+	public void excluiEquipeHasRoteiroHasUsuario(EquipeHasUsuarioHasRoteiro equr)
+			throws EasyCorrectionException {
+		EquipeHasUsuarioHasRoteiro e = getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
+				equr.getUsuario().getIdUsuario(), equr.getRoteiro().getId());
+		e = (EquipeHasUsuarioHasRoteiro) SwapperAtributosReflect.swapObject(e,
+				equr, EquipeHasUsuarioHasRoteiro.class);
 		DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO().delete(e);
 	}
-	
-	public Submissao getSubmissao(int submissaoId){
+
+	public Submissao getSubmissao(int submissaoId) {
 		return DAOFactory.DEFAULT.buildSubmissaoDAO().getById(submissaoId);
 	}
+
 	public Submissao excluirSubmissao(Submissao sub) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }
