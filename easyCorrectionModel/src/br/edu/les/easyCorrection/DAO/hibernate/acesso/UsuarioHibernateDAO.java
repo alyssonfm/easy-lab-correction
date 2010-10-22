@@ -42,6 +42,10 @@ public class UsuarioHibernateDAO extends
 		return findByCriteria(Restrictions.eq("login", login));
 	}
 	
+	public List <Usuario> findByEmail(String email){
+		return findByCriteria(Restrictions.eq("email", email));
+	}
+	
 	public List<Usuario> findByLoginESenha(String login, String senha) {
 		SimpleExpression criteria = Restrictions.eq("senha", senha);
 		SimpleExpression criteria2 = Restrictions.eq("login", login);
