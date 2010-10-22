@@ -14,6 +14,7 @@ import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.util.GeraMd5;
 import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
@@ -21,8 +22,11 @@ import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class GerenciadorAcesso {
 	
+	private GerenciadorSubmissoes gerenciadorSubmissoes;
+	
 	public GerenciadorAcesso(){
 		super();
+		gerenciadorSubmissoes = new GerenciadorSubmissoes();
 	}
 	
 	public Menu getMenu(Integer id){
@@ -379,9 +383,39 @@ public class GerenciadorAcesso {
 		return null;
 	}
 	
+	public Usuario getUsuarioPorEmail(String email){
+		List <Usuario> lista = DAOFactory.DEFAULT.buildUsuarioDAO().findByEmail(email);
+		if(!lista.isEmpty()){
+			return lista.get(0);
+		}
+		return null;
+	}
+	
+	public void verificaSeNumeroUsuarioMaiorEquipe(GrupoUsuario grupoUsuario) throws EasyCorrectionException{
+		Equipe equipe = new Equipe();
+		if(grupoUsuario.getGrupo().getNome().equalsIgnoreCase("Aluno")){
+			List<GrupoUsuario> gu = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByGrupo("Aluno");
+			List<Equipe> equipes = gerenciadorSubmissoes.getEquipes();
+			int numeroUsuario = gu.size()+1;
+			if(numeroUsuario > equipes.size()){
+				for(int i = 0; i<5; i++){
+					equipes = gerenciadorSubmissoes.getEquipes();
+					if(equipes.isEmpty()){
+						equipe.setNome("Equipe 1");
+					}else{
+						int index = equipes.get(equipes.size()-1).getId()+1;
+						equipe.setNome("Equipe " + index);
+					}
+					gerenciadorSubmissoes.cadastraEquipe(equipe);
+				}
+			}
+		}
+	}
+	
 	public GrupoUsuario cadastrarUsuario(GrupoUsuario grupoUsuario) throws EasyCorrectionException {
 		Usuario u = new Usuario();
 		Usuario us = new Usuario();
+		Usuario usu = new Usuario();
 		
 		if(!easyCorrectionUtil.isNull(grupoUsuario.getUsuario())){
 			if(!grupoUsuario.getUsuario().getIdUsuario().equals(new Integer(0))){
@@ -404,8 +438,9 @@ public class GerenciadorAcesso {
 			}
 			//Cadastrar o usuário
 			u = consultarUsuarioPorLogin(grupoUsuario.getUsuario().getLogin());
+			usu = getUsuarioPorEmail(grupoUsuario.getUsuario().getEmail());
 			//Se o login não existe e e o id é null
-			if(easyCorrectionUtil.isNull(u)){
+			if(easyCorrectionUtil.isNull(u) && easyCorrectionUtil.isNull(usu)){
 				try{
 					us = getUsuario(grupoUsuario.getUsuario().getIdUsuario());
 					us = (Usuario) SwapperAtributosReflect.swapObject(us,grupoUsuario.getUsuario(),Usuario.class);
@@ -414,15 +449,30 @@ public class GerenciadorAcesso {
 				}catch(ObjetoNaoEncontradoException e){
 					Integer id = DAOFactory.DEFAULT.buildUsuarioDAO().save(grupoUsuario.getUsuario());
 					grupoUsuario.getUsuario().setIdUsuario(id);
+					verificaSeNumeroUsuarioMaiorEquipe(grupoUsuario);
 				}
 			}else{
 				try{
-					us = getUsuario(u.getIdUsuario());
+					us = getUsuario(grupoUsuario.getUsuario().getIdUsuario());
+					if(!easyCorrectionUtil.isNull(u)){
+						if(!grupoUsuario.getUsuario().getIdUsuario().equals(u.getIdUsuario())){
+							throw new ObjetoNaoEncontradoException(MsgErros.LOGIN.msg(""));
+						}
+					}if(!easyCorrectionUtil.isNull(usu)){
+						if(!grupoUsuario.getUsuario().getIdUsuario().equals(usu.getIdUsuario())){
+							throw new ObjetoNaoEncontradoException(MsgErros.EMAIL.msg(""));
+						}
+					}
 					us = (Usuario) SwapperAtributosReflect.swapObject(us,grupoUsuario.getUsuario(),Usuario.class);
 					DAOFactory.DEFAULT.buildUsuarioDAO().update(us);
 					grupoUsuario.getUsuario().setIdUsuario(us.getIdUsuario());
 				}catch(ObjetoNaoEncontradoException e){
-					throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("usuario"));
+					if(!easyCorrectionUtil.isNull(u)){
+						throw new ObjetoNaoEncontradoException(MsgErros.LOGIN.msg(""));
+					}
+					if(!easyCorrectionUtil.isNull(usu)){
+						throw new ObjetoNaoEncontradoException(MsgErros.EMAIL.msg(""));
+					}
 				}
 			}
 		}

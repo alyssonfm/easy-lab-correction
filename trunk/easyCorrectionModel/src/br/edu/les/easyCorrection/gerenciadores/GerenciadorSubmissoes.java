@@ -121,7 +121,18 @@ public class GerenciadorSubmissoes {
 			equr.setId(id);
 		}
 		return equr;
-	} 
+	}
+	
+	public Equipe cadastraEquipe(Equipe e) throws EasyCorrectionException {
+		if (!easyCorrectionUtil.isNull(e)) {
+			List<Equipe> lista = DAOFactory.DEFAULT.buildEquipeDAO().findByNome(e.getNome());
+			if(lista.isEmpty()){
+				Integer id = DAOFactory.DEFAULT.buildEquipeDAO().save(e);
+				e.setId(id);
+			}
+		}
+		return e;
+	}
 	
 	public void excluiEquipeHasRoteiroHasUsuario(EquipeHasUsuarioHasRoteiro equr) throws EasyCorrectionException{
 		EquipeHasUsuarioHasRoteiro e = getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(equr.getUsuario().getIdUsuario(), equr.getRoteiro().getId());
