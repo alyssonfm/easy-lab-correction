@@ -28,14 +28,15 @@ idGrupoUsuarioB=cadastrarUsuario grupoId=${idGrupo} nome="AlunoB" login="alunob"
 idGrupoUsuarioC=cadastrarUsuario grupoId=${idGrupo} nome="AlunoC" login="alunoc" senha="123123" email="c@hotmail.com"
 idGrupoUsuarioD=cadastrarUsuario grupoId=${idGrupo} nome="AlunoD" login="alunod" senha="123123" email="d@hotmail.com"
 
-expect 5 getQuantidadeTotalEquipes
+# Consideramos a existência de uma ÚNICA equipe no BD (favor limpar BD antes de executar)
+expect 6 getQuantidadeTotalEquipes
 
 #ID do Teste: b
 
 idGrupoUsuarioE=cadastrarUsuario grupoId=${idGrupo} nome="AlunoE" login="alunoE" senha="123123" email="e@hotmail.com"
 idGrupoUsuarioF=cadastrarUsuario grupoId=${idGrupo} nome="AlunoF" login="alunoF" senha="123123" email="f@hotmail.com"
 
-expect 5 getQuantidadeTotalEquipes
+expect 11 getQuantidadeTotalEquipes
 
 #ID do Teste: c
 
@@ -48,7 +49,7 @@ idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro 1" descricao="Roteiro de T
 numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
 numeroMaximoParticipantes=2 bloqueado=false
 
-expectError "Não há equipes alocadas pois o Roteiro <nomeDoRoteiro> ainda não foi liberado!" getQuantidadeEquipesAlocadas roteiroID=${idRoteiro1} 
+expectError "Não há equipes alocadas pois o Roteiro Roteiro1 ainda não foi liberado!" getQuantidadeEquipesAlocadas roteiroID=${idRoteiro1} 
 
 #ID do Teste: e
 

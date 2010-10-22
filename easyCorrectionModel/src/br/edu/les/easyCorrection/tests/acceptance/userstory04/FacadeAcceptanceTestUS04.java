@@ -159,5 +159,9 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	public int getAlunoGrupoID() {
 		return 4;
 	}
+	
+	public int somaECompara(int antes, int soma, int depois){
+		return ((antes + soma) == depois)? 1 : 0;
+	}
 
 }
