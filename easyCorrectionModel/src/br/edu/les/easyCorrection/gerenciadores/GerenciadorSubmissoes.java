@@ -125,6 +125,7 @@ public class GerenciadorSubmissoes {
 	
 	public Equipe cadastraEquipe(Equipe e) throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(e)) {
+			// TODO: montar o nome da equipe aqui: pega a equipe com maior id no banco e concatena: "Equipe " + id
 			List<Equipe> lista = DAOFactory.DEFAULT.buildEquipeDAO().findByNome(e.getNome());
 			if(lista.isEmpty()){
 				Integer id = DAOFactory.DEFAULT.buildEquipeDAO().save(e);

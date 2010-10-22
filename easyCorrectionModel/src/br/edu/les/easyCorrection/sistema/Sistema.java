@@ -270,4 +270,8 @@ public class Sistema {
 	public Submissao excluirSubmissao(Submissao sub) {
 		return gerenciadorSubmissoes.excluirSubmissao(sub);
 	}
+
+	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
+		return gerenciadorSubmissoes.cadastraEquipe(e);
+	}
 }
