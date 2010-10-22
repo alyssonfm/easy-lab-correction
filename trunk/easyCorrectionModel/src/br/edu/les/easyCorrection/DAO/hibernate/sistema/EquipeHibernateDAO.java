@@ -2,6 +2,7 @@ package br.edu.les.easyCorrection.DAO.hibernate.sistema;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
@@ -24,6 +25,15 @@ public class EquipeHibernateDAO extends
 	public EquipeHibernateDAO(Session s) {
 		super(s);
 		// TODO Auto-generated constructor stub
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Equipe> findByNome(String nome) {
+		Query q = getSession().createQuery("from Equipe where nome = :nome");
+		q.setParameter("nome",nome);
+		q.setCacheable(true);
+		List <Equipe> lista = q.list();
+		return instanciaLista(lista);
 	}
 
 	@Override
