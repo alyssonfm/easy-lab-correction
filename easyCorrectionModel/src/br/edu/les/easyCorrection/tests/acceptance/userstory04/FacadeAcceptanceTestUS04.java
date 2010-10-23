@@ -3,6 +3,7 @@ package br.edu.les.easyCorrection.tests.acceptance.userstory04;
 import java.util.Calendar;
 
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
+import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
@@ -24,7 +25,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	// *****************************************
 
 	/*
-	 * TODO: getListaRoteiros getEquipes getUsuarios
+	 * todo getListaRoteiros getEquipes getUsuarios
 	 * criaEquipeParaRoteiroComUsuario (com o máximo de integrantes)
 	 * removerEquipeParaRoteiroComUsuario (remove se está em alguma)
 	 */
@@ -70,10 +71,10 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @param roteiroId
 	 * @param equipeId
 	 * @return int com a quantidade de alunos
+	 * @throws Throwable 
 	 */
-	public int getQuantidadeAlunosPorEquipe(int roteiroId, int equipeId) {
-		// TODO: return facadeSistema.getAlunosPorEquipe(roteiroId, equipeId).size();
-		return 0;
+	public int getQuantidadeAlunosPorEquipe(int equipeId, int roteiroId) throws Throwable {
+		return facadeSistema.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(equipeId, roteiroId).size();
 	}
 
 	/**
@@ -81,10 +82,10 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * genérico getUsuariosPorGrupo (int)
 	 * 
 	 * @return int com a quantidade de alunos do sistema
+	 * @throws Throwable 
 	 */
-	public int getQuantidadeTotalAlunos() {
-		// TODO: return facadeSistema.getUsuariosPorGrupo(4).size();
-		return 0;
+	public int getQuantidadeTotalAlunos() throws Throwable {
+		return facadeSistema.listarUsuarios().size();
 	}
 
 	/**
@@ -99,16 +100,18 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @param roteiroId
 	 *            - roteiro ao qual a equipe faz parte
 	 * @return id da nova equipe
+	 * @throws Throwable 
 	 * 
 	 * @link 
 	 *       https://sites.google.com/site/easylabcorrection/planejamento/planos-
 	 *       de-iteracoes/iteracao-3/-plano-de-testes-de-aceitacao---us04
 	 */
-	public int mudarEquipe(int roteiroId, int equipeDeSaidaId,
-			int equipeDeEntradaId, int grupoUsuarioId) {
-		// TODO: return facadeSistema.mudarEquipe(roteiroId, equipeDeSaidaId,
-		// equipeDeEntradaId, grupoUsuarioId);
-		return 0;
+	public EquipeHasUsuarioHasRoteiro mudarEquipe(int roteiroId, int equipeDeEntradaId, int grupoUsuarioId) throws Throwable {
+		EquipeHasUsuarioHasRoteiro equipeUsuarioRoteiro = new EquipeHasUsuarioHasRoteiro();
+		equipeUsuarioRoteiro.setEquipe(getEquipe(equipeDeEntradaId));
+		equipeUsuarioRoteiro.setUsuario(getGrupoUsuario(grupoUsuarioId).getUsuario());
+		equipeUsuarioRoteiro.setRoteiro(getRoteiro(roteiroId));
+		return facadeSistema.mudarEquipe(equipeUsuarioRoteiro);
 	}
 
 	/**
@@ -141,10 +144,9 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 		return resultado.getId();
 	}
 
-	public int excluirSubmissao(int submissaoId) {
+	public void excluirSubmissao(int submissaoId) throws ExclusaoRoteiroException {
 		Submissao sub = getSubmissao(submissaoId);
-		Submissao resultado = facadeSistema.excluirSubmissao(sub);
-		return resultado.getId();
+		facadeSistema.excluirSubmissao(sub);;
 	}
 
 	/*
