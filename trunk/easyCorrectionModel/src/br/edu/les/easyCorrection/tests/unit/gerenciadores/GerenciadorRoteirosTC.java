@@ -119,6 +119,8 @@ public class GerenciadorRoteirosTC {
 			Assert.assertFalse("A edição não deve ser realizada", true);
 		}
 
+		// Bloquear
+		
 		try {
 			gr.bloquearRoteiro(roteiroNULL, true);
 		} catch (BloqueiaRoteiroException e) {
@@ -156,6 +158,8 @@ public class GerenciadorRoteirosTC {
 					.getMessage());
 		}
 
+		// Remover
+		
 		try {
 			gr.excluirRoteiro(roteiroNULL);
 		} catch (ExclusaoRoteiroException e) {

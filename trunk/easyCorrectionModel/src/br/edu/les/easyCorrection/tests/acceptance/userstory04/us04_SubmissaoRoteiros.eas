@@ -76,7 +76,7 @@ expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeI
 #ID do Teste: f
 
 expectError "Nenhuma equipe pode ser modificada. O Roteiro é individual!" mudarEquipe \
-roteiroId=${idRoteiro2} equipeDeSaidaId=${equipeID6} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
+roteiroId=${idRoteiro2} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
 
 #ID do Teste: g
 
@@ -88,7 +88,7 @@ idRoteiro3=cadastrarRoteiro periodoId=1 nome="Roteiro 3" descricao="Roteiro de T
 numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
 numeroMaximoParticipantes=1 bloqueado=false
 
-equipeID1=mudarEquipe roteiroId=${idRoteiro3} equipeDeSaidaId=${equipeID6} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
+equipeID1=mudarEquipe roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
 
 #ID do Teste: h
 # 6 equipes...
@@ -102,25 +102,22 @@ expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeI
 expect 0 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID6}
 
 expectError "Não foi possível mudar de equipe! Limite de integrantes da Equipe 1 já alcançado (máximo de 2 integrante(s) por equipe)" mudarEquipe \
-roteiroId=${idRoteiro3} equipeDeSaidaId=${equipeID5} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioE}
+roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioE}
 
 #ID do Teste: i
 
 expectError "Mudança de equipe não realizada! Aluno inexistente." mudarEquipe \
-roteiroId=${idRoteiro3} equipeDeSaidaId=${equipeID1} equipeDeEntradaId=${equipeID6} grupoUsuarioId=7
+roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID6} grupoUsuarioId=7
 
 #ID do Teste: j
 
 expectError "Mudança não realizada! Equipe inexistente." mudarEquipe \
-roteiroId=${idRoteiro3} equipeDeSaidaId=-1 equipeDeEntradaId=${equipeID6} grupoUsuarioId=${idGrupoUsuarioA}
-
-expectError "Mudança não realizada! Equipe inexistente." mudarEquipe \
-roteiroId=${idRoteiro3} equipeDeSaidaId=${equipeID1} equipeDeEntradaId=7 grupoUsuarioId=${idGrupoUsuarioA}
+roteiroId=${idRoteiro3} equipeDeEntradaId=7 grupoUsuarioId=${idGrupoUsuarioA}
 
 #ID do Teste: k
 
 expectError "Mudança de equipe não realizada! AlunoF não faz parte da Equipe 5." mudarEquipe \
-roteiroId=${idRoteiro3} equipeDeSaidaId=${equipeID5} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
+roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
 
 #ID do Teste: l
 
