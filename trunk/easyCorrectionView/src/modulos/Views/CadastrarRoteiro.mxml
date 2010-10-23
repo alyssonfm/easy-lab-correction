@@ -218,11 +218,13 @@
 				private function cadastrarRoteiro_result(event:ResultEvent):void{
 					roteiro = new Roteiro();
 					roteiro = CastDeEntidades.castRoteiro(event.result);
-					var variables:URLVariables = new URLVariables();
-					variables.url = roteiro.diretorioTestes;
-					variables.nomeArquivo = roteiro.nome + " testes.zip";
-					requestTestes.data = variables;
-					fileRefTestes.upload(requestTestes);
+					try{
+						var variables:URLVariables = new URLVariables();
+						variables.url = roteiro.diretorioTestes;
+						variables.nomeArquivo = roteiro.nome + " testes.zip";
+						requestTestes.data = variables;
+						fileRefTestes.upload(requestTestes);
+					}catch(e: Error){}
 					var param:Array = new Array(false, "Roteiro Cadastrado/Atualizado com sucesso.");
 					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 				}
