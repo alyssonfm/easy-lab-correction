@@ -125,7 +125,7 @@
 			   	 	fileRefTestes.addEventListener(Event.SELECT, arquivoSelecionadoTestes);
 			   	 	fileRefTestes.addEventListener(Event.COMPLETE, envioCompletoTestes);
 			   	 	fileRefTestes.addEventListener(IOErrorEvent.IO_ERROR, erroEnvioTestes);
-			    	fileRefTestes.browse(new Array(new FileFilter("Testes","*.zip")));
+			    	fileRefTestes.browse(new Array(new FileFilter("Testes (*.zip)","*.zip")));
 				}
 				
 				public function erroEnvioTestes(evt:Event):void {
@@ -158,7 +158,7 @@
 			   	 	fileRefInterface.addEventListener(Event.SELECT, arquivoSelecionadoInterface);
 			   	 	fileRefInterface.addEventListener(Event.COMPLETE, envioCompletoInterface);
 			   	 	fileRefInterface.addEventListener(IOErrorEvent.IO_ERROR, erroEnvioInterface);
-			    	fileRefInterface.browse(new Array(new FileFilter("Interface","*.java")));
+			    	fileRefInterface.browse(new Array(new FileFilter("Interface (*.java)","*.java")));
 				}
 				
 				public function erroEnvioInterface(evt:Event):void {
