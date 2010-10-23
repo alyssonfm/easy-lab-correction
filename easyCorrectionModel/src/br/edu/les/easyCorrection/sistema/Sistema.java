@@ -259,16 +259,16 @@ public class Sistema {
 		return gerenciadorSubmissoes.getEquipeAlocadas(idRoteiro);
 	}
 	
-	public void verificaSeUsuarioEstaCadastrado(EquipeHasUsuarioHasRoteiro eur) throws EasyCorrectionException{
-		gerenciadorSubmissoes.verificaSeUsuarioEstaCadastrado(eur);
+	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur) throws EasyCorrectionException{
+		return gerenciadorSubmissoes.mudarEquipe(eur);
 	}
 	
 	public Submissao getSubmissao(int submissaoId){
 		return gerenciadorSubmissoes.getSubmissao(submissaoId);
 	}
 
-	public Submissao excluirSubmissao(Submissao sub) {
-		return gerenciadorSubmissoes.excluirSubmissao(sub);
+	public void excluirSubmissao(Submissao sub) throws ExclusaoRoteiroException {
+		gerenciadorSubmissoes.excluirSubmissao(sub);
 	}
 
 	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
