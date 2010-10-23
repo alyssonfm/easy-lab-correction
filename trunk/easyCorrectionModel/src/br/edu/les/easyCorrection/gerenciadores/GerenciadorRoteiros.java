@@ -290,7 +290,7 @@ public class GerenciadorRoteiros {
 						+ " bloqueado com sucesso!");
 			}
 		} else {
-			if (roteiro.isBloqueado()) {
+			if (!roteiro.isBloqueado()) {
 				throw new BloqueiaRoteiroException(
 						"O Roteiro já está desbloqueado!");
 			} else {
