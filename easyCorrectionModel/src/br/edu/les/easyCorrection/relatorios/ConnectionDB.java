@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * @author Danillo, Jackson e Júlia
+ * @author Alysson, Augusto e Demetrio.
  *
  */
 public class ConnectionDB {
@@ -20,7 +20,7 @@ public class ConnectionDB {
 	private String database;
 	
 	/**
-	 * O nome do usuário
+	 * O nome do usuario
 	 */
 	private String username;
 	

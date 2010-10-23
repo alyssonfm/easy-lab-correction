@@ -11,8 +11,6 @@ import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
-import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
-import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.MsgErros;
