@@ -21,7 +21,7 @@ import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
  * de aceitação. Para maiores informações contactar os clientes.
  * 
  */
-public class GerenciadorRoteirosTest {
+public class GerenciadorRoteirosTC {
 
 	private GerenciadorRoteiros gr;
 	private Roteiro roteiroMinimo, roteiroVariavel, roteiroNULL;
@@ -29,10 +29,12 @@ public class GerenciadorRoteirosTest {
 	@Before
 	public void setup() {
 		gr = new GerenciadorRoteiros();
+
 		roteiroMinimo = new Roteiro();
 		roteiroMinimo.setId(0);
 		roteiroMinimo.setNome("Roteiro Teste 1");
 		roteiroMinimo.setDataLiberacao(Calendar.getInstance().getTime());
+		roteiroMinimo.setPeriodo(gr.getPeriodo(1));
 
 		roteiroVariavel = new Roteiro();
 		roteiroVariavel.setId(0);
@@ -56,31 +58,31 @@ public class GerenciadorRoteirosTest {
 	}
 
 	@Test
-	public void cadastrar() {
+	public void cadastrarEditarBloquearExcluir() {
 		try {
-			gr.cadastrarRoteiro(roteiroNULL);
+			roteiroNULL = gr.cadastrarRoteiro(roteiroNULL);
 		} catch (CriacaoRoteiroException e) {
 			Assert.assertTrue("O Cadastro não deve ser realizado", true);
 		}
 
 		try {
-			gr.cadastrarRoteiro(roteiroMinimo);
+			roteiroMinimo = gr.cadastrarRoteiro(roteiroMinimo);
 			Assert.assertTrue("O Cadastro deve ser realizado", true);
 		} catch (CriacaoRoteiroException e) {
 			Assert.assertFalse("O Cadastro deve ser realizado", true);
 		}
 
 		try {
-			Assert
-					.assertTrue(((gr.cadastrarRoteiro(roteiroVariavel)).getId() > 0));
+			roteiroVariavel = gr.cadastrarRoteiro(roteiroVariavel);
 			Assert.assertTrue("O Cadastro deve ser realizado", true);
 		} catch (CriacaoRoteiroException e) {
 			Assert.assertFalse("O Cadastro deve ser realizado", true);
 		}
-	}
 
-	@Test
-	public void editar() {
+		/*
+		 * Editar
+		 */
+
 		try {
 			gr.editarRoteiro(roteiroNULL);
 		} catch (EdicaoRoteiroException e) {
@@ -116,10 +118,6 @@ public class GerenciadorRoteirosTest {
 		} catch (CriacaoRoteiroException e) {
 			Assert.assertFalse("A edição não deve ser realizada", true);
 		}
-	}
-	
-	@Test
-	public void bloquear() {
 
 		try {
 			gr.bloquearRoteiro(roteiroNULL, true);
@@ -141,9 +139,9 @@ public class GerenciadorRoteirosTest {
 			Assert
 					.assertTrue(gr.bloquearRoteiro(roteiroMinimo, false)
 							.getId() > 0);
-			Assert.assertTrue("O bloqueio deve ser realizado", true);
+			Assert.assertTrue("O desbloqueio deve ser realizado", true);
 		} catch (BloqueiaRoteiroException e) {
-			Assert.assertFalse("O bloqueio deve ser realizado", true);
+			Assert.assertFalse("O desbloqueio deve ser realizado", true);
 		}
 
 		Assert.assertFalse(roteiroMinimo.isBloqueado());
@@ -153,15 +151,10 @@ public class GerenciadorRoteirosTest {
 					.assertTrue(gr.bloquearRoteiro(roteiroMinimo, false)
 							.getId() > 0);
 		} catch (BloqueiaRoteiroException e) {
-			Assert.assertFalse("O bloqueio não deve ser realizado", true);
+			Assert.assertTrue("O desbloqueio não deve ser realizado", true);
 			Assert.assertEquals("O Roteiro já está desbloqueado!", e
 					.getMessage());
 		}
-
-	}
-/*
-	@Test
-	public void excluir() {
 
 		try {
 			gr.excluirRoteiro(roteiroNULL);
@@ -173,14 +166,14 @@ public class GerenciadorRoteirosTest {
 			gr.excluirRoteiro(roteiroMinimo);
 			Assert.assertTrue("A exclusao deve ser realizada", true);
 		} catch (ExclusaoRoteiroException e) {
-			Assert.assertFalse("A exclusao não deve ser realizada", true);
+			Assert.assertFalse("A exclusao deve ser realizada", true);
 		}
 
 		try {
 			gr.excluirRoteiro(roteiroVariavel);
 			Assert.assertTrue("A exclusao deve ser realizada", true);
 		} catch (ExclusaoRoteiroException e) {
-			Assert.assertFalse("A exclusao não deve ser realizada", true);
+			Assert.assertFalse("A exclusao deve ser realizada", true);
 		}
-	}*/
+	}
 }

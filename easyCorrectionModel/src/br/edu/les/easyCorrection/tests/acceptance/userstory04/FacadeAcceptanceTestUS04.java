@@ -24,7 +24,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	// *****************************************
 
 	/*
-	 * todo getListaRoteiros getEquipes getUsuarios
+	 * TODO: getListaRoteiros getEquipes getUsuarios
 	 * criaEquipeParaRoteiroComUsuario (com o máximo de integrantes)
 	 * removerEquipeParaRoteiroComUsuario (remove se está em alguma)
 	 */
@@ -72,7 +72,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @return int com a quantidade de alunos
 	 */
 	public int getQuantidadeAlunosPorEquipe(int roteiroId, int equipeId) {
-		// return facadeSistema.getAlunosPorEquipe(roteiroId, equipeId).size();
+		// TODO: return facadeSistema.getAlunosPorEquipe(roteiroId, equipeId).size();
 		return 0;
 	}
 
@@ -83,7 +83,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @return int com a quantidade de alunos do sistema
 	 */
 	public int getQuantidadeTotalAlunos() {
-		// return facadeSistema.getUsuariosPorGrupo(4).size();
+		// TODO: return facadeSistema.getUsuariosPorGrupo(4).size();
 		return 0;
 	}
 
@@ -106,7 +106,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 */
 	public int mudarEquipe(int roteiroId, int equipeDeSaidaId,
 			int equipeDeEntradaId, int grupoUsuarioId) {
-		// return facadeSistema.mudarEquipe(roteiroId, equipeDeSaidaId,
+		// TODO: return facadeSistema.mudarEquipe(roteiroId, equipeDeSaidaId,
 		// equipeDeEntradaId, grupoUsuarioId);
 		return 0;
 	}

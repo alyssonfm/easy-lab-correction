@@ -55,7 +55,7 @@ public enum MsgErros {
 	,
 	ATRIBUTO_INVALIDO{
 		public String msg(String... args){
-			return "Atributo \"" + args[0] + "\" nao existe. ("+args[1]+")";
+			return "Atributo nao existe. ("+args[0]+")";
 		}
 	},
 	
