@@ -174,8 +174,6 @@
 				}
 				
 				public function envioCompletoInterface(evt:Event):void {
-					var param:Array = new Array(false, "Roteiro Cadastrado/Atualizado com sucesso.");
-					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 				}
 				
 				private function getPeriodoAtual():void{
@@ -225,6 +223,8 @@
 					variables.nomeArquivo = roteiro.nome + " testes.zip";
 					requestTestes.data = variables;
 					fileRefTestes.upload(requestTestes);
+					var param:Array = new Array(false, "Roteiro Cadastrado/Atualizado com sucesso.");
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 				}
 				
 				private function bloqueiaRoteiro():void{
