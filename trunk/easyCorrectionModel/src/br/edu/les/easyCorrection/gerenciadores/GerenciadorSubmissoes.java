@@ -141,7 +141,7 @@ public class GerenciadorSubmissoes {
 	public Equipe cadastraEquipe(Equipe e) throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(e)) {
 			List<Equipe> equipes = getEquipes();
-			String ultimoNumero = equipes.get(equipes.size() - 1).getNome().split(" ")[1];
+			int ultimoNumero = Integer.parseInt(equipes.get(equipes.size() - 1).getNome().split(" ")[1]) + 1;
 			List<Equipe> lista = DAOFactory.DEFAULT.buildEquipeDAO().findByNome(e.getNome());
 			if (lista.isEmpty()) {
 				e.setNome("Equipe " + ultimoNumero);
