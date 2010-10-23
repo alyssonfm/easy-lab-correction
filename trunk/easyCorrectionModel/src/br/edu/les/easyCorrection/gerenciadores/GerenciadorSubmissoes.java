@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
+import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
@@ -47,28 +48,20 @@ public class GerenciadorSubmissoes {
 				.findByEquipeERoteiro(idEquipe, idRoteiro);
 	}
 
-	public void verificaSeUsuarioEstaCadastrado(EquipeHasUsuarioHasRoteiro eur)
+	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur)
 			throws EasyCorrectionException {
-		List<EquipeHasUsuarioHasRoteiro> lista = getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
-				eur.getEquipe().getId(), eur.getRoteiro().getId());
-		boolean tem = false;
-		boolean equipeIgual = false;
-		for (EquipeHasUsuarioHasRoteiro equr : lista) {
-			if (equr.getUsuario().getIdUsuario().equals(
-					eur.getUsuario().getIdUsuario())) {
-				tem = true;
-				if (equr.getEquipe().getId().equals(eur.getEquipe().getId())) {
-					equipeIgual = true;
-				}
-			}
+		
+		EquipeHasUsuarioHasRoteiro equipeUsuarioRoteiro = getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
+				eur.getUsuario().getIdUsuario(), eur.getRoteiro().getId());
+		if (!easyCorrectionUtil.isNull(equipeUsuarioRoteiro)){
+			excluiEquipeHasRoteiroHasUsuario(equipeUsuarioRoteiro);
+			equipeUsuarioRoteiro = cadastraEquipeHasUsuarioHasRoteiro(eur);
 		}
-		if (tem) {
-			if (equipeIgual) {
-				excluiEquipeHasRoteiroHasUsuario(eur);
-			}
-		} else {
-			cadastraEquipeHasUsuarioHasRoteiro(eur);
+		else{
+			equipeUsuarioRoteiro = cadastraEquipeHasUsuarioHasRoteiro(eur);
+			
 		}
+		return equipeUsuarioRoteiro;
 	}
 
 	public int getEquipeAlocadas(Integer idRoteiro) {
@@ -147,11 +140,11 @@ public class GerenciadorSubmissoes {
 
 	public Equipe cadastraEquipe(Equipe e) throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(e)) {
-			// TODO: montar o nome da equipe aqui: pega a equipe com maior id no
-			// banco, lê seu número e concatena: "Equipe " + (número + 1)
-			List<Equipe> lista = DAOFactory.DEFAULT.buildEquipeDAO()
-					.findByNome(e.getNome());
+			List<Equipe> equipes = getEquipes();
+			String ultimoNumero = equipes.get(equipes.size() - 1).getNome().split(" ")[1];
+			List<Equipe> lista = DAOFactory.DEFAULT.buildEquipeDAO().findByNome(e.getNome());
 			if (lista.isEmpty()) {
+				e.setNome("Equipe " + ultimoNumero);
 				Integer id = DAOFactory.DEFAULT.buildEquipeDAO().save(e);
 				e.setId(id);
 			}
@@ -172,9 +165,11 @@ public class GerenciadorSubmissoes {
 		return DAOFactory.DEFAULT.buildSubmissaoDAO().getById(submissaoId);
 	}
 
-	public Submissao excluirSubmissao(Submissao sub) {
-		// TODO Auto-generated method stub
-		return null;
+	public void excluirSubmissao(Submissao sub) throws ExclusaoRoteiroException {
+		if (sub == null) {
+			throw new ExclusaoRoteiroException("Submissao inexistente!");
+		}
+		DAOFactory.DEFAULT.buildSubmissaoDAO().delete(sub);
 	}
 
 }
