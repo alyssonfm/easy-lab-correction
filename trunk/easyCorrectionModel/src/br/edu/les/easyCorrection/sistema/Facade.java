@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
+import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
@@ -554,9 +555,9 @@ public class Facade {
 		return null;
 	}
 	
-	public void verificaSeUsuarioEstaCadastrado(EquipeHasUsuarioHasRoteiro eur) throws Throwable{
+	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur) throws Throwable{
 		try{
-			sistema.verificaSeUsuarioEstaCadastrado(eur);
+			return sistema.mudarEquipe(eur);
 		}catch (Throwable e) {
 			log.error("verificaSeUsuarioEstaCadastrado()", e);
 			throw e;
@@ -567,8 +568,8 @@ public class Facade {
 		return sistema.getSubmissao(submissaoId);
 	}
 
-	public Submissao excluirSubmissao(Submissao sub) {
-		return sistema.excluirSubmissao(sub);
+	public void excluirSubmissao(Submissao sub) throws ExclusaoRoteiroException {
+		sistema.excluirSubmissao(sub);
 	}
 
 	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
