@@ -32,6 +32,14 @@ public class Facade {
 
 	}
 
+	public void limpaBancoDeDados(){
+		sistema.limpaBancoDeDados();
+	}
+	
+	public void inicializaBancoDeDados(){
+		sistema.inicializaBancoDeDados();
+	}
+	
 	/*******************************************************************
 	 * Controle de Acesso
 	 * **********************************************************************
@@ -475,6 +483,10 @@ public class Facade {
 		}
 	}
 	
+	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
+		return sistema.cadastrarEquipe(e);
+	}
+
 	public Equipe getEquipe(int id) throws Throwable{
 		try{
 			return sistema.getEquipe(id);
@@ -484,15 +496,10 @@ public class Facade {
 		}
 	}
 	
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(Integer idEquipe, Integer idRoteiro) throws Throwable{
-		try{
-			return sistema.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe, idRoteiro);
-		} catch (Throwable e) {
-			log.error("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro()", e);
-			throw e;
-		}
+	public Equipe getEquipePorNome(String nome) throws Throwable {
+		return sistema.getEquipePorNome(nome);
 	}
-	
+
 	public List<Equipe> getEquipes() throws Throwable{
 		try{
 			return sistema.getEquipes();
@@ -511,6 +518,15 @@ public class Facade {
 		}
 	}
 	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(Integer idEquipe, Integer idRoteiro) throws Throwable{
+		try{
+			return sistema.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe, idRoteiro);
+		} catch (Throwable e) {
+			log.error("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro()", e);
+			throw e;
+		}
+	}
+
 	public int getEquipeAlocadas(Integer idRoteiro) throws Throwable{
 		try{
 			return sistema.getEquipeAlocadas(idRoteiro);
@@ -529,37 +545,20 @@ public class Facade {
 		}
 	}
 
-	public Submissao submeteRoteiro(Submissao submissao) throws Throwable {
-		try {
-			return sistema.submeteRoteiro(submissao);
-		} catch (Throwable e) {
-			log.error("submeteRoteiro()", e);
-			throw e;
-		}
-	}
-
-	public Equipe criaEquipeParaRoteiro(
-			EquipeHasUsuarioHasRoteiro equipeHasUsuarioHasRoteiro) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Submissao submeteSolucaoRoteiro(Submissao submissaoTemp) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiro(
-			int equipeHasUsuarioHasRoteiroId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur) throws Throwable{
 		try{
 			return sistema.mudarEquipe(eur);
 		}catch (Throwable e) {
 			log.error("verificaSeUsuarioEstaCadastrado()", e);
+			throw e;
+		}
+	}
+
+	public Submissao submeteRoteiro(Submissao submissao) throws Throwable {
+		try {
+			return sistema.submeteRoteiro(submissao);
+		} catch (Throwable e) {
+			log.error("submeteRoteiro()", e);
 			throw e;
 		}
 	}
@@ -572,8 +571,5 @@ public class Facade {
 		sistema.excluirSubmissao(sub);
 	}
 
-	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
-		return sistema.cadastrarEquipe(e);
-	}
 	
 }

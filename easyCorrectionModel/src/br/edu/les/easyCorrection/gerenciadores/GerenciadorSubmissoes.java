@@ -8,6 +8,7 @@ import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
+import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
@@ -50,34 +51,43 @@ public class GerenciadorSubmissoes {
 
 	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur)
 			throws EasyCorrectionException {
-		
+
 		EquipeHasUsuarioHasRoteiro equipeUsuarioRoteiro = getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
 				eur.getUsuario().getIdUsuario(), eur.getRoteiro().getId());
-		if (!easyCorrectionUtil.isNull(equipeUsuarioRoteiro)){
+		if (!easyCorrectionUtil.isNull(equipeUsuarioRoteiro)) {
 			excluiEquipeHasRoteiroHasUsuario(equipeUsuarioRoteiro);
 			equipeUsuarioRoteiro = cadastraEquipeHasUsuarioHasRoteiro(eur);
-		}
-		else{
+		} else {
 			equipeUsuarioRoteiro = cadastraEquipeHasUsuarioHasRoteiro(eur);
-			
+
 		}
 		return equipeUsuarioRoteiro;
 	}
 
-	public int getEquipeAlocadas(Integer idRoteiro) {
+	public int getEquipeAlocadas(Integer idRoteiro){
 		if (easyCorrectionUtil.isNull(idRoteiro)) {
 			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INEXISTENTE
 					.msg(""));
 		}
+		
+		Roteiro roteiro = gerenciadorRoteiros.getRoteiro(idRoteiro);
+		if ( roteiro == null){
+			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INEXISTENTE
+					.msg(""));
+		}
+		
 		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT
 				.buildEquipeHasUsuarioHasRoteiroDAO().findByRoteiro(idRoteiro);
+
+		if (lista.isEmpty()){
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.ROTEIRO_NAO_LIBERADO.msg(roteiro.getNome()));	
+		}
+		
 		for (EquipeHasUsuarioHasRoteiro equr : lista) {
-			if (!equr.getRoteiro().getId().equals(
-					gerenciadorRoteiros.getRoteiroLiberado(
-							equr.getRoteiro().getId()).getId())) {
+			if (!equr.getRoteiro().getId().equals(gerenciadorRoteiros.getRoteiroLiberado(equr.getRoteiro().getId()).getId())) {
 				throw new ObjetoNaoEncontradoException(
-						MsgErros.ROTEIRO_NAO_LIBERADO.msg(equr.getRoteiro()
-								.getNome()));
+						MsgErros.ROTEIRO_NAO_LIBERADO.msg(equr.getRoteiro().getNome()));
 			}
 		}
 		return lista.size();
@@ -141,12 +151,24 @@ public class GerenciadorSubmissoes {
 	public Equipe cadastraEquipe(Equipe e) throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(e)) {
 			List<Equipe> equipes = getEquipes();
-			int ultimoNumero = Integer.parseInt(equipes.get(equipes.size() - 1).getNome().split(" ")[1]) + 1;
-			List<Equipe> lista = DAOFactory.DEFAULT.buildEquipeDAO().findByNome(e.getNome());
-			if (lista.isEmpty()) {
-				e.setNome("Equipe " + ultimoNumero);
+			if (equipes.isEmpty()) {
+				e.setNome("Equipe 1");
 				Integer id = DAOFactory.DEFAULT.buildEquipeDAO().save(e);
 				e.setId(id);
+			} else {
+				int ultimoNumero = Integer.parseInt(equipes.get(
+						equipes.size() - 1).getNome().split(" ")[1]) + 1;
+
+				// TODO: essa comparacao com e.getNome() nao faz sentido pois o
+				// nome eh gerado aqui, na logica, ela deveria estar depois de
+				// e.setNome() abaixo
+				List<Equipe> lista = DAOFactory.DEFAULT.buildEquipeDAO()
+						.findByNome(e.getNome());
+				if (lista.isEmpty()) {
+					e.setNome("Equipe " + ultimoNumero);
+					Integer id = DAOFactory.DEFAULT.buildEquipeDAO().save(e);
+					e.setId(id);
+				}
 			}
 		}
 		return e;

@@ -1,5 +1,5 @@
 package br.edu.les.easyCorrection.gerenciadores;
 
-public class GerenciadorAvaliacoes {
+public class GerenciadorAvaliacoes extends Gerenciador {
 
 }

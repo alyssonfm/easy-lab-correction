@@ -17,7 +17,7 @@ import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
-public class GerenciadorRoteiros {
+public class GerenciadorRoteiros extends Gerenciador{
 
 	public final double PENALIDADE_DIA_ATRASO_DEFAULT = -1;
 	public final double PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT = -1;
@@ -51,14 +51,6 @@ public class GerenciadorRoteiros {
 	 * Isso permite-nos reusar o codigo de validacao dos roteiros
 	 */
 	String criacaoOuAtualizacaoMsg = "NULL";
-
-	public Periodo getPeriodo(int periodoId) {
-		return DAOFactory.DEFAULT.buildPeriodoDAO().getById(periodoId);
-	}
-
-	public List<Periodo> getPeriodoAtual() {
-		return DAOFactory.DEFAULT.buildPeriodoDAO().findAll();
-	}
 
 	public Roteiro getRoteiro(int roteiroId) {
 		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(roteiroId);
@@ -237,12 +229,12 @@ public class GerenciadorRoteiros {
 
 		if ((roteiro.getDiretorioTestes() != null && !roteiro
 				.getDiretorioTestes().equals(""))
-				&& !roteiro.getDiretorioTestes().equals(testesDirDefault)) {
+				&& !roteiro.getDiretorioTestes().endsWith(testesDirDefault)) {
 			throw new EdicaoRoteiroException(
 					"Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/roteiroID_<numero>/'. O Roteiro não pôde ser atualizado!");
 		} else if ((roteiro.getDiretorioInterface() != null && !roteiro
 				.getDiretorioInterface().equals(""))
-				&& !roteiro.getDiretorioInterface().equals(interfaceDirDefault)) {
+				&& !roteiro.getDiretorioInterface().endsWith(interfaceDirDefault)) {
 			throw new EdicaoRoteiroException(
 					"Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/roteiroID_<numero>/'. O Roteiro não pôde ser atualizado!");
 		}

@@ -35,6 +35,15 @@ public class Sistema {
 		gerenciadorSubmissoes = new GerenciadorSubmissoes();
 	}
 
+	public void limpaBancoDeDados(){
+		gerenciadorAcesso.limpaBancoDeDados(); // qualquer um é filho de Gerenciador
+	}
+	
+	public void inicializaBancoDeDados(){
+		gerenciadorAcesso.inicializaBancoDeDados();
+	}
+	
+	
 	public void excluirMenu(Menu menu) throws EasyCorrectionException {
 		gerenciadorAcesso.excluirMenu(menu);
 	}
@@ -237,6 +246,10 @@ public class Sistema {
 	
 	public Equipe getEquipe(int id){
 		return gerenciadorSubmissoes.getEquipe(id);
+	}
+	
+	public Equipe getEquipePorNome(String nome) throws Throwable {
+		return gerenciadorSubmissoes.getEquipePorNome();
 	}
 	
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros(){

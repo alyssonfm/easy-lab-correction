@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.les.easyCorrection.tests.acceptance.Constants;
-import br.edu.les.easyCorrection.tests.acceptance.userstory03.FacadeTestUS3Acceptance;
 import easyaccept.EasyAcceptFacade;
 
 public class TesteRunnerUS04 {

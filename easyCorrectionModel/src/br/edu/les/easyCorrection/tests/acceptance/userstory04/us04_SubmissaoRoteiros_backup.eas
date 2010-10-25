@@ -1,0 +1,159 @@
+#--------------------------------------------------------------------------------------------
+# Teste de Aceitacao do sistema easyLabCorrection
+# Equipe de Desenvolvimento:
+# ----- Alysson Filgueira
+# ----- Augusto Macedo
+# ----- Demetrio Mestre
+#--------------------------------------------------------------------------------------------
+
+#####################################################################################
+# US 04: Criação de Equipes e Submissão de Roteiros
+#####################################################################################
+
+#ID do Teste: a
+
+# Cria equipes inicialmente
+
+equipeID1=criaEquipe
+equipeID2=criaEquipe
+equipeID3=criaEquipe
+equipeID4=criaEquipe
+equipeID5=criaEquipe
+
+# Cadastramos alunos (O GrupoID de Aluno no sistema é 4)
+idGrupo=getAlunoGrupoID
+
+idGrupoUsuarioA=cadastrarUsuario grupoId=${idGrupo} nome="AlunoA" login="alunoa" senha="123123" email="a@hotmail.com"
+idGrupoUsuarioB=cadastrarUsuario grupoId=${idGrupo} nome="AlunoB" login="alunob" senha="123123" email="b@hotmail.com"
+idGrupoUsuarioC=cadastrarUsuario grupoId=${idGrupo} nome="AlunoC" login="alunoc" senha="123123" email="c@hotmail.com"
+idGrupoUsuarioD=cadastrarUsuario grupoId=${idGrupo} nome="AlunoD" login="alunod" senha="123123" email="d@hotmail.com"
+
+# Consideramos a existência de uma ÚNICA equipe no BD (favor limpar BD antes de executar)
+expect 6 getQuantidadeTotalEquipes
+
+#ID do Teste: b
+
+idGrupoUsuarioE=cadastrarUsuario grupoId=${idGrupo} nome="AlunoE" login="alunoE" senha="123123" email="e@hotmail.com"
+idGrupoUsuarioF=cadastrarUsuario grupoId=${idGrupo} nome="AlunoF" login="alunoF" senha="123123" email="f@hotmail.com"
+
+expect 11 getQuantidadeTotalEquipes
+
+#ID do Teste: c
+
+expectError "Não foi possível terminar a consulta! Roteiro inexistente." getQuantidadeEquipesAlocadas roteiroID=-1
+
+#ID do Teste: d
+
+# Cadastra Roteiro
+idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro 1" descricao="Roteiro de Testes" dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
+numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
+numeroMaximoParticipantes=2 bloqueado=false
+
+expectError "Não há equipes alocadas pois o Roteiro Roteiro1 ainda não foi liberado!" getQuantidadeEquipesAlocadas roteiroID=${idRoteiro1} 
+
+#ID do Teste: e
+
+expect 10 getQuantidadeTotalEquipes
+expect 6 getQuantidadeTotalAlunos
+
+# Criamos um roteiro com max integrantes = 1 e para ser liberado no exato momento da criação
+idRoteiro2=cadastrarRoteiro periodoId=1 nome="Roteiro 2" descricao="Roteiro de Testes 2" dataLiberacao="AGORA" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
+numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
+numeroMaximoParticipantes=1 bloqueado=false
+
+equipeID6=getEquipe equipeId=6
+
+# 6 equipes...
+expect 6 getQuantidadeEquipesAlocadas roteiroId=${idRoteiro2}
+# ... cada uma com 1 aluno
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID1}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID2}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID3}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID4}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID5}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID6}
+
+#ID do Teste: f
+
+expectError "Nenhuma equipe pode ser modificada. O Roteiro é individual!" mudarEquipe \
+roteiroId=${idRoteiro2} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
+
+#ID do Teste: g
+
+expect 10 getQuantidadeTotalEquipes
+expect 6 getQuantidadeTotalAlunos
+
+# Criamos um roteiro com max integrantes = 2 e para ser liberado no exato momento da criação
+idRoteiro3=cadastrarRoteiro periodoId=1 nome="Roteiro 3" descricao="Roteiro de Testes 3" dataLiberacao="AGORA" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
+numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
+numeroMaximoParticipantes=1 bloqueado=false
+
+equipeID1=mudarEquipe roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
+
+#ID do Teste: h
+# 6 equipes...
+expect 6 getQuantidadeEquipesAlocadas roteiroId=${idRoteiro3}
+# ... 4 equipes (2 à 5) com 1 aluno cada (B, C, D e E), 1 equipe (1) com 2 alunos (A e F) e 1 equipe (6) com 0 aluno
+expect 2 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID1}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID2}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID3}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID4}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID5}
+expect 0 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID6}
+
+expectError "Não foi possível mudar de equipe! Limite de integrantes da Equipe 1 já alcançado (máximo de 2 integrante(s) por equipe)" mudarEquipe \
+roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioE}
+
+#ID do Teste: i
+
+expectError "Mudança de equipe não realizada! Aluno inexistente." mudarEquipe \
+roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID6} grupoUsuarioId=7
+
+#ID do Teste: j
+
+expectError "Mudança não realizada! Equipe inexistente." mudarEquipe \
+roteiroId=${idRoteiro3} equipeDeEntradaId=7 grupoUsuarioId=${idGrupoUsuarioA}
+
+#ID do Teste: k
+
+expectError "Mudança de equipe não realizada! AlunoF não faz parte da Equipe 5." mudarEquipe \
+roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
+
+#ID do Teste: l
+
+expectError "O Caminho do servidor para submissões não foi aceito. Deve seguir o template: periodo<semestre>/submissoes/roteiro<id>/<nomeEquipe>/" criarSubmissao \
+roteiroId=${idRoteiro3} equipeId=${equipeID6} grupoUsuarioId=${idGrupoUsuarioA} url="periodo2010.2/submissoes/roteiro3_Equipe 1/"
+
+#ID do Teste: m
+
+# expect "O Caminho do servidor para submissões foi atualizado com sucesso!" no System.Out.Println(...)
+idSubmissao=criarSubmissao \
+roteiroId=${idRoteiro3} equipeId=${equipeID6} grupoUsuarioId=${idGrupoUsuarioA} url="periodo2010.2/submissoes/roteiro3/Equipe 1/"
+
+#ID do Teste: n
+
+idSubmissao=criarSubmissao \
+roteiroId=${idRoteiro3} equipeId=${equipeID6} grupoUsuarioId=${idGrupoUsuarioA} url="periodo2010.2/submissoes/roteiro3/Equipe 1/"
+
+expectError "Mudança não realizada! A 1ª submissão de roteiro da equipe já foi realizada." mudarEquipe \
+roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID6} grupoUsuarioId=${idGrupoUsuarioA}
+
+
+#####################################################################################
+# Para ver as alteracoes no Banco de Dados comente as linhas seguintes.
+#####################################################################################
+
+
+
+excluirUsuario idGrupoUsuario=${idGrupoUsuarioA}
+excluirUsuario idGrupoUsuario=${idGrupoUsuarioB}
+excluirUsuario idGrupoUsuario=${idGrupoUsuarioC}
+excluirUsuario idGrupoUsuario=${idGrupoUsuarioD}
+excluirUsuario idGrupoUsuario=${idGrupoUsuarioE}
+excluirUsuario idGrupoUsuario=${idGrupoUsuarioF}
+
+excluirRoteiro idRoteiro=${idRoteiro1}
+excluirRoteiro idRoteiro=${idRoteiro2}
+excluirRoteiro idRoteiro=${idRoteiro3}
+
+excluirSubmissao submissaoId=${idSubmissao}
