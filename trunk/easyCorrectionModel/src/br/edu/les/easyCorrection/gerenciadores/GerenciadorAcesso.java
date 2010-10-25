@@ -15,13 +15,12 @@ import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
-import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.GeraMd5;
 import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
-public class GerenciadorAcesso {
+public class GerenciadorAcesso extends Gerenciador{
 
 	private GerenciadorSubmissoes gerenciadorSubmissoes;
 
@@ -662,9 +661,5 @@ public class GerenciadorAcesso {
 					.msg("usuario"));
 		}
 		return usuarioBanco;
-	}
-
-	public Periodo getPeriodo(int i) {
-		return DAOFactory.DEFAULT.buildPeriodoDAO().getById(i);
 	}
 }

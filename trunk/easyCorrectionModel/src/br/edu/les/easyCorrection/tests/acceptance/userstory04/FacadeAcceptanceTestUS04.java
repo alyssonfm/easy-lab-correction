@@ -153,8 +153,8 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * UTIL
 	 */
 
-	public Equipe getEquipe(int equipeId) throws Throwable {
-		return facadeSistema.getEquipe(equipeId);
+	public Equipe getEquipePorNome(String nome) throws Throwable {
+		return facadeSistema.getEquipePorNome(nome);
 	}
 
 	public Submissao getSubmissao(int submissaoId){
