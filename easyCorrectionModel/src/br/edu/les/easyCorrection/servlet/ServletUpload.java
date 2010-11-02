@@ -30,7 +30,7 @@ public class ServletUpload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	//private static final String local = "upload_projetos_epibic"; //url do upload servidor
 	//private static final String local = "/home/demetriogm/"; //url do upload local
-	private static final String local = "Submissoes"; //url do upload local
+	private static final String local = "LEDA" + File.separator + "Roteiros"; //url do upload local
 	private static final String curriculoTemp = "/home/desenvolvimento/tomcat6/temp_curriculos/"; //url do temp de currículos servidor
 	//private static final String curriculoTemp = "/home/demetriogm/"; //url do temp de currículos local
 	//private static final String curriculoTemp = "D:/Projetos/"; //url do temp de currículos local
@@ -171,7 +171,8 @@ public class ServletUpload extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void fazUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//String uploadDir = this.getServletContext().getRealPath(local);
-		String uploadDir = System.getProperty("catalina.base") + File.separator + local + File.separator;
+		String url = request.getParameter("url").replace("/", File.separator);
+		String uploadDir = System.getProperty("catalina.base") + File.separator + local + url;
 		String nomeArquivo = request.getParameter("nomeArquivo");
 
 		DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -179,7 +180,7 @@ public class ServletUpload extends HttpServlet {
         factory.setSizeThreshold(4096);
         
         File file = new File(uploadDir);
-        file.mkdir();
+        file.mkdirs();
         factory.setRepository(file);
 
         ServletFileUpload uploadParser = new ServletFileUpload(factory);
