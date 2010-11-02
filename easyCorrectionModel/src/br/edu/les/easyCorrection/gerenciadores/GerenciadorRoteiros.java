@@ -222,10 +222,10 @@ public class GerenciadorRoteiros extends Gerenciador{
 		validaRoteiroEmCriacao(roteiro);
 
 		String testesDirDefault = "periodo" + roteiro.getPeriodo().toString()
-				+ "/testes/roteiroID_" + roteiro.getId() + "/";
+				+ "/TESTES/" + roteiro.getNome() + "/";
 		String interfaceDirDefault = "periodo"
-				+ roteiro.getPeriodo().toString() + "/interface/roteiroID_"
-				+ roteiro.getId() + "/";
+				+ roteiro.getPeriodo().toString() + "/INTERFACE/"
+				+ roteiro.getNome() + "/";
 
 		if ((roteiro.getDiretorioTestes() != null && !roteiro
 				.getDiretorioTestes().equals(""))
