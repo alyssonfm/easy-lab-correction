@@ -247,10 +247,11 @@ public class Sistema {
 	public Equipe getEquipe(int id){
 		return gerenciadorSubmissoes.getEquipe(id);
 	}
-	
+	//TODO
+	/*
 	public Equipe getEquipePorNome(String nome) throws Throwable {
 		return gerenciadorSubmissoes.getEquipePorNome();
-	}
+	}*/
 	
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros(){
 		return gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiros();

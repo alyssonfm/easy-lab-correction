@@ -495,10 +495,10 @@ public class Facade {
 			throw e;
 		}
 	}
-	
+	/* TODO
 	public Equipe getEquipePorNome(String nome) throws Throwable {
 		return sistema.getEquipePorNome(nome);
-	}
+	}*/
 
 	public List<Equipe> getEquipes() throws Throwable{
 		try{
