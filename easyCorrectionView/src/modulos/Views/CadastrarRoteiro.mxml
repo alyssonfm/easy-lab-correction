@@ -144,7 +144,7 @@
 					requestTestes = new URLRequest(FILE_UPLOAD_URL);
 					var variables:URLVariables = new URLVariables();
 					variables.url = roteiro.diretorioInterface;
-					variables.nomeArquivo = roteiro.nome + "interface.java";
+					variables.nomeArquivo = "interface.java";
 					requestInterface.data = variables;
 					fileRefInterface.upload(requestInterface);
 				}
@@ -191,9 +191,9 @@
 					roteiro.dataFinalEntrega = Util.formataDataStringEmDate(dfDataMaxima.text);
 					roteiro.dataLiberacao = Util.formataDataStringEmDate(dfDataLiberacao.text);
 					roteiro.descricao = inputDescricao.text;
-					roteiro.diretorioInterface = caminhoInterface.text;
-					roteiro.diretorioTestes = caminhoTestes.text;
 					roteiro.nome = inputTitulo.text;
+					roteiro.diretorioInterface = "/periodo" + periodo.semestre + "/INTERFACE/" + roteiro.nome + "/";
+					roteiro.diretorioTestes = "/periodo" + periodo.semestre + "/TESTES/" + roteiro.nome + "/";
 					roteiro.numeroMaximoEnvios = int(inputNumeroMaxEnvios.text);
 					roteiro.numeroMaximoParticipantes = int(inputMaximoEquipe.text);
 					roteiro.penalidadeDiasAtraso = Util.formataTextValorToNumber(inputPenalidade.text);
@@ -221,7 +221,7 @@
 					try{
 						var variables:URLVariables = new URLVariables();
 						variables.url = roteiro.diretorioTestes;
-						variables.nomeArquivo = roteiro.nome + " testes.zip";
+						variables.nomeArquivo = "testes.zip";
 						requestTestes.data = variables;
 						fileRefTestes.upload(requestTestes);
 					}catch(e: Error){}
