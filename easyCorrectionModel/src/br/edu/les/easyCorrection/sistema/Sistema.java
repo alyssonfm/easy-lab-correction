@@ -141,6 +141,10 @@ public class Sistema {
 	public List<GrupoUsuario> listarGrupoUsuarios() {
 		return gerenciadorAcesso.listarGrupoUsuario();
 	}
+	
+	public List<GrupoUsuario> listarGrupoUsuariosPorGrupo(String nomeGrupo) {
+		return gerenciadorAcesso.listarGrupoUsuarioPorGrupo(nomeGrupo);
+	}
 
 	public List<Permissao> consultarPermissoesPorGrupo(Integer idGrupo) {
 		return gerenciadorAcesso.consultarPermissoesPorGrupo(idGrupo);

@@ -255,6 +255,15 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public List<GrupoUsuario> listarGrupoUsuariosPorGrupo(String nomeGrupo) throws Throwable {
+		try {
+			return sistema.listarGrupoUsuariosPorGrupo(nomeGrupo);
+		} catch (Throwable e) {
+			log.error("listarGrupoUsuarios()", e);
+			throw e;
+		}
+	}
 
 	public List<Permissao> consultarPermissoesPorGrupo(Integer idGrupo)
 			throws Throwable {
