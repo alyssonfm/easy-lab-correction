@@ -122,15 +122,19 @@ public class GerenciadorSubmissoes {
 		return lista.size();
 	}
 
-	public Submissao submeteRoteiro(Submissao submissao) {
+	public Submissao submeteRoteiro(Submissao submissao) throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(submissao)) {
-			if (numeroSubmissoes(submissao) < (submissao
+			if (numeroSubmissoes(submissao) <= (submissao
 					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
 					.getNumeroMaximoEnvios())) {
 				submissao.setDataSubmissao(easyCorrectionUtil.getDataNow());
 				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(
 						submissao);
 				submissao.setId(id);
+			}
+			else{
+				throw new EasyCorrectionException(
+						MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO.msg(submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getNome()));
 			}
 		}
 		return submissao;
