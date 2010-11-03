@@ -95,7 +95,13 @@
 				
 				public function envioCompleto(evt:Event):void {
 					request = new URLRequest(FILE_UPLOAD_URL);
-			       	var param:Array = new Array(false, "Roteiro submetido com sucesso.");
+					facade.getOperation("rodarTestesAutomaticos").send(CastDeEntidades.castSubmissao(submissao));
+				}
+				
+				public function rodarTestesAutomaticos_result(event:ResultEvent):void{
+					var result: String = event.result as String;
+					inputDescricao.text = result;
+					var param:Array = new Array(false, "Roteiro submetido com sucesso.");
 					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 				}
 				
@@ -112,14 +118,19 @@
 				}
 				
 				public function submeteRoteiro(): void{
-					if(fileRef != null && eur.id != 0){
-						submissao = new Submissao();
-						submissao.equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
-						submissao.equipeHasUsuarioHasRoteiro = eur;
-						submissao.url = "submissao" + eur.id + ".zip";
-						facade.getOperation("submeteRoteiro").send(CastDeEntidades.castSubmissao(submissao));
-					}else{
-						var param:Array = new Array(false, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+					try{
+						if(fileRef != null && eur.id != 0){
+							submissao = new Submissao();
+							submissao.equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
+							submissao.equipeHasUsuarioHasRoteiro = eur;
+							submissao.url = "/periodo" + eur.roteiro.periodo.semestre + "/" + eur.roteiro.nome + "/" + eur.equipe.nome + "/";
+							facade.getOperation("submeteRoteiro").send(CastDeEntidades.castSubmissao(submissao));
+						}else{
+							var param:Array = new Array(false, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+						}
+					}catch(e: Error){
+						var param:Array = new Array(true, "Este Usuário não está em nenhuma equipe.");
 						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 					}
 				}
@@ -131,7 +142,7 @@
 						if(fileRef != null || request != null){
 							var variables:URLVariables = new URLVariables();
 							variables.url = submissao.url;
-							variables.nomeArquivo = submissao.url;
+							variables.nomeArquivo = "codigo.zip";
 							request.data = variables;
 							fileRef.upload(request);
 						}
@@ -155,7 +166,7 @@
 			<mx:method name="getRoteirosLiberados" result="getRoteirosLiberados_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro" result="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event)" fault="falha(event)"/>
 			<mx:method name="submeteRoteiro" result="submeteRoteiro_result(event)" fault="falha(event)"/>
-			
+			<mx:method name="rodarTestesAutomaticos" result="rodarTestesAutomaticos_result(event)" fault="falha(event)"/>
 		</mx:RemoteObject>
 		
 		<mx:Label text="Resultados:" fontWeight="bold"
