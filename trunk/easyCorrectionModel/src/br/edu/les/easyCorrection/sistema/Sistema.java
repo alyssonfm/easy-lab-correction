@@ -247,11 +247,10 @@ public class Sistema {
 	public Equipe getEquipe(int id){
 		return gerenciadorSubmissoes.getEquipe(id);
 	}
-	//TODO
-	/*
-	public Equipe getEquipePorNome(String nome) throws Throwable {
-		return gerenciadorSubmissoes.getEquipePorNome();
-	}*/
+	
+	public Equipe getEquipePorNome(String nomeEquipe) throws Throwable {
+		return gerenciadorSubmissoes.getEquipePorNome(nomeEquipe);
+	}
 	
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros(){
 		return gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiros();
@@ -288,4 +287,5 @@ public class Sistema {
 	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
 		return gerenciadorSubmissoes.cadastraEquipe(e);
 	}
+
 }
