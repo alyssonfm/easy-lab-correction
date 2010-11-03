@@ -392,6 +392,10 @@ public class GerenciadorAcesso extends Gerenciador{
 	public List<GrupoUsuario> listarGrupoUsuario() {
 		return DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findAllGrupoUsuario();
 	}
+	
+	public List<GrupoUsuario> listarGrupoUsuarioPorGrupo(String nomeGrupo) {
+		return DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByGrupo(nomeGrupo);
+	}
 
 	public Usuario getUsuario(Integer id) {
 		List<Usuario> usuario = DAOFactory.DEFAULT.buildUsuarioDAO().findById(
@@ -662,4 +666,5 @@ public class GerenciadorAcesso extends Gerenciador{
 		}
 		return usuarioBanco;
 	}
+	
 }
