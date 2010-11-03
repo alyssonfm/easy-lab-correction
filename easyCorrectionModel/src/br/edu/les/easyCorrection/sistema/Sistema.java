@@ -272,6 +272,10 @@ public class Sistema {
 		return gerenciadorSubmissoes.submeteRoteiro(submissao);
 	}
 	
+	public String rodarTestesAutomaticos(Submissao submissao) throws EasyCorrectionException{
+		return gerenciadorSubmissoes.rodarTestesAutomaticos(submissao);
+	}
+	
 	public int getEquipeAlocadas(Integer idRoteiro){
 		return gerenciadorSubmissoes.getEquipeAlocadas(idRoteiro);
 	}
