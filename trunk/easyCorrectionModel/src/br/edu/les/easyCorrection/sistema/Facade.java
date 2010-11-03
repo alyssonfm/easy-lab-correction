@@ -576,6 +576,15 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public String rodarTestesAutomaticos(Submissao submissao) throws Throwable{
+		try {
+			return sistema.rodarTestesAutomaticos(submissao);
+		} catch (Throwable e) {
+			log.error("rodarTestesAutomaticos()", e);
+			throw e;
+		}
+	}
 
 	public Submissao getSubmissao(int submissaoId){
 		return sistema.getSubmissao(submissaoId);
