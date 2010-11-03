@@ -85,7 +85,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @throws Throwable 
 	 */
 	public int getQuantidadeTotalAlunos() throws Throwable {
-		return facadeSistema.listarUsuarios().size();
+		return facadeSistema.listarGrupoUsuariosPorGrupo("Aluno").size();
 	}
 
 	/**
