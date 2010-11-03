@@ -268,7 +268,7 @@ public class Sistema {
 		return gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe, idRoteiro);
 	}
 
-	public Submissao submeteRoteiro(Submissao submissao) {
+	public Submissao submeteRoteiro(Submissao submissao) throws EasyCorrectionException {
 		return gerenciadorSubmissoes.submeteRoteiro(submissao);
 	}
 	
