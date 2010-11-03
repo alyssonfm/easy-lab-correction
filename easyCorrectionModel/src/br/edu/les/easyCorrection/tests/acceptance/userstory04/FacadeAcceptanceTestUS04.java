@@ -108,7 +108,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 */
 	public EquipeHasUsuarioHasRoteiro mudarEquipe(int roteiroId, int equipeDeEntradaId, int grupoUsuarioId) throws Throwable {
 		EquipeHasUsuarioHasRoteiro equipeUsuarioRoteiro = new EquipeHasUsuarioHasRoteiro();
-		//TODO equipeUsuarioRoteiro.setEquipe(getEquipe(equipeDeEntradaId));
+		equipeUsuarioRoteiro.setEquipe(getEquipe(equipeDeEntradaId));
 		equipeUsuarioRoteiro.setUsuario(getGrupoUsuario(grupoUsuarioId).getUsuario());
 		equipeUsuarioRoteiro.setRoteiro(getRoteiro(roteiroId));
 		return facadeSistema.mudarEquipe(equipeUsuarioRoteiro);
@@ -128,10 +128,10 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 		sub.setDataSubmissao(Calendar.getInstance().getTime());
 
 		EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
-		//TODO Equipe equipe = getEquipe(equipeId);
+		Equipe equipe = getEquipe(equipeId);
 		Roteiro roteiro = getRoteiro(roteiroId);
 		Usuario usuario = getUsuario(usuarioId);
-		//TODO eur.setEquipe(equipe);
+		eur.setEquipe(equipe);
 		eur.setRoteiro(roteiro);
 		eur.setUsuario(usuario);
 		eur.setId(0);
@@ -152,11 +152,13 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	/*
 	 * UTIL
 	 */
-	//TODO
-	/*
 	public Equipe getEquipePorNome(String nome) throws Throwable {
 		return facadeSistema.getEquipePorNome(nome);
-	}*/
+	}
+	
+	public Equipe getEquipe(int idEquipe) throws Throwable {
+		return facadeSistema.getEquipe(idEquipe);
+	}
 
 	public Submissao getSubmissao(int submissaoId){
 		return facadeSistema.getSubmissao(submissaoId);
