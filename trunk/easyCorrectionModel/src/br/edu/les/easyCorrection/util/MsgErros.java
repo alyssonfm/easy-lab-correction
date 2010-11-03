@@ -91,6 +91,21 @@ public enum MsgErros {
 			return "Erro no envio! A sua equipe já alcançou o limite de submissões do " + args[0];
 		}
 	},
+	ERRO_COMPILACAO_SEM_CLASSE{
+		public String msg(String... args) {
+			return "ERRO DE COMPILAÇÃO! Sua solução não possui tem a classe que implementa a interface na raiz do .zip";
+		}
+	},
+	ERRO_COMPILACAO_SINTAXE{
+		public String msg(String... args) {
+			return "ERRO DE COMPILAÇÃO! Sua solução possui algum erro sintático.";
+		}
+	},
+	TEMPO_LIMITE_EXCEDIDO{
+		public String msg(String... args) {
+			return "TEMPO LIMITE EXCEDIDO! Sua solução não obedeceu ao limite de tempo de execução.";
+		}
+	},	
 	ROTEIRO_INEXISTENTE{
 		public String msg(String... args) {
 			return "Não foi possível terminar a consulta! Roteiro inexistente.";
