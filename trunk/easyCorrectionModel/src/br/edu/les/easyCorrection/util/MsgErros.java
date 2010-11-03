@@ -86,6 +86,11 @@ public enum MsgErros {
 			return "Está equipe já contém o número máximo de participantes. Por favor cadastre-se em outra equipe.";
 		}
 	},
+	NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO{
+		public String msg(String... args) {
+			return "Erro no envio! A sua equipe já alcançou o limite de submissões do " + args[0];
+		}
+	},
 	ROTEIRO_INEXISTENTE{
 		public String msg(String... args) {
 			return "Não foi possível terminar a consulta! Roteiro inexistente.";
