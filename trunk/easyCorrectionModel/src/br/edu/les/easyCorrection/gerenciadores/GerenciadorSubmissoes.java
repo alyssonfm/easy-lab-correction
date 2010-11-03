@@ -42,6 +42,16 @@ public class GerenciadorSubmissoes {
 		}
 		return equipe;
 	}
+	
+	public Equipe getEquipePorNome(String nome) {
+		List<Equipe> equipes = DAOFactory.DEFAULT.buildEquipeDAO().findByNome(nome);
+		Equipe eq = equipes.get(0);
+		if (easyCorrectionUtil.isNull(eq)) {
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
+					.msg("equipe"));
+		}
+		return eq;
+	}
 
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
 			Integer idEquipe, Integer idRoteiro) {
