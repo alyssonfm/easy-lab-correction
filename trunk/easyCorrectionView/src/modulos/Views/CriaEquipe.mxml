@@ -6,7 +6,7 @@
 						xmlns:les="modulos.sistema.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="696" height="390" creationComplete="init()" title="Atribuição de Usuários a Equipe" showCloseButton="true" close="fechaJanela()" layout="absolute">
+	width="696" height="418" creationComplete="init()" title="Atribuição de Usuários a Equipe" showCloseButton="true" close="fechaJanela()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -109,22 +109,19 @@
 				
 				private function getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event:ResultEvent):void{
 					dg_equipe_has_usuario_has_roteiro.dataProvider = event.result;
-					verificaSeUsuarioEstaCadastrado();
 				}
 				
 				private function labelGrid(item:*, column:DataGridColumn):String {
 				var sLabel:String = "";
 				var sHeaderText:String = column.headerText;
 				switch (sHeaderText)  {
+					case "Login":
+						sLabel = item.usuario.login;
+						break;
 					case "Nome":
 						sLabel = item.usuario.nome;
 						break;
-					case "Período":
-						if(item.usuario.periodo != null){
-							sLabel = item.usuario.periodo.semestre;
-						}
-						break;
-					case "E-mail":
+					case "Email":
 						sLabel = item.usuario.email;
 						break;
 				}
@@ -150,35 +147,6 @@
 				usuario = CastDeEntidades.castUsuario(event.result);
 			}
 			
-			private function verificaSeUsuarioEstaCadastrado():void{
-				var idUsuario:int = usuario.idUsuario;
-				var equr:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
-				var tem:Boolean = false;
-				var equipeIgual:Boolean = false;
-				for(var i:int = 0; i < listaEur.length; i++){
-					equr = new EquipeHasUsuarioHasRoteiro();
-					equr = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(listaEur.getItemAt(i));
-					if(equr.usuario.idUsuario == idUsuario){
-						tem = true
-						if(equr.equipe.id == comboEquipe.selectedItem.id){
-							equipeIgual = true;
-						}
-					}
-				}
-				if(tem){
-					botao.label = "Entrar";
-					botao.enabled = false;
-					if(equipeIgual){
-						botao.label = "Sair";
-						botao.enabled = true;
-					}
-				}else{
-					botao.label = "Entrar";
-					botao.enabled = true;
-				}
-				
-			}
-			
 			public function cadastrarEquipeHasRoteiroHasUsuario():void{
 				eur = new EquipeHasUsuarioHasRoteiro();
 				if(comboEquipe.selectedItem != null && comboRoteiro.selectedItem != null){
@@ -186,10 +154,10 @@
 					eur.roteiro = CastDeEntidades.castRoteiro(comboRoteiro.selectedItem);
 					eur.usuario = CastDeEntidades.castUsuario(usuario);
 				}
-				facade.getOperation("verificaSeUsuarioEstaCadastrado").send(eur)
+				facade.getOperation("mudarEquipe").send(eur);
 			}
 			
-			private function cadastraEquipeHasUsuarioHasRoteiro_result(event:ResultEvent):void{
+			private function  mudarEquipe_result(event:ResultEvent):void{
 				if(event.result != null){
 					var param:Array = new Array(false, "Usuario cadastrado com sucesso.");
 						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
@@ -207,7 +175,7 @@
 			<mx:method name="getEquipes" result="getEquipes_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiros" result="getEquipeHasUsuarioHasRoteiros_result(event)" fault="falha(event)"/>
-			<mx:method name="verificaSeUsuarioEstaCadastrado" result="cadastraEquipeHasUsuarioHasRoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="mudarEquipe" result=" mudarEquipe_result(event)" fault="falha(event)"/>
 			<mx:method name="getUsuario" result="getUsuario_result(event)" fault="falha(event)"/>
 			
 		</mx:RemoteObject>
@@ -216,15 +184,13 @@
 		<mx:ComboBox x="76" y="8" width="590" id="comboRoteiro" labelField="nome" change="selecionaEquipe()" enter="selecionaEquipe()"></mx:ComboBox>
 		<mx:Label x="10" y="40" width="69" id="caminho1" textAlign="left" text="Equipe:" fontWeight="bold"/>
 		<mx:ComboBox x="76" y="38" width="590" id="comboEquipe" labelField="nome" change="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro()" enter="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro()" enabled="false"></mx:ComboBox>
-		<mx:DataGrid x="10" y="105" width="656" height="231" id="dg_equipe_has_usuario_has_roteiro" labelFunction="labelGrid">
+		<mx:DataGrid x="10" y="105" width="656" height="259" id="dg_equipe_has_usuario_has_roteiro" labelFunction="labelGrid">
 				<mx:columns>
-						<mx:DataGridColumn headerText="Nome" dataField="col1"/>
-						<mx:DataGridColumn headerText="Período" dataField="col2"/>
-						<mx:DataGridColumn headerText="E-mail" dataField="col3"/>
+						<mx:DataGridColumn headerText="Login" dataField="col1" width="100"/>
+						<mx:DataGridColumn headerText="Nome" dataField="col2"/>
+						<mx:DataGridColumn headerText="Email" dataField="col3" width="200"/>
 				</mx:columns>
 		</mx:DataGrid>
-		<mx:Button x="269" y="69" label="Entrar" width="137.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botao" enabled="true" click="cadastrarEquipeHasRoteiroHasUsuario()"/>
-		<mx:Button x="341.95" y="69" label="Sair" width="137.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSair" enabled="true" visible="false"/>
-		
+		<mx:Button x="269" y="69" label="Entrar" width="137.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="botao" enabled="true" click="cadastrarEquipeHasRoteiroHasUsuario()"/>
 		
 </les:ModuleTitleWindow>
