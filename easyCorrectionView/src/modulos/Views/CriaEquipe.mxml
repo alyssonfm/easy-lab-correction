@@ -6,7 +6,7 @@
 						xmlns:les="modulos.sistema.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="696" height="418" creationComplete="init()" title="Atribuição de Usuários a Equipe" showCloseButton="true" close="fechaJanela()" layout="absolute">
+	width="696" height="418" creationComplete="init()" title="Gerenciamento de Equipes" showCloseButton="true" close="fechaJanela()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
