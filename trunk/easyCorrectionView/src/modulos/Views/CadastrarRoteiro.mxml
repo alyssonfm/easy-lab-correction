@@ -192,8 +192,8 @@
 					roteiro.dataLiberacao = Util.formataDataStringEmDate(dfDataLiberacao.text);
 					roteiro.descricao = inputDescricao.text;
 					roteiro.nome = inputTitulo.text;
-					roteiro.diretorioInterface = "/periodo" + periodo.semestre + "/INTERFACE/" + roteiro.nome + "/";
-					roteiro.diretorioTestes = "/periodo" + periodo.semestre + "/TESTES/" + roteiro.nome + "/";
+					roteiro.diretorioInterface = "/periodo" + periodo.semestre + "/interface/" + roteiro.nome + "/";
+					roteiro.diretorioTestes = "/periodo" + periodo.semestre + "/testes/" + roteiro.nome + "/";
 					roteiro.numeroMaximoEnvios = int(inputNumeroMaxEnvios.text);
 					roteiro.numeroMaximoParticipantes = int(inputMaximoEquipe.text);
 					roteiro.penalidadeDiasAtraso = Util.formataTextValorToNumber(inputPenalidade.text);
