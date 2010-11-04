@@ -221,22 +221,22 @@ public class GerenciadorRoteiros extends Gerenciador{
 		// Os testes de JAH_CRIADO são somados aos de EM_CRIACAO
 		validaRoteiroEmCriacao(roteiro);
 
-		String testesDirDefault = "periodo" + roteiro.getPeriodo().toString()
-				+ "/TESTES/" + roteiro.getNome() + "/";
-		String interfaceDirDefault = "periodo"
-				+ roteiro.getPeriodo().toString() + "/INTERFACE/"
+		String testesDirDefault = "/periodo" + roteiro.getPeriodo().toString()
+				+ "/testes/" + roteiro.getNome() + "/";
+		String interfaceDirDefault = "/periodo"
+				+ roteiro.getPeriodo().toString() + "/interface/"
 				+ roteiro.getNome() + "/";
 
 		if ((roteiro.getDiretorioTestes() != null && !roteiro
 				.getDiretorioTestes().equals(""))
 				&& !roteiro.getDiretorioTestes().endsWith(testesDirDefault)) {
 			throw new EdicaoRoteiroException(
-					"Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/roteiroID_<numero>/'. O Roteiro não pôde ser atualizado!");
+					"Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/<nome_roteiro>/'. O Roteiro não pôde ser atualizado!");
 		} else if ((roteiro.getDiretorioInterface() != null && !roteiro
 				.getDiretorioInterface().equals(""))
 				&& !roteiro.getDiretorioInterface().endsWith(interfaceDirDefault)) {
 			throw new EdicaoRoteiroException(
-					"Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/roteiroID_<numero>/'. O Roteiro não pôde ser atualizado!");
+					"Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/<nome_roteiro>/'. O Roteiro não pôde ser atualizado!");
 		}
 		return true;
 	}

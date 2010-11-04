@@ -219,17 +219,17 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 		if (dirCodificado == null) {
 			return null;
 		} else if (dirCodificado.equals("TESTES_DIFF_DEFAULT")) {
-			result = "periodo" + rot.getPeriodo().toString()
+			result = "/periodo" + rot.getPeriodo().toString()
 					+ "/testes/roteiroID/" + rot.getId() + "/";
 		} else if (dirCodificado.equals("TESTES_DEFAULT_OK")) {
-			result = "periodo" + rot.getPeriodo().toString()
-					+ "/testes/roteiroID_" + rot.getId() + "/";
+			result = "/periodo" + rot.getPeriodo().toString()
+					+ "/testes/" + rot.getNome() + "/";
 		} else if (dirCodificado.equals("INTERFACE_DIFF_DEFAULT")) {
-			result = "periodo" + rot.getPeriodo().toString()
+			result = "/periodo" + rot.getPeriodo().toString()
 					+ "/INTERFACE/roteiroID_" + rot.getId() + "/";
 		} else if (dirCodificado.equals("INTERFACE_DEFAULT_OK")) {
-			result = "periodo" + rot.getPeriodo().toString()
-					+ "/interface/roteiroID_" + rot.getId() + "/";
+			result = "/periodo" + rot.getPeriodo().toString()
+					+ "/interface/" + rot.getNome() + "/";
 		} else {
 			result = "";
 		}
