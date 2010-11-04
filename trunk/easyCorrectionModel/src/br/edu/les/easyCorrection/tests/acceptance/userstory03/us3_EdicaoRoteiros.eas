@@ -88,7 +88,7 @@ penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 
 
 
 #ID do Teste: m
-expectError "Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/roteiroID_<numero>/'. O Roteiro não pôde ser atualizado!" editarRoteiro roteiroId=${idRoteiro1} \
+expectError "Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/<nome_roteiro>/'. O Roteiro não pôde ser atualizado!" editarRoteiro roteiroId=${idRoteiro1} \
 periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" \
 diretorioTestes="TESTES_DIFF_DEFAULT" numeroMaximoParticipantes=3 bloqueado=false
@@ -100,7 +100,7 @@ penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 
 diretorioTestes="TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
  
 #ID do Teste: o
-expectError "Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/roteiroID_<numero>/'. O Roteiro não pôde ser atualizado!" editarRoteiro roteiroId=${idRoteiro1} \
+expectError "Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/<nome_roteiro>/'. O Roteiro não pôde ser atualizado!" editarRoteiro roteiroId=${idRoteiro1} \
 periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="INTERFACE_DIFF_DEFAULT" \
 diretorioTestes="TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
