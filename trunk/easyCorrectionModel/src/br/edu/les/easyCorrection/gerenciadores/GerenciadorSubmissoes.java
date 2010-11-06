@@ -100,11 +100,6 @@ public class GerenciadorSubmissoes {
 		
 		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT
 				.buildEquipeHasUsuarioHasRoteiroDAO().findByRoteiro(idRoteiro);
-
-		if (lista.isEmpty()){
-			throw new ObjetoNaoEncontradoException(
-					MsgErros.ROTEIRO_NAO_LIBERADO.msg(roteiro.getNome()));	
-		}
 		
 		for (EquipeHasUsuarioHasRoteiro equr : lista) {
 			if (!equr.getRoteiro().getId().equals(gerenciadorRoteiros.getRoteiroLiberado(equr.getRoteiro().getId()).getId())) {
