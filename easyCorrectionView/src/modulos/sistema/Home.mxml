@@ -39,38 +39,47 @@
 		
 	<mx:Canvas label="Roteiros" id="canvasRoteiros">
 	
-		<mx:Label x="374" y="12" text="Detalhes do Roteiro" fontWeight="bold" fontStyle="italic" fontSize="14"/>
+		<mx:Label x="331" y="12" text="Detalhes do Roteiro" fontWeight="bold" fontStyle="normal" fontSize="14"/>
 		<mx:Label x="14" y="552" text="Total de Projetos Inscritos:" id="labelTotalProjetosInscritos" visible="false"/>
 		<mx:Label x="198" y="552" width="85" id="totalProjetosInscritos" visible="false"/>
-		<mx:Label x="374" y="62" text="Aluno:"/>
-		<mx:Label x="374" y="436" text="Participantes:"/>
-		<mx:LinkButton x="744" y="13" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar este Roteiro"/>
-		<mx:LinkButton x="744" y="44" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Avaliação"/>
+		<mx:Label x="10" y="461" text="Equipe:"/>
+		<mx:LinkButton x="469.8" y="520" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Roteiro"/>
+		<mx:LinkButton x="636.8" y="520" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Testes"/>
+		<mx:LinkButton x="435.8" y="551" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Correção"/>
+		<mx:LinkButton x="636.8" y="551" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Planilha de Notas"/>
 		<mx:LinkButton x="626" y="10" visible="false" icon="@Embed(source='../../image/help2.png')" label="  Instruções para Avaliação dos Projetos" id="linkInstrucao"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Atualizar Projeto" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAtualizaOrientador"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Avaliar" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAvaliacao"/>
 		<mx:List x="10" y="70" visible="false" fontSize="12" width="315" height="95" cornerRadius="20" alpha="0.5" id="projetoAvaliacaoList"/>
 		<mx:List x="10" y="404" visible="false" fontSize="12" width="315" height="137" cornerRadius="20" alpha="0.5" id="projetoList"/>
 		<mx:List x="10" y="202" visible="false" fontSize="12" width="315" height="155" cornerRadius="20" alpha="0.5" id="projetoCotaList"/>
-		<mx:Label x="377" y="115" text="Descrição do Roteiro:" id="labelDescRoteiro"/>
-		<mx:Label x="377" y="376" text="Nota final:"/>
-		<mx:Label x="377" y="320" text="Nota dos testes automáticos:"/>
-		<mx:Label x="377" y="348" text="Nota da codificação:"/>
+		<mx:Label x="331" y="81" text="Descrição:" id="labelDescRoteiro"/>
+		<mx:Label x="331" y="53" text="Título:" id="labelDescRoteiro0"/>
+		<mx:Label x="759" y="14" text="Nota final:"/>
+		<mx:Label y="45" text="Nota dos testes:" x="718"/>
+		<mx:Label x="654" y="422" text="Data de Liberação:"/>
+		<mx:Label x="654" y="450" text="Data de Entrega:"/>
+		<mx:Label x="654" y="478" text="Data Final para Discussão:"/>
+		<mx:Label x="331" y="422" text="Número máximo de envios:"/>
+		<mx:Label x="331" y="450" text="Máximo de Integrantes por Equipe:"/>
+		<mx:Label x="331" y="478" text="Penalidade por dia de atraso:"/>
 		<mx:Label x="10" y="46" text="Projetos para Avaliação:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetoAvaliacaoLabel" visible="false"/>
 		<mx:Label x="10" y="378" text="Meus Projetos:" fontStyle="normal" fontWeight="bold" fontSize="14" id="meusProjetosLabel" visible="false"/>
 		<mx:Label x="10" y="176" text="Projetos da Cota Atual:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetosCotaLabel" visible="false"/>
-		<mx:VRule x="346" y="16" height="577"  width="1"/>
-		<mx:Label x="374" y="87" width="541" id="orientadorLabel" color="#1B7A0F" text="Demetrio Mestre"/>
-		<mx:Label x="374" y="464" width="541" id="orientadorLabel0" color="#1B7A0F" text="Augusto Macedo"/>
-		<mx:Label x="374" y="492" width="541" id="orientadorLabel1" color="#1B7A0F" text="Alysson Filgueira"/>
-		<mx:Label x="577" y="376" width="32" id="labelNota" color="#1B7A0F" text="8,0"/>
-		<mx:Label x="577" y="348" width="32" id="labelNota0" color="#1B7A0F" text="4,0"/>
-		<mx:Label x="577" y="320" width="32" id="labelNota1" color="#1B7A0F" text="4,0"/>
-		<mx:TextArea x="377" y="143" width="541" height="169" backgroundAlpha="0.0" id="resumoText" editable="false" alpha="0.5" cornerRadius="10"/>
+		<mx:VRule x="302" y="13" height="577"  width="1"/>
+		<mx:Label x="575" y="478" width="32" id="labelNota" color="#1B7A0F" text="0,5"/>
+		<mx:Label x="575" y="450" width="32" id="labelNota0" color="#1B7A0F" text="4"/>
+		<mx:Label x="575" y="422" width="32" id="labelNota1" color="#1B7A0F" text="4"/>
+		<mx:Label x="795" y="422" width="88" id="labelNota5" color="#1B7A0F" text="00/00/0000"/>
+		<mx:Label x="795" y="450" width="88" id="labelNota4" color="#1B7A0F" text="00/00/0000"/>
+		<mx:Label x="835" y="478" width="88" id="labelNota3" color="#1B7A0F" text="00/00/0000"/>
+		<mx:TextArea x="331" y="109" width="587" height="294" backgroundAlpha="0.0" id="resumoText" editable="false" alpha="0.5" cornerRadius="10"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
-		<mx:Label x="10" y="295" text="Grupos:" height="22"/>
-		<mx:List x="10" y="44" width="315" height="241"></mx:List>
-		<mx:List x="10" y="325" width="315" height="268"></mx:List>
+		<mx:List x="10" y="44" width="264" height="399"></mx:List>
+		<mx:List x="10" y="489" width="267" height="85"></mx:List>
+		<mx:Label x="383" y="53" width="126" id="labelNota2" color="#1B7A0F" text="Título do Roteiro"/>
+		<mx:Label x="837" y="14" width="48" id="labelNota6" color="#1B7A0F" text="10,0"/>
+		<mx:Label x="837" y="45" width="48" id="labelNota7" color="#1B7A0F" text="10,0"/>
 	</mx:Canvas>
 </mx:TabNavigator>
