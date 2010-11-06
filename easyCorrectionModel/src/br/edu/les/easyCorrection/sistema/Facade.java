@@ -34,7 +34,7 @@ public class Facade {
 
 
 	public void reinicializaBancoDeDados(){
-		sistema.reinicializaBancoDeDados();
+		sistema.reinicializaBancoDeDados("backupEasyCorrection");
 	}
 	
 	/*******************************************************************
