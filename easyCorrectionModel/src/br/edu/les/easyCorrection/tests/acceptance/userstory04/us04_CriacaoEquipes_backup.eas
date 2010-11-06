@@ -10,69 +10,6 @@
 # US 04: Criação de Equipes e Submissão de Roteiros
 #####################################################################################
 
-#ID do Teste: a
-
-# Cria equipes inicialmente
-
-equipeID1=criaEquipe
-equipeID2=criaEquipe
-equipeID3=criaEquipe
-equipeID4=criaEquipe
-equipeID5=criaEquipe
-
-# Cadastramos alunos (O GrupoID de Aluno no sistema é 4)
-idGrupo=getAlunoGrupoID
-
-idGrupoUsuarioA=cadastrarUsuario grupoId=${idGrupo} nome="AlunoA" login="alunoa" senha="123123" email="a@hotmail.com"
-idGrupoUsuarioB=cadastrarUsuario grupoId=${idGrupo} nome="AlunoB" login="alunob" senha="123123" email="b@hotmail.com"
-idGrupoUsuarioC=cadastrarUsuario grupoId=${idGrupo} nome="AlunoC" login="alunoc" senha="123123" email="c@hotmail.com"
-idGrupoUsuarioD=cadastrarUsuario grupoId=${idGrupo} nome="AlunoD" login="alunod" senha="123123" email="d@hotmail.com"
-
-# Consideramos a existência de uma ÚNICA equipe no BD (favor limpar BD antes de executar)
-expect 6 getQuantidadeTotalEquipes
-
-#ID do Teste: b
-
-idGrupoUsuarioE=cadastrarUsuario grupoId=${idGrupo} nome="AlunoE" login="alunoE" senha="123123" email="e@hotmail.com"
-idGrupoUsuarioF=cadastrarUsuario grupoId=${idGrupo} nome="AlunoF" login="alunoF" senha="123123" email="f@hotmail.com"
-
-expect 11 getQuantidadeTotalEquipes
-
-#ID do Teste: c
-
-expectError "Não foi possível terminar a consulta! Roteiro inexistente." getQuantidadeEquipesAlocadas roteiroID=-1
-
-#ID do Teste: d
-
-# Cadastra Roteiro
-idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro 1" descricao="Roteiro de Testes" dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
-numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
-numeroMaximoParticipantes=2 bloqueado=false
-
-expectError "Não há equipes alocadas pois o Roteiro Roteiro1 ainda não foi liberado!" getQuantidadeEquipesAlocadas roteiroID=${idRoteiro1} 
-
-#ID do Teste: e
-
-expect 10 getQuantidadeTotalEquipes
-expect 6 getQuantidadeTotalAlunos
-
-# Criamos um roteiro com max integrantes = 1 e para ser liberado no exato momento da criação
-idRoteiro2=cadastrarRoteiro periodoId=1 nome="Roteiro 2" descricao="Roteiro de Testes 2" dataLiberacao="AGORA" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
-numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
-numeroMaximoParticipantes=1 bloqueado=false
-
-equipeID6=getEquipe equipeId=6
-
-# 6 equipes...
-expect 6 getQuantidadeEquipesAlocadas roteiroId=${idRoteiro2}
-# ... cada uma com 1 aluno
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID1}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID2}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID3}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID4}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID5}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID6}
-
 #ID do Teste: f
 
 expectError "Nenhuma equipe pode ser modificada. O Roteiro é individual!" mudarEquipe \
