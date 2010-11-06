@@ -111,41 +111,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 		return facadeSistema.mudarEquipe(equipeUsuarioRoteiro);
 	}
 
-	/**
-	 * Após o envio do anexo com a solução do ROteiro, será criada uma linha na
-	 * tabela do BD como um log da submissão. A URL passada como parâmetro deve
-	 * ter a seguinte estrutura:
-	 * periodo<semestre>/submissoes/roteiro<roteiroId>/<nomeEquipe>/
-	 * @throws Throwable 
-	 */
-	public int criarSubmissao(int roteiroId, int equipeId, int usuarioId,
-			String url) throws Throwable {
-
-		Submissao sub = new Submissao();
-		sub.setDataSubmissao(Calendar.getInstance().getTime());
-
-		EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
-		Equipe equipe = getEquipe(equipeId);
-		Roteiro roteiro = getRoteiro(roteiroId);
-		Usuario usuario = getUsuario(usuarioId);
-		eur.setEquipe(equipe);
-		eur.setRoteiro(roteiro);
-		eur.setUsuario(usuario);
-		eur.setId(0);
-		sub.setEquipeHasUsuarioHasRoteiro(eur);
-
-		sub.setId(0);
-		sub.setUrl(url);
-
-		Submissao resultado = facadeSistema.submeteRoteiro(sub);
-		return resultado.getId();
-	}
-
-	public void excluirSubmissao(int submissaoId) throws ExclusaoRoteiroException {
-		Submissao sub = getSubmissao(submissaoId);
-		facadeSistema.excluirSubmissao(sub);;
-	}
-
+	
 	/*
 	 * UTIL
 	 */

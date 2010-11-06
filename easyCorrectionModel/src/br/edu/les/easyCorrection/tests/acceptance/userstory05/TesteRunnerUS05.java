@@ -13,8 +13,8 @@ public class TesteRunnerUS05 {
 		EasyAcceptFacade eaFacade;
 
 		// Teste US05
-		files.add(Constants.dirAcceptanceTestsUS4
-				+ "us04_SubmissaoRoteiros.eas");
+		files.add(Constants.dirAcceptanceTestsUS5
+				+ "us05_SubmissaoRoteiros.eas");
 		FacadeAcceptanceTestUS05 testFacadeUS05 = new FacadeAcceptanceTestUS05();
 		eaFacade = new EasyAcceptFacade(testFacadeUS05, files);
 		eaFacade.executeTests();
