@@ -104,7 +104,7 @@ CREATE TABLE `grupo_usuario` (  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,  
 --
 
 /*!40000 ALTER TABLE `grupo_usuario` DISABLE KEYS */;
-INSERT INTO `grupo_usuario` (`id`,`id_usuario`,`id_grupo`) VALUES  (1,1,1), (2,2,1), (3,3,1), (4,4,2), (5,5,3), (6,6,4);
+INSERT INTO `grupo_usuario` (`id`,`id_usuario`,`id_grupo`) VALUES  (1,1,1), (2,2,1), (3,3,1), (4,4,2), (5,5,3);
 /*!40000 ALTER TABLE `grupo_usuario` ENABLE KEYS */;
 
 
@@ -178,7 +178,7 @@ CREATE TABLE `usuario` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,  `logi
 
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 
-INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`,`email`,`periodo_id`) VALUES  (1,'demas','Demetrio Gomes','4297f44b13955235245b2497399d7a93','demetriogm@gmail.com',NULL), (2,'augusto','Augusto','4297f44b13955235245b2497399d7a93','augustoqmacedo@gmail.com',NULL), (3,'alysson','Alysson','4297f44b13955235245b2497399d7a93','alyssonfilgueira@gmail.com',NULL), (4,'livia','Livia Sampaio','4297f44b13955235245b2497399d7a93','liviaSampaio@gmail.com',NULL), (5,'abmar','Abmar','4297f44b13955235245b2497399d7a93','abmar@gmail.com',NULL), (6,'carlos','Carlos','4297f44b13955235245b2497399d7a93','carlos@gmail.com',NULL);
+INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`,`email`,`periodo_id`) VALUES  (1,'demas','Demetrio Gomes','4297f44b13955235245b2497399d7a93','demetriogm@gmail.com',NULL), (2,'augusto','Augusto','4297f44b13955235245b2497399d7a93','augustoqmacedo@gmail.com',NULL), (3,'alysson','Alysson','4297f44b13955235245b2497399d7a93','alyssonfilgueira@gmail.com',NULL), (4,'livia','Livia Sampaio','4297f44b13955235245b2497399d7a93','liviaSampaio@gmail.com',NULL), (5,'abmar','Abmar','4297f44b13955235245b2497399d7a93','abmar@gmail.com',NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
