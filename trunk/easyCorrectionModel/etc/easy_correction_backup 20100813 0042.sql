@@ -137,12 +137,12 @@ CREATE TABLE `funcao` (
 INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES 
  (1,'Cadastros','acesso',1),
  (2,'Permissões','defPerm',1),
- (4,'Criação','agendaRoteiros',4),
- (5,'Atribuição de Atividades','atribuicaoDeRoteiros',3),
+ (4,'Criação de Roteiros','agendaRoteiros',4),
+ (5,'Atribuição de Corretores','atribuicaoDeRoteiros',3),
  (6,'Penalidades','penalidades',3),
  (7,'Visualizar Notas','notas',3),
  (8,'Submissão','submissaoDeRoteiros',4),
- (9,'Avaliação de Roteiros','avaliacaoDeRoteiros',3),
+ (9,'Correção de Roteiros','avaliacaoDeRoteiros',3),
  (10,'Discussão','chat',3),
  (11,'Criação de Equipe','criaEquipe',4);
 /*!40000 ALTER TABLE `funcao` ENABLE KEYS */;
@@ -167,9 +167,9 @@ CREATE TABLE `grupo` (
 /*!40000 ALTER TABLE `grupo` DISABLE KEYS */;
 INSERT INTO `grupo` (`id`,`nome`) VALUES 
  (1,'Administrador'),
- (4,'Aluno'),
+ (2,'Professor'),
  (3,'Monitor'),
- (2,'Professor');
+ (4,'Aluno');
 /*!40000 ALTER TABLE `grupo` ENABLE KEYS */;
 
 
@@ -196,9 +196,11 @@ CREATE TABLE `grupo_usuario` (
 /*!40000 ALTER TABLE `grupo_usuario` DISABLE KEYS */;
 INSERT INTO `grupo_usuario` (`id`,`id_usuario`,`id_grupo`) VALUES 
  (1,1,1),
- (39,33,1),
- (42,36,4),
- (43,37,1);
+ (2,2,1),
+ (3,3,1),
+ (4,4,2),
+ (5,5,3),
+ (6,6,4);
 /*!40000 ALTER TABLE `grupo_usuario` ENABLE KEYS */;
 
 
@@ -271,16 +273,32 @@ CREATE TABLE `permissao` (
 
 /*!40000 ALTER TABLE `permissao` DISABLE KEYS */;
 INSERT INTO `permissao` (`id`,`grupo_id`,`funcao_id`) VALUES 
- (2,1,1),
- (3,1,2),
- (23,1,4),
- (24,1,5),
- (25,1,6),
- (26,1,7),
- (27,1,8),
- (28,1,9),
- (29,1,10),
- (30,1,11);
+ (1,1,1),
+ (2,1,2),
+ (3,1,4),
+ (4,1,5),
+ (5,1,6),
+ (6,1,7),
+ (7,1,8),
+ (8,1,9),
+ (9,1,10),
+ (10,1,11),
+ (11,2,1),
+ (12,2,4),
+ (13,2,5),
+ (14,2,6),
+ (15,2,7),
+ (16,2,9),
+ (17,2,10),
+ (18,3,1),
+ (19,3,4),
+ (20,3,5),
+ (21,3,6),
+ (22,3,9),
+ (23,3,10),
+ (24,4,7),
+ (25,4,8),
+ (26,4,11);
 /*!40000 ALTER TABLE `permissao` ENABLE KEYS */;
 
 
@@ -310,15 +328,6 @@ CREATE TABLE `roteiro` (
   CONSTRAINT `roteiro_ibfk_1` FOREIGN KEY (`periodo_id`) REFERENCES `periodo` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `roteiro`
---
-
-/*!40000 ALTER TABLE `roteiro` DISABLE KEYS */;
-INSERT INTO `roteiro` (`id`,`periodo_id`,`nome`,`descricao`,`data_liberacao`,`data_final_entrega`,`data_final_discussao`,`numero_maximo_envios`,`penalidade_dias_atraso`,`porcentagem_testes_automaticos`,`tempo_limite_testes`,`diretorio_interface`,`diretorio_testes`,`numero_maximo_participantes`,`bloqueado`) VALUES 
- (2,1,'Roteiro 1','sdsasasas','2010-10-18','2010-10-31','2010-11-01',3,'1.00','2.22',2,'Interface.java','Arquivos.zip',3,0);
-/*!40000 ALTER TABLE `roteiro` ENABLE KEYS */;
-
 
 --
 -- Definition of table `submissao`
@@ -333,21 +342,6 @@ CREATE TABLE `submissao` (
   `equipe_has_usuario_has_roteiro_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 ROW_FORMAT=FIXED;
-
---
--- Dumping data for table `submissao`
---
-
-/*!40000 ALTER TABLE `submissao` DISABLE KEYS */;
-INSERT INTO `submissao` (`id`,`url`,`estado`,`data_submissao`,`equipe_has_usuario_has_roteiro_id`) VALUES 
- (8,'Compiladores.zip',NULL,'2010-10-18 00:00:00',2),
- (9,'Compiladores.zip',NULL,'2010-10-18 00:00:00',2),
- (10,'Compiladores.zip',NULL,'2010-10-18 00:00:00',2),
- (11,'SlidesCompiladores.zip',NULL,'2010-10-19 00:00:00',5),
- (12,'SlidesCompiladores.zip',NULL,'2010-10-19 00:00:00',5),
- (13,'SlidesCompiladores.zip',NULL,'2010-10-19 00:00:00',5);
-/*!40000 ALTER TABLE `submissao` ENABLE KEYS */;
-
 
 --
 -- Definition of table `usuario`
@@ -372,11 +366,15 @@ CREATE TABLE `usuario` (
 --
 
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+
+-- A senha de todos eh: 123123
 INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`,`email`,`periodo_id`) VALUES 
- (1,'demas','Augusto','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',NULL),
- (33,'augusto','Augusto','d9b1d7db4cd6e70935368a1efb10e377','demetriogm@gmail.com',NULL),
- (36,'demetriogm','Demetrio Gomes','5a656a920322c1aaf33410dc28967ae','demetriogm@gmail.com',NULL),
- (37,'alysson','alysson','d9b1d7db4cd6e70935368a1efb10e377','demetriogm@gmail.com',NULL);
+ (1,'demas','Demetrio Gomes','4297f44b13955235245b2497399d7a93','demetriogm@gmail.com',NULL),
+ (2,'augusto','Augusto','4297f44b13955235245b2497399d7a93','augustoqmacedo@gmail.com',NULL),
+ (3,'alysson','Alysson','4297f44b13955235245b2497399d7a93','alyssonfilgueira@gmail.com',NULL),
+ (4,'livia','Livia Sampaio','4297f44b13955235245b2497399d7a93','liviaSampaio@gmail.com',NULL),
+ (5,'abmar','Abmar','4297f44b13955235245b2497399d7a93','abmar@gmail.com',NULL),
+ (6,'carlos','Carlos','4297f44b13955235245b2497399d7a93','carlos@gmail.com',NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 

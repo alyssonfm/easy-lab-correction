@@ -10,8 +10,7 @@
 # US 04: Criação de Equipes e Submissão de Roteiros
 #####################################################################################
 
-limpaBancoDeDados
-inicializaBancoDeDados
+reinicializaBancoDeDados
 
 #ID do Teste: a
 
