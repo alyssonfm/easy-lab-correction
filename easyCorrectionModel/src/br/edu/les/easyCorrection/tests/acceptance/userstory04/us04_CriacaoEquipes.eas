@@ -46,33 +46,28 @@ expect 10 getQuantidadeTotalEquipes
 expectError "Não foi possível terminar a consulta! Roteiro inexistente." getQuantidadeEquipesAlocadas roteiroID=-1
 
 #ID do Teste: d
-
-# Cadastra Roteiro
-idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro 1" descricao="Roteiro de Testes" dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
-numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
-numeroMaximoParticipantes=2 bloqueado=false
-
-expectError "Não há equipes alocadas pois o Roteiro Roteiro 1 ainda não foi liberado!" getQuantidadeEquipesAlocadas roteiroID=${idRoteiro1} 
+expectError "Não há equipes alocadas pois o roteiro ainda não foi criado!" \
+getQuantidadeEquipesAlocadas roteiroId=9
 
 #ID do Teste: e
 
 expect 10 getQuantidadeTotalEquipes
 expect 6 getQuantidadeTotalAlunos
 
-# Criamos um roteiro com max integrantes = 1 e para ser liberado no exato momento da criação
-idRoteiro2=cadastrarRoteiro periodoId=1 nome="Roteiro 2" descricao="Roteiro de Testes 2" dataLiberacao="AGORA" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
+# Cadastra Roteiro
+idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro 1" descricao="Roteiro de Testes" dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
 numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
-numeroMaximoParticipantes=1 bloqueado=false
-
-equipeID6=getEquipePorNome nome="Equipe 6"
+numeroMaximoParticipantes=2 bloqueado=false
 
 # 6 equipes...
-expect 6 getQuantidadeEquipesAlocadas roteiroId=${idRoteiro2}
+expect 6 getQuantidadeEquipesAlocadas roteiroId=${idRoteiro1}
 # ... cada uma com 1 aluno
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID1}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID2}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID3}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID4}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID5}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID6}
 
+expect 1 getQuantidadeAlunosPorEquipe equipeId=${equipeID1} roteiroId=${idRoteiro1}
+expect 1 getQuantidadeAlunosPorEquipe equipeId=${equipeID2} roteiroId=${idRoteiro1}
+expect 1 getQuantidadeAlunosPorEquipe equipeId=${equipeID3} roteiroId=${idRoteiro1}
+expect 1 getQuantidadeAlunosPorEquipe equipeId=${equipeID4} roteiroId=${idRoteiro1}
+expect 1 getQuantidadeAlunosPorEquipe equipeId=${equipeID5} roteiroId=${idRoteiro1}
+
+equipeID6=getEquipeIDPorNome nome="Equipe 6"
+expect 1 getQuantidadeAlunosPorEquipe equipeId=${equipeID6} roteiroId=${idRoteiro1}
