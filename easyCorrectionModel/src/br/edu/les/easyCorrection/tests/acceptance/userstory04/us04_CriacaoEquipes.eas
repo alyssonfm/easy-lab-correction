@@ -76,17 +76,3 @@ expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeI
 expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID5}
 expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID6}
 
-
-#####################################################################################
-# Para ver as alteracoes no Banco de Dados comente as linhas seguintes.
-#####################################################################################
-
-excluirUsuario idGrupoUsuario=${idGrupoUsuarioA}
-excluirUsuario idGrupoUsuario=${idGrupoUsuarioB}
-excluirUsuario idGrupoUsuario=${idGrupoUsuarioC}
-excluirUsuario idGrupoUsuario=${idGrupoUsuarioD}
-excluirUsuario idGrupoUsuario=${idGrupoUsuarioE}
-excluirUsuario idGrupoUsuario=${idGrupoUsuarioF}
-
-excluirRoteiro idRoteiro=${idRoteiro1}
-excluirRoteiro idRoteiro=${idRoteiro2}
