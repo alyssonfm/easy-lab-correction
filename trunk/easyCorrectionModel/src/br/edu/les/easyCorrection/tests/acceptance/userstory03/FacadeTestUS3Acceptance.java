@@ -196,9 +196,9 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 		if (dataCodificada == null || dataCodificada.equals("")) {
 			return null;
 		} else if (dataCodificada.equalsIgnoreCase("-21_DIAS")) {
-			calendar.add(Calendar.DAY_OF_MONTH, -7);
+			calendar.add(Calendar.DAY_OF_MONTH, -21);
 		} else if (dataCodificada.equalsIgnoreCase("-14_DIAS")) {
-			calendar.add(Calendar.DAY_OF_MONTH, -7);
+			calendar.add(Calendar.DAY_OF_MONTH, -14);
 		} else if (dataCodificada.equalsIgnoreCase("-7_DIAS")) {
 			calendar.add(Calendar.DAY_OF_MONTH, -7);
 		} else if (dataCodificada.equalsIgnoreCase("+7_DIAS")) {

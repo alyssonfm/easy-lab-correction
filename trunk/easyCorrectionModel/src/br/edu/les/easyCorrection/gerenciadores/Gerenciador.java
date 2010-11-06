@@ -21,7 +21,7 @@ public abstract class Gerenciador {
 		try{
 			HibernateUtil.executeSQL(script);
 		} catch(Exception e){
-			System.out.println("erro no script do banco.");
+			System.out.println("Erro no script do banco.");
 		}
 	}
 	

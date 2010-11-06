@@ -133,23 +133,6 @@ public class GerenciadorSubmissoes {
 		return lista.size();
 	}
 
-	public Submissao submeteRoteiro(Submissao submissao) throws EasyCorrectionException {
-		if (!easyCorrectionUtil.isNull(submissao)) {
-			if (numeroSubmissoes(submissao) <= (submissao
-					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
-					.getNumeroMaximoEnvios())) {
-				submissao.setDataSubmissao(easyCorrectionUtil.getDataNow());
-				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(submissao);
-				submissao.setId(id);
-			}
-			else{
-				throw new EasyCorrectionException(
-						MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO.msg(submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getNome()));
-			}
-		}
-		return submissao;
-	}
-	
 	public String rodarTestesAutomaticos(Submissao submissao) throws EasyCorrectionException{
 		
 		String diretorioTestes = ServletUpload.local + submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getDiretorioTestes().replace("/", File.separator);
@@ -228,6 +211,23 @@ public class GerenciadorSubmissoes {
 			}
 		}
 		return e;
+	}
+
+	public Submissao submeteRoteiro(Submissao submissao) throws EasyCorrectionException {
+		if (!easyCorrectionUtil.isNull(submissao)) {
+			if (numeroSubmissoes(submissao) <= (submissao
+					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
+					.getNumeroMaximoEnvios())) {
+				submissao.setDataSubmissao(easyCorrectionUtil.getDataNow());
+				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(submissao);
+				submissao.setId(id);
+			}
+			else{
+				throw new EasyCorrectionException(
+						MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO.msg(submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getNome()));
+			}
+		}
+		return submissao;
 	}
 
 	public void excluiEquipeHasRoteiroHasUsuario(EquipeHasUsuarioHasRoteiro equr)
