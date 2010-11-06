@@ -286,7 +286,7 @@
 		<extra:DecimalInput x="247" y="281"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalidade" width="129" text="0.5"/>
 		<mx:Button x="394" y="510" label="Bloquear" width="183.9" height="28" id="botaoBloquear" click="bloqueiaRoteiro()"/>
 		<extra:DecimalInput x="285" y="328"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPorcentagem" width="91" text="100"/>
-		<mx:TextInput x="641" y="330" id="inputTempoLimite" width="112" restrict="[0-9]" maxChars="2" text="10"/>
+		<mx:TextInput x="641" y="330" id="inputTempoLimite" width="95" restrict="[0-9]" maxChars="2" text="10"/>
 		<mx:Label text="Máximo de integrantes por equipe:" fontWeight="bold"
 			textAlign="left" width="239" x="10" y="253" id="labelAutomatica0"/>
 		<mx:Label text="Penalidade por dia de atraso:" fontWeight="bold"
@@ -295,8 +295,8 @@
 			textAlign="left" width="191" x="415" y="253" id="labelAutomatica3"/>
 		<mx:Label text="Time-limit dos teste por método:" fontWeight="bold"
 			textAlign="left" width="224" x="415" y="332" id="labelAutomatica5"/>
-		<mx:Label text="s" fontWeight="bold"
-			textAlign="left" width="18" x="758" y="332" id="labelAutomatica6"/>
+		<mx:Label text="ms" fontWeight="bold"
+			textAlign="left" width="27" x="744" y="332" id="labelAutomatica6"/>
 		<mx:Label text="Data Máxima para entrega:" fontWeight="bold"
 			textAlign="left" width="191" x="10" y="225" id="labelAutomatica1"/>
 		<mx:Label text="Data Máxima para discussão:" fontWeight="bold"
