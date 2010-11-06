@@ -186,7 +186,7 @@ public final class HibernateUtil {
 		} catch (Exception e) {  
 			t.rollback(); 
 		}  
-		getSession().close();
+		//getSession().close();
 	} 
 
 }
