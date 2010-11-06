@@ -11,10 +11,9 @@ import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 
-	private Facade facadeSistema;
 
 	public FacadeTestUS3Acceptance() {
-		facadeSistema = new Facade();
+		super();
 	}
 
 	// ******************************************* Criação de Roteiros

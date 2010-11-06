@@ -7,7 +7,7 @@
 #--------------------------------------------------------------------------------------------
 
 #####################################################################################
-# US 04: Criação de Equipes e Submissão de Roteiros
+# US 04: Submissão de Roteiros e Execução dos testes
 #####################################################################################
 
 reinicializaBancoDeDados
@@ -65,6 +65,16 @@ numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 te
 numeroMaximoParticipantes=1 bloqueado=false
 
 equipeID6=getEquipePorNome nome="Equipe 6"
+
+# 6 equipes...
+expect 6 getQuantidadeEquipesAlocadas roteiroId=${idRoteiro2}
+# ... cada uma com 1 aluno
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID1}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID2}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID3}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID4}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID5}
+expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro2} equipeId=${equipeID6}
 
 
 #####################################################################################
