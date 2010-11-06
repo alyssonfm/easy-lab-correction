@@ -16,6 +16,7 @@ import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
+import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
@@ -133,6 +134,23 @@ public class GerenciadorSubmissoes {
 		return lista.size();
 	}
 
+	public Submissao submeteRoteiro(Submissao submissao) throws EasyCorrectionException {
+		if (!easyCorrectionUtil.isNull(submissao)) {
+			if (numeroSubmissoes(submissao) <= (submissao
+					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
+					.getNumeroMaximoEnvios())) {
+				submissao.setDataSubmissao(easyCorrectionUtil.getDataNow());
+				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(submissao);
+				submissao.setId(id);
+			}
+			else{
+				throw new EasyCorrectionException(
+						MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO.msg(submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getNome()));
+			}
+		}
+		return submissao;
+	}
+	
 	public String rodarTestesAutomaticos(Submissao submissao) throws EasyCorrectionException{
 		
 		String diretorioTestes = ServletUpload.local + submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getDiretorioTestes().replace("/", File.separator);
@@ -213,23 +231,6 @@ public class GerenciadorSubmissoes {
 		return e;
 	}
 
-	public Submissao submeteRoteiro(Submissao submissao) throws EasyCorrectionException {
-		if (!easyCorrectionUtil.isNull(submissao)) {
-			if (numeroSubmissoes(submissao) <= (submissao
-					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
-					.getNumeroMaximoEnvios())) {
-				submissao.setDataSubmissao(easyCorrectionUtil.getDataNow());
-				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(submissao);
-				submissao.setId(id);
-			}
-			else{
-				throw new EasyCorrectionException(
-						MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO.msg(submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getNome()));
-			}
-		}
-		return submissao;
-	}
-
 	public void excluiEquipeHasRoteiroHasUsuario(EquipeHasUsuarioHasRoteiro equr)
 			throws EasyCorrectionException {
 		EquipeHasUsuarioHasRoteiro e = getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
@@ -248,6 +249,16 @@ public class GerenciadorSubmissoes {
 			throw new ExclusaoRoteiroException("Submissao inexistente!");
 		}
 		DAOFactory.DEFAULT.buildSubmissaoDAO().delete(sub);
+	}
+
+	public void alocaEquipesParaAlunos(Roteiro rot, List<Equipe> equipes, List<GrupoUsuario> alunos) throws EasyCorrectionException {
+		for(int i = 0; i < alunos.size(); i++){
+			EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
+			eur.setRoteiro(rot);
+			eur.setEquipe(equipes.get(i));
+			eur.setUsuario(alunos.get(i).getUsuario());
+			cadastraEquipeHasUsuarioHasRoteiro(eur);
+		}
 	}
 
 }
