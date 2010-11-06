@@ -3,6 +3,7 @@ package br.edu.les.easyCorrection.gerenciadores;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
+import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 
 public abstract class Gerenciador {
@@ -16,8 +17,12 @@ public abstract class Gerenciador {
 		return DAOFactory.DEFAULT.buildPeriodoDAO().findAll();
 	}
 
-	public void reinicializaBancoDeDados(){
-		// chamar script do bd
+	public void reinicializaBancoDeDados(String script){
+		try{
+			HibernateUtil.executeSQL(script);
+		} catch(Exception e){
+			System.out.println("erro no script do banco.");
+		}
 	}
 	
 }
