@@ -1,4 +1,4 @@
-Ôªø-- MySQL Administrator dump 1.4
+-- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
 -- Server version	5.1.41
@@ -136,15 +136,15 @@ CREATE TABLE `funcao` (
 /*!40000 ALTER TABLE `funcao` DISABLE KEYS */;
 INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES 
  (1,'Cadastros','acesso',1),
- (2,'Permiss√µes','defPerm',1),
- (4,'Cria√ß√£o','agendaRoteiros',4),
- (5,'Atribui√ß√£o de Atividades','atribuicaoDeRoteiros',3),
+ (2,'Permissıes','defPerm',1),
+ (4,'CriaÁ„o','agendaRoteiros',4),
+ (5,'AtribuiÁ„o de Atividades','atribuicaoDeRoteiros',3),
  (6,'Penalidades','penalidades',3),
  (7,'Visualizar Notas','notas',3),
- (8,'Submiss√£o','submissaoDeRoteiros',4),
- (9,'Avalia√ß√£o de Roteiros','avaliacaoDeRoteiros',3),
- (10,'Discuss√£o','chat',3),
- (11,'Cria√ß√£o de Equipe','criaEquipe',4);
+ (8,'Submiss„o','submissaoDeRoteiros',4),
+ (9,'AvaliaÁ„o de Roteiros','avaliacaoDeRoteiros',3),
+ (10,'Discuss„o','chat',3),
+ (11,'CriaÁ„o de Equipe','criaEquipe',4);
 /*!40000 ALTER TABLE `funcao` ENABLE KEYS */;
 
 
@@ -196,8 +196,9 @@ CREATE TABLE `grupo_usuario` (
 /*!40000 ALTER TABLE `grupo_usuario` DISABLE KEYS */;
 INSERT INTO `grupo_usuario` (`id`,`id_usuario`,`id_grupo`) VALUES 
  (1,1,1),
- (2,33,1),
- (4,37,1);
+ (39,33,1),
+ (42,36,4),
+ (43,37,1);
 /*!40000 ALTER TABLE `grupo_usuario` ENABLE KEYS */;
 
 
@@ -222,7 +223,7 @@ CREATE TABLE `menu` (
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
 INSERT INTO `menu` (`id`,`titulo`,`nome`) VALUES 
  (1,'acesso','Controle de Acesso'),
- (3,'avaliacao','Avalia√ß√£o'),
+ (3,'avaliacao','AvaliaÁ„o'),
  (4,'submissao','Roteiros');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 
@@ -374,6 +375,7 @@ CREATE TABLE `usuario` (
 INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`,`email`,`periodo_id`) VALUES 
  (1,'demas','Augusto','202cb962ac59075b964b07152d234b70','demetriogm@gmail.com',NULL),
  (33,'augusto','Augusto','d9b1d7db4cd6e70935368a1efb10e377','demetriogm@gmail.com',NULL),
+ (36,'demetriogm','Demetrio Gomes','5a656a920322c1aaf33410dc28967ae','demetriogm@gmail.com',NULL),
  (37,'alysson','alysson','d9b1d7db4cd6e70935368a1efb10e377','demetriogm@gmail.com',NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
