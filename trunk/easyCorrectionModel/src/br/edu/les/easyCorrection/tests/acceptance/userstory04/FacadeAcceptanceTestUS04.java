@@ -14,11 +14,8 @@ import br.edu.les.easyCorrection.tests.acceptance.userstory03.FacadeTestUS3Accep
 
 public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 
-	private Facade facadeSistema;
-
 	public FacadeAcceptanceTestUS04() {
 		super();
-		facadeSistema = new Facade();
 	}
 
 	// ******************************************* SUBMISSOES

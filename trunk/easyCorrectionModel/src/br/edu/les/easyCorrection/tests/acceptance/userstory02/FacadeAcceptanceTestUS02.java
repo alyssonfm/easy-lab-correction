@@ -7,7 +7,7 @@ import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class FacadeAcceptanceTestUS02{
 	
-	private Facade facadeSistema;
+	protected Facade facadeSistema;
 
 	public FacadeAcceptanceTestUS02() {
 		facadeSistema = new Facade();
