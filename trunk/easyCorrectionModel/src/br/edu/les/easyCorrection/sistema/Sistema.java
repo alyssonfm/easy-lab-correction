@@ -35,8 +35,8 @@ public class Sistema {
 		gerenciadorSubmissoes = new GerenciadorSubmissoes();
 	}
 	
-	public void reinicializaBancoDeDados(){
-		gerenciadorAcesso.reinicializaBancoDeDados();
+	public void reinicializaBancoDeDados(String script){
+		gerenciadorAcesso.reinicializaBancoDeDados(script);
 	}
 	
 	
