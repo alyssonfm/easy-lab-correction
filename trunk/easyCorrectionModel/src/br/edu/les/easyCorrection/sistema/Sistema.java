@@ -200,8 +200,12 @@ public class Sistema {
 	}
 
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
-			throws CriacaoRoteiroException {
-		return gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
+			throws EasyCorrectionException {
+		Roteiro rot = gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
+		List<Equipe> equipes = gerenciadorSubmissoes.getEquipes();
+		List<GrupoUsuario> alunos = gerenciadorAcesso.listarGrupoUsuarioPorGrupo("Aluno");
+		gerenciadorSubmissoes.alocaEquipesParaAlunos(rot, equipes, alunos);
+		return rot;
 	}
 
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
