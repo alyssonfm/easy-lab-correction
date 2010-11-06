@@ -34,13 +34,9 @@ public class Sistema {
 		gerenciadorRoteiros = new GerenciadorRoteiros();
 		gerenciadorSubmissoes = new GerenciadorSubmissoes();
 	}
-
-	public void limpaBancoDeDados(){
-		gerenciadorAcesso.limpaBancoDeDados(); // qualquer um é filho de Gerenciador
-	}
 	
-	public void inicializaBancoDeDados(){
-		gerenciadorAcesso.inicializaBancoDeDados();
+	public void reinicializaBancoDeDados(){
+		gerenciadorAcesso.reinicializaBancoDeDados();
 	}
 	
 	

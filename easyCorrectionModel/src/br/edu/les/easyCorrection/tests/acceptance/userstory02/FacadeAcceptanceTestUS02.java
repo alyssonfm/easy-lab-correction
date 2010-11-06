@@ -13,12 +13,8 @@ public class FacadeAcceptanceTestUS02{
 		facadeSistema = new Facade();
 	}
 
-	public void limpaBancoDeDados(){
-		facadeSistema.limpaBancoDeDados();
-	}
-	
-	public void inicializaBancoDeDados(){
-		facadeSistema.inicializaBancoDeDados();
+	public void reinicializaBancoDeDados(){
+		facadeSistema.reinicializaBancoDeDados();
 	}
 	
 // ******************************************* Menus ******************************************

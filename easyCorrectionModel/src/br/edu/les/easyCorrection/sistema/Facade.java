@@ -32,12 +32,9 @@ public class Facade {
 
 	}
 
-	public void limpaBancoDeDados(){
-		sistema.limpaBancoDeDados();
-	}
-	
-	public void inicializaBancoDeDados(){
-		sistema.inicializaBancoDeDados();
+
+	public void reinicializaBancoDeDados(){
+		sistema.reinicializaBancoDeDados();
 	}
 	
 	/*******************************************************************

@@ -16,22 +16,8 @@ public abstract class Gerenciador {
 		return DAOFactory.DEFAULT.buildPeriodoDAO().findAll();
 	}
 
-
-	public void limpaBancoDeDados(){
-		/*
-		 * Remove tudo!
-		 */
-	}
-	
-	public void inicializaBancoDeDados(){
-		/*
-		 * Inicializa com:
-		 * 
-		 * usuários: nós 4 
-		 * grupos: admin, prof, mon e aluno
-		 * permissões: admin vê tudo (só isso por enquanto)
-		 * período: 2010.2
-		 */
+	public void reinicializaBancoDeDados(){
+		// chamar script do bd
 	}
 	
 }
