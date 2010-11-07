@@ -73,6 +73,23 @@ public class GerenciadorSubmissoes {
 
 	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur)
 			throws EasyCorrectionException {
+		
+		if(eur.getRoteiro().getNumeroMaximoParticipantes() == 1){
+			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INDIVIDUAL
+					.msg(""));
+		}
+		if(eur.getRoteiro().getNumeroMaximoParticipantes() == getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(eur.getEquipe().getId(), eur.getRoteiro().getId()).size()){
+			String[] params = {eur.getEquipe().getNome(), eur.getRoteiro().getNumeroMaximoParticipantes().toString()};
+			throw new ObjetoNaoEncontradoException(MsgErros.EQUIPE_HAS_ROTEIRO_COMPLETA
+					.msg(params));
+		}
+		try{
+			getEquipe(eur.getEquipe().getId());
+		}
+		catch(Exception e){
+			throw new ObjetoNaoEncontradoException(MsgErros.EQUIPE_INEXISTENTE
+					.msg(""));
+		}
 
 		EquipeHasUsuarioHasRoteiro equipeUsuarioRoteiro = getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
 				eur.getUsuario().getIdUsuario(), eur.getRoteiro().getId());
@@ -87,8 +104,8 @@ public class GerenciadorSubmissoes {
 	}
 
 	public int getEquipeAlocadas(Integer idRoteiro){
-		if (easyCorrectionUtil.isNull(idRoteiro)) {
-			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INEXISTENTE
+		if (easyCorrectionUtil.isNull(idRoteiro) || idRoteiro < 1) {
+			throw new ObjetoNaoEncontradoException(MsgErros.ID_ROTEIRO_INEXISTENTE
 					.msg(""));
 		}
 		
@@ -100,13 +117,6 @@ public class GerenciadorSubmissoes {
 		
 		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT
 				.buildEquipeHasUsuarioHasRoteiroDAO().findByRoteiro(idRoteiro);
-		
-		for (EquipeHasUsuarioHasRoteiro equr : lista) {
-			if (!equr.getRoteiro().getId().equals(gerenciadorRoteiros.getRoteiroLiberado(equr.getRoteiro().getId()).getId())) {
-				throw new ObjetoNaoEncontradoException(
-						MsgErros.ROTEIRO_NAO_LIBERADO.msg(equr.getRoteiro().getNome()));
-			}
-		}
 		return lista.size();
 	}
 
