@@ -108,12 +108,37 @@ public enum MsgErros {
 	},	
 	ROTEIRO_INEXISTENTE{
 		public String msg(String... args) {
+			return "Não há equipes alocadas pois o roteiro ainda não foi criado!";
+		}
+	},
+	ID_ROTEIRO_INEXISTENTE{
+		public String msg(String... args) {
 			return "Não foi possível terminar a consulta! Roteiro inexistente.";
 		}
 	},
 	ROTEIRO_NAO_LIBERADO{
 		public String msg(String... args) {
 			return "Não há equipes alocadas pois o Roteiro " +args[0]+ " ainda não foi liberado!";
+		}
+	},
+	ROTEIRO_INDIVIDUAL{
+		public String msg(String... args) {
+			return "Nenhuma equipe pode ser modificada. O Roteiro é individual!";
+		}
+	},
+	EQUIPE_HAS_ROTEIRO_COMPLETA{
+		public String msg(String... args) {
+			return "Não foi possível mudar de equipe! Limite de integrantes da " + args[0] + " já alcançado (máximo de " + args[1] + " integrante(s) por equipe).";
+		}
+	},
+	ALUNO_INEXISTENTE{
+		public String msg(String... args) {
+			return "Mudança de equipe não realizada! Aluno inexistente.";
+		}
+	},
+	EQUIPE_INEXISTENTE{
+		public String msg(String... args) {
+			return "Mudança não realizada! Equipe inexistente.";
 		}
 	},
 	EMAIL{
