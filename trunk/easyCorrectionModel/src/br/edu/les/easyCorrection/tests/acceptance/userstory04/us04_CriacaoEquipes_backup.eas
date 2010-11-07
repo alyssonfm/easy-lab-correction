@@ -10,48 +10,10 @@
 # US 04: Criação de Equipes e Submissão de Roteiros
 #####################################################################################
 
-#ID do Teste: f
 
-expectError "Nenhuma equipe pode ser modificada. O Roteiro é individual!" mudarEquipe \
-roteiroId=${idRoteiro2} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
 
-#ID do Teste: g
 
-expect 10 getQuantidadeTotalEquipes
-expect 6 getQuantidadeTotalAlunos
 
-# Criamos um roteiro com max integrantes = 2 e para ser liberado no exato momento da criação
-idRoteiro3=cadastrarRoteiro periodoId=1 nome="Roteiro 3" descricao="Roteiro de Testes 3" dataLiberacao="AGORA" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
-numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
-numeroMaximoParticipantes=1 bloqueado=false
 
-equipeID1=mudarEquipe roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
 
-#ID do Teste: h
-# 6 equipes...
-expect 6 getQuantidadeEquipesAlocadas roteiroId=${idRoteiro3}
-# ... 4 equipes (2 à 5) com 1 aluno cada (B, C, D e E), 1 equipe (1) com 2 alunos (A e F) e 1 equipe (6) com 0 aluno
-expect 2 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID1}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID2}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID3}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID4}
-expect 1 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID5}
-expect 0 getQuantidadeAlunosPorEquipe roteiroId=${idRoteiro3} equipeId=${equipeID6}
 
-expectError "Não foi possível mudar de equipe! Limite de integrantes da Equipe 1 já alcançado (máximo de 2 integrante(s) por equipe)" mudarEquipe \
-roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioE}
-
-#ID do Teste: i
-
-expectError "Mudança de equipe não realizada! Aluno inexistente." mudarEquipe \
-roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID6} grupoUsuarioId=7
-
-#ID do Teste: j
-
-expectError "Mudança não realizada! Equipe inexistente." mudarEquipe \
-roteiroId=${idRoteiro3} equipeDeEntradaId=7 grupoUsuarioId=${idGrupoUsuarioA}
-
-#ID do Teste: k
-
-expectError "Mudança de equipe não realizada! AlunoF não faz parte da Equipe 5." mudarEquipe \
-roteiroId=${idRoteiro3} equipeDeEntradaId=${equipeID1} grupoUsuarioId=${idGrupoUsuarioF}
