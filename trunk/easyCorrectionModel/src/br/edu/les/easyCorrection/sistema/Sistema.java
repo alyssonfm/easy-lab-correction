@@ -22,6 +22,8 @@ import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
+import br.edu.les.easyCorrection.util.MsgErros;
+import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class Sistema {
 
@@ -281,6 +283,11 @@ public class Sistema {
 	}
 	
 	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur) throws EasyCorrectionException{
+		GrupoUsuario gu = getGrupoUsuarioPorUsuario(eur.getUsuario().getIdUsuario()).get(0);
+		if (!gu.getGrupo().getNome().equals("Aluno")){
+			throw new EasyCorrectionException(
+					MsgErros.ALUNO_INEXISTENTE.msg(""));
+		}
 		return gerenciadorSubmissoes.mudarEquipe(eur);
 	}
 	
