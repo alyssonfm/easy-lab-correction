@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
@@ -11,6 +12,7 @@ import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.sistema.Facade;
 import br.edu.les.easyCorrection.tests.acceptance.userstory03.FacadeTestUS3Acceptance;
+import br.edu.les.easyCorrection.util.MsgErros;
 
 public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 
@@ -103,12 +105,19 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 *       https://sites.google.com/site/easylabcorrection/planejamento/planos-
 	 *       de-iteracoes/iteracao-3/-plano-de-testes-de-aceitacao---us04
 	 */
-	public EquipeHasUsuarioHasRoteiro mudarEquipe(int roteiroId, int equipeDeEntradaId, int grupoUsuarioId) throws Throwable {
+	public int mudarEquipe(int roteiroId, int equipeDeEntradaId, int grupoUsuarioId) throws Throwable {
 		EquipeHasUsuarioHasRoteiro equipeUsuarioRoteiro = new EquipeHasUsuarioHasRoteiro();
+		try{
+			getEquipe(equipeDeEntradaId);
+		}
+		catch(Exception e){
+			throw new ObjetoNaoEncontradoException(MsgErros.EQUIPE_INEXISTENTE
+					.msg(""));
+		}
 		equipeUsuarioRoteiro.setEquipe(getEquipe(equipeDeEntradaId));
 		equipeUsuarioRoteiro.setUsuario(getGrupoUsuario(grupoUsuarioId).getUsuario());
 		equipeUsuarioRoteiro.setRoteiro(getRoteiro(roteiroId));
-		return facadeSistema.mudarEquipe(equipeUsuarioRoteiro);
+		return facadeSistema.mudarEquipe(equipeUsuarioRoteiro).getEquipe().getId();
 	}
 
 	
