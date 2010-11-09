@@ -78,7 +78,7 @@
 			   	 	fileRef.addEventListener(Event.SELECT, arquivoSelecionado);
 			   	 	fileRef.addEventListener(Event.COMPLETE, envioCompleto);
 			   	 	fileRef.addEventListener(IOErrorEvent.IO_ERROR, erroEnvio);
-			    	fileRef.browse(new Array(new FileFilter("Roteiro","*.zip;")));
+			    	fileRef.browse(new Array(new FileFilter("Roteiro (*.zip)","*.zip;")));
 				}
 				
 				public function erroEnvio(evt:Event):void {
