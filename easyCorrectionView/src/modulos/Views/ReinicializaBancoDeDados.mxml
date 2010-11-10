@@ -1,0 +1,77 @@
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	width="506" height="186" creationComplete="init()" title="Configuração do Banco de Dados" showCloseButton="true" close="fechaJanela()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import mx.charts.CategoryAxis;
+				import mx.collections.ArrayCollection;
+				import net.digitalprimates.fluint.utils.ResultDisplayUtils;
+				import eventos.UsuarioEvent;
+				import eventos.RespostaLoginEvent;
+				import eventos.FechaPopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import Scripts.ControladorDeModulos;
+				import mx.binding.utils.BindingUtils;
+				//import eventos.RespostaLoginEvent;
+				//import eventos.FechaPopupEvent;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+	            
+	            private function init():void {
+					facade.channelSet = ControladorDeModulos.criaCanal();
+					ControladorDeModulos.getParam();
+				}
+	            
+	            private function falha(event:FaultEvent):void {
+					var mensagem:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							mensagem = event.fault.faultString;
+						} else {
+							mensagem = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						mensagem = "Serviço indisponível, reinicie a operação.";
+					}
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+				}
+				
+				private function fechaJanela():void {
+					dispatchEvent(new FechaPopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function lancaEvento(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+			
+				private function reinicializaBancoDeDados():void{
+					facade.getOperation("reinicializaBancoDeDados").send();
+				}
+				
+				private function reinicializaBancoDeDados_result(event:ResultEvent):void{
+					var mensagem: String = "Banco de Dados Restaurado com sucesso!";
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(false, mensagem));
+				}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			<mx:method name="reinicializaBancoDeDados" result="reinicializaBancoDeDados_result(event)" fault="falha(event)"/>	
+		</mx:RemoteObject>
+		
+		<mx:Button x="80.05" y="35" label="Restauração dos Dados" width="325.9" icon="@Embed(source='../../image/estonar.png')" height="55" id="botao" enabled="true" click="reinicializaBancoDeDados()" fontSize="16"/>
+		
+</les:ModuleTitleWindow>
