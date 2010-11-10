@@ -285,6 +285,9 @@ private function menuItemPressionado(event: MenuEvent):void  {
      if (event.item.@data == "criaEquipe") {
      	ControladorDeModulos.criaModulo("modulos/Views/CriaEquipe.swf", this, "");
      }
+     if (event.item.@data == "reinicializaBD") {
+     	ControladorDeModulos.criaModulo("modulos/Views/ReinicializaBancoDeDados.swf", this, "");
+     }
 }
 
 /**
