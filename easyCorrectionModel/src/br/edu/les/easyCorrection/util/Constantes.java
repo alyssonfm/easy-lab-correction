@@ -5,8 +5,12 @@ public class Constantes {
 	// Demetrio's directory
 	//public static final String arquivoBackupBancoDeDados = "C:/Graduacao/LES/workspace/easyCorrectionModel/etc/backupEasyCorrection.sql";
 	
+
+	// Alysson's directory
+	public static final String arquivoBackupBancoDeDados = "C:/Eclipse/workspace/easyCorrectionModel/etc/backupEasyCorrection.sql";
+	
 	// Demetrio's directory
-	public static final String arquivoBackupBancoDeDados = "D:/Graduação/LES/workspace/easyCorrectionModel/etc/backupEasyCorrection.sql";
+	//public static final String arquivoBackupBancoDeDados = "D:/Graduação/LES/workspace/easyCorrectionModel/etc/backupEasyCorrection.sql";
 	
 	// Augusto1's directory
 	//public static final String arquivoBackupBancoDeDados = "C:/Graduacao/LES/workspace/easyCorrectionModel/etc/backupEasyCorrection.sql";

@@ -12,8 +12,8 @@
 
 # Setup de um Roteiro Base para as edições
 idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro1" descricao= dataLiberacao="+7_DIAS" dataFinalEntrega= \
-dataFinalDiscussao= numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1 \
-numeroMaximoParticipantes=-1 bloqueado=false
+dataFinalDiscussao= numeroMaximoEnvios=2 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 \
+numeroMaximoParticipantes=1 bloqueado=false
 
 ######### Edições que podem ser também criações (essas funcionalidades foram parcialmente testadas na criação)
 
