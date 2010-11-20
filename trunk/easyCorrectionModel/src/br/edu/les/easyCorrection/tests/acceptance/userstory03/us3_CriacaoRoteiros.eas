@@ -23,9 +23,9 @@ dataLiberacao="" dataFinalEntrega="" dataFinalDiscussao="" numeroMaximoEnvios=-1
 tempoLimiteTestes=-1 numeroMaximoParticipantes=-1 bloqueado=false
 
 #ID do Teste: c
-idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro c" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="" dataFinalDiscussao="" \
-numeroMaximoEnvios=-1 penalidadeDiasAtraso=-1 porcentagemTestesAutomaticos=-1 tempoLimiteTestes=-1   \
-numeroMaximoParticipantes=-1 bloqueado=false
+idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro c" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="" \
+dataFinalDiscussao="" numeroMaximoEnvios=3 penalidadeDiasAtraso=0.8 porcentagemTestesAutomaticos=100 tempoLimiteTestes=1000 \
+numeroMaximoParticipantes=1 bloqueado=false
 
 #ID do Teste: d
 expectError "Data Limite para Entrega anterior à Data de Liberação. O Roteiro não pôde ser criado!" cadastrarRoteiro \
@@ -77,5 +77,5 @@ penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 
 # Para ver as alteracoes no Banco de Dados comente as linhas seguintes.
 #####################################################################################
 
-excluirRoteiro idRoteiro=${idRoteiro1}
-excluirRoteiro idRoteiro=${idRoteiro2}
+#excluirRoteiro idRoteiro=${idRoteiro1}
+#excluirRoteiro idRoteiro=${idRoteiro2}

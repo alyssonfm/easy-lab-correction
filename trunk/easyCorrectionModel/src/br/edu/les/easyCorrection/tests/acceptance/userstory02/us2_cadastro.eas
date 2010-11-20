@@ -24,7 +24,7 @@ expect "MenuTeste1" getAtributoMenu id=${idMenu} atributo=nome
 expect "menuTeste1" getAtributoMenu id=${idMenu} atributo=rotulo
 expectError "menu nao foi encontrado(a)." getMenu id=999
 
-idMenu2=cadastrarMenu nome="MenuTeste2" rotulo="avaliacao"
+idMenu2=cadastrarMenu nome="MenuTeste100" rotulo="avaliacao123"
 expectDifferent ${idMenu} echo ${iMenu2}
 
 idMenu3=cadastrarMenu nome="MenuTeste3" rotulo="menu3"
@@ -32,7 +32,7 @@ idMenu4=cadastrarMenu nome="qualquer" rotulo="null"
 expectDifferent ${idMenu3} echo ${iMenu4}
 idMenu5=cadastrarMenu nome="qualquer" rotulo="nomeAlgum"
 idMenu6=cadastrarMenu nome="" rotulo="nomeAlg"
-idMenu7=cadastrarMenu nome="algumNome" rotulo=""
+idMenu7=cadastrarMenu nome="algumNome" rotulo="TestReview"
 
 expect ${idMenu} editarMenu id=${idMenu} nome="nomeAlterado1" rotulo="rotuloAlterado1"
 expect ${idMenu2} editarMenu id=${idMenu2} nome="nomeAlterado2" rotulo="rotuloAlterado2"
@@ -63,7 +63,7 @@ expectDifferent ${idFuncao} echo ${iFuncao2}
 idFuncao3=cadastrarFuncao nome="FuncaoTeste3" rotulo="Funcao3" idMenu=${idMenu3}
 idFuncao4=cadastrarFuncao nome="qualquer" rotulo="null" idMenu=${idMenu4}
 expectDifferent ${idFuncao3} echo ${iFuncao4}
-idFuncao5=cadastrarFuncao nome="qualquer" rotulo="nomeAlgum" idMenu=${idMenu5}
+idFuncao5=cadastrarFuncao nome="FunctionReview" rotulo="nomeAlgum" idMenu=${idMenu5}
 idFuncao6=cadastrarFuncao nome="no" rotulo="nomeAlg" idMenu=${idMenu6}
 idFuncao7=cadastrarFuncao nome="algumNome" rotulo="" idMenu=${idMenu7}
 
