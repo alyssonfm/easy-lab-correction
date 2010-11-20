@@ -1,0 +1,59 @@
+Resultados da Re-execucao dos testes de aceitacao da User Story 02:
+
+Durante a re-execucao dos testes da US02, foi necessario realizar mudancas nos identificadores das linhas 27, 35 e 66, pois estava havendo conflitos com os demais. 
+
+Test file: C:/Eclipse/workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory02/us2_cadastro.eas | Passed Tests: 107 | Not Passed Tests: 0
+
+======================== 
+
+--------------------------------------------------------------------------------------------------------------------
+
+Resultados da Re-execucao dos testes de aceitacao da User Story 03:
+
+Para a re-execucao foi necessario modificar os valores dos parametros de criacao do Roteiro de -1 para algum valor valido, bem como comentar as linhas referentes a delecao dos Roteiros, devido as restricoes de integridade do Banco de Dados.
+
+Roteiro criado com sucesso!
+Roteiro criado com sucesso!
+Roteiro criado com sucesso!
+Roteiro atualizado com sucesso!
+Roteiro atualizado com sucesso!
+Roteiro atualizado com sucesso!
+Roteiro atualizado com sucesso!
+Roteiro atualizado com sucesso!
+Roteiro atualizado com sucesso!
+Roteiro Roteiro2 liberado com sucesso!
+Roteiro Roteiro2 bloqueado com sucesso!
+Roteiro atualizado com sucesso!
+Roteiro Roteiro4 bloqueado com sucesso!
+Roteiro Roteiro4 desbloqueado com sucesso!
+Test file: C:/Eclipse/workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/us3_CriacaoRoteiros.eas | Passed Tests: 12 | Not Passed Tests: 0
+
+======================== 
+
+Test file: C:/Eclipse/workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/us3_EdicaoRoteiros.eas | Passed Tests: 25 | Not Passed Tests: 0
+
+======================== 
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+Resultados da Re-execucao dos testes de aceitacao da User Story 04:
+
+Roteiro criado com sucesso!
+Roteiro criado com sucesso!
+Test file: C:/Eclipse/workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory04/us04_CriacaoEquipes.eas | Passed Tests: 44 | Not Passed Tests: 0
+
+======================== 
+
+--------------------------------------------------------------------------------------------------------------------
+
+Resultados da Re-execucao dos testes de aceitacao da User Story 05:
+
+Roteiro criado com sucesso!
+Roteiro atualizado com sucesso!
+Test file: C:/Eclipse/workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory05/us05_SubmissaoRoteiros.eas | Passed Tests: 6 | Not Passed Tests: 1
+
+FAILURES:
+   At line 33:/Eclipse/workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory05/us05_SubmissaoRoteiros.eas: Expected <O Caminho do servidor para submissões não foi aceito. Deve seguir o template: periodo<semestre>/submissoes/roteiro_<id>/<nomeEquipe>/>, but no error occurred.
+======================== 
