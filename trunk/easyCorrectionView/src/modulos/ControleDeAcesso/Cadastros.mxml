@@ -697,7 +697,7 @@
 						"Login:<BR>" + grupoUsuarioP.usuario.login + "</BR>" + 
 						"<BR>Senha:</BR><BR>"+ senhaCadastrada +"</br><p>Obs.:\nLembre-se! Sua senha é pessoal e intransferível, " +
 						"sugerimos sua alteração imediata.</p>" + 
-						"<BR>Clique <a href=http://easyLabCorrection.dsc.ufcg.edu>aqui</a> para acessar o sistema.</BR>" +
+						"<BR>Clique <a href=http://les.dsc.ufcg.edu.br:8080/EasyLabCorrection/>aqui</a> para acessar o sistema.</BR>" +
 						"<BR></BR>" +
 						"<BR>Atenciosamente,</BR>" +
 						"<BR>Easy Lab Correction</BR>";
