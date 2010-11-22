@@ -8,6 +8,9 @@ import java.util.List;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.TestResult;
 import junit.textui.TestRunner;
@@ -179,7 +182,7 @@ public class GerenciadorSubmissoes {
 					diretorioInterface + "Interface.java", diretorioSource + "PilhaImpl.java", diretorioTestes + "TestaPilha.java",
 					"-d", diretorioTestes); //diretório de saída dos .class
 			
-			URLClassLoader cl = new URLClassLoader(new URL[]{new File(diretorioTestes).toURI().toURL()});
+			URLClassLoader cl = new URLClassLoader(new URL[]{new File(diretorioTestes).toURI().toURL()}, JUnitCore.class.getClassLoader());
 			Class<?> testClass = cl.loadClass("TestaPilha");
 			
 			JUnit4TestAdapter testAdapter = new JUnit4TestAdapter(testClass);
@@ -191,7 +194,7 @@ public class GerenciadorSubmissoes {
 			relatorio = "Relatório de Avaliação: \n" + 
 				"Total de Testes: " + quantTestesRodados + "\n" +
 				"Total de Erros: " + erros + "\n" +
-				"Porcentagem de Acertos: " + porcAcertos + "\n" +
+				"Porcentagem de Acertos: " + porcAcertos + " %\n" +
 				"Nota dos Testes Automáticos: " + porcAcertos * submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getPorcentagemTestesAutomaticos();
 			
 			boolean success = result.wasSuccessful();
