@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -144,6 +145,54 @@ public class ServletUpload extends HttpServlet {
 		}
 	}
 	
+	
+    public static void unZip(String pastaDestino, String nomeArquivo)  throws IOException{
+    	 try
+         {
+             String destinationname = pastaDestino;
+             byte[] buf = new byte[1024];
+             ZipInputStream zipinputstream = null;
+             ZipEntry zipentry;
+             zipinputstream = new ZipInputStream(
+                 new FileInputStream(pastaDestino + nomeArquivo));
+
+             zipentry = zipinputstream.getNextEntry();
+             while (zipentry != null) 
+             { 
+                 //for each entry to be extracted
+                 String entryName = zipentry.getName();
+                 int n;
+                 FileOutputStream fileoutputstream;
+                 File newFile = new File(entryName);
+                 String directory = newFile.getParent();
+                 
+                 if(directory == null)
+                 {
+                     if(newFile.isDirectory())
+                         break;
+                 }
+                 
+                 fileoutputstream = new FileOutputStream(
+                    destinationname+entryName);             
+
+                 while ((n = zipinputstream.read(buf, 0, 1024)) > -1)
+                     fileoutputstream.write(buf, 0, n);
+
+                 fileoutputstream.close(); 
+                 zipinputstream.closeEntry();
+                 zipentry = zipinputstream.getNextEntry();
+
+             }//while
+
+             zipinputstream.close();
+         }
+         catch (Exception e)
+         {
+             e.printStackTrace();
+         }
+    }
+	
+	
 	protected void downloadArquivo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String nomeArquivo = request.getParameter("nomeArquivo");
@@ -162,8 +211,9 @@ public class ServletUpload extends HttpServlet {
 		}
 		catch(Exception e){}
 	}
+	
 	/*
-	protected void fazUploadUnZip(HttpServletRequest request, HttpServletResponse response, ServletOutputStream out) throws ServletException, IOException {
+	protected void fazUploadUnZip(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		fazUpload(request, response);
 		unZip(out);
 	}*/
@@ -201,6 +251,9 @@ public class ServletUpload extends HttpServlet {
 		} catch (Exception e) {
 			request.setAttribute("errorMessage", e.getMessage());
 			request.getRequestDispatcher("/erro.jsp").forward(request, response);
+		}
+		if(nomeArquivo.substring(nomeArquivo.length() - 3, nomeArquivo.length()).equals("zip")){
+			unZip(uploadDir, nomeArquivo);
 		}
 	}
 }
