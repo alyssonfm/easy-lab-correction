@@ -11,7 +11,6 @@ import javax.tools.ToolProvider;
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.TestResult;
 import junit.textui.TestRunner;
-
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
@@ -161,6 +160,7 @@ public class GerenciadorSubmissoes {
 		String diretorioTestes = ServletUpload.local + submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getDiretorioTestes().replace("/", File.separator);
 		String diretorioInterface = ServletUpload.local + submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getDiretorioInterface().replace("/", File.separator);
 		String diretorioSource = ServletUpload.local + submissao.getUrl().replace("/", File.separator);
+		String diretorioLib = (ServletUpload.local + "/").replace("/", File.separator);
 		
 		File dirTestes = new File(diretorioTestes); 
 		String[] arquivosTeste = dirTestes.list();
@@ -168,14 +168,15 @@ public class GerenciadorSubmissoes {
 		String[] arquivosInterfaces = dirInterface.list();
 		File dirSource = new File(diretorioSource); 
 		String[] arquivosSouce = dirSource.list();
+		String relatorio = "";
 		
 		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
 		
 		try{
 			javaCompiler.run(null, System.out, System.err, 
 					"-sourcepath", diretorioSource + ";" + diretorioInterface + ";" + diretorioTestes, 
-					"-classpath", diretorioTestes + "junit.jar", 
-					diretorioInterface + "Pilha.java", diretorioSource + "PilhaImpl.java", diretorioTestes + "TestaPilha.java",
+					"-classpath", diretorioLib + "junit.jar", 
+					diretorioInterface + "Interface.java", diretorioSource + "PilhaImpl.java", diretorioTestes + "TestaPilha.java",
 					"-d", diretorioTestes); //diretório de saída dos .class
 			
 			URLClassLoader cl = new URLClassLoader(new URL[]{new File(diretorioTestes).toURI().toURL()});
@@ -184,12 +185,21 @@ public class GerenciadorSubmissoes {
 			JUnit4TestAdapter testAdapter = new JUnit4TestAdapter(testClass);
 			TestResult result = TestRunner.run(testAdapter);
 			
+			int quantTestesRodados = result.runCount();
+			int erros = result.errorCount();
+			int porcAcertos = ((quantTestesRodados - erros) * 100) / quantTestesRodados;
+			relatorio = "Relatório de Avaliação: \n" + 
+				"Total de Testes: " + quantTestesRodados + "\n" +
+				"Total de Erros: " + erros + "\n" +
+				"Porcentagem de Acertos: " + porcAcertos + "\n" +
+				"Nota dos Testes Automáticos: " + porcAcertos * submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getPorcentagemTestesAutomaticos();
+			
 			boolean success = result.wasSuccessful();
 			System.out.println(success);
 		} catch(Exception e){
 			System.out.println("Erro");
 		}
-		return "";
+		return relatorio;
 	}
 
 	public void verificaSeEquipePossuiMaximoParticipantes(
