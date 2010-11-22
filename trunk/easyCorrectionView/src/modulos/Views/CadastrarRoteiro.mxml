@@ -144,7 +144,7 @@
 					requestTestes = new URLRequest(FILE_UPLOAD_URL);
 					var variables:URLVariables = new URLVariables();
 					variables.url = roteiro.diretorioInterface;
-					variables.nomeArquivo = "interface.java";
+					variables.nomeArquivo = "Interface.java";
 					requestInterface.data = variables;
 					fileRefInterface.upload(requestInterface);
 				}
