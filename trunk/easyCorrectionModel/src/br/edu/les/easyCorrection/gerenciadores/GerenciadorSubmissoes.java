@@ -1,6 +1,8 @@
 package br.edu.les.easyCorrection.gerenciadores;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
@@ -31,6 +33,7 @@ import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 public class GerenciadorSubmissoes {
 
 	private GerenciadorRoteiros gerenciadorRoteiros;
+	private String resultadoErro = "";
 
 	public GerenciadorSubmissoes() {
 		super();
@@ -174,16 +177,27 @@ public class GerenciadorSubmissoes {
 		String relatorio = "";
 		
 		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+		OutputStream out = new OutputStream() {
+			public void write(int b) throws IOException {
+				resultadoErro += (char) b;
+			}
+		};
+		
+		OutputStream erro = new OutputStream() {
+			public void write(int b) throws IOException {
+				resultadoErro += (char) b;
+			}
+		};
 		
 		try{
-			javaCompiler.run(null, System.out, System.err, 
+			javaCompiler.run(null, out, erro, 
 					"-sourcepath", diretorioSource + ";" + diretorioInterface + ";" + diretorioTestes, 
 					"-classpath", diretorioLib + "junit.jar", 
-					diretorioInterface + "Interface.java", diretorioSource + "PilhaImpl.java", diretorioTestes + "TestaPilha.java",
+					diretorioInterface + "Interface.java", diretorioSource + "Implementacao.java", diretorioTestes + "Testes.java",
 					"-d", diretorioTestes); //diretório de saída dos .class
 			
 			URLClassLoader cl = new URLClassLoader(new URL[]{new File(diretorioTestes).toURI().toURL()}, JUnitCore.class.getClassLoader());
-			Class<?> testClass = cl.loadClass("TestaPilha");
+			Class<?> testClass = cl.loadClass("Testes");
 			
 			JUnit4TestAdapter testAdapter = new JUnit4TestAdapter(testClass);
 			TestResult result = TestRunner.run(testAdapter);
@@ -195,12 +209,11 @@ public class GerenciadorSubmissoes {
 				"Total de Testes: " + quantTestesRodados + "\n" +
 				"Total de Erros: " + erros + "\n" +
 				"Porcentagem de Acertos: " + porcAcertos + " %\n" +
-				"Nota dos Testes Automáticos: " + porcAcertos * submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getPorcentagemTestesAutomaticos();
+				"Nota dos Testes Automáticos: " + (porcAcertos * submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getPorcentagemTestesAutomaticos()) / 1000;
 			
 			boolean success = result.wasSuccessful();
-			System.out.println(success);
 		} catch(Exception e){
-			System.out.println("Erro");
+			return resultadoErro;
 		}
 		return relatorio;
 	}
