@@ -4,6 +4,11 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import bean.Utilitarios.Util;
+			import com.flexspy.imp.Utils;
+			import mx.binding.utils.BindingUtils;
+			import bean.roteiros.Roteiro;
+			import mx.effects.Rotate;
 			import mx.controls.Image;
 			import mx.controls.Alert;
 			import flash.net.navigateToURL;
@@ -21,20 +26,75 @@
 			private var gU:Object = new Object();
 			private var gruposUsuario:ArrayCollection = new ArrayCollection();
 			//private const FILE_UPLOAD_URL:String = "http://200.129.73.191:8080/ePibic/";
-			private const FILE_UPLOAD_URL:String = "http://localhost:8080/ePibic/";
+			private const FILE_UPLOAD_URL:String = "http://localhost:8080/EasyLabCorrection/";
 			private var fileRef:FileReference = new FileReference();
 			private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadProjeto'));
+			
+			[Bindable]
+			private var roteiro: Roteiro = new Roteiro();
 			
 			private function init():void {
 				facade.channelSet = ControladorDeModulos.criaCanal();
 				ControladorDeModulos.getParam();
+				this.systemManager.addEventListener(ObjetoEvent.ObjetoEventConst, temRoteiro);
+				listarRoteiros();
+			}
+			
+			private function temRoteiro(event: ObjetoEvent):void{
+				listarRoteiros();
+			}
+			
+			private function falha(event:FaultEvent):void {
+				var mensagem:String;
+				try{
+					if (event.fault.rootCause.message == null) {
+						mensagem = event.fault.faultString;
+					} else {
+						mensagem = event.fault.rootCause.message;
+					} 
+				}
+				catch(e:Error){
+					mensagem = "Serviço indisponível, reinicie a operação.";
+				}
+				ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+			}
+			
+			private function listarRoteiros():void{
+				facade.getOperation("listarRoteiros").send();
+			}
+			
+			private function listarRoteiros_result(event:ResultEvent):void{
+				listaRoteiros.dataProvider = event.result as ArrayCollection;
+			}
+			
+			private function atualizaDadosRoteiro(): void{
+				try{
+					roteiro = CastDeEntidades.castRoteiro(listaRoteiros.selectedItem);
+					inputTituloRoteiro.text = roteiro.nome;
+					resumoText.text = roteiro.descricao;
+					inputNumeroMaximoEnvios.text = String(roteiro.numeroMaximoEnvios);
+					inputIntegrantesPorEquipe.text = String(roteiro.numeroMaximoParticipantes);
+					inputPenalidades.text = String(roteiro.penalidadeDiasAtraso);
+					inputDataFinal.text = Util.formataData(roteiro.dataFinalDiscussao);
+					inputDataEntrega.text = Util.formataData(roteiro.dataFinalEntrega);
+					inputDataLiberacao.text = Util.formataData(roteiro.dataLiberacao);
+				}
+				catch(e: Error){}
+			}
+			
+			private function visualizarNotas(): void{
+				ControladorDeModulos.criaModulo("modulos/Views/VisualizacaoDeNotas.swf", this, "");
+			}
+			
+			private function visualizarCorrecao(): void{
+				ControladorDeModulos.criaModulo("modulos/Views/ModuloCorrecao.swf", this, "");
 			}
 			
 		]]>
 	</mx:Script>	
 	
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">		
-		
+		<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
 	</mx:RemoteObject>
 		
 	<mx:Canvas label="Roteiros" id="canvasRoteiros">
@@ -45,8 +105,8 @@
 		<mx:Label x="10" y="461" text="Equipe:"/>
 		<mx:LinkButton x="469.8" y="520" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Roteiro"/>
 		<mx:LinkButton x="636.8" y="520" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Testes"/>
-		<mx:LinkButton x="435.8" y="551" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Correção"/>
-		<mx:LinkButton x="636.8" y="551" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Planilha de Notas"/>
+		<mx:LinkButton x="435.8" y="551" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Correção" click="visualizarCorrecao()"/>
+		<mx:LinkButton x="636.8" y="551" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Planilha de Notas" click="visualizarNotas()"/>
 		<mx:LinkButton x="626" y="10" visible="false" icon="@Embed(source='../../image/help2.png')" label="  Instruções para Avaliação dos Projetos" id="linkInstrucao"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Atualizar Projeto" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAtualizaOrientador"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Avaliar" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAvaliacao"/>
@@ -67,19 +127,19 @@
 		<mx:Label x="10" y="378" text="Meus Projetos:" fontStyle="normal" fontWeight="bold" fontSize="14" id="meusProjetosLabel" visible="false"/>
 		<mx:Label x="10" y="176" text="Projetos da Cota Atual:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetosCotaLabel" visible="false"/>
 		<mx:VRule x="302" y="13" height="577"  width="1"/>
-		<mx:Label x="575" y="478" width="32" id="labelNota" color="#1B7A0F" text="0,5"/>
-		<mx:Label x="575" y="450" width="32" id="labelNota0" color="#1B7A0F" text="4"/>
-		<mx:Label x="575" y="422" width="32" id="labelNota1" color="#1B7A0F" text="4"/>
-		<mx:Label x="795" y="422" width="88" id="labelNota5" color="#1B7A0F" text="00/00/0000"/>
-		<mx:Label x="795" y="450" width="88" id="labelNota4" color="#1B7A0F" text="00/00/0000"/>
-		<mx:Label x="835" y="478" width="88" id="labelNota3" color="#1B7A0F" text="00/00/0000"/>
+		<mx:Label x="575" y="478" width="32" id="inputPenalidades" color="#1B7A0F" text="0"/>
+		<mx:Label x="575" y="450" width="32" id="inputIntegrantesPorEquipe" color="#1B7A0F" text="0"/>
+		<mx:Label x="575" y="422" width="32" id="inputNumeroMaximoEnvios" color="#1B7A0F" text="0"/>
+		<mx:Label x="795" y="422" width="88" id="inputDataLiberacao" color="#1B7A0F"/>
+		<mx:Label x="795" y="450" width="88" id="inputDataEntrega" color="#1B7A0F"/>
+		<mx:Label x="835" y="478" width="88" id="inputDataFinal" color="#1B7A0F"/>
 		<mx:TextArea x="331" y="109" width="587" height="294" backgroundAlpha="0.0" id="resumoText" editable="false" alpha="0.5" cornerRadius="10"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
-		<mx:List x="10" y="44" width="264" height="399"></mx:List>
+		<mx:List x="10" y="44" width="264" height="399" id="listaRoteiros" labelField="nome" itemClick="atualizaDadosRoteiro()" fontSize="14"/>
 		<mx:List x="10" y="489" width="267" height="85"></mx:List>
-		<mx:Label x="383" y="53" width="126" id="labelNota2" color="#1B7A0F" text="Título do Roteiro"/>
-		<mx:Label x="837" y="14" width="48" id="labelNota6" color="#1B7A0F" text="10,0"/>
-		<mx:Label x="837" y="45" width="48" id="labelNota7" color="#1B7A0F" text="10,0"/>
+		<mx:Label x="383" y="53" width="126" id="inputTituloRoteiro" color="#1B7A0F" text="Título do Roteiro"/>
+		<mx:Label x="837" y="14" width="48" id="inputNotaFinal" color="#1B7A0F" text="0,0"/>
+		<mx:Label x="837" y="45" width="48" id="inputNotaTestes" color="#1B7A0F" text="0,0"/>
 	</mx:Canvas>
 </mx:TabNavigator>
