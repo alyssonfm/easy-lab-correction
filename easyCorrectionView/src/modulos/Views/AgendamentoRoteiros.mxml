@@ -47,6 +47,7 @@
 				}
 				
 				private function fechaJanela():void {
+					dispatchEvent(new ObjetoEvent(null));
 					dispatchEvent(new FechaPopupEvent(this));
 				}
 				
