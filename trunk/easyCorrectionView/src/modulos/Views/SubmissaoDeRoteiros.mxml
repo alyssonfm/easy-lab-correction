@@ -171,14 +171,14 @@
 		
 		<mx:Label text="Resultados:" fontWeight="bold"
 			textAlign="left" width="121" x="10" y="177" id="labelDescricao"/>
-		<mx:TextArea x="10" y="205" width="634" height="127" id="inputDescricao"/>
-		<mx:LinkButton x="197.55" y="55" label="   Anexar Roteiro" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivo()"/>
-		<mx:Label x="10" y="88" width="634" id="caminho" textAlign="center"/>
+		<mx:TextArea x="10" y="205" width="656" height="127" id="inputDescricao"/>
+		<mx:LinkButton x="211.55" y="56" label="   Anexar Roteiro" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivo()"/>
+		<mx:Label x="10" y="88" width="656" id="caminho" textAlign="center"/>
 		<mx:Label x="10" y="10" width="69" id="caminho0" textAlign="left" text="Roteiros:" fontWeight="bold"/>
-		<mx:Button x="229" y="124" label="   Submeter Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSubmeterRoteiro" click="submeteRoteiro()"/>
-		<mx:HRule x="10" y="160" width="634" height="9"/>
-		<mx:HRule x="10" y="38" width="634" height="10"/>
-		<mx:ComboBox x="76" y="8" width="568" id="comboRoteiro" change="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" enter="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" labelField="nome"></mx:ComboBox>
+		<mx:Button x="246" y="124" label="   Submeter Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSubmeterRoteiro" click="submeteRoteiro()"/>
+		<mx:HRule x="10" y="160" width="656" height="9"/>
+		<mx:HRule x="10" y="38" width="656" height="10"/>
+		<mx:ComboBox x="76" y="8" width="590" id="comboRoteiro" change="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" enter="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" labelField="nome"></mx:ComboBox>
 		
 		
 </les:ModuleTitleWindow>
