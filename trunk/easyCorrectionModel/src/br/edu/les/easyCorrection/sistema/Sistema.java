@@ -295,7 +295,7 @@ public class Sistema {
 		return gerenciadorSubmissoes.getSubmissao(submissaoId);
 	}
 
-	public void excluirSubmissao(Submissao sub) throws ExclusaoRoteiroException {
+	public void excluirSubmissao(Submissao sub) throws EasyCorrectionException {
 		gerenciadorSubmissoes.excluirSubmissao(sub);
 	}
 
