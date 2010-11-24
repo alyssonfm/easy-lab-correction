@@ -587,7 +587,7 @@ public class Facade {
 		return sistema.getSubmissao(submissaoId);
 	}
 
-	public void excluirSubmissao(Submissao sub) throws ExclusaoRoteiroException {
+	public void excluirSubmissao(Submissao sub) throws EasyCorrectionException {
 		sistema.excluirSubmissao(sub);
 	}
 
