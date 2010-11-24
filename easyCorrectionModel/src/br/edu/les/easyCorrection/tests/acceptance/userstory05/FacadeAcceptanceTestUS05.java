@@ -2,6 +2,7 @@ package br.edu.les.easyCorrection.tests.acceptance.userstory05;
 
 import java.util.Calendar;
 
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
@@ -46,7 +47,7 @@ public class FacadeAcceptanceTestUS05 extends FacadeAcceptanceTestUS04 {
 		return resultado.getId();
 	}
 
-	public void excluirSubmissao(int submissaoId) throws ExclusaoRoteiroException {
+	public void excluirSubmissao(int submissaoId) throws EasyCorrectionException {
 		Submissao sub = getSubmissao(submissaoId);
 		facadeSistema.excluirSubmissao(sub);;
 	}
