@@ -29,6 +29,8 @@
 			private const FILE_UPLOAD_URL:String = "http://localhost:8080/EasyLabCorrection/";
 			private var fileRef:FileReference = new FileReference();
 			private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadProjeto'));
+			private var localInterface: String = "";
+			private var localTestes: String = "";
 			
 			[Bindable]
 			private var roteiro: Roteiro = new Roteiro();
@@ -78,6 +80,7 @@
 					inputDataFinal.text = Util.formataData(roteiro.dataFinalDiscussao);
 					inputDataEntrega.text = Util.formataData(roteiro.dataFinalEntrega);
 					inputDataLiberacao.text = Util.formataData(roteiro.dataLiberacao);
+					
 				}
 				catch(e: Error){}
 			}
@@ -103,7 +106,7 @@
 		<mx:Label x="14" y="552" text="Total de Projetos Inscritos:" id="labelTotalProjetosInscritos" visible="false"/>
 		<mx:Label x="198" y="552" width="85" id="totalProjetosInscritos" visible="false"/>
 		<mx:Label x="10" y="461" text="Equipe:"/>
-		<mx:LinkButton x="469.8" y="520" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Roteiro"/>
+		<mx:LinkButton x="454.8" y="520" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Interface"/>
 		<mx:LinkButton x="636.8" y="520" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Testes"/>
 		<mx:LinkButton x="435.8" y="551" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Correção" click="visualizarCorrecao()"/>
 		<mx:LinkButton x="636.8" y="551" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Planilha de Notas" click="visualizarNotas()"/>
