@@ -34,7 +34,7 @@
 				private var fileRef:FileReference;
 				private var request: URLRequest;
 				//private const FILE_UPLOAD_URL:String = "http://les.edu.br/easyLabCorrection/";
-				private const FILE_UPLOAD_URL:String = "http://localhost:8080/easyCorrection/";
+				private const FILE_UPLOAD_URL:String = "http://les.dsc.ufcg.edu.br:8080/easyCorrection/";
 	            private var submissao:Submissao = new Submissao();
 	            private var eur:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
 	            
@@ -119,14 +119,23 @@
 				
 				public function submeteRoteiro(): void{
 					try{
-						if(fileRef != null && eur.id != 0){
+						var param:Array;
+						if (comboRoteiro.selectedItem == null){
+							param = new Array(true, "Para submeter um roteiro você tem que escolher um roteiro.");
+							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+						}
+						else if (fileRef == null){
+							param = new Array(true, "Para submeter um roteiro você tem que escolher um arquivo zip contendo o código.");
+							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+						}
+						else if(fileRef != null && eur.id != 0){
 							submissao = new Submissao();
 							submissao.equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
 							submissao.equipeHasUsuarioHasRoteiro = eur;
 							submissao.url = "/periodo" + eur.roteiro.periodo.semestre + "/" + eur.roteiro.nome + "/" + eur.equipe.nome + "/";
 							facade.getOperation("submeteRoteiro").send(CastDeEntidades.castSubmissao(submissao));
 						}else{
-							var param:Array = new Array(false, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+							param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
 							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 						}
 					}catch(e: Error){

@@ -40,7 +40,7 @@
 				private var requestTestes: URLRequest;
 				private var fileRefInterface:FileReference;
 				private var requestInterface: URLRequest;
-				private const FILE_UPLOAD_URL:String = "http://localhost:8080/easyCorrection/";
+				private const FILE_UPLOAD_URL:String = "http://les.dsc.ufcg.edu.br:8080/easyCorrection/";
 				
 				private var periodo:Periodo = new Periodo();
 				private var roteiro:Roteiro = new Roteiro();
@@ -144,7 +144,7 @@
 					requestTestes = new URLRequest(FILE_UPLOAD_URL);
 					var variables:URLVariables = new URLVariables();
 					variables.url = roteiro.diretorioInterface;
-					variables.nomeArquivo = "Interface.java";
+					variables.nomeArquivo = caminhoInterface.text;
 					requestInterface.data = variables;
 					fileRefInterface.upload(requestInterface);
 				}
