@@ -46,6 +46,9 @@
 				private var roteiro:Roteiro = new Roteiro();
 				private var bloqueado:Boolean = false;
 				private var estado:*;
+				private var ehCadastro: Boolean = false;
+				private var urlTestes: String = "";
+				private var urlInterface: String = "";
 	            
 	            private function falha(event:FaultEvent):void {
 					var mensagem:String;
@@ -174,6 +177,7 @@
 				}
 				
 				public function envioCompletoInterface(evt:Event):void {
+					if(ehCadastro) editarRoteiro();
 				}
 				
 				private function getPeriodoAtual():void{
@@ -192,8 +196,8 @@
 					roteiro.dataLiberacao = Util.formataDataStringEmDate(dfDataLiberacao.text);
 					roteiro.descricao = inputDescricao.text;
 					roteiro.nome = inputTitulo.text;
-					roteiro.diretorioInterface = "/periodo" + periodo.semestre + "/interface/" + roteiro.nome + "/";
-					roteiro.diretorioTestes = "/periodo" + periodo.semestre + "/testes/" + roteiro.nome + "/";
+					roteiro.diretorioInterface = "/periodo" + periodo.semestre + "/interface/" + roteiro.id + "/";
+					roteiro.diretorioTestes = "/periodo" + periodo.semestre + "/testes/" + roteiro.id + "/";
 					roteiro.numeroMaximoEnvios = int(inputNumeroMaxEnvios.text);
 					roteiro.numeroMaximoParticipantes = int(inputMaximoEquipe.text);
 					roteiro.penalidadeDiasAtraso = Util.formataTextValorToNumber(inputPenalidade.text);
@@ -212,20 +216,25 @@
 				private function cadastrarRoteiro():void{
 					roteiro = new Roteiro();
 					preencheRoteiro();
+					ehCadastro = true;
 					facade.getOperation("cadastrarRoteiro").send(CastDeEntidades.castRoteiro(roteiro));
 				}
 				
 				private function cadastrarRoteiro_result(event:ResultEvent):void{
 					roteiro = new Roteiro();
 					roteiro = CastDeEntidades.castRoteiro(event.result);
+					urlTestes = "/periodo" + periodo.semestre + "/testes/" + roteiro.id + "/";
+					urlInterface = "/periodo" + periodo.semestre + "/interface/" + roteiro.id + "/";
 					try{
 						var variables:URLVariables = new URLVariables();
-						variables.url = roteiro.diretorioTestes;
+						variables.url = urlTestes;
 						variables.nomeArquivo = "testes.zip";
 						requestTestes.data = variables;
 						fileRefTestes.upload(requestTestes);
 					}catch(e: Error){}
-					var param:Array = new Array(false, "Roteiro Cadastrado/Atualizado com sucesso.");
+					var param:Array;
+					if (ehCadastro) param = new Array(false, "Roteiro Cadastrado com sucesso.");
+					else param = new Array(false, "Roteiro Atualizado com sucesso.");
 					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 				}
 				
