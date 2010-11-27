@@ -705,7 +705,7 @@
 				mensagem = Util.geraCodigosHTML(mensagem);
 				contato = grupoUsuarioP.usuario.email;
 				nomeUsuario = grupoUsuarioP.usuario.nome;
-				//servicoEnviarEmail.send();
+				servicoEnviarEmail.send();
 				
 			}
 			

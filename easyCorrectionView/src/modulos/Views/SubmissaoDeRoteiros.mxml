@@ -117,13 +117,14 @@
 					if(comboRoteiro.selectedItem != null){
 						var id:int = int(SharedObject.getLocal("sistema", "/").data.idUsuario);
 						facade.getOperation("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro").send(id, comboRoteiro.selectedItem.id);
-						this.nomeDaEquipe = comboRoteiro.selectedItem.equipe.nome;
 					}
 				}
 				
 				public function getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event:ResultEvent):void{
+					var result: String = event.result as String;
 					eur = new EquipeHasUsuarioHasRoteiro();
 					eur = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(event.result);
+					nomeDaEquipe.text = eur.equipe.nome;
 				}
 				
 				public function submeteRoteiro(): void{
@@ -148,7 +149,7 @@
 							facade.getOperation("submeteRoteiro").send(CastDeEntidades.castSubmissao(submissao));
 						}
 					}catch(e: Error){
-						var param:Array = new Array(true, "Este Usuário não está em nenhuma equipe.");
+						var param:Array = new Array(true, "Falha técnica. Tente mais tarde...");
 						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 					}
 				}
