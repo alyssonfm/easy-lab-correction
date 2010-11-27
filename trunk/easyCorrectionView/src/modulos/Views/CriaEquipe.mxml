@@ -70,7 +70,8 @@
 				private function init():void {
 					facade.channelSet = ControladorDeModulos.criaCanal();
 					ControladorDeModulos.getParam();
-					getRoteirosLiberados();
+					botao.enabled = false;
+					getRoteirosLiberados();					
 				}
 				
 				public function getRoteirosLiberados():void{
@@ -99,6 +100,7 @@
 				
 				public function getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro():void{
 					if(comboRoteiro.selectedItem != null && comboEquipe.selectedItem != null){
+						botao.enabled = true;
 						facade.getOperation("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro").send(
 							comboEquipe.selectedItem.id, comboRoteiro.selectedItem.id)
 					}else{
@@ -130,6 +132,7 @@
 			
 			private function getEquipeHasUsuarioHasRoteiros():void{
 				facade.getOperation("getEquipeHasUsuarioHasRoteiros").send();
+				
 			}
 			
 			private function getEquipeHasUsuarioHasRoteiros_result(event:ResultEvent):void{
@@ -149,6 +152,9 @@
 			
 			public function cadastrarEquipeHasRoteiroHasUsuario():void{
 				eur = new EquipeHasUsuarioHasRoteiro();
+				if (comboEquipe.selectedItem == null || comboRoteiro.selectedItem == null){
+					botao.enabled = false;
+				}
 				if(comboEquipe.selectedItem != null && comboRoteiro.selectedItem != null){
 					eur.equipe = CastDeEntidades.castEquipe(comboEquipe.selectedItem);
 					eur.roteiro = CastDeEntidades.castRoteiro(comboRoteiro.selectedItem);
