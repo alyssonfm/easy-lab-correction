@@ -19,7 +19,6 @@
     <module application="src/main.mxml" destPath="modulos/sistema/MensagemStatus.swf" optimize="true" sourcePath="src/modulos/sistema/MensagemStatus.mxml"/>
     <module application="src/main.mxml" destPath="modulos/sistema/Login.swf" optimize="true" sourcePath="src/modulos/sistema/Login.mxml"/>
     <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/Cadastros.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/Cadastros.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/DefinirFuncoes.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/DefinirFuncoes.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/AtribuicaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AtribuicaoDeRoteiros.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/Penalidades.swf" optimize="true" sourcePath="src/modulos/Views/Penalidades.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/VisualizacaoDeNotas.swf" optimize="true" sourcePath="src/modulos/Views/VisualizacaoDeNotas.mxml"/>
@@ -28,6 +27,7 @@
     <module application="src/main.mxml" destPath="modulos/Views/ModuloCorrecao.swf" optimize="true" sourcePath="src/modulos/Views/ModuloCorrecao.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/Chat.swf" optimize="true" sourcePath="src/modulos/Views/Chat.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/CriaEquipe.swf" optimize="true" sourcePath="src/modulos/Views/CriaEquipe.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/DefinirFuncoes.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/DefinirFuncoes.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>

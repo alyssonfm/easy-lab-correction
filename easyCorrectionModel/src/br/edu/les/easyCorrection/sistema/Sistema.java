@@ -302,5 +302,9 @@ public class Sistema {
 	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
 		return gerenciadorSubmissoes.cadastraEquipe(e);
 	}
+	
+	public Integer numeroSubmissoes(Submissao submissao){
+		return gerenciadorSubmissoes.numeroSubmissoes(submissao);
+	}
 
 }

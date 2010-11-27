@@ -17,7 +17,7 @@ import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
-public class GerenciadorRoteiros extends Gerenciador{
+public class GerenciadorRoteiros extends Gerenciador {
 
 	public final double PENALIDADE_DIA_ATRASO_DEFAULT = -1;
 	public final double PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT = -1;
@@ -133,6 +133,10 @@ public class GerenciadorRoteiros extends Gerenciador{
 			throws CriacaoRoteiroException {
 		Date dataHojeZero = easyCorrectionUtil.getDataNow();
 
+		// Estes campos devem vir null
+		roteiro.setDiretorioTestes("");
+		roteiro.setDiretorioInterface("");
+		
 		if (roteiro.getNome() == null || roteiro.getNome().equals("")) {
 			throw new CriacaoRoteiroException(MsgErros.NOMEVAZIO
 					.msg("Nome da atividade inválido. O Roteiro não pôde ser "
@@ -209,7 +213,6 @@ public class GerenciadorRoteiros extends Gerenciador{
 					MsgErros.VALORINVALIDO
 							.msg("Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
-
 		} else {
 			return true;
 		}
@@ -222,21 +225,22 @@ public class GerenciadorRoteiros extends Gerenciador{
 		validaRoteiroEmCriacao(roteiro);
 
 		String testesDirDefault = "/periodo" + roteiro.getPeriodo().toString()
-				+ "/testes/" + roteiro.getNome() + "/";
+				+ "/testes/" + roteiro.getId() + "/";
 		String interfaceDirDefault = "/periodo"
 				+ roteiro.getPeriodo().toString() + "/interface/"
-				+ roteiro.getNome() + "/";
+				+ roteiro.getId() + "/";
 
 		if ((roteiro.getDiretorioTestes() != null && !roteiro
 				.getDiretorioTestes().equals(""))
 				&& !roteiro.getDiretorioTestes().endsWith(testesDirDefault)) {
 			throw new EdicaoRoteiroException(
-					"Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/<nome_roteiro>/'. O Roteiro não pôde ser atualizado!");
+					"Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/<roteiro_id>/'. O Roteiro não pôde ser atualizado!");
 		} else if ((roteiro.getDiretorioInterface() != null && !roteiro
 				.getDiretorioInterface().equals(""))
-				&& !roteiro.getDiretorioInterface().endsWith(interfaceDirDefault)) {
+				&& !roteiro.getDiretorioInterface().endsWith(
+						interfaceDirDefault)) {
 			throw new EdicaoRoteiroException(
-					"Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/<nome_roteiro>/'. O Roteiro não pôde ser atualizado!");
+					"Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/<roteiro_id>/'. O Roteiro não pôde ser atualizado!");
 		}
 		return true;
 	}

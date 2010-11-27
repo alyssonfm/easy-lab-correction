@@ -25,7 +25,6 @@
 			private var idUsuario:int;
 			private var gU:Object = new Object();
 			private var gruposUsuario:ArrayCollection = new ArrayCollection();
-			//private const FILE_UPLOAD_URL:String = "http://200.129.73.191:8080/ePibic/";
 			private const FILE_UPLOAD_URL:String = "http://localhost:8080/EasyLabCorrection/";
 			private var fileRef:FileReference = new FileReference();
 			private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadProjeto'));
@@ -67,6 +66,12 @@
 			
 			private function listarRoteiros_result(event:ResultEvent):void{
 				listaRoteiros.dataProvider = event.result as ArrayCollection;
+				if ((listaRoteiros.dataProvider as ArrayCollection).length == 0){
+					buttonBaixarTestes.enabled = false;
+					buttonBaixarInterface.enabled = false;
+					buttonVisualizarNotas.enabled = false;
+					buttonVisulizarCorrecao.enabled = false;
+				}
 			}
 			
 			private function atualizaDadosRoteiro(): void{
@@ -81,6 +86,10 @@
 					inputDataEntrega.text = Util.formataData(roteiro.dataFinalEntrega);
 					inputDataLiberacao.text = Util.formataData(roteiro.dataLiberacao);
 					
+					buttonBaixarTestes.enabled = true;
+					buttonBaixarInterface.enabled = true;
+					buttonVisualizarNotas.enabled = true;
+					buttonVisulizarCorrecao.enabled = true;
 				}
 				catch(e: Error){}
 			}
@@ -106,20 +115,20 @@
 		<mx:Label x="14" y="552" text="Total de Projetos Inscritos:" id="labelTotalProjetosInscritos" visible="false"/>
 		<mx:Label x="198" y="552" width="85" id="totalProjetosInscritos" visible="false"/>
 		<mx:Label x="10" y="461" text="Equipe:"/>
-		<mx:LinkButton x="454.8" y="520" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Interface"/>
-		<mx:LinkButton x="636.8" y="520" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Testes"/>
-		<mx:LinkButton x="435.8" y="551" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Correção" click="visualizarCorrecao()"/>
-		<mx:LinkButton x="636.8" y="551" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Planilha de Notas" click="visualizarNotas()"/>
+		<mx:LinkButton x="454.8" y="520" id="buttonBaixarInterface" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Interface"/>
+		<mx:LinkButton x="636.8" y="520" id="buttonBaixarTestes" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Testes"/>
+		<mx:LinkButton x="435.8" y="551" id="buttonVisulizarCorrecao" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Correção" click="visualizarCorrecao()"/>
+		<mx:LinkButton x="636.8" y="551" id="buttonVisualizarNotas" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Planilha de Notas" click="visualizarNotas()"/>
 		<mx:LinkButton x="626" y="10" visible="false" icon="@Embed(source='../../image/help2.png')" label="  Instruções para Avaliação dos Projetos" id="linkInstrucao"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Atualizar Projeto" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAtualizaOrientador"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Avaliar" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAvaliacao"/>
 		<mx:List x="10" y="70" visible="false" fontSize="12" width="315" height="95" cornerRadius="20" alpha="0.5" id="projetoAvaliacaoList"/>
 		<mx:List x="10" y="404" visible="false" fontSize="12" width="315" height="137" cornerRadius="20" alpha="0.5" id="projetoList"/>
 		<mx:List x="10" y="202" visible="false" fontSize="12" width="315" height="155" cornerRadius="20" alpha="0.5" id="projetoCotaList"/>
-		<mx:Label x="331" y="81" text="Descrição:" id="labelDescRoteiro"/>
-		<mx:Label x="331" y="53" text="Título:" id="labelDescRoteiro0"/>
+		<mx:Label x="331" y="96" text="Descrição:" id="labelDescRoteiro"/>
+		<mx:Label x="333" y="70" text="Título:" id="labelDescRoteiro0"/>
 		<mx:Label x="759" y="14" text="Nota final:"/>
-		<mx:Label y="45" text="Nota dos testes:" x="718"/>
+		<mx:Label y="39" text="Nota dos testes:" x="718"/>
 		<mx:Label x="654" y="422" text="Data de Liberação:"/>
 		<mx:Label x="654" y="450" text="Data de Entrega:"/>
 		<mx:Label x="654" y="478" text="Data Final para Discussão:"/>
@@ -136,13 +145,13 @@
 		<mx:Label x="795" y="422" width="88" id="inputDataLiberacao" color="#1B7A0F"/>
 		<mx:Label x="795" y="450" width="88" id="inputDataEntrega" color="#1B7A0F"/>
 		<mx:Label x="835" y="478" width="88" id="inputDataFinal" color="#1B7A0F"/>
-		<mx:TextArea x="331" y="109" width="587" height="294" backgroundAlpha="0.0" id="resumoText" editable="false" alpha="0.5" cornerRadius="10"/>
+		<mx:TextArea x="331" y="124" width="587" height="279" backgroundAlpha="0.0" id="resumoText" editable="false" alpha="0.5" cornerRadius="10"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:List x="10" y="44" width="264" height="399" id="listaRoteiros" labelField="nome" itemClick="atualizaDadosRoteiro()" fontSize="14"/>
 		<mx:List x="10" y="489" width="267" height="85"></mx:List>
-		<mx:Label x="383" y="53" width="126" id="inputTituloRoteiro" color="#1B7A0F" text="Título do Roteiro"/>
+		<mx:Label x="386" y="70" width="532" id="inputTituloRoteiro" color="#1B7A0F" text="..."/>
 		<mx:Label x="837" y="14" width="48" id="inputNotaFinal" color="#1B7A0F" text="0,0"/>
-		<mx:Label x="837" y="45" width="48" id="inputNotaTestes" color="#1B7A0F" text="0,0"/>
+		<mx:Label x="837" y="39" width="48" id="inputNotaTestes" color="#1B7A0F" text="0,0"/>
 	</mx:Canvas>
 </mx:TabNavigator>
