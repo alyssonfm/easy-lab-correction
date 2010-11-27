@@ -40,15 +40,18 @@
 				private var requestTestes: URLRequest;
 				private var fileRefInterface:FileReference;
 				private var requestInterface: URLRequest;
-				private const FILE_UPLOAD_URL:String = "http://les.dsc.ufcg.edu.br:8080/easyCorrection/";
+				private const FILE_UPLOAD_URL:String = "http://localhost:8080/easyCorrection/";
+				//private const FILE_UPLOAD_URL:String = "http://les.dsc.ufcg.edu.br:8080/easyCorrection/";
 				
 				private var periodo:Periodo = new Periodo();
 				private var roteiro:Roteiro = new Roteiro();
 				private var bloqueado:Boolean = false;
 				private var estado:*;
+				private var fezUpload: Boolean = false;
 				private var ehCadastro: Boolean = false;
 				private var urlTestes: String = "";
 				private var urlInterface: String = "";
+				private var paramMensagem:Array;
 	            
 	            private function falha(event:FaultEvent):void {
 					var mensagem:String;
@@ -146,7 +149,7 @@
 				public function envioCompletoTestes(evt:Event):void {
 					requestTestes = new URLRequest(FILE_UPLOAD_URL);
 					var variables:URLVariables = new URLVariables();
-					variables.url = roteiro.diretorioInterface;
+					variables.url = urlInterface;
 					variables.nomeArquivo = caminhoInterface.text;
 					requestInterface.data = variables;
 					fileRefInterface.upload(requestInterface);
@@ -177,7 +180,6 @@
 				}
 				
 				public function envioCompletoInterface(evt:Event):void {
-					if(ehCadastro) editarRoteiro();
 				}
 				
 				private function getPeriodoAtual():void{
@@ -209,6 +211,7 @@
 				private function editarRoteiro():void{
 					if(roteiro.id != 0){
 						preencheRoteiro();
+						ehCadastro = false;
 						facade.getOperation("editarRoteiro").send(CastDeEntidades.castRoteiro(roteiro));
 					}	
 				}
@@ -225,17 +228,25 @@
 					roteiro = CastDeEntidades.castRoteiro(event.result);
 					urlTestes = "/periodo" + periodo.semestre + "/testes/" + roteiro.id + "/";
 					urlInterface = "/periodo" + periodo.semestre + "/interface/" + roteiro.id + "/";
-					try{
-						var variables:URLVariables = new URLVariables();
-						variables.url = urlTestes;
-						variables.nomeArquivo = "testes.zip";
-						requestTestes.data = variables;
-						fileRefTestes.upload(requestTestes);
-					}catch(e: Error){}
-					var param:Array;
-					if (ehCadastro) param = new Array(false, "Roteiro Cadastrado com sucesso.");
-					else param = new Array(false, "Roteiro Atualizado com sucesso.");
-					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+					if (!ehCadastro){
+						try{
+							var variables:URLVariables = new URLVariables();
+							variables.url = urlTestes;
+							variables.nomeArquivo = "testes.zip";
+							requestTestes.data = variables;
+							fileRefTestes.upload(requestTestes);
+						}catch(e: Error){}
+						if(!fezUpload){
+							paramMensagem = new Array(false, "Roteiro Atualizado com sucesso.");
+							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, paramMensagem);
+						} 
+					}
+					else{
+						fezUpload = true;
+						editarRoteiro();
+						paramMensagem = new Array(false, "Roteiro Cadastrado com sucesso.");
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, paramMensagem);
+					}
 				}
 				
 				private function bloqueiaRoteiro():void{
