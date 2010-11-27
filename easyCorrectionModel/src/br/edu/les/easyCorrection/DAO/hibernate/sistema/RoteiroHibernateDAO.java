@@ -30,7 +30,7 @@ public class RoteiroHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Roteiro> findByRoteiroLiberado(Date dataAtual) {
-		Query q = getSession().createQuery("from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual");
+		Query q = getSession().createQuery("from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual and bloqueado = 0");
 		q.setParameter("dataAtual",dataAtual);
 		q.setCacheable(true);
 		List <Roteiro> lista = q.list();
@@ -39,7 +39,7 @@ public class RoteiroHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Roteiro> findByRoteiroLiberado(Date dataAtual, Integer idRoteiro) {
-		Query q = getSession().createQuery("from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual and id = :idRoteiro");
+		Query q = getSession().createQuery("from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual and bloqueado = 0 and id = :idRoteiro");
 		q.setParameter("dataAtual",dataAtual);
 		q.setParameter("idRoteiro",idRoteiro);
 		q.setCacheable(true);

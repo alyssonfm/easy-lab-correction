@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import br.edu.les.easyCorrection.exceptions.BloqueiaRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
@@ -432,7 +433,7 @@ public class Facade {
 	}
 	
 	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
-			throws LiberaRoteiroException {
+			throws LiberaRoteiroException, BloqueiaRoteiroException {
 		return sistema.liberarRoteiro(roteiroTemp);
 	}
 

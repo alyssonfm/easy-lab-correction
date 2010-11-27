@@ -11,6 +11,7 @@ import br.edu.les.easyCorrection.exceptions.BloqueiaRoteiroException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 
@@ -125,6 +126,9 @@ public class GerenciadorRoteirosTC {
 			gr.bloquearRoteiro(roteiroNULL, true);
 		} catch (BloqueiaRoteiroException e) {
 			Assert.assertTrue("O bloqueio não deve ser realizado", true);
+		} catch (LiberaRoteiroException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		try {
@@ -133,6 +137,9 @@ public class GerenciadorRoteirosTC {
 			Assert.assertTrue("O bloqueio deve ser realizado", true);
 		} catch (BloqueiaRoteiroException e) {
 			Assert.assertFalse("O bloqueio deve ser realizado", true);
+		} catch (LiberaRoteiroException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		Assert.assertTrue(roteiroMinimo.isBloqueado());
@@ -144,6 +151,9 @@ public class GerenciadorRoteirosTC {
 			Assert.assertTrue("O desbloqueio deve ser realizado", true);
 		} catch (BloqueiaRoteiroException e) {
 			Assert.assertFalse("O desbloqueio deve ser realizado", true);
+		} catch (LiberaRoteiroException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		Assert.assertFalse(roteiroMinimo.isBloqueado());
@@ -156,6 +166,9 @@ public class GerenciadorRoteirosTC {
 			Assert.assertTrue("O desbloqueio não deve ser realizado", true);
 			Assert.assertEquals("O Roteiro já está desbloqueado!", e
 					.getMessage());
+		} catch (LiberaRoteiroException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		// Remover
