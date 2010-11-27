@@ -216,12 +216,12 @@ public class Sistema {
 	}
 
 	public Roteiro bloquearRoteiro(Roteiro roteiroTemp, boolean bloqueia)
-			throws BloqueiaRoteiroException {
+			throws BloqueiaRoteiroException, LiberaRoteiroException {
 		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp, bloqueia);
 	}
 	
 	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
-			throws LiberaRoteiroException {
+			throws LiberaRoteiroException, BloqueiaRoteiroException {
 		return gerenciadorRoteiros.liberarRoteiro(roteiroTemp);
 	}
 

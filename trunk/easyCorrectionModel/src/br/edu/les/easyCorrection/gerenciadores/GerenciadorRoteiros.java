@@ -12,7 +12,6 @@ import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
-import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
@@ -136,7 +135,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 		// Estes campos devem vir null
 		roteiro.setDiretorioTestes("");
 		roteiro.setDiretorioInterface("");
-		
+
 		if (roteiro.getNome() == null || roteiro.getNome().equals("")) {
 			throw new CriacaoRoteiroException(MsgErros.NOMEVAZIO
 					.msg("Nome da atividade inválido. O Roteiro não pôde ser "
@@ -270,7 +269,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 	}
 
 	public Roteiro bloquearRoteiro(Roteiro roteiro, boolean bloqueia)
-			throws BloqueiaRoteiroException {
+			throws BloqueiaRoteiroException, LiberaRoteiroException {
 
 		if (roteiro == null) {
 			throw new BloqueiaRoteiroException("Roteiro inexistente!");
@@ -286,10 +285,24 @@ public class GerenciadorRoteiros extends Gerenciador {
 						+ " bloqueado com sucesso!");
 			}
 		} else {
+			Date dataAtual = Calendar.getInstance().getTime();
+
 			if (!roteiro.isBloqueado()) {
 				throw new BloqueiaRoteiroException(
 						"O Roteiro já está desbloqueado!");
 			} else {
+				if (roteiro.getDataLiberacao().before(dataAtual)
+						&& (roteiro.getDiretorioInterface() == null
+								|| roteiro.getNumeroMaximoParticipantes() <= 0
+								|| roteiro.getNumeroMaximoEnvios() <= 0 || ((roteiro
+								.getPorcentagemTestesAutomaticos() > 0 || roteiro
+								.getPorcentagemTestesAutomaticos() <= 100) && roteiro
+								.getDiretorioTestes() == null))) {
+					throw new LiberaRoteiroException(
+							"O Roteiro "
+									+ roteiro.getNome()
+									+ " não pôde ser liberado devido a falhas em sua especificação!");
+				}
 				// Apenas para garantias que houve sucesso
 				System.out.println("Roteiro " + roteiro.getNome()
 						+ " desbloqueado com sucesso!");
@@ -315,50 +328,36 @@ public class GerenciadorRoteiros extends Gerenciador {
 	 * Esse método serah utilizado mais tarde!
 	 */
 	public Roteiro liberarRoteiro(Roteiro roteiro)
-			throws LiberaRoteiroException {
+			throws LiberaRoteiroException, BloqueiaRoteiroException {
 
-		Date dataAtual = Calendar.getInstance().getTime();
+		this.bloquearRoteiro(roteiro, false);
 
-		if (roteiro.getDataLiberacao().before(dataAtual)
-				&& (roteiro.getDiretorioInterface() == null
-						|| roteiro.getNumeroMaximoParticipantes() <= 0
-						|| roteiro.getNumeroMaximoEnvios() <= 0 || ((roteiro
-						.getPorcentagemTestesAutomaticos() > 0 || roteiro
-						.getPorcentagemTestesAutomaticos() <= 100) && roteiro
-						.getDiretorioTestes() == null))) {
-			throw new LiberaRoteiroException(
-					"O Roteiro "
-							+ roteiro.getNome()
-							+ " não pôde ser liberado devido a falhas em sua especificação!");
-		} else if (roteiro.isBloqueado()) {
-			throw new LiberaRoteiroException("Roteiro bloquado para liberação!");
-		}
+		// Apenas para garantias que houve sucesso
+		System.out.println("Roteiro " + roteiro.getNome()
+				+ " liberado com sucesso!");
 
-		else {
+		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
+		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
 
-			// Apenas para garantias que houve sucesso
-			System.out.println("Roteiro " + roteiro.getNome()
-					+ " liberado com sucesso!");
-
-			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
-			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
-		}
 	}
 
 	public List<Roteiro> getRoteirosLiberados() {
 		Date dataAtual = easyCorrectionUtil.getDataNow();
-		return DAOFactory.DEFAULT.buildRoteiroDAO().findByRoteiroLiberado(
-				dataAtual);
+		List<Roteiro> roteirosLiberados = DAOFactory.DEFAULT.buildRoteiroDAO()
+				.findByRoteiroLiberado(dataAtual);
+		return roteirosLiberados;
 	}
 
-	public Roteiro getRoteiroLiberado(Integer id) {
+	public Roteiro getRoteiroLiberado(Integer id)
+			throws BloqueiaRoteiroException {
 		Date dataAtual = easyCorrectionUtil.getDataNow();
 		List<Roteiro> lista = DAOFactory.DEFAULT.buildRoteiroDAO()
 				.findByRoteiroLiberado(dataAtual, id);
-		if (lista.isEmpty()) {
+		if (!lista.isEmpty()) {
+			return lista.get(0);
+		} else {
 			return null;
 		}
-		return lista.get(0);
 	}
 
 	public void excluirRoteiro(Roteiro roteiro) throws ExclusaoRoteiroException {
