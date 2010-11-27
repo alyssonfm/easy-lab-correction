@@ -6,10 +6,11 @@
 						xmlns:les="modulos.sistema.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="696" height="390" creationComplete="init()" title="Submissão de Roteiro" showCloseButton="true" close="fechaJanela()" layout="absolute">
+	width="718" height="418" creationComplete="init()" title="Submissão de Roteiro" showCloseButton="true" close="fechaJanela()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.roteiros.Roteiro;
 				import net.digitalprimates.fluint.utils.ResultDisplayUtils;
 				import bean.roteiros.EquipeHasUsuarioHasRoteiro;
 				import bean.roteiros.Equipe;
@@ -82,7 +83,7 @@
 				}
 				
 				public function erroEnvio(evt:Event):void {
-			       	var param:Array = new Array(true, "Ocorreu um erro de transmissão. O projeto não foi cadastrado." +
+			       	var param:Array = new Array(true, "Ocorreu um erro de transmissão. O arquivo não foi enviado." +
 														"\n\nTente novamente! Caso este erro persista..." + 
 														"\n\nVerifique se sua conexão com a internet está ativada.");
 					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
@@ -101,14 +102,22 @@
 				public function rodarTestesAutomaticos_result(event:ResultEvent):void{
 					var result: String = event.result as String;
 					inputDescricao.text = result;
-					var param:Array = new Array(false, "Roteiro submetido com sucesso.");
+					inputDescricao.editable = false;
+					var param:Array = new Array(false, "Roteiro submetido com sucesso. Esperando resposta...");
 					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+					
+					facade.getOperation("getNumeroSubmissoes").send(CastDeEntidades.castSubmissao(submissao));
+				}
+				
+				public function getNumeroSubmissoes_result(event:ResultEvent){
+					numeroSubmissoes.text = event.result as String;
 				}
 				
 				public function getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro():void{
 					if(comboRoteiro.selectedItem != null){
 						var id:int = int(SharedObject.getLocal("sistema", "/").data.idUsuario);
 						facade.getOperation("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro").send(id, comboRoteiro.selectedItem.id);
+						this.nomeDaEquipe = comboRoteiro.selectedItem.equipe.nome;
 					}
 				}
 				
@@ -123,6 +132,9 @@
 						if (comboRoteiro.selectedItem == null){
 							param = new Array(true, "Para submeter um roteiro você tem que escolher um roteiro.");
 							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+						}else if(comboRoteiro.selectedItem.equipe == null) {
+							param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 						}
 						else if (fileRef == null){
 							param = new Array(true, "Para submeter um roteiro você tem que escolher um arquivo zip contendo o código.");
@@ -132,11 +144,8 @@
 							submissao = new Submissao();
 							submissao.equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
 							submissao.equipeHasUsuarioHasRoteiro = eur;
-							submissao.url = "/periodo" + eur.roteiro.periodo.semestre + "/" + eur.roteiro.nome + "/" + eur.equipe.nome + "/";
+							submissao.url = "/periodo" + eur.roteiro.periodo.semestre + "/" + eur.roteiro.id + "/" + eur.equipe.nome + "/";
 							facade.getOperation("submeteRoteiro").send(CastDeEntidades.castSubmissao(submissao));
-						}else{
-							param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
-							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 						}
 					}catch(e: Error){
 						var param:Array = new Array(true, "Este Usuário não está em nenhuma equipe.");
@@ -176,18 +185,25 @@
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro" result="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event)" fault="falha(event)"/>
 			<mx:method name="submeteRoteiro" result="submeteRoteiro_result(event)" fault="falha(event)"/>
 			<mx:method name="rodarTestesAutomaticos" result="rodarTestesAutomaticos_result(event)" fault="falha(event)"/>
+			<mx:method name="getNumeroSubmissoes" result="getNumeroSubmissoes_result(event)" fault="falha(event)"/>
 		</mx:RemoteObject>
 		
 		<mx:Label text="Resultados:" fontWeight="bold"
-			textAlign="left" width="121" x="10" y="177" id="labelDescricao"/>
-		<mx:TextArea x="10" y="205" width="656" height="127" id="inputDescricao"/>
-		<mx:LinkButton x="211.55" y="56" label="   Anexar Roteiro" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivo()"/>
-		<mx:Label x="10" y="88" width="656" id="caminho" textAlign="center"/>
-		<mx:Label x="10" y="10" width="69" id="caminho0" textAlign="left" text="Roteiros:" fontWeight="bold"/>
-		<mx:Button x="246" y="124" label="   Submeter Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSubmeterRoteiro" click="submeteRoteiro()"/>
-		<mx:HRule x="10" y="160" width="656" height="9"/>
-		<mx:HRule x="10" y="38" width="656" height="10"/>
-		<mx:ComboBox x="76" y="8" width="590" id="comboRoteiro" change="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" enter="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" labelField="nome"></mx:ComboBox>
+			textAlign="left" width="121" x="21" y="209" id="labelDescricao"/>
+		<mx:Label text="Número de Submissões:" fontWeight="bold"
+			textAlign="left" width="176" x="475" y="209" id="labelDescricao0"/>
+		<mx:Label text="0" fontWeight="bold"
+			textAlign="right" width="38" x="639" y="209" id="numeroSubmissoes" color="#048E14"/>
+		<mx:TextArea x="21" y="237" width="656" height="127" id="inputDescricao"/>
+		<mx:LinkButton x="222.55" y="88" label="   Anexar Solução" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivo()"/>
+		<mx:Label x="21" y="126" width="656" id="caminho" textAlign="center"/>
+		<mx:Label x="16" y="10" width="69" id="caminho0" textAlign="left" text="Roteiro:" fontWeight="bold"/>
+		<mx:Label x="18" y="38" width="69" id="caminho1" textAlign="left" text="Equipe:" fontWeight="bold"/>
+		<mx:Label x="89" y="38" width="69" id="nomeDaEquipe" textAlign="left" text="..." fontWeight="bold" color="#048E2B"/>
+		<mx:Button x="257" y="156" label="   Submeter Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSubmeterRoteiro" click="submeteRoteiro()"/>
+		<mx:HRule x="21" y="192" width="656" height="9"/>
+		<mx:HRule x="21" y="70" width="656" height="10"/>
+		<mx:ComboBox x="89" y="8" width="590" id="comboRoteiro" change="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" enter="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" labelField="nome"></mx:ComboBox>
 		
 		
 </les:ModuleTitleWindow>

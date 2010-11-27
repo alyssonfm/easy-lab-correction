@@ -591,5 +591,8 @@ public class Facade {
 		sistema.excluirSubmissao(sub);
 	}
 
+	public Integer getNumeroSubmissoes(Submissao submissao){
+		return sistema.numeroSubmissoes(submissao);
+	}
 	
 }

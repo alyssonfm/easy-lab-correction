@@ -127,7 +127,7 @@ private function dispatcher(event:MenuEvent): void{
  */
 private function geraBLinks(): void {
 	lbar = new LinkBar();
-	lbar.x = 670;
+	lbar.x = 900;
 	lbar.y = 10;
 	lbar.height = 40;
 
@@ -139,11 +139,12 @@ private function geraBLinks(): void {
 			usuarioSetorOutros = true;
 		}
 	}*/
+	/*
 	var eButton:LinkButton = new LinkButton();
 	eButton.label = "Fale Conosco!";
 	eButton.setStyle("icon", iconeEnviar);
 	eButton.styleName = "linkColor";
-	eButton.toolTip = "Ver README.pdf";
+	eButton.toolTip = "Envie email para easylabcorrection@gmail.com";
 	lbar.addChild(eButton);
 	var hButton:LinkButton = new LinkButton();
 	hButton.label = "Ajuda";
@@ -151,6 +152,7 @@ private function geraBLinks(): void {
 	hButton.styleName = "linkColor";
 	hButton.toolTip = "Baixar um arquivo tutorial (README.pdf)";
 	lbar.addChild(hButton);
+	*/
 	var sButton:LinkButton = new LinkButton();
 	sButton.label = "Sair";
 	sButton.setStyle("icon", icone);
