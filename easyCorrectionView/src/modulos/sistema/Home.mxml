@@ -4,6 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import bean.Utilitarios.Constantes;
 			import bean.Utilitarios.Util;
 			import com.flexspy.imp.Utils;
 			import mx.binding.utils.BindingUtils;
@@ -25,11 +26,11 @@
 			private var idUsuario:int;
 			private var gU:Object = new Object();
 			private var gruposUsuario:ArrayCollection = new ArrayCollection();
-			private const FILE_UPLOAD_URL:String = "http://localhost:8080/EasyLabCorrection/";
+			private const FILE_UPLOAD_URL:String = Constantes.urlUploadDonwload;
 			private var fileRef:FileReference = new FileReference();
-			private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadProjeto'));
-			private var localInterface: String = "";
-			private var localTestes: String = "";
+			private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadRoteiro'));
+			private var nomeArquivoInterface: String = "";
+			private var nomeArquivoTestes: String = "";
 			
 			[Bindable]
 			private var roteiro: Roteiro = new Roteiro();
@@ -96,12 +97,15 @@
 					// integrantesEquipeRoteiro
 					
 					// habilita os botes
-					buttonBaixarTestes.enabled = true;
-					buttonBaixarInterface.enabled = true;
 					//buttonVisualizarNotas.enabled = true;
 					//buttonVisulizarCorrecao.enabled = true;
+					carregaArquivos();
 				}
 				catch(e: Error){}
+			}
+			
+			private function carregaArquivos(): void{
+				carregaInterface();
 			}
 			
 			private function visualizarNotas(): void{
@@ -112,11 +116,61 @@
 				ControladorDeModulos.criaModulo("modulos/Views/ModuloCorrecao.swf", this, "");
 			}
 			
+			private function carregaInterface(): void{
+				try{
+					facade.getOperation("getNomeArquivoInterface").send(roteiro);
+				}
+				catch(e: Error){
+					var mensagem:String = "Selecione Um Roteiro.";
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+				}
+			}
+			
+			private function getNomeArquivoInterface_result(event:ResultEvent):void{
+				nomeArquivoInterface = String(event.result);
+				facade.getOperation("getNomeArquivoTestes").send(roteiro);
+			}
+			
+			private function getNomeArquivoTestes_result(event:ResultEvent):void{
+				nomeArquivoTestes = String(event.result);
+				buttonBaixarTestes.enabled = true;
+				buttonBaixarInterface.enabled = true;
+			}
+			
+			private function baixarInterface(): void{
+				try{
+					var variables:URLVariables = new URLVariables();
+					variables.nomeArquivo = roteiro.diretorioInterface + nomeArquivoInterface;
+					request.data = variables;
+					fileRef.download(request, nomeArquivoInterface);		
+				}
+				catch(e: Error){
+					var mensagem:String = "Selecione Um Roteiro.";
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+				}
+			}
+			
+			private function baixarTestes(): void{
+				try{
+					var variables:URLVariables = new URLVariables();
+					variables.nomeArquivo = roteiro.diretorioTestes + nomeArquivoTestes;
+					request.data = variables;
+					fileRef.download(request, nomeArquivoTestes);
+				}
+				catch(e: Error){
+					var mensagem:String = "Selecione Um Roteiro.";
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+				}
+			}
+			
+			
 		]]>
 	</mx:Script>	
 	
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">		
 		<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
+		<mx:method name="getNomeArquivoInterface" result="getNomeArquivoInterface_result(event)" fault="falha(event)"/>
+		<mx:method name="getNomeArquivoTestes" result="getNomeArquivoTestes_result(event)" fault="falha(event)"/>
 	</mx:RemoteObject>
 		
 	<mx:Canvas label="Roteiros" id="canvasRoteiros">
@@ -125,8 +179,8 @@
 		<mx:Label x="14" y="552" text="Total de Projetos Inscritos:" id="labelTotalProjetosInscritos" visible="false"/>
 		<mx:Label x="198" y="552" width="85" id="totalProjetosInscritos" visible="false"/>
 		<mx:Label x="10" y="461" text="Equipe:"/>
-		<mx:LinkButton x="454.8" y="520" id="buttonBaixarInterface" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Interface"/>
-		<mx:LinkButton x="636.8" y="520" id="buttonBaixarTestes" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Testes"/>
+		<mx:LinkButton x="454.8" y="520" id="buttonBaixarInterface" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Interface" click="baixarInterface()"/>
+		<mx:LinkButton x="636.8" y="520" id="buttonBaixarTestes" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Testes" click="baixarTestes()"/>
 		<mx:LinkButton x="435.8" y="551" id="buttonVisulizarCorrecao" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Correção" click="visualizarCorrecao()"/>
 		<mx:LinkButton x="636.8" y="551" id="buttonVisualizarNotas" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Planilha de Notas" click="visualizarNotas()"/>
 		<mx:LinkButton x="626" y="10" visible="false" icon="@Embed(source='../../image/help2.png')" label="  Instruções para Avaliação dos Projetos" id="linkInstrucao"/>
