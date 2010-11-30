@@ -6,8 +6,9 @@ var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : f
 var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
 var server = "localhost";
 var serverDoor = "8080";
+//var server = "les.dsc.ufcg.edu.br";
 //Servidor
-//var server = "200.129.73.191";
+
 
 function ControlVersion()
 {
@@ -281,7 +282,7 @@ function getUrlSendMail() {
 	return "http://" + server + ":" + serverDoor + "/easyCorrection/SendMailServlet";
 }
 
-function downLoadProjeto() {
+function downLoadRoteiro() {
 	return "http://" + server + ":" + serverDoor + "/easyCorrection/downloadArquivo";
 }
 
