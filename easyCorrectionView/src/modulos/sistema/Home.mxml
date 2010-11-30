@@ -203,12 +203,12 @@
 		<mx:Label x="10" y="378" text="Meus Projetos:" fontStyle="normal" fontWeight="bold" fontSize="14" id="meusProjetosLabel" visible="false"/>
 		<mx:Label x="10" y="176" text="Projetos da Cota Atual:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetosCotaLabel" visible="false"/>
 		<mx:VRule x="302" y="13" height="577"  width="1"/>
-		<mx:Label x="575" y="478" width="32" id="inputPenalidades" color="#1B7A0F" text="0"/>
-		<mx:Label x="575" y="450" width="32" id="inputIntegrantesPorEquipe" color="#1B7A0F" text="0"/>
-		<mx:Label x="575" y="422" width="32" id="inputNumeroMaximoEnvios" color="#1B7A0F" text="0"/>
-		<mx:Label x="795" y="422" width="88" id="inputDataLiberacao" color="#1B7A0F"/>
-		<mx:Label x="795" y="450" width="88" id="inputDataEntrega" color="#1B7A0F"/>
-		<mx:Label x="835" y="478" width="88" id="inputDataFinal" color="#1B7A0F"/>
+		<mx:Label x="556" y="478" width="51" id="inputPenalidades" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="567" y="450" width="40" id="inputIntegrantesPorEquipe" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="567" y="422" width="40" id="inputNumeroMaximoEnvios" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="830" y="422" width="88" id="inputDataLiberacao" color="#1B7A0F"/>
+		<mx:Label x="830" y="450" width="88" id="inputDataEntrega" color="#1B7A0F"/>
+		<mx:Label x="830" y="478" width="88" id="inputDataFinal" color="#1B7A0F"/>
 		<mx:TextArea x="331" y="124" width="587" height="279" backgroundAlpha="0.0" id="resumoText" editable="false" alpha="0.5" cornerRadius="10"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
