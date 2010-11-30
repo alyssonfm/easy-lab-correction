@@ -145,10 +145,16 @@ public class GerenciadorSubmissoes {
 								.getId());
 		return lista.size();
 	}
+	
+	public Integer numeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur) {
+		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO()
+				.findByEquipeERoteiro(eur.getEquipe().getId(), eur.getRoteiro().getId());
+		return lista.size();
+	}
 
 	public Submissao submeteRoteiro(Submissao submissao) throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(submissao)) {
-			if (numeroSubmissoes(submissao) <= (submissao
+			if (numeroSubmissoes(submissao) < (submissao
 					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
 					.getNumeroMaximoEnvios())) {
 				submissao.setDataSubmissao(easyCorrectionUtil.getDataNow());
@@ -169,6 +175,19 @@ public class GerenciadorSubmissoes {
 			for(int i = 0; i < listaArquivos.length; i++){
 				nomeArquivo = listaArquivos[i]; 
 				if(nomeArquivo.substring(nomeArquivo.length() - 4, nomeArquivo.length()).equals("java")){
+					return nomeArquivo;
+				}
+			}
+		}catch(Exception e){}
+		return null;
+	}
+	
+	public String primeiraOcorrenciaZip(String[] listaArquivos){
+		try{
+			String nomeArquivo = "";
+			for(int i = 0; i < listaArquivos.length; i++){
+				nomeArquivo = listaArquivos[i]; 
+				if(nomeArquivo.substring(nomeArquivo.length() - 3, nomeArquivo.length()).equals("zip")){
 					return nomeArquivo;
 				}
 			}
@@ -244,17 +263,6 @@ public class GerenciadorSubmissoes {
 		};
 		
 		try{
-			/*
-			String[] aew = parametrosCompilador(diretorioLib, 
-					diretorioSource, 
-					diretorioInterface, 
-					diretorioTestes,
-					dirSource.list(),
-					dirInterface.list(),
-					dirInterface.list());
-
-			javaCompiler.run(null, out, erro, aew);			*/
-			
 			javaCompiler.run(null, out, erro, 
 					"-sourcepath", diretorioSource + ";" + diretorioInterface + ";" + diretorioTestes, 
 					"-classpath", diretorioLib + "junit.jar", 
@@ -366,6 +374,18 @@ public class GerenciadorSubmissoes {
 			eur.setUsuario(alunos.get(i).getUsuario());
 			cadastraEquipeHasUsuarioHasRoteiro(eur);
 		}
+	}
+
+	public String getNomeArquivoInterface(Roteiro roteiro) {
+		String diretorioInterface = ServletUpload.local + roteiro.getDiretorioInterface().replace("/", File.separator);
+		File dirInterface = new File(diretorioInterface);
+		return primeiraOcorrencia(dirInterface.list());
+	}
+
+	public String getNomeArquivoTestes(Roteiro roteiro) {
+		String diretorioTestes = ServletUpload.local + roteiro.getDiretorioTestes().replace("/", File.separator);
+		File dirTestes = new File(diretorioTestes);
+		return primeiraOcorrenciaZip(dirTestes.list());
 	}
 
 }
