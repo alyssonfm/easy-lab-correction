@@ -73,7 +73,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 
 		this.criacaoOuAtualizacaoMsg = "criado";
 
-		if (validaRoteiroEmCriacao(roteiroTemp)) {
+		if (validaRoteiroInicializandoDiretorios(roteiroTemp)) {
 			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
 
 			System.out.println("Roteiro criado com sucesso!");
@@ -124,6 +124,15 @@ public class GerenciadorRoteiros extends Gerenciador {
 		return r;
 	}
 
+	
+	private boolean validaRoteiroInicializandoDiretorios(Roteiro roteiro) throws CriacaoRoteiroException{
+		
+		// Estes campos devem vir null
+		roteiro.setDiretorioTestes("");
+		roteiro.setDiretorioInterface("");
+		
+		return validaRoteiroEmCriacao(roteiro);
+	}
 	/*
 	 * Metodos de Validacao de Roteiros para Criação e Edição
 	 */
@@ -131,10 +140,6 @@ public class GerenciadorRoteiros extends Gerenciador {
 	private boolean validaRoteiroEmCriacao(Roteiro roteiro)
 			throws CriacaoRoteiroException {
 		Date dataHojeZero = easyCorrectionUtil.getDataNow();
-
-		// Estes campos devem vir null
-		roteiro.setDiretorioTestes("");
-		roteiro.setDiretorioInterface("");
 
 		if (roteiro.getNome() == null || roteiro.getNome().equals("")) {
 			throw new CriacaoRoteiroException(MsgErros.NOMEVAZIO
