@@ -19,7 +19,7 @@
 		<link>
 			<name>bin-debug</name>
 			<type>2</type>
-			<location>C:/apache-tomcat-6.0.20/webapps/EasyCorrection</location>
+			<location>C:/apache-tomcat-6.0.20/webapps/EasyCorrectionInterface</location>
 		</link>
 	</linkedResources>
 </projectDescription>
