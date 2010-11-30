@@ -34,8 +34,8 @@
 				
 				private var fileRef:FileReference;
 				private var request: URLRequest;
-				//private const FILE_UPLOAD_URL:String = "http://les.edu.br/easyLabCorrection/";
-				private const FILE_UPLOAD_URL:String = "http://les.dsc.ufcg.edu.br:8080/easyCorrection/";
+				private const FILE_UPLOAD_URL:String = "http://localhost:8080/easyCorrection/";
+				//private const FILE_UPLOAD_URL:String = "http://les.dsc.ufcg.edu.br:8080/easyCorrection/";
 	            private var submissao:Submissao = new Submissao();
 	            private var eur:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
 	            
@@ -116,7 +116,7 @@
 				public function getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro():void{
 					if(comboRoteiro.selectedItem != null){
 						var id:int = int(SharedObject.getLocal("sistema", "/").data.idUsuario);
-						facade.getOperation("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro").send(id, comboRoteiro.selectedItem.id);
+						facade.getOperation("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro").send(id, CastDeEntidades.castRoteiro(comboRoteiro.selectedItem).id);
 					}
 				}
 				
@@ -133,9 +133,6 @@
 						if (comboRoteiro.selectedItem == null){
 							param = new Array(true, "Para submeter um roteiro você tem que escolher um roteiro.");
 							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
-						}else if(comboRoteiro.selectedItem.equipe == null) {
-							param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
-							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 						}
 						else if (fileRef == null){
 							param = new Array(true, "Para submeter um roteiro você tem que escolher um arquivo zip contendo o código.");
@@ -147,6 +144,9 @@
 							submissao.equipeHasUsuarioHasRoteiro = eur;
 							submissao.url = "/periodo" + eur.roteiro.periodo.semestre + "/" + eur.roteiro.id + "/" + eur.equipe.nome + "/";
 							facade.getOperation("submeteRoteiro").send(CastDeEntidades.castSubmissao(submissao));
+						}else{
+							param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 						}
 					}catch(e: Error){
 						var param:Array = new Array(true, "Falha técnica. Tente mais tarde...");
