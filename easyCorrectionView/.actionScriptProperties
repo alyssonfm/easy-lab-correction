@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties mainApplicationPath="main.mxml" version="3">
-  <compiler additionalCompilerArguments="-locale en_US -include-libraries &quot;../libs/automation_monkey3.x.swc&quot; &quot;${flexlib}/libs/automation.swc&quot; &quot;${flexlib}/libs/automation_agent.swc&quot; &quot;${flexlib}/libs/automation_dmv.swc&quot;" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="C:/apache-tomcat-6.0.20/webapps/EasyCorrection" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale en_US -include-libraries &quot;../libs/automation_monkey3.x.swc&quot; &quot;${flexlib}/libs/automation.swc&quot; &quot;${flexlib}/libs/automation_agent.swc&quot; &quot;${flexlib}/libs/automation_dmv.swc&quot;" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="C:/apache-tomcat-6.0.20/webapps/EasyCorrectionInterface" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="1">
       <libraryPathEntry kind="4" path=""/>
@@ -19,6 +19,7 @@
     <module application="src/main.mxml" destPath="modulos/sistema/MensagemStatus.swf" optimize="true" sourcePath="src/modulos/sistema/MensagemStatus.mxml"/>
     <module application="src/main.mxml" destPath="modulos/sistema/Login.swf" optimize="true" sourcePath="src/modulos/sistema/Login.mxml"/>
     <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/Cadastros.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/Cadastros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/DefinirFuncoes.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/DefinirFuncoes.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/AtribuicaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AtribuicaoDeRoteiros.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/Penalidades.swf" optimize="true" sourcePath="src/modulos/Views/Penalidades.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/VisualizacaoDeNotas.swf" optimize="true" sourcePath="src/modulos/Views/VisualizacaoDeNotas.mxml"/>
@@ -27,7 +28,6 @@
     <module application="src/main.mxml" destPath="modulos/Views/ModuloCorrecao.swf" optimize="true" sourcePath="src/modulos/Views/ModuloCorrecao.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/Chat.swf" optimize="true" sourcePath="src/modulos/Views/Chat.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/CriaEquipe.swf" optimize="true" sourcePath="src/modulos/Views/CriaEquipe.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/DefinirFuncoes.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/DefinirFuncoes.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>
