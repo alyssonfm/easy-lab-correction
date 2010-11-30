@@ -10,6 +10,7 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.Utilitarios.Constantes;
 				import bean.roteiros.Roteiro;
 				import net.digitalprimates.fluint.utils.ResultDisplayUtils;
 				import bean.roteiros.EquipeHasUsuarioHasRoteiro;
@@ -34,8 +35,7 @@
 				
 				private var fileRef:FileReference;
 				private var request: URLRequest;
-				private const FILE_UPLOAD_URL:String = "http://localhost:8080/easyCorrection/";
-				//private const FILE_UPLOAD_URL:String = "http://les.dsc.ufcg.edu.br:8080/easyCorrection/";
+				private const FILE_UPLOAD_URL:String = Constantes.urlUploadDonwload;
 	            private var submissao:Submissao = new Submissao();
 	            private var eur:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
 	            
@@ -105,12 +105,14 @@
 					inputDescricao.editable = false;
 					var param:Array = new Array(false, "Roteiro submetido com sucesso. Esperando resposta...");
 					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
-					
 					facade.getOperation("getNumeroSubmissoes").send(CastDeEntidades.castSubmissao(submissao));
 				}
 				
 				public function getNumeroSubmissoes_result(event:ResultEvent){
-					numeroSubmissoes.text = event.result as String;
+					try{
+						numeroSubmissoes.text = String(event.result);
+						numeroSubmissoesMaximo.text = comboRoteiro.selectedItem.numeroMaximoEnvios;
+					}catch(e: Error){} 
 				}
 				
 				public function getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro():void{
@@ -125,6 +127,7 @@
 					eur = new EquipeHasUsuarioHasRoteiro();
 					eur = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(event.result);
 					nomeDaEquipe.text = eur.equipe.nome;
+					facade.getOperation("getNumeroSubmissoesPorEUR").send(eur);
 				}
 				
 				public function submeteRoteiro(): void{
@@ -141,8 +144,8 @@
 						else if(fileRef != null && eur.id != 0){
 							submissao = new Submissao();
 							submissao.equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
-							submissao.equipeHasUsuarioHasRoteiro = eur;
-							submissao.url = "/periodo" + eur.roteiro.periodo.semestre + "/" + eur.roteiro.id + "/" + eur.equipe.nome + "/";
+							submissao.equipeHasUsuarioHasRoteiro = eur; 
+							submissao.url = "/periodo" + eur.roteiro.periodo.semestre + "/submissoes/roteiro_" + eur.roteiro.id + "/" + eur.equipe.nome + "/";
 							facade.getOperation("submeteRoteiro").send(CastDeEntidades.castSubmissao(submissao));
 						}else{
 							param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
@@ -187,14 +190,19 @@
 			<mx:method name="submeteRoteiro" result="submeteRoteiro_result(event)" fault="falha(event)"/>
 			<mx:method name="rodarTestesAutomaticos" result="rodarTestesAutomaticos_result(event)" fault="falha(event)"/>
 			<mx:method name="getNumeroSubmissoes" result="getNumeroSubmissoes_result(event)" fault="falha(event)"/>
+			<mx:method name="getNumeroSubmissoesPorEUR" result="getNumeroSubmissoes_result(event)" fault="falha(event)"/>
 		</mx:RemoteObject>
 		
 		<mx:Label text="Resultados:" fontWeight="bold"
 			textAlign="left" width="121" x="21" y="209" id="labelDescricao"/>
-		<mx:Label text="Número de Submissões:" fontWeight="bold"
-			textAlign="left" width="176" x="475" y="209" id="labelDescricao0"/>
+		<mx:Label text="Submissões (Efetuadas/Máximo):" fontWeight="bold"
+			textAlign="left" width="236.15" x="387.85" y="214" id="labelDescricao0"/>
+		<mx:Label text="/" fontWeight="bold"
+			textAlign="left" width="20.149994" x="644" y="214" id="labelDescricao1"/>
 		<mx:Label text="0" fontWeight="bold"
-			textAlign="right" width="38" x="639" y="209" id="numeroSubmissoes" color="#048E14"/>
+			textAlign="right" width="31" x="612" y="214" id="numeroSubmissoes" color="#048E14"/>
+		<mx:Label text="0" fontWeight="bold"
+			textAlign="right" width="31" x="646" y="214" id="numeroSubmissoesMaximo" color="#048E14"/>
 		<mx:TextArea x="21" y="237" width="656" height="127" id="inputDescricao"/>
 		<mx:LinkButton x="222.55" y="88" label="   Anexar Solução" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivo()"/>
 		<mx:Label x="21" y="126" width="656" id="caminho" textAlign="center"/>

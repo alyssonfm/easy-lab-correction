@@ -11,6 +11,7 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.Utilitarios.Constantes;
 				import eventos.ObjetoEvent;
 				import bean.Utilitarios.Util;
 				import mx.skins.halo.NumericStepperUpSkin;
@@ -40,8 +41,7 @@
 				private var requestTestes: URLRequest;
 				private var fileRefInterface:FileReference;
 				private var requestInterface: URLRequest;
-				private const FILE_UPLOAD_URL:String = "http://localhost:8080/easyCorrection/";
-				//private const FILE_UPLOAD_URL:String = "http://les.dsc.ufcg.edu.br:8080/easyCorrection/";
+				private const FILE_UPLOAD_URL:String = Constantes.urlUploadDonwload;
 				
 				private var periodo:Periodo = new Periodo();
 				private var roteiro:Roteiro = new Roteiro();
