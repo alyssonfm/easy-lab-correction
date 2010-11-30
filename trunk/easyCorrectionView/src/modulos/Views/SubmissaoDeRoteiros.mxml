@@ -116,18 +116,33 @@
 				}
 				
 				public function getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro():void{
-					if(comboRoteiro.selectedItem != null){
-						var id:int = int(SharedObject.getLocal("sistema", "/").data.idUsuario);
-						facade.getOperation("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro").send(id, CastDeEntidades.castRoteiro(comboRoteiro.selectedItem).id);
+					var param:Array;
+					try{
+						if(comboRoteiro.selectedItem != null){
+							var id:int = int(SharedObject.getLocal("sistema", "/").data.idUsuario);
+							facade.getOperation("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro").send(id, CastDeEntidades.castRoteiro(comboRoteiro.selectedItem).id);
+						}
+					}
+					catch(e: Error){
+						param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 					}
 				}
 				
 				public function getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event:ResultEvent):void{
-					var result: String = event.result as String;
-					eur = new EquipeHasUsuarioHasRoteiro();
-					eur = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(event.result);
-					nomeDaEquipe.text = eur.equipe.nome;
-					facade.getOperation("getNumeroSubmissoesPorEUR").send(eur);
+					var param:Array;
+					try{
+						var result: String = event.result as String;
+						eur = new EquipeHasUsuarioHasRoteiro();
+						eur = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(event.result);
+						nomeDaEquipe.text = eur.equipe.nome;
+						facade.getOperation("getNumeroSubmissoesPorEUR").send(eur);
+					}
+					catch(e: Error){
+						param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+					
+					}
 				}
 				
 				public function submeteRoteiro(): void{
