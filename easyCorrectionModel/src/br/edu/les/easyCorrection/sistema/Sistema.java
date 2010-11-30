@@ -306,5 +306,17 @@ public class Sistema {
 	public Integer numeroSubmissoes(Submissao submissao){
 		return gerenciadorSubmissoes.numeroSubmissoes(submissao);
 	}
+	
+	public Integer numeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur){
+		return gerenciadorSubmissoes.numeroSubmissoesPorEUR(eur);
+	}
+
+	public String getNomeArquivoInterface(Roteiro roteiro) {
+		return gerenciadorSubmissoes.getNomeArquivoInterface(roteiro);
+	}
+
+	public String getNomeArquivoTestes(Roteiro roteiro) {
+		return gerenciadorSubmissoes.getNomeArquivoTestes(roteiro);
+	}
 
 }

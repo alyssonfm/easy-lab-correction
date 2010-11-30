@@ -565,6 +565,14 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public String getNomeArquivoInterface(Roteiro roteiro){
+		return sistema.getNomeArquivoInterface(roteiro);
+	}
+	
+	public String getNomeArquivoTestes(Roteiro roteiro){
+		return sistema.getNomeArquivoTestes(roteiro);
+	}
 
 	public Submissao submeteRoteiro(Submissao submissao) throws Throwable {
 		try {
@@ -594,6 +602,10 @@ public class Facade {
 
 	public Integer getNumeroSubmissoes(Submissao submissao){
 		return sistema.numeroSubmissoes(submissao);
+	}
+	
+	public Integer getNumeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur){
+		return sistema.numeroSubmissoesPorEUR(eur);
 	}
 	
 }
