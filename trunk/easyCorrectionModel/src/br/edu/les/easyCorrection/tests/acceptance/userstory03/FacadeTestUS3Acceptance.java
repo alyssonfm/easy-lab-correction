@@ -11,7 +11,6 @@ import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 
-
 	public FacadeTestUS3Acceptance() {
 		super();
 	}
@@ -140,7 +139,8 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 	// EasyAcceptOK
 	public int desbloquearRoteiro(int roteiroId) throws Throwable {
 		Roteiro roteiroTemp = facadeSistema.getRoteiro(roteiroId);
-		Roteiro rotDesbloqueado = facadeSistema.bloquearRoteiro(roteiroTemp, false);
+		Roteiro rotDesbloqueado = facadeSistema.bloquearRoteiro(roteiroTemp,
+				false);
 		return rotDesbloqueado.getId();
 	}
 
@@ -221,14 +221,20 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 			result = "/periodo" + rot.getPeriodo().toString()
 					+ "/testes/roteiroID/" + rot.getId() + "/";
 		} else if (dirCodificado.equals("TESTES_DEFAULT_OK")) {
-			result = "/periodo" + rot.getPeriodo().toString()
-					+ "/testes/" + rot.getNome() + "/";
+			result = "/periodo" + rot.getPeriodo().toString() + "/testes/"
+					+ rot.getNome() + "/";
+		} else if (dirCodificado.equals("NOVO_TESTES_DEFAULT_OK")) {
+			result = "/periodo" + rot.getPeriodo().toString() + "/testes/"
+					+ rot.getId() + "/";
 		} else if (dirCodificado.equals("INTERFACE_DIFF_DEFAULT")) {
 			result = "/periodo" + rot.getPeriodo().toString()
 					+ "/INTERFACE/roteiroID_" + rot.getId() + "/";
 		} else if (dirCodificado.equals("INTERFACE_DEFAULT_OK")) {
-			result = "/periodo" + rot.getPeriodo().toString()
-					+ "/interface/" + rot.getNome() + "/";
+			result = "/periodo" + rot.getPeriodo().toString() + "/interface/"
+					+ rot.getNome() + "/";
+		} else if (dirCodificado.equals("NOVA_INTERFACE_DEFAULT_OK")) {
+			result = "/periodo" + rot.getPeriodo().toString() + "/interface/"
+					+ rot.getId() + "/";
 		} else {
 			result = "";
 		}

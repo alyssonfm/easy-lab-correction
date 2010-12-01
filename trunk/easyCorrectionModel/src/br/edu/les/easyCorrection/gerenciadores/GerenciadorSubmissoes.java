@@ -387,5 +387,4 @@ public class GerenciadorSubmissoes {
 		File dirTestes = new File(diretorioTestes);
 		return primeiraOcorrenciaZip(dirTestes.list());
 	}
-
 }

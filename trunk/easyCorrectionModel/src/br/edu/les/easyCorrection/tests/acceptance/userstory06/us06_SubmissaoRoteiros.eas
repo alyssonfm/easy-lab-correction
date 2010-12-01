@@ -1,0 +1,50 @@
+#--------------------------------------------------------------------------------------------
+# Teste de Aceitacao do sistema easyLabCorrection
+# Equipe de Desenvolvimento:
+# ----- Alysson Filgueira
+# ----- Augusto Macedo
+# ----- Demetrio Mestre
+#--------------------------------------------------------------------------------------------
+
+#####################################################################################
+# US 06: Test Review Result
+#####################################################################################
+
+reinicializaBancoDeDados
+
+# Cria equipes inicialmente
+equipeID1=criaEquipe
+
+# Cadastramos alunos (O GrupoID de Aluno no sistema é 4)
+idGrupo=getAlunoGrupoID
+idGrupoUsuarioA=cadastrarUsuario grupoId=${idGrupo} nome="AlunoA" login="alunoa" senha="123123" email="a@hotmail.com"
+
+# Cadastra Roteiro
+idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro 1" descricao="Roteiro de Testes" dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
+numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
+numeroMaximoParticipantes=2 bloqueado=false
+
+#ID do Teste: a
+expectError "Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/<roteiro_id>/'. O Roteiro não pôde ser atualizado!" editarRoteiro roteiroId=${idRoteiro1} \
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="" \
+diretorioTestes="TESTES_DIFF_DEFAULT" numeroMaximoParticipantes=3 bloqueado=false
+
+#ID do Teste: c
+idRoteiro2=editarRoteiro roteiroId=${idRoteiro1} \
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="NOVA_INTERFACE_DEFAULT_OK" \
+diretorioTestes="NOVO_TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
+
+#ID do Teste: e
+expectError "Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/<roteiro_id>/'. O Roteiro não pôde ser atualizado!" editarRoteiro roteiroId=${idRoteiro1} \
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="INTERFACE_DIFF_DEFAULT" \
+diretorioTestes="NOVO_TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
+
+#ID do Teste: f
+idRoteiro3=editarRoteiro roteiroId=${idRoteiro1} \
+periodoId=1 nome="Roteiro2" descricao=null dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="NOVA_INTERFACE_DEFAULT_OK" \
+diretorioTestes="NOVO_TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
+

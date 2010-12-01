@@ -57,3 +57,14 @@ Test file: C:/Eclipse/workspace/easyCorrectionModel/src/br/edu/les/easyCorrectio
 FAILURES:
    At line 33:/Eclipse/workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory05/us05_SubmissaoRoteiros.eas: Expected <O Caminho do servidor para submissões não foi aceito. Deve seguir o template: periodo<semestre>/submissoes/roteiro_<id>/<nomeEquipe>/>, but no error occurred.
 ======================== 
+
+
+Após a revisão - Resultado da US06:
+
+Roteiro criado com sucesso!
+Roteiro atualizado com sucesso!
+Roteiro atualizado com sucesso!
+Test file: F:/Augusto/Eclipse_EE/flex_workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory06/us06_SubmissaoRoteiros.eas | Passed Tests: 9 | Not Passed Tests: 0
+
+======================== 
+
