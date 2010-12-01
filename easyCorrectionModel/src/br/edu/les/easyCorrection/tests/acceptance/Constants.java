@@ -25,6 +25,7 @@ public class Constants {
 	public static final String dirAcceptanceTestsUS3 = "F:/Augusto/Eclipse_EE/flex_workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory03/";
 	public static final String dirAcceptanceTestsUS4 = "F:/Augusto/Eclipse_EE/flex_workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory04/";
 	public static final String dirAcceptanceTestsUS5 = "F:/Augusto/Eclipse_EE/flex_workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory05/";
+	public static final String dirAcceptanceTestsUS6 = "F:/Augusto/Eclipse_EE/flex_workspace/easyCorrectionModel/src/br/edu/les/easyCorrection/tests/acceptance/userstory06/";
 	
 	
 }

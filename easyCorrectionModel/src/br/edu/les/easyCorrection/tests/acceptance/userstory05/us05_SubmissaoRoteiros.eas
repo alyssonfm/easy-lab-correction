@@ -31,3 +31,5 @@ penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 
 #ID do Teste: a
 expectError "O Caminho do servidor para submissões não foi aceito. Deve seguir o template: periodo<semestre>/submissoes/roteiro_<id>/<nomeEquipe>/" \
 criarSubmissao roteiroId=${idRoteiro2} equipeId=${equipeID1} grupousuarioId=${idGrupoUsuarioA} url="periodo<semestre>/submissoes/roteiro2_Equipe 1/"
+
+
