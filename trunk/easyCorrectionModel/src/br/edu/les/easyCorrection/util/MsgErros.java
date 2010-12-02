@@ -65,6 +65,12 @@ public enum MsgErros {
 		}
 
 	},
+	USUARIO_ALOCADO{
+		public String msg(String... args){
+			return "Exclusão não realizada. Este Usuário já está alocado a uma das equipe.";
+		}
+
+	},
 	ERRO_AUTENTICACAO{
 		public String msg(String... args){
 			return "\""+args[0]+".";
