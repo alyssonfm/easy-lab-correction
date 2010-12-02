@@ -2,8 +2,8 @@ package br.edu.les.easyCorrection.gerenciadores;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
+import br.edu.les.easyCorrection.DAO.hibernate.sistema.RoteiroHibernateDAO;
 import br.edu.les.easyCorrection.exceptions.AutenticacaoException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
@@ -15,6 +15,8 @@ import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
+import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
+import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.util.GeraMd5;
 import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
@@ -23,10 +25,12 @@ import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 public class GerenciadorAcesso extends Gerenciador{
 
 	private GerenciadorSubmissoes gerenciadorSubmissoes;
+	private GerenciadorRoteiros gerenciadorRoteiros;
 
 	public GerenciadorAcesso() {
 		super();
 		gerenciadorSubmissoes = new GerenciadorSubmissoes();
+		gerenciadorRoteiros = new GerenciadorRoteiros();
 	}
 
 	public Menu getMenu(Integer id) {
@@ -468,9 +472,43 @@ public class GerenciadorAcesso extends Gerenciador{
 						int index = equipes.get(equipes.size() - 1).getId() + 1;
 						equipe.setNome("Equipe " + index);
 					}
-					gerenciadorSubmissoes.cadastraEquipe(equipe);
+					Equipe e = gerenciadorSubmissoes.cadastraEquipe(equipe);
+					if(i == 0){
+						alocaUsuarioEquipe(grupoUsuario.getUsuario(), e);
+					}
 				}
 			}
+			else{
+				alocaUsuarioEquipe(grupoUsuario.getUsuario());
+			}
+		}
+	}
+	
+	public void alocaUsuarioEquipe(Usuario us, Equipe eq) throws EasyCorrectionException{
+		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
+		for (Roteiro roteiro : rots) {
+			EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
+			eur.setEquipe(eq);
+			eur.setUsuario(us);
+			eur.setRoteiro(roteiro);
+			gerenciadorSubmissoes.cadastraEquipeHasUsuarioHasRoteiro(eur);
+		}
+	}
+	
+	public void alocaUsuarioEquipe(Usuario us) throws EasyCorrectionException{
+		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
+		for (Roteiro roteiro : rots) {
+			List<EquipeHasUsuarioHasRoteiro> eurs = gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiroPorRoteiro(roteiro.getId());
+			Equipe eq = gerenciadorSubmissoes.getEquipes().get(0);
+			if (eurs.size() > 0){
+				int novoId = eurs.get(eurs.size()-1).getEquipe().getId() + 1;
+				eq = gerenciadorSubmissoes.getEquipe(novoId);
+			}
+			EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
+			eur.setEquipe(eq);
+			eur.setUsuario(us);
+			eur.setRoteiro(roteiro);
+			gerenciadorSubmissoes.cadastraEquipeHasUsuarioHasRoteiro(eur);
 		}
 	}
 
@@ -589,6 +627,12 @@ public class GerenciadorAcesso extends Gerenciador{
 
 	public void excluirUsuario(GrupoUsuario grupoUsuario)
 			throws EasyCorrectionException {
+		
+		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
+		if(rots.size() > 0){
+			throw new EasyCorrectionException(MsgErros.USUARIO_ALOCADO
+					.msg("O GrupoUsuario"));
+		}
 		
 		if (easyCorrectionUtil.isNull(grupoUsuario)) {
 			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
