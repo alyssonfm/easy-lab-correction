@@ -6,12 +6,14 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
 import junit.framework.JUnit4TestAdapter;
+import junit.framework.TestFailure;
 import junit.framework.TestResult;
 import junit.textui.TestRunner;
 
@@ -285,9 +287,18 @@ public class GerenciadorSubmissoes {
 				"Total de Testes: " + quantTestesRodados + "\n" +
 				"Total de Erros: " + erros + "\n" +
 				"Porcentagem de Acertos: " + porcAcertos + " %\n" +
-				"Nota dos Testes Automáticos: " + (porcAcertos * submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getPorcentagemTestesAutomaticos()) / 1000;
-			
-			boolean success = result.wasSuccessful();
+				"Nota dos Testes Automáticos: " + (porcAcertos * submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getPorcentagemTestesAutomaticos()) / 1000
+				+ "\n\nConsole:\n";
+
+			if (result.wasSuccessful()){
+				relatorio += "SUCESSO!";
+				
+			}else{
+				Enumeration<TestFailure> failures = result.errors();
+				for (int i = 0; i < result.errorCount(); i++) {
+					relatorio += failures.nextElement().toString() + "\n";
+				}
+			}
 		} catch(Exception e){
 			System.out.println("");
 		}
@@ -387,4 +398,5 @@ public class GerenciadorSubmissoes {
 		File dirTestes = new File(diretorioTestes);
 		return primeiraOcorrenciaZip(dirTestes.list());
 	}
+
 }
