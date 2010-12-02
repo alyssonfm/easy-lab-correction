@@ -79,6 +79,11 @@ public class GerenciadorSubmissoes {
 		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
 				.findByEquipeERoteiro(idEquipe, idRoteiro);
 	}
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiro(Integer idRoteiro) {
+		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
+				.findByRoteiro(idRoteiro);
+	}
 
 	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur)
 			throws EasyCorrectionException {
