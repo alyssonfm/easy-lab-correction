@@ -49,6 +49,7 @@ public class EquipeHasUsuarioHasRoteiroHibernateDAO extends
 		return instanciaLista(lista);
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	public List<EquipeHasUsuarioHasRoteiro> findByRoteiro(Integer idRoteiro) {
 		Query q = getSession().createQuery("from EquipeHasUsuarioHasRoteiro where roteiro.id = :idRoteiro");
