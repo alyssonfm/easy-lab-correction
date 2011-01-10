@@ -109,6 +109,8 @@
 			
 			private function cadastraPermissaoGrupo_result(event:ResultEvent):void{
 				permissoes = event.result as ArrayCollection;
+				var param:Array = new Array(false, "Permissões Modificadas com Sucesso.");
+				ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
 			}
 	
 			private function falha(event:FaultEvent):void {
