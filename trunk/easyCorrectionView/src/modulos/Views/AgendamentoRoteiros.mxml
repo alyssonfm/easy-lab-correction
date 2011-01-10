@@ -85,6 +85,17 @@
 				private function listarRoteiros_result(event:ResultEvent):void{
 					dg_agenda.dataProvider = new ArrayCollection();
 					dg_agenda.dataProvider = event.result;
+					var paramMensagem: Array = new Array();
+					if(CadastrarRoteiro.editado){
+						paramMensagem = new Array(false, "Roteiro Atualizado com sucesso.");
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, paramMensagem);
+						CadastrarRoteiro.editado = false;
+					}
+					else if(CadastrarRoteiro.cadastrado){
+						paramMensagem = new Array(false, "Roteiro Cadastrado com sucesso.");
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, paramMensagem);
+						CadastrarRoteiro.cadastrado = false;	
+					}
 				}
 				
 				private function labelGrid(item:*, column:DataGridColumn):String {
