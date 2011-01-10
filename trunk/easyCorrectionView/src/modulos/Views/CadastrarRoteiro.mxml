@@ -43,6 +43,9 @@
 				private var requestInterface: URLRequest;
 				private const FILE_UPLOAD_URL:String = Constantes.urlUploadDonwload;
 				
+				public static var editado: Boolean = false;
+				public static var cadastrado: Boolean = false; 
+				
 				private var periodo:Periodo = new Periodo();
 				private var roteiro:Roteiro = new Roteiro();
 				private var bloqueado:Boolean = false;
@@ -237,15 +240,15 @@
 							fileRefTestes.upload(requestTestes);
 						}catch(e: Error){}
 						if(!fezUpload){
-							paramMensagem = new Array(false, "Roteiro Atualizado com sucesso.");
-							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, paramMensagem);
+							editado = true;
+							fechaJanela();
 						} 
 					}
 					else{
 						fezUpload = true;
 						editarRoteiro();
-						paramMensagem = new Array(false, "Roteiro Cadastrado com sucesso.");
-						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, paramMensagem);
+						cadastrado = true;
+						fechaJanela();
 					}
 				}
 				
