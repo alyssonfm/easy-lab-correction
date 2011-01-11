@@ -629,7 +629,7 @@ public class GerenciadorAcesso extends Gerenciador{
 			throws EasyCorrectionException {
 		
 		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
-		if(rots.size() > 0){
+		if(grupoUsuario.getGrupo().getNome().equals("Aluno") && rots.size() > 0){
 			throw new EasyCorrectionException(MsgErros.USUARIO_ALOCADO
 					.msg("O GrupoUsuario"));
 		}
