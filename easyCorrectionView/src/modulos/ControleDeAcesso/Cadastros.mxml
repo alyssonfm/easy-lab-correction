@@ -136,6 +136,8 @@
 			private var senhaCadastrada: String = "";
 			private var senhaGerada: String = "";
 			
+			private var emailAlterado: Boolean = false;
+			
 			[Bindable]
 			private var mensagem:String;
 			
@@ -607,6 +609,9 @@
 						usuario.login = StringUtil.trim(inputLoginUsuario.text);
 						usuario.nome = StringUtil.trim(inputNomeUsuario.text);
 						usuario.email = StringUtil.trim(inputEmailUsuario.text);
+						if(!primeiroCadastro && grupoUsuario.usuario.email != usuario.email){
+							emailAlterado = true;
+						}
 						grupoUsuario.grupo = CastDeEntidades.castGrupo(cbGrupoUsuario.selectedItem);
 						grupoUsuario.usuario = usuario;
 						facade.getOperation("cadastrarUsuario").send(grupoUsuario);
@@ -637,6 +642,9 @@
 						usuario.login = StringUtil.trim(inputLoginUsuarioAlt.text);
 						usuario.nome = StringUtil.trim(inputNomeUsuarioAlt.text);
 						usuario.email = StringUtil.trim(inputEmailUsuarioAlt.text);
+						if(!primeiroCadastro && grupoUsuario.usuario.email != usuario.email){
+							emailAlterado = true;
+						}
 						grupoUsuario.grupo = CastDeEntidades.castGrupo(cbGrupoUsuarioAlt.selectedItem);
 						grupoUsuario.usuario = usuario;
 						facade.getOperation("cadastrarUsuario").send(grupoUsuario);
@@ -681,8 +689,13 @@
 					filtrarUsuarioPorGrupo();
 				}
 				else{
-					mens = new Array(false, "Dados atualizados com sucesso!");
-					lancaExcessao(mens);
+					if(emailAlterado){
+						envioEmails(grupoUsuario);
+						emailAlterado = false;
+					} else{
+						mens = new Array(false, "Dados atualizados com sucesso!");
+						lancaExcessao(mens);
+					}
 				}
 			}
 			
