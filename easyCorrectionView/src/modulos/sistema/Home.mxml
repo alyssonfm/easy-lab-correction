@@ -9,6 +9,7 @@
 			import com.flexspy.imp.Utils;
 			import mx.binding.utils.BindingUtils;
 			import bean.roteiros.Roteiro;
+			import bean.roteiros.EquipeHasUsuarioHasRoteiro;
 			import mx.effects.Rotate;
 			import mx.controls.Image;
 			import mx.controls.Alert;
@@ -39,13 +40,17 @@
 				facade.channelSet = ControladorDeModulos.criaCanal();
 				ControladorDeModulos.getParam();
 				this.systemManager.addEventListener(ObjetoEvent.ObjetoEventConst, temRoteiro);
-				
+				getGrupoUsuarioPorUsuario();
 				buttonBaixarTestes.enabled = false;
 				buttonBaixarInterface.enabled = false;
 				buttonVisualizarNotas.enabled = false;
 				buttonVisulizarCorrecao.enabled = false;
 				
 				listarRoteiros();
+			}
+			
+			private function getGrupoUsuarioPorUsuario():void{
+				idUsuario = SharedObject.getLocal("sistema", "/").data.idUsuario;
 			}
 			
 			private function temRoteiro(event: ObjetoEvent):void{
@@ -100,8 +105,25 @@
 					//buttonVisualizarNotas.enabled = true;
 					//buttonVisulizarCorrecao.enabled = true;
 					carregaArquivos();
+					facade.getOperation("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro").send(idUsuario, roteiro.id);
 				}
 				catch(e: Error){}
+			}
+			
+			private function getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event:ResultEvent):void{
+				var eur: EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
+				eur = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(event.result);
+				if(eur != null){
+					facade.getOperation("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro").send(eur.equipe.id, eur.roteiro.id);
+				}
+			}
+			
+			private function getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event:ResultEvent):void{
+				var listaEUR: ArrayCollection = event.result as ArrayCollection;
+				integrantesEquipeRoteiro.dataProvider = new ArrayCollection();
+				if(listaEUR.length > 0){
+					integrantesEquipeRoteiro.dataProvider = listaEUR;
+				} 
 			}
 			
 			private function carregaArquivos(): void{
@@ -124,6 +146,10 @@
 					var mensagem:String = "Selecione Um Roteiro.";
 					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
 				}
+			}
+			
+			private function labelIntegrantesEquipeRoteiro(item:*):String {
+				return item.usuario.nome;
 			}
 			
 			private function getNomeArquivoInterface_result(event:ResultEvent):void{
@@ -171,6 +197,8 @@
 		<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
 		<mx:method name="getNomeArquivoInterface" result="getNomeArquivoInterface_result(event)" fault="falha(event)"/>
 		<mx:method name="getNomeArquivoTestes" result="getNomeArquivoTestes_result(event)" fault="falha(event)"/>
+		<mx:method name="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro" result="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event)" fault="falha(event)"/>
+		<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
 	</mx:RemoteObject>
 		
 	<mx:Canvas label="Roteiros" id="canvasRoteiros">
@@ -213,7 +241,7 @@
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:List x="10" y="44" scroll="true" width="264" height="399" id="listaRoteiros" labelField="nome" itemClick="atualizaDadosRoteiro()" fontSize="14"/>
-		<mx:List x="10" y="489" width="267" height="85" id="integrantesEquipeRoteiro"></mx:List>
+		<mx:List x="10" y="489" width="267" height="85" labelFunction="labelIntegrantesEquipeRoteiro" id="integrantesEquipeRoteiro"></mx:List>
 		<mx:Label x="386" y="70" width="532" id="inputTituloRoteiro" color="#1B7A0F" text="..."/>
 		<mx:Label x="837" y="14" width="48" id="inputNotaFinal" color="#1B7A0F" text="0,0"/>
 		<mx:Label x="837" y="39" width="48" id="inputNotaTestes" color="#1B7A0F" text="0,0"/>
