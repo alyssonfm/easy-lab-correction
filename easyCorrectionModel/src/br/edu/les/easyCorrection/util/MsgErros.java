@@ -137,6 +137,11 @@ public enum MsgErros {
 			return "Não foi possível mudar de equipe! Limite de integrantes da " + args[0] + " já alcançado (máximo de " + args[1] + " integrante(s) por equipe).";
 		}
 	},
+	ARQUIVO_MAL_FORMADO{
+		public String msg(String... args) {
+			return "Erro no envio! O pacote zip submetido possui arquivos que não são do tipo JAVA.";
+		}
+	},
 	ALUNO_INEXISTENTE{
 		public String msg(String... args) {
 			return "Mudança de equipe não realizada! Aluno inexistente.";
