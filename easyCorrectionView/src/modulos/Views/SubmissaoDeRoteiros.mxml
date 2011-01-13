@@ -83,10 +83,14 @@
 				}
 				
 				public function erroEnvio(evt:Event):void {
-			       	var param:Array = new Array(true, "Ocorreu um erro de transmissão. O arquivo não foi enviado." +
-														"\n\nTente novamente! Caso este erro persista..." + 
-														"\n\nVerifique se sua conexão com a internet está ativada.");
-					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+					if(submissao != null){
+						facade.getOperation("excluirSubmissao").send(submissao);
+					}
+				}
+				
+				public function excluirSubmissao_result(event:ResultEvent):void{
+					var param:Array = new Array(true, "Erro no envio! O pacote zip submetido possui arquivos que não são tipo JAVA.");
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);	
 				}
 				
 				public function arquivoSelecionado(evt:Event):void {
@@ -203,6 +207,7 @@
 			<mx:method name="getRoteirosLiberados" result="getRoteirosLiberados_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro" result="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event)" fault="falha(event)"/>
 			<mx:method name="submeteRoteiro" result="submeteRoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="excluirSubmissao" result="excluirSubmissao_result(event)" fault="falha(event)"/>
 			<mx:method name="rodarTestesAutomaticos" result="rodarTestesAutomaticos_result(event)" fault="falha(event)"/>
 			<mx:method name="getNumeroSubmissoes" result="getNumeroSubmissoes_result(event)" fault="falha(event)"/>
 			<mx:method name="getNumeroSubmissoesPorEUR" result="getNumeroSubmissoes_result(event)" fault="falha(event)"/>
