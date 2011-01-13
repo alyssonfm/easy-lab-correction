@@ -24,6 +24,9 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
+import br.edu.les.easyCorrection.util.MsgErros;
+
 /**
  * Servlet implementation class UploadServlet
  */
@@ -146,6 +149,31 @@ public class ServletUpload extends HttpServlet {
 		}
 	}
 	
+	public static boolean checaArquivo(String pastaDestino, String nomeArquivo)  throws IOException{
+   	 try
+        {
+            String destinationname = pastaDestino;
+            byte[] buf = new byte[1024];
+            ZipInputStream zipinputstream = null;
+            ZipEntry zipentry;
+            zipinputstream = new ZipInputStream(
+                new FileInputStream(pastaDestino + nomeArquivo));
+            zipentry = zipinputstream.getNextEntry();
+            while (zipentry != null){
+                String entryName = zipentry.getName();
+                if (!entryName.substring(entryName.length() - 4, entryName.length()).toUpperCase().equals("JAVA")){
+                	zipinputstream.close();
+                	return false;
+                }
+            }
+            zipinputstream.close();
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+   }
 	
     public static void unZip(String pastaDestino, String nomeArquivo)  throws IOException{
     	 try
@@ -156,7 +184,6 @@ public class ServletUpload extends HttpServlet {
              ZipEntry zipentry;
              zipinputstream = new ZipInputStream(
                  new FileInputStream(pastaDestino + nomeArquivo));
-
              zipentry = zipinputstream.getNextEntry();
              while (zipentry != null) 
              { 
@@ -255,7 +282,13 @@ public class ServletUpload extends HttpServlet {
 			request.getRequestDispatcher("/erro.jsp").forward(request, response);
 		}
 		if(nomeArquivo.substring(nomeArquivo.length() - 3, nomeArquivo.length()).equals("zip")){
-			unZip(uploadDir, nomeArquivo);
+			if (checaArquivo(uploadDir, nomeArquivo)){
+				unZip(uploadDir, nomeArquivo);
+			}
+			else{
+				request.setAttribute("errorMessage", "Erro no envio! O pacote zip submetido possui arquivos que não são do tipo JAVA.");
+				request.getRequestDispatcher("/erro.jsp").forward(request, response);
+			}
 		}
 	}
 }
