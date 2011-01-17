@@ -2,8 +2,8 @@ package br.edu.les.easyCorrection.gerenciadores;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
-import br.edu.les.easyCorrection.DAO.hibernate.sistema.RoteiroHibernateDAO;
 import br.edu.les.easyCorrection.exceptions.AutenticacaoException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
