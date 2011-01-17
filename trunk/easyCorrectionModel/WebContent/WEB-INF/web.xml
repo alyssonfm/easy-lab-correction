@@ -10,6 +10,9 @@
     <listener>
         <listener-class>flex.messaging.HttpFlexSession</listener-class>
     </listener>
+    <listener>
+		<listener-class>br.edu.les.easyCorrection.util.WebappListener</listener-class>
+	</listener>
 
     <!-- MessageBroker Servlet -->
     <servlet>
