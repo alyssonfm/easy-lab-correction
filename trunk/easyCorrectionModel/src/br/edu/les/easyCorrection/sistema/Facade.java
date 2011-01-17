@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import br.edu.les.easyCorrection.exceptions.BloqueiaRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
-import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
@@ -32,8 +31,7 @@ public class Facade {
 		sistema = new Sistema();
 
 	}
-
-
+	
 	public void reinicializaBancoDeDados(){
 		sistema.reinicializaBancoDeDados("backupEasyCorrection");
 	}
