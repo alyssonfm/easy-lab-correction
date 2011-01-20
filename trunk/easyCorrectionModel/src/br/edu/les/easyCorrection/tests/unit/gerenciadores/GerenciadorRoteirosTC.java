@@ -59,7 +59,7 @@ public class GerenciadorRoteirosTC {
 	}
 
 	@Test
-	public void cadastrarEditarBloquearExcluir() {
+	public void cadastrarEditarBloquearExcluir() throws BloqueiaRoteiroException, LiberaRoteiroException {
 		try {
 			roteiroNULL = gr.cadastrarRoteiro(roteiroNULL);
 		} catch (CriacaoRoteiroException e) {

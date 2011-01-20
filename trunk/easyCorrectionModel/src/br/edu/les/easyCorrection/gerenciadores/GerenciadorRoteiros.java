@@ -65,7 +65,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 	 * valida_roteiro_antes_da_cria save_changes() exception
 	 */
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
-			throws CriacaoRoteiroException {
+			throws CriacaoRoteiroException, BloqueiaRoteiroException, LiberaRoteiroException {
 
 		if (roteiroTemp == null) {
 			throw new CriacaoRoteiroException("Roteiro inexistente!");
@@ -125,11 +125,12 @@ public class GerenciadorRoteiros extends Gerenciador {
 	}
 
 	
-	private boolean validaRoteiroInicializandoDiretorios(Roteiro roteiro) throws CriacaoRoteiroException{
+	private boolean validaRoteiroInicializandoDiretorios(Roteiro roteiro) throws CriacaoRoteiroException, BloqueiaRoteiroException, LiberaRoteiroException{
 		
 		// Estes campos devem vir null
 		roteiro.setDiretorioTestes("");
 		roteiro.setDiretorioInterface("");
+		this.bloquearRoteiro(roteiro, true);
 		
 		return validaRoteiroEmCriacao(roteiro);
 	}
