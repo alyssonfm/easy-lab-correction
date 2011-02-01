@@ -123,7 +123,7 @@ public class GerenciadorRoteirosTC {
 		// Bloquear
 		
 		try {
-			gr.bloquearRoteiro(roteiroNULL, true);
+			gr.bloquearRoteiro(roteiroNULL);
 		} catch (BloqueiaRoteiroException e) {
 			Assert.assertTrue("O bloqueio não deve ser realizado", true);
 		} catch (LiberaRoteiroException e) {
@@ -133,7 +133,7 @@ public class GerenciadorRoteirosTC {
 
 		try {
 			Assert
-					.assertTrue(gr.bloquearRoteiro(roteiroMinimo, true).getId() > 0);
+					.assertTrue(gr.bloquearRoteiro(roteiroMinimo).getId() > 0);
 			Assert.assertTrue("O bloqueio deve ser realizado", true);
 		} catch (BloqueiaRoteiroException e) {
 			Assert.assertFalse("O bloqueio deve ser realizado", true);
@@ -146,7 +146,7 @@ public class GerenciadorRoteirosTC {
 
 		try {
 			Assert
-					.assertTrue(gr.bloquearRoteiro(roteiroMinimo, false)
+					.assertTrue(gr.desbloquearRoteiro(roteiroMinimo)
 							.getId() > 0);
 			Assert.assertTrue("O desbloqueio deve ser realizado", true);
 		} catch (BloqueiaRoteiroException e) {
@@ -160,7 +160,7 @@ public class GerenciadorRoteirosTC {
 
 		try {
 			Assert
-					.assertTrue(gr.bloquearRoteiro(roteiroMinimo, false)
+					.assertTrue(gr.desbloquearRoteiro(roteiroMinimo)
 							.getId() > 0);
 		} catch (BloqueiaRoteiroException e) {
 			Assert.assertTrue("O desbloqueio não deve ser realizado", true);

@@ -36,12 +36,11 @@ public class Sistema {
 		gerenciadorRoteiros = new GerenciadorRoteiros();
 		gerenciadorSubmissoes = new GerenciadorSubmissoes();
 	}
-	
-	public void reinicializaBancoDeDados(String script){
+
+	public void reinicializaBancoDeDados(String script) {
 		gerenciadorAcesso.reinicializaBancoDeDados(script);
 	}
-	
-	
+
 	public void excluirMenu(Menu menu) throws EasyCorrectionException {
 		gerenciadorAcesso.excluirMenu(menu);
 	}
@@ -139,7 +138,7 @@ public class Sistema {
 	public List<GrupoUsuario> listarGrupoUsuarios() {
 		return gerenciadorAcesso.listarGrupoUsuario();
 	}
-	
+
 	public List<GrupoUsuario> listarGrupoUsuariosPorGrupo(String nomeGrupo) {
 		return gerenciadorAcesso.listarGrupoUsuarioPorGrupo(nomeGrupo);
 	}
@@ -205,7 +204,8 @@ public class Sistema {
 			throws EasyCorrectionException {
 		Roteiro rot = gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
 		List<Equipe> equipes = gerenciadorSubmissoes.getEquipes();
-		List<GrupoUsuario> alunos = gerenciadorAcesso.listarGrupoUsuarioPorGrupo("Aluno");
+		List<GrupoUsuario> alunos = gerenciadorAcesso
+				.listarGrupoUsuarioPorGrupo("Aluno");
 		gerenciadorSubmissoes.alocaEquipesParaAlunos(rot, equipes, alunos);
 		return rot;
 	}
@@ -215,15 +215,20 @@ public class Sistema {
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 
-	public Roteiro bloquearRoteiro(Roteiro roteiroTemp, boolean bloqueia)
+	public Roteiro bloquearRoteiro(Roteiro roteiroTemp)
 			throws BloqueiaRoteiroException, LiberaRoteiroException {
-		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp, bloqueia);
+		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp);
 	}
-	
-	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
-			throws LiberaRoteiroException, BloqueiaRoteiroException {
-		return gerenciadorRoteiros.liberarRoteiro(roteiroTemp);
+
+	public Roteiro desbloquearRoteiro(Roteiro roteiroTemp)
+			throws BloqueiaRoteiroException, LiberaRoteiroException {
+		return gerenciadorRoteiros.desbloquearRoteiro(roteiroTemp);
 	}
+//
+//	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
+//			throws LiberaRoteiroException, BloqueiaRoteiroException {
+//		return gerenciadorRoteiros.liberarRoteiro(roteiroTemp);
+//	}
 
 	public void excluirRoteiro(Roteiro roteiro) throws ExclusaoRoteiroException {
 		gerenciadorRoteiros.excluirRoteiro(roteiro);
@@ -232,8 +237,8 @@ public class Sistema {
 	public List<Roteiro> listarRoteiros() {
 		return gerenciadorRoteiros.listarRoteiros();
 	}
-	
-	public List<Roteiro> getRoteirosLiberados(){
+
+	public List<Roteiro> getRoteirosLiberados() {
 		return gerenciadorRoteiros.getRoteirosLiberados();
 	}
 
@@ -245,53 +250,61 @@ public class Sistema {
 				.getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(idUsuario,
 						idRoteiro);
 	}
-	
-	public List<Equipe> getEquipes(){
+
+	public List<Equipe> getEquipes() {
 		return gerenciadorSubmissoes.getEquipes();
 	}
-	
-	public Equipe getEquipe(int id){
+
+	public Equipe getEquipe(int id) {
 		return gerenciadorSubmissoes.getEquipe(id);
 	}
-	
+
 	public Equipe getEquipePorNome(String nomeEquipe) throws Throwable {
 		return gerenciadorSubmissoes.getEquipePorNome(nomeEquipe);
 	}
-	
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros(){
+
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros() {
 		return gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiros();
 	}
-	
-	public EquipeHasUsuarioHasRoteiro cadastraEquipeHasUsuarioHasRoteiro(EquipeHasUsuarioHasRoteiro equr) throws EasyCorrectionException {
+
+	public EquipeHasUsuarioHasRoteiro cadastraEquipeHasUsuarioHasRoteiro(
+			EquipeHasUsuarioHasRoteiro equr) throws EasyCorrectionException {
 		return gerenciadorSubmissoes.cadastraEquipeHasUsuarioHasRoteiro(equr);
 	}
-	
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(Integer idEquipe, Integer idRoteiro){
-		return gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe, idRoteiro);
+
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
+			Integer idEquipe, Integer idRoteiro) {
+		return gerenciadorSubmissoes
+				.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe,
+						idRoteiro);
 	}
 
-	public Submissao submeteRoteiro(Submissao submissao) throws EasyCorrectionException {
+	public Submissao submeteRoteiro(Submissao submissao)
+			throws EasyCorrectionException {
 		return gerenciadorSubmissoes.submeteRoteiro(submissao);
 	}
-	
-	public String rodarTestesAutomaticos(Submissao submissao) throws EasyCorrectionException{
+
+	public String rodarTestesAutomaticos(Submissao submissao)
+			throws EasyCorrectionException {
 		return gerenciadorSubmissoes.rodarTestesAutomaticos(submissao);
 	}
-	
-	public int getEquipeAlocadas(Integer idRoteiro){
+
+	public int getEquipeAlocadas(Integer idRoteiro) {
 		return gerenciadorSubmissoes.getEquipeAlocadas(idRoteiro);
 	}
-	
-	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur) throws EasyCorrectionException{
-		GrupoUsuario gu = getGrupoUsuarioPorUsuario(eur.getUsuario().getIdUsuario()).get(0);
-		if (!gu.getGrupo().getNome().equals("Aluno")){
-			throw new EasyCorrectionException(
-					MsgErros.ALUNO_INEXISTENTE.msg(""));
+
+	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur)
+			throws EasyCorrectionException {
+		GrupoUsuario gu = getGrupoUsuarioPorUsuario(
+				eur.getUsuario().getIdUsuario()).get(0);
+		if (!gu.getGrupo().getNome().equals("Aluno")) {
+			throw new EasyCorrectionException(MsgErros.ALUNO_INEXISTENTE
+					.msg(""));
 		}
 		return gerenciadorSubmissoes.mudarEquipe(eur);
 	}
-	
-	public Submissao getSubmissao(int submissaoId){
+
+	public Submissao getSubmissao(int submissaoId) {
 		return gerenciadorSubmissoes.getSubmissao(submissaoId);
 	}
 
@@ -302,12 +315,12 @@ public class Sistema {
 	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
 		return gerenciadorSubmissoes.cadastraEquipe(e);
 	}
-	
-	public Integer numeroSubmissoes(Submissao submissao){
+
+	public Integer numeroSubmissoes(Submissao submissao) {
 		return gerenciadorSubmissoes.numeroSubmissoes(submissao);
 	}
-	
-	public Integer numeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur){
+
+	public Integer numeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur) {
 		return gerenciadorSubmissoes.numeroSubmissoesPorEUR(eur);
 	}
 
