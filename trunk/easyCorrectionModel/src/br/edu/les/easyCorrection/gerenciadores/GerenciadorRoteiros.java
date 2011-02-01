@@ -338,8 +338,8 @@ public class GerenciadorRoteiros extends Gerenciador {
 		}
 		roteiro.setBloqueado(false);
 
-		Roteiro r;
-
+		Roteiro r  = roteiro;
+/*
 		try {
 			r = getRoteiro(roteiro.getId());
 			r = (Roteiro) SwapperAtributosReflect.swapObject(r, roteiro,
@@ -347,7 +347,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 			DAOFactory.DEFAULT.buildRoteiroDAO().update(r);
 		} catch (EasyCorrectionException e) {
 			throw new BloqueiaRoteiroException("Roteiro inexistente!");
-		}
+		}*/
 
 		return r;
 	}
