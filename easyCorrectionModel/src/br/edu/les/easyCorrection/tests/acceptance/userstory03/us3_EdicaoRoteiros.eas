@@ -124,7 +124,7 @@ periodoId=1 nome="Roteiro2" descricao= dataLiberacao="AGORA" dataFinalEntrega="+
 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="INTERFACE_DEFAULT_OK" \
 diretorioTestes="TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
 
-idRoteiro3=liberarRoteiro idRoteiro=${idRoteiro2}
+#idRoteiro3=liberarRoteiro idRoteiro=${idRoteiro2}
 
 # Bloqueamos o roteiro no estado LIBERADO (idRoteiro3)
 idRoteiro3=bloquearRoteiro idRoteiro=${idRoteiro3}

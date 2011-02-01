@@ -22,6 +22,7 @@ import org.junit.runner.JUnitCore;
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.ExecucaoTestesException;
 import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
@@ -36,12 +37,12 @@ import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 public class GerenciadorSubmissoes {
 
 	private GerenciadorRoteiros gerenciadorRoteiros;
-	private String resultadoErro = "";
-	private boolean erroCompilacao = false;
+	private GerenciadorTestes gerenciadorTestes;
 
 	public GerenciadorSubmissoes() {
 		super();
 		gerenciadorRoteiros = new GerenciadorRoteiros();
+		gerenciadorTestes = new GerenciadorTestes();
 	}
 
 	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
@@ -63,9 +64,10 @@ public class GerenciadorSubmissoes {
 		}
 		return equipe;
 	}
-	
+
 	public Equipe getEquipePorNome(String nome) {
-		List<Equipe> equipes = DAOFactory.DEFAULT.buildEquipeDAO().findByNome(nome);
+		List<Equipe> equipes = DAOFactory.DEFAULT.buildEquipeDAO().findByNome(
+				nome);
 		Equipe eq = equipes.get(0);
 		if (easyCorrectionUtil.isNull(eq)) {
 			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
@@ -79,28 +81,30 @@ public class GerenciadorSubmissoes {
 		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
 				.findByEquipeERoteiro(idEquipe, idRoteiro);
 	}
-	
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiro(Integer idRoteiro) {
+
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiro(
+			Integer idRoteiro) {
 		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
 				.findByRoteiro(idRoteiro);
 	}
 
 	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur)
 			throws EasyCorrectionException {
-		
-		if(eur.getRoteiro().getNumeroMaximoParticipantes() == 1){
+
+		if (eur.getRoteiro().getNumeroMaximoParticipantes() == 1) {
 			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INDIVIDUAL
 					.msg(""));
 		}
-		if(eur.getRoteiro().getNumeroMaximoParticipantes() == getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(eur.getEquipe().getId(), eur.getRoteiro().getId()).size()){
-			String[] params = {eur.getEquipe().getNome(), eur.getRoteiro().getNumeroMaximoParticipantes().toString()};
-			throw new ObjetoNaoEncontradoException(MsgErros.EQUIPE_HAS_ROTEIRO_COMPLETA
-					.msg(params));
+		if (eur.getRoteiro().getNumeroMaximoParticipantes() == getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
+				eur.getEquipe().getId(), eur.getRoteiro().getId()).size()) {
+			String[] params = { eur.getEquipe().getNome(),
+					eur.getRoteiro().getNumeroMaximoParticipantes().toString() };
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.EQUIPE_HAS_ROTEIRO_COMPLETA.msg(params));
 		}
-		try{
+		try {
 			getEquipe(eur.getEquipe().getId());
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			throw new ObjetoNaoEncontradoException(MsgErros.EQUIPE_INEXISTENTE
 					.msg(""));
 		}
@@ -117,18 +121,18 @@ public class GerenciadorSubmissoes {
 		return equipeUsuarioRoteiro;
 	}
 
-	public int getEquipeAlocadas(Integer idRoteiro){
+	public int getEquipeAlocadas(Integer idRoteiro) {
 		if (easyCorrectionUtil.isNull(idRoteiro) || idRoteiro < 1) {
-			throw new ObjetoNaoEncontradoException(MsgErros.ID_ROTEIRO_INEXISTENTE
-					.msg(""));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.ID_ROTEIRO_INEXISTENTE.msg(""));
 		}
-		
+
 		Roteiro roteiro = gerenciadorRoteiros.getRoteiro(idRoteiro);
-		if ( roteiro == null){
+		if (roteiro == null) {
 			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INEXISTENTE
 					.msg(""));
 		}
-		
+
 		List<EquipeHasUsuarioHasRoteiro> lista = DAOFactory.DEFAULT
 				.buildEquipeHasUsuarioHasRoteiroDAO().findByRoteiro(idRoteiro);
 		return lista.size();
@@ -152,85 +156,94 @@ public class GerenciadorSubmissoes {
 								.getId());
 		return lista.size();
 	}
-	
+
 	public Integer numeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur) {
 		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO()
-				.findByEquipeERoteiro(eur.getEquipe().getId(), eur.getRoteiro().getId());
+				.findByEquipeERoteiro(eur.getEquipe().getId(),
+						eur.getRoteiro().getId());
 		return lista.size();
 	}
 
-	public Submissao submeteRoteiro(Submissao submissao) throws EasyCorrectionException {
+	public Submissao submeteRoteiro(Submissao submissao)
+			throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(submissao)) {
 			if (numeroSubmissoes(submissao) < (submissao
 					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
 					.getNumeroMaximoEnvios())) {
 				submissao.setDataSubmissao(easyCorrectionUtil.getDataNow());
-				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(submissao);
+				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(
+						submissao);
 				submissao.setId(id);
-			}
-			else{
+			} else {
 				throw new EasyCorrectionException(
-						MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO.msg(submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getNome()));
+						MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO
+								.msg(submissao.getEquipeHasUsuarioHasRoteiro()
+										.getRoteiro().getNome()));
 			}
 		}
 		return submissao;
 	}
-	
-	public String primeiraOcorrencia(String[] listaArquivos){
-		try{
+
+	public String primeiraOcorrencia(String[] listaArquivos) {
+		try {
 			String nomeArquivo = "";
-			for(int i = 0; i < listaArquivos.length; i++){
-				nomeArquivo = listaArquivos[i]; 
-				if(nomeArquivo.substring(nomeArquivo.length() - 4, nomeArquivo.length()).equals("java")){
+			for (int i = 0; i < listaArquivos.length; i++) {
+				nomeArquivo = listaArquivos[i];
+				if (nomeArquivo.substring(nomeArquivo.length() - 4,
+						nomeArquivo.length()).equals("java")) {
 					return nomeArquivo;
 				}
 			}
-		}catch(Exception e){}
+		} catch (Exception e) {
+		}
 		return null;
 	}
-	
-	public String primeiraOcorrenciaZip(String[] listaArquivos){
-		try{
+
+	public String primeiraOcorrenciaZip(String[] listaArquivos) {
+		try {
 			String nomeArquivo = "";
-			for(int i = 0; i < listaArquivos.length; i++){
-				nomeArquivo = listaArquivos[i]; 
-				if(nomeArquivo.substring(nomeArquivo.length() - 3, nomeArquivo.length()).equals("zip")){
+			for (int i = 0; i < listaArquivos.length; i++) {
+				nomeArquivo = listaArquivos[i];
+				if (nomeArquivo.substring(nomeArquivo.length() - 3,
+						nomeArquivo.length()).equals("zip")) {
 					return nomeArquivo;
 				}
 			}
-		}catch(Exception e){}
+		} catch (Exception e) {
+		}
 		return null;
 	}
-	
-	public String[] parametrosCompilador(String diretorioLib, 
-			String diretorioSource, 
-			String diretorioInterface, 
-			String diretorioTestes,
-			String[] listaArquivosSource,
-			String[] listaArquivosInterface,
-			String[] listaArquivosTestes){
-		
+
+	public String[] parametrosCompilador(String diretorioLib,
+			String diretorioSource, String diretorioInterface,
+			String diretorioTestes, String[] listaArquivosSource,
+			String[] listaArquivosInterface, String[] listaArquivosTestes) {
+
 		List<String> params = new ArrayList<String>();
 		params.add("-sourcepath");
-		params.add(diretorioSource + ";" + diretorioInterface + ";" + diretorioTestes);
+		params.add(diretorioSource + ";" + diretorioInterface + ";"
+				+ diretorioTestes);
 		params.add("-classpath");
 		params.add(diretorioLib + "junit.jar");
 		String nomeArquivo = "";
-		for(int i = 0; i < listaArquivosSource.length; i++){
-			nomeArquivo = listaArquivosSource[i]; 
-			if(nomeArquivo.substring(nomeArquivo.length() - 4, nomeArquivo.length()).equals("java")){
+		for (int i = 0; i < listaArquivosSource.length; i++) {
+			nomeArquivo = listaArquivosSource[i];
+			if (nomeArquivo.substring(nomeArquivo.length() - 4,
+					nomeArquivo.length()).equals("java")) {
 				params.add(diretorioSource + nomeArquivo);
 			}
 		}
-		for(int i = 0; i < listaArquivosInterface.length; i++){
-			nomeArquivo = listaArquivosInterface[i]; 
-			if(nomeArquivo.substring(nomeArquivo.length() - 4, nomeArquivo.length()).equals("java")){
+		for (int i = 0; i < listaArquivosInterface.length; i++) {
+			nomeArquivo = listaArquivosInterface[i];
+			if (nomeArquivo.substring(nomeArquivo.length() - 4,
+					nomeArquivo.length()).equals("java")) {
 				params.add(diretorioInterface + nomeArquivo);
 			}
 		}
-		for(int i = 0; i < listaArquivosTestes.length; i++){
-			nomeArquivo = listaArquivosTestes[i]; 
-			if(nomeArquivo.substring(nomeArquivo.length() - 4, nomeArquivo.length()).equals("java")){
+		for (int i = 0; i < listaArquivosTestes.length; i++) {
+			nomeArquivo = listaArquivosTestes[i];
+			if (nomeArquivo.substring(nomeArquivo.length() - 4,
+					nomeArquivo.length()).equals("java")) {
 				params.add(diretorioTestes + nomeArquivo);
 			}
 		}
@@ -238,81 +251,39 @@ public class GerenciadorSubmissoes {
 		params.add(diretorioSource);
 		return params.toArray(new String[params.size()]);
 	}
-	
-	public String rodarTestesAutomaticos(Submissao submissao) throws EasyCorrectionException{
-		
-		String diretorioTestes = ServletUpload.local + submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getDiretorioTestes().replace("/", File.separator);
-		String diretorioInterface = ServletUpload.local + submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getDiretorioInterface().replace("/", File.separator);
-		String diretorioSource = ServletUpload.local + submissao.getUrl().replace("/", File.separator);
-		String diretorioLib = (ServletUpload.local + "/").replace("/", File.separator);
-		
-		File dirTestes = new File(diretorioTestes);
-		String arquivoDeTeste =  primeiraOcorrencia(dirTestes.list());
-		File dirInterface = new File(diretorioInterface);
-		String arquivoDeInterface =  primeiraOcorrencia(dirInterface.list());
-		File dirSource = new File(diretorioSource);
-		String arquivoSource =  primeiraOcorrencia(dirSource.list());
-		
-		String relatorio = "";
-		
-		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
-		OutputStream out = new OutputStream() {
-			public void write(int b) throws IOException {
-				resultadoErro += (char) b;
-			}
-		};
-		
-		OutputStream erro = new OutputStream() {
-			public void write(int b) throws IOException {
-				erroCompilacao = true;
-				resultadoErro += (char) b;
-			}
-		};
-		
-		try{
-			javaCompiler.run(null, out, erro, 
-					"-sourcepath", diretorioSource + ";" + diretorioInterface + ";" + diretorioTestes, 
-					"-classpath", diretorioLib + "junit.jar", 
-					diretorioInterface + arquivoDeInterface, diretorioSource + arquivoSource, diretorioTestes + arquivoDeTeste,
-					"-d", diretorioSource); //diretório de saída dos .class
-					
-			
-			//
-			
-			URLClassLoader cl = new URLClassLoader(new URL[]{new File(diretorioSource).toURI().toURL()}, JUnitCore.class.getClassLoader());
-			Class<?> testClass = cl.loadClass(arquivoDeTeste.substring(0, arquivoDeTeste.length() - 5));
-			
-			JUnit4TestAdapter testAdapter = new JUnit4TestAdapter(testClass);
-			TestResult result = TestRunner.run(testAdapter);
-			
-			int quantTestesRodados = result.runCount();
-			int erros = result.errorCount();
-			int porcAcertos = ((quantTestesRodados - erros) * 100) / quantTestesRodados;
-			relatorio = "Relatório de Avaliação: \n\n" + 
-				"Total de Testes: " + quantTestesRodados + "\n" +
-				"Total de Erros: " + erros + "\n" +
-				"Porcentagem de Acertos: " + porcAcertos + " %\n" +
-				"Nota dos Testes Automáticos: " + (porcAcertos * submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getPorcentagemTestesAutomaticos()) / 1000
-				+ "\n\nConsole:\n";
 
-			if (result.wasSuccessful()){
-				relatorio += "SUCESSO!";
-				
-			}else{
-				Enumeration<TestFailure> failures = result.errors();
-				for (int i = 0; i < result.errorCount(); i++) {
-					relatorio += failures.nextElement().toString() + "\n";
-				}
-			}
-		} catch(Exception e){
-			System.out.println("");
-		}
-		
-		if (erroCompilacao){
+	public String rodarTestesAutomaticos(Submissao submissao)
+			throws EasyCorrectionException {
+
+		String diretorioTestes = ServletUpload.local
+				+ submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro()
+						.getDiretorioTestes().replace("/", File.separator);
+		String diretorioInterface = ServletUpload.local
+				+ submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro()
+						.getDiretorioInterface().replace("/", File.separator);
+		String diretorioSource = ServletUpload.local
+				+ submissao.getUrl().replace("/", File.separator);
+
+		File dirTestes = new File(diretorioTestes);
+		String arquivoDeTeste = primeiraOcorrencia(dirTestes.list());
+		File dirInterface = new File(diretorioInterface);
+		String arquivoDeInterface = primeiraOcorrencia(dirInterface.list());
+		File dirSource = new File(diretorioSource);
+		String arquivoSource = primeiraOcorrencia(dirSource.list());
+
+		TestResult resultadoTeste;
+
+		try {
+			resultadoTeste = gerenciadorTestes.executarTestes(diretorioTestes,
+					arquivoDeTeste, diretorioInterface, arquivoDeInterface,
+					diretorioSource, arquivoSource);
+		} catch (ExecucaoTestesException e) {
 			excluirSubmissao(submissao);
-			return resultadoErro;
+			return e.getMessage();
 		}
-		else return relatorio;
+
+		return gerenciadorTestes.getSaidaDosTestes(resultadoTeste, submissao
+				.getEquipeHasUsuarioHasRoteiro());
 	}
 
 	public void verificaSeEquipePossuiMaximoParticipantes(
@@ -376,14 +347,15 @@ public class GerenciadorSubmissoes {
 		if (sub == null) {
 			throw new ExclusaoRoteiroException("Submissao inexistente!");
 		}
-		Submissao submissao = getSubmissao(sub.getId()); 
+		Submissao submissao = getSubmissao(sub.getId());
 		submissao = (Submissao) SwapperAtributosReflect.swapObject(submissao,
 				sub, Submissao.class);
-				DAOFactory.DEFAULT.buildSubmissaoDAO().delete(submissao);
+		DAOFactory.DEFAULT.buildSubmissaoDAO().delete(submissao);
 	}
 
-	public void alocaEquipesParaAlunos(Roteiro rot, List<Equipe> equipes, List<GrupoUsuario> alunos) throws EasyCorrectionException {
-		for(int i = 0; i < alunos.size(); i++){
+	public void alocaEquipesParaAlunos(Roteiro rot, List<Equipe> equipes,
+			List<GrupoUsuario> alunos) throws EasyCorrectionException {
+		for (int i = 0; i < alunos.size(); i++) {
 			EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
 			eur.setRoteiro(rot);
 			eur.setEquipe(equipes.get(i));
@@ -393,13 +365,15 @@ public class GerenciadorSubmissoes {
 	}
 
 	public String getNomeArquivoInterface(Roteiro roteiro) {
-		String diretorioInterface = ServletUpload.local + roteiro.getDiretorioInterface().replace("/", File.separator);
+		String diretorioInterface = ServletUpload.local
+				+ roteiro.getDiretorioInterface().replace("/", File.separator);
 		File dirInterface = new File(diretorioInterface);
 		return primeiraOcorrencia(dirInterface.list());
 	}
 
 	public String getNomeArquivoTestes(Roteiro roteiro) {
-		String diretorioTestes = ServletUpload.local + roteiro.getDiretorioTestes().replace("/", File.separator);
+		String diretorioTestes = ServletUpload.local
+				+ roteiro.getDiretorioTestes().replace("/", File.separator);
 		File dirTestes = new File(diretorioTestes);
 		return primeiraOcorrenciaZip(dirTestes.list());
 	}

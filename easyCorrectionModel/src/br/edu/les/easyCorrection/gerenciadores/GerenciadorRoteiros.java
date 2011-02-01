@@ -65,7 +65,8 @@ public class GerenciadorRoteiros extends Gerenciador {
 	 * valida_roteiro_antes_da_cria save_changes() exception
 	 */
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
-			throws CriacaoRoteiroException, BloqueiaRoteiroException, LiberaRoteiroException {
+			throws CriacaoRoteiroException, BloqueiaRoteiroException,
+			LiberaRoteiroException {
 
 		if (roteiroTemp == null) {
 			throw new CriacaoRoteiroException("Roteiro inexistente!");
@@ -124,16 +125,18 @@ public class GerenciadorRoteiros extends Gerenciador {
 		return r;
 	}
 
-	
-	private boolean validaRoteiroInicializandoDiretorios(Roteiro roteiro) throws CriacaoRoteiroException, BloqueiaRoteiroException, LiberaRoteiroException{
-		
+	private boolean validaRoteiroInicializandoDiretorios(Roteiro roteiro)
+			throws CriacaoRoteiroException, BloqueiaRoteiroException,
+			LiberaRoteiroException {
+
 		// Estes campos devem vir null
 		roteiro.setDiretorioTestes("");
 		roteiro.setDiretorioInterface("");
-		this.bloquearRoteiro(roteiro, true);
-		
+		this.bloquearRoteiro(roteiro);
+
 		return validaRoteiroEmCriacao(roteiro);
 	}
+
 	/*
 	 * Metodos de Validacao de Roteiros para Criação e Edição
 	 */
@@ -274,47 +277,22 @@ public class GerenciadorRoteiros extends Gerenciador {
 		}
 	}
 
-	public Roteiro bloquearRoteiro(Roteiro roteiro, boolean bloqueia)
+	public Roteiro bloquearRoteiro(Roteiro roteiro)
 			throws BloqueiaRoteiroException, LiberaRoteiroException {
 
 		if (roteiro == null) {
 			throw new BloqueiaRoteiroException("Roteiro inexistente!");
 		}
 
-		if (bloqueia) {
-			if (roteiro.isBloqueado()) {
-				throw new BloqueiaRoteiroException(
-						"O Roteiro já está bloqueado!");
-			} else {
-				// Apenas para garantia que houve sucesso
-				System.out.println("Roteiro " + roteiro.getNome()
-						+ " bloqueado com sucesso!");
-			}
+		if (roteiro.isBloqueado()) {
+			throw new BloqueiaRoteiroException("O Roteiro já está bloqueado!");
 		} else {
-			Date dataAtual = Calendar.getInstance().getTime();
-
-			if (!roteiro.isBloqueado()) {
-				throw new BloqueiaRoteiroException(
-						"O Roteiro já está desbloqueado!");
-			} else {
-				if (roteiro.getDataLiberacao().before(dataAtual)
-						&& (roteiro.getDiretorioInterface() == null
-								|| roteiro.getNumeroMaximoParticipantes() <= 0
-								|| roteiro.getNumeroMaximoEnvios() <= 0 || ((roteiro
-								.getPorcentagemTestesAutomaticos() > 0 || roteiro
-								.getPorcentagemTestesAutomaticos() <= 100) && roteiro
-								.getDiretorioTestes() == null))) {
-					throw new LiberaRoteiroException(
-							"O Roteiro "
-									+ roteiro.getNome()
-									+ " não pôde ser liberado devido a falhas em sua especificação!");
-				}
-				// Apenas para garantias que houve sucesso
-				System.out.println("Roteiro " + roteiro.getNome()
-						+ " desbloqueado com sucesso!");
-			}
+			// Apenas para garantia que houve sucesso
+			System.out.println("Roteiro " + roteiro.getNome()
+					+ " bloqueado com sucesso!");
 		}
-		roteiro.setBloqueado(bloqueia);
+
+		roteiro.setBloqueado(true);
 
 		Roteiro r;
 
@@ -330,23 +308,65 @@ public class GerenciadorRoteiros extends Gerenciador {
 		return r;
 	}
 
+	public Roteiro desbloquearRoteiro(Roteiro roteiro)
+			throws BloqueiaRoteiroException, LiberaRoteiroException {
+
+		if (roteiro == null) {
+			throw new BloqueiaRoteiroException("Roteiro inexistente!");
+		}
+		Date dataAtual = Calendar.getInstance().getTime();
+
+		if (!roteiro.isBloqueado()) {
+			throw new BloqueiaRoteiroException(
+					"O Roteiro já está desbloqueado!");
+		} else {
+			if (roteiro.getDataLiberacao().before(dataAtual)
+					&& (roteiro.getDiretorioInterface() == null
+							|| roteiro.getNumeroMaximoParticipantes() <= 0
+							|| roteiro.getNumeroMaximoEnvios() <= 0 || ((roteiro
+							.getPorcentagemTestesAutomaticos() > 0 || roteiro
+							.getPorcentagemTestesAutomaticos() <= 100) && roteiro
+							.getDiretorioTestes() == null))) {
+				throw new LiberaRoteiroException(
+						"O Roteiro "
+								+ roteiro.getNome()
+								+ " não pôde ser liberado devido a falhas em sua especificação!");
+			}
+			// Apenas para garantias que houve sucesso
+			System.out.println("Roteiro " + roteiro.getNome()
+					+ " liberado com sucesso!");
+		}
+		roteiro.setBloqueado(false);
+
+		Roteiro r;
+
+		try {
+			r = getRoteiro(roteiro.getId());
+			r = (Roteiro) SwapperAtributosReflect.swapObject(r, roteiro,
+					Roteiro.class);
+			DAOFactory.DEFAULT.buildRoteiroDAO().update(r);
+		} catch (EasyCorrectionException e) {
+			throw new BloqueiaRoteiroException("Roteiro inexistente!");
+		}
+
+		return r;
+	}
 	/*
 	 * Esse método serah utilizado mais tarde!
+	 * 
+	 * public Roteiro liberarRoteiro(Roteiro roteiro) throws
+	 * LiberaRoteiroException, BloqueiaRoteiroException {
+	 * 
+	 * this.desbloquearRoteiro(roteiro);
+	 * 
+	 * // Apenas para garantias que houve sucesso System.out.println("Roteiro "
+	 * + roteiro.getNome() + " liberado com sucesso!");
+	 * 
+	 * int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro); return
+	 * DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
+	 * 
+	 * }
 	 */
-	public Roteiro liberarRoteiro(Roteiro roteiro)
-			throws LiberaRoteiroException, BloqueiaRoteiroException {
-
-		this.bloquearRoteiro(roteiro, false);
-
-		// Apenas para garantias que houve sucesso
-		System.out.println("Roteiro " + roteiro.getNome()
-				+ " liberado com sucesso!");
-
-		int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiro);
-		return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
-
-	}
-
 	public List<Roteiro> getRoteirosLiberados() {
 		Date dataAtual = easyCorrectionUtil.getDataNow();
 		List<Roteiro> roteirosLiberados = DAOFactory.DEFAULT.buildRoteiroDAO()
