@@ -132,7 +132,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 		// Estes campos devem vir null
 		roteiro.setDiretorioTestes("");
 		roteiro.setDiretorioInterface("");
-		this.bloquearRoteiro(roteiro);
+		roteiro.setBloqueado(true);
 
 		return validaRoteiroEmCriacao(roteiro);
 	}
@@ -277,6 +277,10 @@ public class GerenciadorRoteiros extends Gerenciador {
 		}
 	}
 
+	/*
+	 * Esse metodos sao chamados apenas apos a criação
+	 */
+	
 	public Roteiro bloquearRoteiro(Roteiro roteiro)
 			throws BloqueiaRoteiroException, LiberaRoteiroException {
 
@@ -339,7 +343,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 		roteiro.setBloqueado(false);
 
 		Roteiro r  = roteiro;
-/*
+
 		try {
 			r = getRoteiro(roteiro.getId());
 			r = (Roteiro) SwapperAtributosReflect.swapObject(r, roteiro,
@@ -347,7 +351,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 			DAOFactory.DEFAULT.buildRoteiroDAO().update(r);
 		} catch (EasyCorrectionException e) {
 			throw new BloqueiaRoteiroException("Roteiro inexistente!");
-		}*/
+		}
 
 		return r;
 	}
