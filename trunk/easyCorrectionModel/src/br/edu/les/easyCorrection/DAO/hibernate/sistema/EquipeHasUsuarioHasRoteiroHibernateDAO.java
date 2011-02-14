@@ -59,6 +59,15 @@ public class EquipeHasUsuarioHasRoteiroHibernateDAO extends
 		return instanciaLista(lista);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<EquipeHasUsuarioHasRoteiro> findByRoteiroECorretor(Integer idRoteiro, Integer idCorretor) {
+		Query q = getSession().createQuery("from EquipeHasUsuarioHasRoteiro where roteiro.id = :idRoteiro and corretor.id = :idCorretor ");
+		q.setParameter("idRoteiro",idRoteiro);
+		q.setCacheable(true);
+		List <EquipeHasUsuarioHasRoteiro> lista = q.list();
+		return instanciaLista(lista);
+	}
+	
 
 	@Override
 	public List<EquipeHasUsuarioHasRoteiro> instanciaLista(List<EquipeHasUsuarioHasRoteiro> lista) {

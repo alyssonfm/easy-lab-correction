@@ -9,6 +9,7 @@ import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
+import br.edu.les.easyCorrection.gerenciadores.GerenciadorAvaliacoes;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorSubmissoes;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
@@ -30,11 +31,13 @@ public class Sistema {
 	private GerenciadorAcesso gerenciadorAcesso;
 	private GerenciadorRoteiros gerenciadorRoteiros;
 	private GerenciadorSubmissoes gerenciadorSubmissoes;
+	private GerenciadorAvaliacoes gerenciadorAvaliacoes;
 
 	public Sistema() {
 		gerenciadorAcesso = new GerenciadorAcesso();
 		gerenciadorRoteiros = new GerenciadorRoteiros();
 		gerenciadorSubmissoes = new GerenciadorSubmissoes();
+		gerenciadorAvaliacoes = new GerenciadorAvaliacoes();
 	}
 
 	public void reinicializaBancoDeDados(String script) {
@@ -211,24 +214,25 @@ public class Sistema {
 	}
 
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
-			throws EdicaoRoteiroException, CriacaoRoteiroException, LiberaRoteiroException, BloqueiaRoteiroException {
+			throws EdicaoRoteiroException, CriacaoRoteiroException,
+			LiberaRoteiroException, BloqueiaRoteiroException {
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 
-//	public Roteiro bloquearRoteiro(Roteiro roteiroTemp)
-//			throws BloqueiaRoteiroException, LiberaRoteiroException {
-//		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp);
-//	}
-//
-//	public Roteiro desbloquearRoteiro(Roteiro roteiroTemp)
-//			throws BloqueiaRoteiroException, LiberaRoteiroException {
-//		return gerenciadorRoteiros.desbloquearRoteiro(roteiroTemp);
-//	}
-//
-//	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
-//			throws LiberaRoteiroException, BloqueiaRoteiroException {
-//		return gerenciadorRoteiros.liberarRoteiro(roteiroTemp);
-//	}
+	// public Roteiro bloquearRoteiro(Roteiro roteiroTemp)
+	// throws BloqueiaRoteiroException, LiberaRoteiroException {
+	// return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp);
+	// }
+	//
+	// public Roteiro desbloquearRoteiro(Roteiro roteiroTemp)
+	// throws BloqueiaRoteiroException, LiberaRoteiroException {
+	// return gerenciadorRoteiros.desbloquearRoteiro(roteiroTemp);
+	// }
+	//
+	// public Roteiro liberarRoteiro(Roteiro roteiroTemp)
+	// throws LiberaRoteiroException, BloqueiaRoteiroException {
+	// return gerenciadorRoteiros.liberarRoteiro(roteiroTemp);
+	// }
 
 	public void excluirRoteiro(Roteiro roteiro) throws ExclusaoRoteiroException {
 		gerenciadorRoteiros.excluirRoteiro(roteiro);
@@ -330,6 +334,21 @@ public class Sistema {
 
 	public String getNomeArquivoTestes(Roteiro roteiro) {
 		return gerenciadorSubmissoes.getNomeArquivoTestes(roteiro);
+	}
+
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroDoCorretor(
+			Integer idRoteiro, Integer idCorretor) {
+		return gerenciadorAvaliacoes
+				.getEquipeHasUsuarioHasRoteiroPorRoteiroDoCorretor(idRoteiro,
+						idCorretor);
+	}
+
+	public List<Roteiro> getRoteirosFechados() {
+		return gerenciadorAvaliacoes.getRoteirosFechados();
+	}
+
+	public List<Usuario> getCorretores() {
+		return gerenciadorAvaliacoes.getCorretores();
 	}
 
 }

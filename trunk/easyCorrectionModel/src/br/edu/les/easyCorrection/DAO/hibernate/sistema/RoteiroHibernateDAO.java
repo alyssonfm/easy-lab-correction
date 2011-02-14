@@ -14,58 +14,79 @@ import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
 /**
- * <p>Hibernate DAO layer for Agendas</p>
- * <p>Generated at Fri Jan 30 09:30:05 GMT-03:00 2009</p>
- *
+ * <p>
+ * Hibernate DAO layer for Agendas
+ * </p>
+ * <p>
+ * Generated at Fri Jan 30 09:30:05 GMT-03:00 2009
+ * </p>
+ * 
  * @author Salto-db Generator v1.0.16 / Pojos + Hibernate mapping + Generic DAO
  * @see http://www.hibernate.org/328.html
  */
-public class RoteiroHibernateDAO extends
-		AbstractHibernateDAO<Roteiro, Integer>  {
+public class RoteiroHibernateDAO extends AbstractHibernateDAO<Roteiro, Integer> {
 
 	public RoteiroHibernateDAO(Session s) {
 		super(s);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Roteiro> findByRoteiroLiberado(Date dataAtual) {
-		Query q = getSession().createQuery("from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual and bloqueado = 0");
-		q.setParameter("dataAtual",dataAtual);
+		Query q = getSession()
+				.createQuery(
+						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual and bloqueado = 0");
+		q.setParameter("dataAtual", dataAtual);
 		q.setCacheable(true);
-		List <Roteiro> lista = q.list();
+		List<Roteiro> lista = q.list();
 		return instanciaLista(lista);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Roteiro> findByRoteiroLiberado(Date dataAtual, Integer idRoteiro) {
-		Query q = getSession().createQuery("from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual and bloqueado = 0 and id = :idRoteiro");
-		q.setParameter("dataAtual",dataAtual);
-		q.setParameter("idRoteiro",idRoteiro);
+		Query q = getSession()
+				.createQuery(
+						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual and bloqueado = 0 and id = :idRoteiro");
+		q.setParameter("dataAtual", dataAtual);
+		q.setParameter("idRoteiro", idRoteiro);
 		q.setCacheable(true);
-		List <Roteiro> lista = q.list();
+		List<Roteiro> lista = q.list();
 		return instanciaLista(lista);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	/**
+	 * Retorna os roteiros que estao fechados, ou seja, a data atual deve ser pelo menos 1 dia apos a data de entrega e o roteiro jah deve estar bloqueado
+	 */
+	public List<Roteiro> findByRoteiroFechado(Date dataAtual) {
+		Query q = getSession()
+				.createQuery(
+						"from Roteiro where dataFinalEntrega < :dataAtual and bloqueado = 1");
+		q.setParameter("dataAtual", dataAtual);
+		q.setCacheable(true);
+		List<Roteiro> lista = q.list();
+		return instanciaLista(lista);
+	}
+
 	@Override
 	public List<Roteiro> instanciaLista(List<Roteiro> lista) {
 		try {
 			for (Roteiro r : lista) {
 				r = instanciaRoteiro(r);
-			}	
+			}
 		} catch (CampoVazioException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
-		}
-		finally{
+		} finally {
 			HibernateUtil.closeSession();
 		}
 		return lista;
 	}
-	
-	public static Roteiro instanciaRoteiro(Roteiro r) throws CampoVazioException{
+
+	public static Roteiro instanciaRoteiro(Roteiro r)
+			throws CampoVazioException {
 		r.setPeriodo(PeriodoHibernateDAO.instanciaPeriodo(r.getPeriodo()));
 		r = MyPersistenceLayer.deproxy(r, Roteiro.class);
-		
+
 		return r;
 	}
 
