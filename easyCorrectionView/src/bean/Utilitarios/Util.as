@@ -87,7 +87,7 @@ package bean.Utilitarios {
 			arr = data.split("/");
 			datStr = arr[2]+"/"+arr[1]+"/"+arr[0];
 			dat = new Date(Date.parse(datStr));
-			dat.setHours(12,0,0,0);
+			dat.setHours(0,0,0,0);
 			return  dat;
 		}
 		

@@ -48,7 +48,7 @@
 				
 				private var periodo:Periodo = new Periodo();
 				private var roteiro:Roteiro = new Roteiro();
-				private var bloqueado:Boolean = false;
+//				private var bloqueado:Boolean = false;
 				private var estado:*;
 				private var fezUpload: Boolean = false;
 				private var ehCadastro: Boolean = false;
@@ -107,11 +107,11 @@
 					roteiro = new Roteiro();
 					roteiro = CastDeEntidades.castRoteiro(estado);
 					inputDescricao.text = roteiro.descricao;
-					if(roteiro.bloqueado){
-						botaoBloquear.label = "Desbloquear";
-					}else{
-						botaoBloquear.label = "Bloquear";
-					}
+//					if(roteiro.bloqueado){
+//						botaoBloquear.label = "Desbloquear";
+//					}else{
+//						botaoBloquear.label = "Bloquear";
+//					}
 					dfDataDiscussao.selectedDate = dfDataDiscussao as Date;
 					dfDataDiscussao.text = Util.formataData(roteiro.dataFinalDiscussao);
 					dfDataMaxima.selectedDate = roteiro.dataFinalEntrega as Date;
@@ -195,7 +195,7 @@
 				}
 				
 				private function preencheRoteiro():void{
-					roteiro.bloqueado = bloqueado;
+//					roteiro.bloqueado = bloqueado;
 					roteiro.dataFinalDiscussao= Util.formataDataStringEmDate(dfDataDiscussao.text);
 					roteiro.dataFinalEntrega = Util.formataDataStringEmDate(dfDataMaxima.text);
 					roteiro.dataLiberacao = Util.formataDataStringEmDate(dfDataLiberacao.text);
@@ -252,16 +252,16 @@
 					}
 				}
 				
-				private function bloqueiaRoteiro():void{
-					if(botaoBloquear.label == "Bloquear"){
-						bloqueado = true;
-						botaoBloquear.label = "Desbloquear";
-					}else if(botaoBloquear.label == "Desbloquear"){
-						bloqueado = false;
-						botaoBloquear.label = "Bloquear";
-						
-					}
-				}
+//				private function bloqueiaRoteiro():void{
+//					if(botaoBloquear.label == "Bloquear"){
+//						bloqueado = true;
+//						botaoBloquear.label = "Desbloquear";
+//					}else if(botaoBloquear.label == "Desbloquear"){
+//						bloqueado = false;
+//						botaoBloquear.label = "Bloquear";
+//						
+//					}
+//				}
 				
 				private function atualizaDatasDefaut():void{
 					var dataAux: String = dfDataLiberacao.text;
@@ -307,7 +307,6 @@
 		<mx:TextInput x="247" y="251" id="inputMaximoEquipe" width="129" restrict="[0-9]" maxChars="2" text="1"/>
 		<mx:TextInput x="641" y="251" id="inputNumeroMaxEnvios" width="129" restrict="[0-9]" maxChars="2" text="3"/>
 		<extra:DecimalInput x="247" y="281"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalidade" width="129" text="0.5"/>
-		<mx:Button x="394" y="510" label="Bloquear" width="183.9" height="28" id="botaoBloquear" click="bloqueiaRoteiro()"/>
 		<extra:DecimalInput x="285" y="328"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPorcentagem" width="91" text="100"/>
 		<mx:TextInput x="641" y="330" id="inputTempoLimite" width="95" restrict="[0-9]" maxChars="2" text="10"/>
 		<mx:Label text="Máximo de integrantes por equipe:" fontWeight="bold"
@@ -334,8 +333,8 @@
 		<mx:Label x="10" y="406" width="760" id="caminhoTestes" textAlign="center"/>
 		<mx:LinkButton x="273.05" y="438" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="anexarInterface" click="escolheArquivoInterface()"/>
 		<mx:Label x="10" y="470" width="760" id="caminhoInterface" textAlign="center"/>
-		<mx:Button x="202.1" y="510" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="botaoAtualizarRoteiro" click="editarRoteiro()"/>
-		<mx:Button x="202.1" y="510" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoCadastrarRoteiro" click="cadastrarRoteiro()"/>
+		<mx:Button x="298.05" y="510" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="botaoAtualizarRoteiro" click="editarRoteiro()"/>
+		<mx:Button x="298.05" y="510" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoCadastrarRoteiro" click="cadastrarRoteiro()"/>
 		
 		
 		
