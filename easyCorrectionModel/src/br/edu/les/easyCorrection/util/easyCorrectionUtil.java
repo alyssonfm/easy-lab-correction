@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import br.edu.les.easyCorrection.exceptions.AtributoNaoExisteException;
+import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 
 public class easyCorrectionUtil {
 
@@ -70,7 +71,7 @@ public class easyCorrectionUtil {
 //	}
 
 	/**
-	 * Recupera a data Atual
+	 * Recupera a data Atual, mas com o tempo zerado (as zero horas de hoje) 
 	 * 
 	 * @return
 	 */
@@ -135,4 +136,49 @@ public class easyCorrectionUtil {
 				.replaceFirst(primeiraLetra, primeiraLetra.toUpperCase());
 	}
 
+	/*
+	 * Computacao dos estados de um Roteiro 
+	 */
+	public static final int ESTADO_INEXISTENTE = -1;
+
+	/*
+	 * Estado prévio à criacao do roteiro
+	 */
+	public static final int ROTEIRO_EM_CRIACAO = 0;
+	/*
+	 * Estado posterior a criacao do roteiro, mas anterior a data de liberacao
+	 * deste
+	 */
+	public static final int ROTEIRO_JAH_CRIADO = 1;
+	/*
+	 * Estado posterior a data de liberacao do roteiro, mas anterior a data de
+	 * fechamento (entrega) deste
+	 */
+	public static final int ROTEIRO_LIBERADO = 2;
+	/*
+	 * Estado posterior a data de entrega do roteiro
+	 */
+	public static final int ROTEIRO_FECHADO = 3;
+
+	public static int computaEstadoRoteiro(Roteiro roteiroTemp) {
+
+		// Tempo nesse instante
+		Date tempoAtualExato = Calendar.getInstance().getTime();
+
+		// A data do roteiro eh setada da seguinte forma: dia XX as 12h, ops...
+
+		if (roteiroTemp.getDataLiberacao() == null || roteiroTemp.getId() == 0) {
+			return ROTEIRO_EM_CRIACAO;
+		} else if (tempoAtualExato.before(roteiroTemp.getDataLiberacao())) {
+			return ROTEIRO_JAH_CRIADO;
+		} else if (tempoAtualExato.after(roteiroTemp.getDataLiberacao())
+				&& tempoAtualExato.before(roteiroTemp.getDataFinalEntrega())) {
+			return ROTEIRO_LIBERADO;
+		} else if (tempoAtualExato.after(roteiroTemp.getDataFinalEntrega())) {
+			return ROTEIRO_FECHADO;
+		} else {
+			return ESTADO_INEXISTENTE;
+		}
+	}
+	
 }

@@ -211,19 +211,19 @@ public class Sistema {
 	}
 
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
-			throws EdicaoRoteiroException, CriacaoRoteiroException {
+			throws EdicaoRoteiroException, CriacaoRoteiroException, LiberaRoteiroException, BloqueiaRoteiroException {
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 
-	public Roteiro bloquearRoteiro(Roteiro roteiroTemp)
-			throws BloqueiaRoteiroException, LiberaRoteiroException {
-		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp);
-	}
-
-	public Roteiro desbloquearRoteiro(Roteiro roteiroTemp)
-			throws BloqueiaRoteiroException, LiberaRoteiroException {
-		return gerenciadorRoteiros.desbloquearRoteiro(roteiroTemp);
-	}
+//	public Roteiro bloquearRoteiro(Roteiro roteiroTemp)
+//			throws BloqueiaRoteiroException, LiberaRoteiroException {
+//		return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp);
+//	}
+//
+//	public Roteiro desbloquearRoteiro(Roteiro roteiroTemp)
+//			throws BloqueiaRoteiroException, LiberaRoteiroException {
+//		return gerenciadorRoteiros.desbloquearRoteiro(roteiroTemp);
+//	}
 //
 //	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
 //			throws LiberaRoteiroException, BloqueiaRoteiroException {
