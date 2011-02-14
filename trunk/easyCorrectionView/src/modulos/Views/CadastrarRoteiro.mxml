@@ -100,6 +100,7 @@
 					}else{
 						botaoAtualizarRoteiro.visible = false;
 						botaoCadastrarRoteiro.visible = true;
+						estadoAtual.text = "Roteiro BLOQUEADO"
 					}
 				}
 				
@@ -107,11 +108,13 @@
 					roteiro = new Roteiro();
 					roteiro = CastDeEntidades.castRoteiro(estado);
 					inputDescricao.text = roteiro.descricao;
-//					if(roteiro.bloqueado){
-//						botaoBloquear.label = "Desbloquear";
-//					}else{
-//						botaoBloquear.label = "Bloquear";
-//					}
+					if(roteiro.bloqueado){
+						estadoAtual.text = "Roteiro BLOQUEADO"
+//						estadoAtual.color = "#F4381F"
+					}else{
+						estadoAtual.text = "Roteiro LIBERADO"
+//						estadoAtual.color = "#0D890D"						
+					}
 					dfDataDiscussao.selectedDate = dfDataDiscussao as Date;
 					dfDataDiscussao.text = Util.formataData(roteiro.dataFinalDiscussao);
 					dfDataMaxima.selectedDate = roteiro.dataFinalEntrega as Date;
@@ -315,6 +318,8 @@
 			textAlign="left" width="201" x="10" y="283"/>
 		<mx:Label text="Número máximo de envios:" fontWeight="bold"
 			textAlign="left" width="191" x="415" y="253" id="labelAutomatica3"/>
+		<mx:Label text="..." fontWeight="bold"
+			textAlign="left" width="201" x="10" y="518" id="estadoAtual" color="#0D890D"/>
 		<mx:Label text="Time-limit dos teste por método:" fontWeight="bold"
 			textAlign="left" width="224" x="415" y="332" id="labelAutomatica5"/>
 		<mx:Label text="ms" fontWeight="bold"
