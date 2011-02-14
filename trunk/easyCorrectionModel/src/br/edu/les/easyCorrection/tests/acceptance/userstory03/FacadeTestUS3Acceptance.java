@@ -130,18 +130,18 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 //	}
 
 	// EasyAcceptOK
-	public int bloquearRoteiro(int roteiroId) throws Throwable {
-		Roteiro roteiroTemp = facadeSistema.getRoteiro(roteiroId);
-		Roteiro rotBloqueado = facadeSistema.bloquearRoteiro(roteiroTemp);
-		return rotBloqueado.getId();
-	}
+//	public int bloquearRoteiro(int roteiroId) throws Throwable {
+//		Roteiro roteiroTemp = facadeSistema.getRoteiro(roteiroId);
+//		Roteiro rotBloqueado = facadeSistema.bloquearRoteiro(roteiroTemp);
+//		return rotBloqueado.getId();
+//	}
 
 	// EasyAcceptOK
-	public int desbloquearRoteiro(int roteiroId) throws Throwable {
-		Roteiro roteiroTemp = facadeSistema.getRoteiro(roteiroId);
-		Roteiro rotDesbloqueado = facadeSistema.desbloquearRoteiro(roteiroTemp);
-		return rotDesbloqueado.getId();
-	}
+//	public int desbloquearRoteiro(int roteiroId) throws Throwable {
+//		Roteiro roteiroTemp = facadeSistema.getRoteiro(roteiroId);
+//		Roteiro rotDesbloqueado = facadeSistema.desbloquearRoteiro(roteiroTemp);
+//		return rotDesbloqueado.getId();
+//	}
 
 	// EasyAcceptOK
 	public void excluirRoteiro(int idRoteiro) throws Throwable {

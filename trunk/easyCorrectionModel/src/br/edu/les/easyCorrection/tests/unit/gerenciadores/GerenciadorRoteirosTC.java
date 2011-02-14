@@ -122,54 +122,54 @@ public class GerenciadorRoteirosTC {
 
 		// Bloquear
 		
-		try {
-			gr.bloquearRoteiro(roteiroNULL);
-		} catch (BloqueiaRoteiroException e) {
-			Assert.assertTrue("O bloqueio não deve ser realizado", true);
-		} catch (LiberaRoteiroException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		try {
-			Assert
-					.assertTrue(gr.bloquearRoteiro(roteiroMinimo).getId() > 0);
-			Assert.assertTrue("O bloqueio deve ser realizado", true);
-		} catch (BloqueiaRoteiroException e) {
-			Assert.assertFalse("O bloqueio deve ser realizado", true);
-		} catch (LiberaRoteiroException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		Assert.assertTrue(roteiroMinimo.isBloqueado());
-
-		try {
-			Assert
-					.assertTrue(gr.desbloquearRoteiro(roteiroMinimo)
-							.getId() > 0);
-			Assert.assertTrue("O desbloqueio deve ser realizado", true);
-		} catch (BloqueiaRoteiroException e) {
-			Assert.assertFalse("O desbloqueio deve ser realizado", true);
-		} catch (LiberaRoteiroException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		Assert.assertFalse(roteiroMinimo.isBloqueado());
-
-		try {
-			Assert
-					.assertTrue(gr.desbloquearRoteiro(roteiroMinimo)
-							.getId() > 0);
-		} catch (BloqueiaRoteiroException e) {
-			Assert.assertTrue("O desbloqueio não deve ser realizado", true);
-			Assert.assertEquals("O Roteiro já está desbloqueado!", e
-					.getMessage());
-		} catch (LiberaRoteiroException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			gr.bloquearRoteiro(roteiroNULL);
+//		} catch (BloqueiaRoteiroException e) {
+//			Assert.assertTrue("O bloqueio não deve ser realizado", true);
+//		} catch (LiberaRoteiroException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		try {
+//			Assert
+//					.assertTrue(gr.bloquearRoteiro(roteiroMinimo).getId() > 0);
+//			Assert.assertTrue("O bloqueio deve ser realizado", true);
+//		} catch (BloqueiaRoteiroException e) {
+//			Assert.assertFalse("O bloqueio deve ser realizado", true);
+//		} catch (LiberaRoteiroException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		Assert.assertTrue(roteiroMinimo.isBloqueado());
+//
+//		try {
+//			Assert
+//					.assertTrue(gr.desbloquearRoteiro(roteiroMinimo)
+//							.getId() > 0);
+//			Assert.assertTrue("O desbloqueio deve ser realizado", true);
+//		} catch (BloqueiaRoteiroException e) {
+//			Assert.assertFalse("O desbloqueio deve ser realizado", true);
+//		} catch (LiberaRoteiroException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		Assert.assertFalse(roteiroMinimo.isBloqueado());
+//
+//		try {
+//			Assert
+//					.assertTrue(gr.desbloquearRoteiro(roteiroMinimo)
+//							.getId() > 0);
+//		} catch (BloqueiaRoteiroException e) {
+//			Assert.assertTrue("O desbloqueio não deve ser realizado", true);
+//			Assert.assertEquals("O Roteiro já está desbloqueado!", e
+//					.getMessage());
+//		} catch (LiberaRoteiroException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		// Remover
 		

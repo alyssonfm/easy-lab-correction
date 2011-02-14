@@ -421,23 +421,23 @@ public class Facade {
 		}
 	}
 
-	public Roteiro bloquearRoteiro(Roteiro roteiro) throws Throwable {
-		try {
-			return sistema.bloquearRoteiro(roteiro);
-		} catch (Throwable e) {
-			log.error("bloquearRoteiro()", e);
-			throw e;
-		}
-	}
-	
-	public Roteiro desbloquearRoteiro(Roteiro roteiro) throws Throwable {
-		try {
-			return sistema.desbloquearRoteiro(roteiro);
-		} catch (Throwable e) {
-			log.error("bloquearRoteiro()", e);
-			throw e;
-		}
-	}
+//	public Roteiro bloquearRoteiro(Roteiro roteiro) throws Throwable {
+//		try {
+//			return sistema.bloquearRoteiro(roteiro);
+//		} catch (Throwable e) {
+//			log.error("bloquearRoteiro()", e);
+//			throw e;
+//		}
+//	}
+//	
+//	public Roteiro desbloquearRoteiro(Roteiro roteiro) throws Throwable {
+//		try {
+//			return sistema.desbloquearRoteiro(roteiro);
+//		} catch (Throwable e) {
+//			log.error("bloquearRoteiro()", e);
+//			throw e;
+//		}
+//	}
 	
 //	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
 //			throws LiberaRoteiroException, BloqueiaRoteiroException {
