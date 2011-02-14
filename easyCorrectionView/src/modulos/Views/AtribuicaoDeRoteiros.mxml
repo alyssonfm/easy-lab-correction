@@ -11,6 +11,9 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.Utilitarios.CastDeEntidades;
+				import bean.roteiros.Roteiro;
+				import mx.effects.Rotate;
 				import mx.collections.ArrayCollection;
 				import mx.utils.ArrayUtil;
 				import eventos.UsuarioEvent;
@@ -28,6 +31,13 @@
 				//import eventos.FechaPopupEvent;
 				import mx.rpc.events.ResultEvent;
 				import mx.rpc.events.FaultEvent;
+	            
+	            
+	            private var listaEURPorRoteiro:ArrayCollection = new ArrayCollection();
+	            private var listaEURPorRoteiroECorretor:ArrayCollection = new ArrayCollection();
+	            
+	            private var roteiro:Roteiro = new Roteiro();
+	            private var corretor:Usuario = new Usuario();
 	            
 	            private function falha(event:FaultEvent):void {
 					var mensagem:String;
@@ -62,50 +72,96 @@
 					
 					facade.channelSet = ControladorDeModulos.criaCanal();
 					var estado: String = String(ControladorDeModulos.getParam());
-					var monitores: ArrayCollection = new ArrayCollection();
-					monitores.addItem("Augusto Macedo");
-					monitores.addItem("Alysson Filgueira")
-					monitores.addItem("Demetrio Mestre");
-					var roteiros: ArrayCollection = new ArrayCollection();
-					roteiros.addItem("Roteiro 1");
-					roteiros.addItem("Roteiro 2");
-					roteiros.addItem("Roteiro 3");
-					roteiros.addItem("Roteiro 4");
+					
+					getRoteirosFechados();
+					getCorretores();
+
 					var grupos: ArrayCollection = new ArrayCollection();
 					grupos.addItem("Grupo A");
 					grupos.addItem("Grupo B");
 					grupos.addItem("Grupo C");
 					grupos.addItem("Grupo D");
-					comboMonitores.dataProvider = monitores;
-					comboRoteiros.dataProvider = roteiros;
-					listaGrupos.dataProvider = grupos;
-					listaGruposSelecionados.dataProvider = new ArrayCollection();
+
+					listaEquipesPorRoteiro.dataProvider = grupos;
+					listaEquipesPorRoteiroDoCorretor.dataProvider = new ArrayCollection();
 				}
 				
-				private function chamaTelaCadastraRoteiro():void{
-					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
+				public function getRoteirosFechados():void{
+					facade.getOperation("getRoteirosFechados").send();
 				}
 				
-				private function salvarAgendamento():void{
-					dispatchEvent(new FechaPopupEvent(this));
+				public function getRoteirosFechados_result(event:ResultEvent):void{
+					comboRoteiros.dataProvider = event.result;
+					comboRoteiros.selectedIndex = -1;
 				}
+				
+				public function getCorretores():void{
+					facade.getOperation("getCorretores").send();
+				}
+				
+				public function getCorretores_result(event:ResultEvent):void{
+					comboCorretores.dataProvider = event.result;
+					comboCorretores.selectedIndex = -1;
+				}
+				
+				
+				//Change routines
+				
+				private function listaEquipesSemCorretor():void{
+					getListaEquipesSemCorretor();
+				}
+				
+				public function getListaEquipesSemCorretor():void{
+					roteiro = new Roteiro();
+					roteiro = CastDeEntidades.castRoteiro(comboRoteiros.itemSelecionado);
+					facade.getOperation("getEquipeHasUsuarioHasRoteiroDoRoteiroPorCorretor").send(roteiro.id, 0);
+				}
+				
+				public function getListaEquipesSemCorretor_result(event:ResultEvent):void{
+					listaEquipesPorRoteiro.dataProvider = event.result;
+				}
+				
+				private function listaEquipesDoCorretor():void{
+					getListaEquipesPorRoteiroDoCorretor();
+				}
+				
+				public function getListaEquipesPorRoteiroDoCorretor():void{
+					corretor = new Usuario();
+					roteiro = new Roteiro();
+					corretor = CastDeEntidades.castUsuario(comboCorretores.itemSelecionado);
+					roteiro = CastDeEntidades.castRoteiro(comboRoteiros.itemSelecionado);
+					facade.getOperation("getEquipeHasUsuarioHasRoteiroDoRoteiroPorCorretor").send(roteiro.id, corretor.idUsuario);
+				}
+				
+				public function getListaEquipesPorRoteiroDoCorretor_result(event:ResultEvent):void{
+					listaEquipesPorRoteiroDoCorretor.dataProvider = event.result;
+				}
+				
+				
+//				private function chamaTelaCadastraRoteiro():void{
+//					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
+//				}
+				
+//				private function salvarAgendamento():void{
+//					dispatchEvent(new FechaPopupEvent(this));
+//				}
 				
 				private function adicionaGrupo():void{
 					try{
-						listaGruposSelecionados.dataProvider.addItem(listaGrupos.dataProvider.removeItemAt(listaGrupos.selectedIndex));
+						listaEquipesPorRoteiroDoCorretor.dataProvider.addItem(listaEquipesPorRoteiro.dataProvider.removeItemAt(listaEquipesPorRoteiro.selectedIndex));
 					}
 					catch(E: Error){}
 				}
 				
 				private function removeGrupo():void{
 					try{
-						listaGrupos.dataProvider.addItem(listaGruposSelecionados.dataProvider.removeItemAt(listaGruposSelecionados.selectedIndex));
+						listaEquipesPorRoteiro.dataProvider.addItem(listaEquipesPorRoteiroDoCorretor.dataProvider.removeItemAt(listaEquipesPorRoteiroDoCorretor.selectedIndex));
 					}
 					catch(E: Error){}
 				}
 				
 				private function limpaListaSelecionados():void{
-					listaGruposSelecionados.dataProvider = new ArrayCollection();
+					listaEquipesPorRoteiroDoCorretor.dataProvider = new ArrayCollection();
 				}
 				
 			]]>
@@ -120,13 +176,13 @@
 			textAlign="left" width="64" x="10" y="22" id="labelTitulo0"/>
 		<mx:Label text="Equipes:" fontWeight="bold"
 			textAlign="left" width="63" x="10" y="72" id="labelTitulo1"/>
-		<comp:ComboBoxAC labelField="nome" x="476" y="21" width="294" change="limpaListaSelecionados()" id="comboMonitores"/>
-		<comp:ComboBoxAC labelField="nome" x="73" y="21" width="304" id="comboRoteiros"/>
+		<comp:ComboBoxAC labelField="nome" x="476" y="21" width="294" change="listaEquipesDoCorretor()" id="comboCorretores"/>
+		<comp:ComboBoxAC labelField="nome" x="73" y="21" width="304" change="listaEquipesSemCorretor()" id="comboRoteiros"/>
 		<mx:HRule x="10" y="61" width="760" height="3"/>
-		<mx:List id="listaGrupos" x="10" y="100" width="352" height="364"/>
+		<mx:List id="listaEquipesPorRoteiro" x="10" y="100" width="352" height="364"/>
 		<mx:Label text="Equipes Selecionadas:" fontWeight="bold"
 			textAlign="left" width="155" x="418" y="72" id="labelTitulo2"/>
-		<mx:List id="listaGruposSelecionados" x="418" y="100" width="352" height="364"></mx:List>
+		<mx:List id="listaEquipesPorRoteiroDoCorretor" x="418" y="100" width="352" height="364"></mx:List>
 		<mx:Button x="370" y="236" width="40" click="adicionaGrupo()" height="40" icon="@Embed(source='../../image/right.png')" fontStyle="normal" fontWeight="bold" fillAlphas="[0.0, 0.0, 0.0, 0.0]" fillColors="[#FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF]" borderColor="#FFFFFF" cornerRadius="20" themeColor="#37612B" id="button2"/>
 		<mx:Button x="370" y="284" width="40" click="removeGrupo()" height="40" icon="@Embed(source='../../image/left.png')" fontStyle="normal" fontWeight="bold" fillAlphas="[0.0, 0.0, 0.0, 0.0]" fillColors="[#FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF]" borderColor="#FFFFFF" cornerRadius="20" themeColor="#37612B" id="button1"/>
 		<mx:Label text="Total de Equipes:" fontWeight="bold"

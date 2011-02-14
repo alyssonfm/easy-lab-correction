@@ -31,11 +31,11 @@ public class Facade {
 		sistema = new Sistema();
 
 	}
-	
-	public void reinicializaBancoDeDados(){
+
+	public void reinicializaBancoDeDados() {
 		sistema.reinicializaBancoDeDados("backupEasyCorrection");
 	}
-	
+
 	/*******************************************************************
 	 * Controle de Acesso
 	 * **********************************************************************
@@ -251,8 +251,9 @@ public class Facade {
 			throw e;
 		}
 	}
-	
-	public List<GrupoUsuario> listarGrupoUsuariosPorGrupo(String nomeGrupo) throws Throwable {
+
+	public List<GrupoUsuario> listarGrupoUsuariosPorGrupo(String nomeGrupo)
+			throws Throwable {
 		try {
 			return sistema.listarGrupoUsuariosPorGrupo(nomeGrupo);
 		} catch (Throwable e) {
@@ -402,7 +403,7 @@ public class Facade {
 	 * Facade Roteiros
 	 * **********************************************************************
 	 */
-	
+
 	public Roteiro cadastrarRoteiro(Roteiro roteiro) throws Throwable {
 		try {
 			return sistema.cadastrarRoteiro(roteiro);
@@ -421,28 +422,28 @@ public class Facade {
 		}
 	}
 
-//	public Roteiro bloquearRoteiro(Roteiro roteiro) throws Throwable {
-//		try {
-//			return sistema.bloquearRoteiro(roteiro);
-//		} catch (Throwable e) {
-//			log.error("bloquearRoteiro()", e);
-//			throw e;
-//		}
-//	}
-//	
-//	public Roteiro desbloquearRoteiro(Roteiro roteiro) throws Throwable {
-//		try {
-//			return sistema.desbloquearRoteiro(roteiro);
-//		} catch (Throwable e) {
-//			log.error("bloquearRoteiro()", e);
-//			throw e;
-//		}
-//	}
-	
-//	public Roteiro liberarRoteiro(Roteiro roteiroTemp)
-//			throws LiberaRoteiroException, BloqueiaRoteiroException {
-//		return sistema.liberarRoteiro(roteiroTemp);
-//	}
+	// public Roteiro bloquearRoteiro(Roteiro roteiro) throws Throwable {
+	// try {
+	// return sistema.bloquearRoteiro(roteiro);
+	// } catch (Throwable e) {
+	// log.error("bloquearRoteiro()", e);
+	// throw e;
+	// }
+	// }
+	//	
+	// public Roteiro desbloquearRoteiro(Roteiro roteiro) throws Throwable {
+	// try {
+	// return sistema.desbloquearRoteiro(roteiro);
+	// } catch (Throwable e) {
+	// log.error("bloquearRoteiro()", e);
+	// throw e;
+	// }
+	// }
+
+	// public Roteiro liberarRoteiro(Roteiro roteiroTemp)
+	// throws LiberaRoteiroException, BloqueiaRoteiroException {
+	// return sistema.liberarRoteiro(roteiroTemp);
+	// }
 
 	public Roteiro getRoteiro(int idRoteiro) throws Throwable {
 		try {
@@ -470,9 +471,9 @@ public class Facade {
 			throw e;
 		}
 	}
-	
-	public List<Roteiro> getRoteirosLiberados() throws Throwable{
-		try{
+
+	public List<Roteiro> getRoteirosLiberados() throws Throwable {
+		try {
 			return sistema.getRoteirosLiberados();
 		} catch (Throwable e) {
 			log.error("getRoteirosLiberados()", e);
@@ -484,8 +485,7 @@ public class Facade {
 	 * Facade Submissoes
 	 * **********************************************************************
 	 */
-	
-	
+
 	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
 			Integer idUsuario, Integer idRoteiro) throws Throwable {
 		try {
@@ -496,22 +496,22 @@ public class Facade {
 			throw e;
 		}
 	}
-	
+
 	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
 		return sistema.cadastrarEquipe(e);
 	}
 
-	public Equipe getEquipe(int id) throws Throwable{
-		try{
+	public Equipe getEquipe(int id) throws Throwable {
+		try {
 			return sistema.getEquipe(id);
 		} catch (Throwable e) {
 			log.error("getEquipe()", e);
 			throw e;
 		}
 	}
-	
-	public Equipe getEquipePorNome(String nomeEquipe) throws Throwable{
-		try{
+
+	public Equipe getEquipePorNome(String nomeEquipe) throws Throwable {
+		try {
 			return sistema.getEquipePorNome(nomeEquipe);
 		} catch (Throwable e) {
 			log.error("getEquipe()", e);
@@ -519,44 +519,48 @@ public class Facade {
 		}
 	}
 
-	public List<Equipe> getEquipes() throws Throwable{
-		try{
+	public List<Equipe> getEquipes() throws Throwable {
+		try {
 			return sistema.getEquipes();
 		} catch (Throwable e) {
 			log.error("getEquipes()", e);
 			throw e;
 		}
 	}
-	
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros() throws Throwable{
-		try{
+
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros()
+			throws Throwable {
+		try {
 			return sistema.getEquipeHasUsuarioHasRoteiros();
 		} catch (Throwable e) {
 			log.error("getEquipeHasUsuarioHasRoteiros()", e);
 			throw e;
 		}
 	}
-	
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(Integer idEquipe, Integer idRoteiro) throws Throwable{
-		try{
-			return sistema.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe, idRoteiro);
+
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
+			Integer idEquipe, Integer idRoteiro) throws Throwable {
+		try {
+			return sistema.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
+					idEquipe, idRoteiro);
 		} catch (Throwable e) {
 			log.error("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro()", e);
 			throw e;
 		}
 	}
 
-	public int getEquipeAlocadas(Integer idRoteiro) throws Throwable{
-		try{
+	public int getEquipeAlocadas(Integer idRoteiro) throws Throwable {
+		try {
 			return sistema.getEquipeAlocadas(idRoteiro);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("getEquipeAlocadas()", e);
 			throw e;
 		}
 	}
-	
-	public EquipeHasUsuarioHasRoteiro cadastraEquipeHasUsuarioHasRoteiro(EquipeHasUsuarioHasRoteiro equr) throws Throwable {
-		try{
+
+	public EquipeHasUsuarioHasRoteiro cadastraEquipeHasUsuarioHasRoteiro(
+			EquipeHasUsuarioHasRoteiro equr) throws Throwable {
+		try {
 			return sistema.cadastraEquipeHasUsuarioHasRoteiro(equr);
 		} catch (Throwable e) {
 			log.error("cadastraEquipeHasUsuarioHasRoteiro()", e);
@@ -564,20 +568,21 @@ public class Facade {
 		}
 	}
 
-	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur) throws Throwable{
-		try{
+	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur)
+			throws Throwable {
+		try {
 			return sistema.mudarEquipe(eur);
-		}catch (Throwable e) {
+		} catch (Throwable e) {
 			log.error("verificaSeUsuarioEstaCadastrado()", e);
 			throw e;
 		}
 	}
-	
-	public String getNomeArquivoInterface(Roteiro roteiro){
+
+	public String getNomeArquivoInterface(Roteiro roteiro) {
 		return sistema.getNomeArquivoInterface(roteiro);
 	}
-	
-	public String getNomeArquivoTestes(Roteiro roteiro){
+
+	public String getNomeArquivoTestes(Roteiro roteiro) {
 		return sistema.getNomeArquivoTestes(roteiro);
 	}
 
@@ -589,8 +594,8 @@ public class Facade {
 			throw e;
 		}
 	}
-	
-	public String rodarTestesAutomaticos(Submissao submissao) throws Throwable{
+
+	public String rodarTestesAutomaticos(Submissao submissao) throws Throwable {
 		try {
 			return sistema.rodarTestesAutomaticos(submissao);
 		} catch (Throwable e) {
@@ -599,7 +604,7 @@ public class Facade {
 		}
 	}
 
-	public Submissao getSubmissao(int submissaoId){
+	public Submissao getSubmissao(int submissaoId) {
 		return sistema.getSubmissao(submissaoId);
 	}
 
@@ -607,12 +612,54 @@ public class Facade {
 		sistema.excluirSubmissao(sub);
 	}
 
-	public Integer getNumeroSubmissoes(Submissao submissao){
+	public Integer getNumeroSubmissoes(Submissao submissao) {
 		return sistema.numeroSubmissoes(submissao);
 	}
-	
-	public Integer getNumeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur){
+
+	public Integer getNumeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur) {
 		return sistema.numeroSubmissoesPorEUR(eur);
 	}
-	
+
+	/*******************************************************************
+	 * Facade Avaliacoes
+	 * **********************************************************************
+	 */
+
+	/**
+	 * Retorna todas as equipes
+	 */
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroDoRoteiroPorCorretor(
+			Integer idRoteiro, Integer idCorretor) throws Throwable {
+		try {
+			return sistema.getEquipeHasUsuarioHasRoteiroPorRoteiroDoCorretor(idRoteiro, idCorretor);
+		} catch (Throwable e) {
+			log.error("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()", e);
+			throw e;
+		}
+	}
+
+	public List<Roteiro> getRoteirosFechados() throws Throwable {
+		try {
+			return sistema.getRoteirosFechados();
+		} catch (Throwable e) {
+			log.error("getRoteirosFechados()", e);
+			throw e;
+		}
+	}
+
+	/**
+	 * Retorna os usuarios que sao considerados professores, ou seja, checa se
+	 * no grupoUsuario o id_grupo eh 2 ou 3 (ver script do banco para maiores
+	 * informacoes)
+	 * 
+	 */
+	public List<Usuario> getCorretores() throws Throwable {
+		try {
+			return sistema.getCorretores();
+		} catch (Throwable e) {
+			log.error("getCorretores()", e);
+			throw e;
+		}
+	}
+
 }
