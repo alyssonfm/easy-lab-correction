@@ -4,7 +4,7 @@
 						xmlns:les="modulos.sistema.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="800" height="330" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="fechaJanela()" layout="absolute">
+	width="800" height="450" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="fechaJanela()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -60,10 +60,8 @@
 					facade.channelSet = ControladorDeModulos.criaCanal();
 					var estado: String = String(ControladorDeModulos.getParam());
 					var roteiros: ArrayCollection = new ArrayCollection();
-					roteiros.addItem("Roteiro 1");
-					roteiros.addItem("Roteiro 2");
-					roteiros.addItem("Roteiro 3");
-					roteiros.addItem("Roteiro 4");
+					listarRoteiros();
+					
 					var grupos: ArrayCollection = new ArrayCollection();
 					grupos.addItem("Grupo A");
 					grupos.addItem("Grupo B");
@@ -74,31 +72,53 @@
 					classes.addItem("Lista.java");
 					classes.addItem("gerenciaHeap.java");
 					classes.addItem("HeapSort.java");
-					comboRoteiros.dataProvider = roteiros;
 					listaGrupos.dataProvider = grupos;
+				}
+				
+				private function listarRoteiros():void{
+					facade.getOperation("listarRoteiros").send();
+				}
+				
+				private function listarRoteiros_result(event:ResultEvent):void{
+					comboRoteiros.dataProvider = new ArrayCollection(); 
+					comboRoteiros.dataProvider = event.result;
 				}
 				
 				private function chamaModuloCorrecao():void{
 					ControladorDeModulos.criaModulo("modulos/Views/ModuloCorrecao.swf", this, null);
 				}
 				
+				private function pegaEquipesPorRoteiro():void{
+					facade.getOperation("listarRoteiros").send();
+				}
+				
 			]]>
 		</mx:Script>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
-			
+			<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
 		</mx:RemoteObject>
+		
 		<mx:Label text="Roteiro:" fontWeight="bold"
 			textAlign="left" width="64" x="10" y="22" id="labelRoteiro"/>
-		<mx:Label text="Grupos:" fontWeight="bold"
+		<mx:Label text="Equipes:" fontWeight="bold"
 			textAlign="left" width="72" x="10" y="72" id="labelGrupos"/>
-		<mx:Label text="Integrantes: Augusto Queiros, Alysson Filgueira, Demetrio Mestre" fontWeight="bold"
-			textAlign="left" width="504.05" x="265.95" y="72" id="labelIntegrantes"/>
-		<comp:ComboBoxAC labelField="periodoCota" x="72" y="21" width="698" id="comboRoteiros"/>
+		<mx:Label text="Integrantes: " fontWeight="bold"
+			textAlign="left" width="93.04999" x="265.95" y="72" id="labelIntegrantes" height="20"/>
+		<comp:ComboBoxAC labelField="nome" x="72" y="21" width="698" id="comboRoteiros" change="pegaEquipesPorRoteiro()"/>
 		<mx:HRule x="10" y="62" width="760" height="2"/>
-		<mx:List id="listaGrupos" x="10" y="100" width="226" height="176"/>
-		<mx:VRule x="244" y="72" height="204" width="13.95"/>
-		<mx:Button x="352" y="131" label="Correção" click="chamaModuloCorrecao()" width="324" height="78" fontSize="26" fontStyle="italic" fontWeight="normal"/>
+		<mx:List id="listaGrupos" x="10" y="94" width="226" height="302"/>
+		<mx:VRule x="244" y="62" height="334" width="13.95"/>
+		<mx:Button x="399" y="175" label="Baixar Implementação" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
+		<mx:Button x="399" y="273" label="Salvar Nota" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
+		<mx:TextArea x="265" y="94" width="505" height="73"/>
+		<mx:Label text="Nota:" fontWeight="bold"
+			textAlign="left" width="58" x="465.9" y="241" id="labelNota" fontSize="16"/>
+		<mx:Label text="Peso:" fontWeight="bold"
+			textAlign="left" width="49" x="674" y="243" id="labelPeso"/>
+		<mx:Label fontWeight="bold"
+			textAlign="left" width="49" x="721" y="240" id="inputPeso" height="23"/>
+		<mx:TextInput x="524.95" y="239" width="55.95" id="inputNota" fontSize="16"/>
 		
 		
 </les:ModuleTitleWindow>
