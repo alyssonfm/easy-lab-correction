@@ -63,6 +63,7 @@ public class EquipeHasUsuarioHasRoteiroHibernateDAO extends
 	public List<EquipeHasUsuarioHasRoteiro> findByRoteiroECorretor(Integer idRoteiro, Integer idCorretor) {
 		Query q = getSession().createQuery("from EquipeHasUsuarioHasRoteiro where roteiro.id = :idRoteiro and corretor.id = :idCorretor ");
 		q.setParameter("idRoteiro",idRoteiro);
+		q.setParameter("idCorretor",idRoteiro);
 		q.setCacheable(true);
 		List <EquipeHasUsuarioHasRoteiro> lista = q.list();
 		return instanciaLista(lista);
