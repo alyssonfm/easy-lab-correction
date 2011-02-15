@@ -8,6 +8,7 @@ public class EquipeHasUsuarioHasRoteiro {
 	private Equipe equipe;
 	private Roteiro roteiro;
 	private Usuario usuario;
+	private Usuario corretor;
 	
 	public EquipeHasUsuarioHasRoteiro() {
 		super();
@@ -38,6 +39,13 @@ public class EquipeHasUsuarioHasRoteiro {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+	public Usuario getCorretor() {
+		return corretor;
+	}
+	public void setCorretor(Usuario corretor) {
+		this.corretor = corretor;
+	}
+	
 
 	@Override
 	public int hashCode() {
@@ -47,6 +55,7 @@ public class EquipeHasUsuarioHasRoteiro {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((roteiro == null) ? 0 : roteiro.hashCode());
 		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
+		result = prime * result + ((corretor == null) ? 0 : corretor.hashCode());
 		return result;
 	}
 
@@ -77,7 +86,10 @@ public class EquipeHasUsuarioHasRoteiro {
 		if (usuario == null) {
 			if (other.usuario != null)
 				return false;
-		} else if (!usuario.equals(other.usuario))
+		} else if (corretor == null) {
+			if (other.corretor != null)
+				return false;
+		}else if (!usuario.equals(other.usuario))
 			return false;
 		return true;
 	}

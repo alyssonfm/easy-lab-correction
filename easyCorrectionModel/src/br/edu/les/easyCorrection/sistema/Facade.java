@@ -1,13 +1,12 @@
 package br.edu.les.easyCorrection.sistema;
 
 import java.util.Date;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import br.edu.les.easyCorrection.exceptions.BloqueiaRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
-import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
@@ -628,10 +627,21 @@ public class Facade {
 	/**
 	 * Retorna todas as equipes
 	 */
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroDoRoteiroPorCorretor(
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiro(
 			Integer idRoteiro, Integer idCorretor) throws Throwable {
 		try {
-			return sistema.getEquipeHasUsuarioHasRoteiroPorRoteiroDoCorretor(idRoteiro, idCorretor);
+			return sistema.getEquipeHasUsuarioHasRoteiroPorRoteiro(idRoteiro);
+		} catch (Throwable e) {
+			log.error("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()", e);
+			throw e;
+		}
+	}
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroComCorretor(
+			Integer idRoteiro, Integer idCorretor) throws Throwable {
+		try {
+			return sistema.getEquipeHasUsuarioHasRoteiroPorRoteiroComCorretor(idRoteiro, idCorretor);
 		} catch (Throwable e) {
 			log.error("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()", e);
 			throw e;

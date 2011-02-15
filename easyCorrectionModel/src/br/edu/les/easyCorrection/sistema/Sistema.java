@@ -2,6 +2,7 @@ package br.edu.les.easyCorrection.sistema;
 
 import java.util.List;
 
+
 import br.edu.les.easyCorrection.exceptions.BloqueiaRoteiroException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
@@ -24,7 +25,6 @@ import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.MsgErros;
-import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class Sistema {
 
@@ -336,7 +336,13 @@ public class Sistema {
 		return gerenciadorSubmissoes.getNomeArquivoTestes(roteiro);
 	}
 
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroDoCorretor(
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiro(
+			Integer idRoteiro) {
+		return gerenciadorAvaliacoes
+				.getEquipeHasUsuarioHasRoteiroPorRoteiro(idRoteiro);
+	}
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroComCorretor(
 			Integer idRoteiro, Integer idCorretor) {
 		return gerenciadorAvaliacoes
 				.getEquipeHasUsuarioHasRoteiroPorRoteiroDoCorretor(idRoteiro,

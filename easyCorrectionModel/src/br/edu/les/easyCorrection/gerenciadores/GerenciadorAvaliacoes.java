@@ -17,6 +17,23 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 		super();
 	}
 
+	/**
+	 * Esse metodo retorna a lista de equipes (por roteiro) que nao tem corretores ainda   
+	 * @param idRoteiro
+	 * @return
+	 */
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiro(
+			Integer idRoteiro) {
+		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
+				.findByRoteiroECorretor(idRoteiro, 0);
+	}
+
+	/**
+	 * Esse metodo retorna a lista de equipes (por roteiro) que jah possuem corretores
+	 * @param idRoteiro
+	 * @param idCorretor
+	 * @return
+	 */
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroDoCorretor(
 			Integer idRoteiro, Integer idCorretor) {
 		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
