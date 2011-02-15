@@ -13,7 +13,7 @@ package bean.roteiros{
 		public var equipe:Equipe;
 		public var roteiro:Roteiro;
 		public var usuario:Usuario;
-		
+		public var corretor:Usuario;
 	}
 }
 
