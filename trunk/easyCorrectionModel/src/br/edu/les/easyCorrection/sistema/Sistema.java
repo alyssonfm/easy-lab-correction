@@ -282,6 +282,15 @@ public class Sistema {
 				.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe,
 						idRoteiro);
 	}
+	
+	public List<Submissao> getSubmissoesPorRoteiroEquipe(Roteiro roteiro, Equipe equipe) {
+		return gerenciadorSubmissoes.getSubmissoesPorRoteiroEquipe(roteiro, equipe);
+	}
+	
+	public Submissao getUltimaSubmissaoPorRoteiroEquipe(Roteiro roteiro, Equipe equipe) {
+		List<Submissao> listaSubmissoes = getSubmissoesPorRoteiroEquipe(roteiro, equipe);
+		return listaSubmissoes.get(listaSubmissoes.size()-1);
+	}
 
 	public Submissao submeteRoteiro(Submissao submissao)
 			throws EasyCorrectionException {
@@ -340,6 +349,12 @@ public class Sistema {
 			Integer idRoteiro) {
 		return gerenciadorAvaliacoes
 				.getEquipeHasUsuarioHasRoteiroPorRoteiro(idRoteiro);
+	}
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe(
+			Integer idRoteiro) {
+		return gerenciadorAvaliacoes
+				.getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe(idRoteiro);
 	}
 	
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroComCorretor(

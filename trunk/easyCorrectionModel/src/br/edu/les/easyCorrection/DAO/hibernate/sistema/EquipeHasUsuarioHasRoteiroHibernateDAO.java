@@ -60,6 +60,15 @@ public class EquipeHasUsuarioHasRoteiroHibernateDAO extends
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<EquipeHasUsuarioHasRoteiro> findByRoteiroGroupByEquipe(Integer idRoteiro) {
+		Query q = getSession().createQuery("from EquipeHasUsuarioHasRoteiro where roteiro.id = :idRoteiro GROUP BY equipe.id");
+		q.setParameter("idRoteiro",idRoteiro);
+		q.setCacheable(true);
+		List <EquipeHasUsuarioHasRoteiro> lista = q.list();
+		return instanciaLista(lista);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<EquipeHasUsuarioHasRoteiro> findByRoteiroECorretor(Integer idRoteiro, Integer idCorretor) {
 		Query q = getSession().createQuery("from EquipeHasUsuarioHasRoteiro where roteiro.id = :idRoteiro and corretor.id = :idCorretor ");
 		q.setParameter("idRoteiro",idRoteiro);

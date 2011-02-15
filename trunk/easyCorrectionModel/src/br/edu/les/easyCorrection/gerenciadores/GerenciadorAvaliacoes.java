@@ -27,6 +27,12 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
 				.findByRoteiroECorretor(idRoteiro, 0);
 	}
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe(
+			Integer idRoteiro) {
+		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
+				.findByRoteiroGroupByEquipe(idRoteiro);
+	}
 
 	/**
 	 * Esse metodo retorna a lista de equipes (por roteiro) que jah possuem corretores
