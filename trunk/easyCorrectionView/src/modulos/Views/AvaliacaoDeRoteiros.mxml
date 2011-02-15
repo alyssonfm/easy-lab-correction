@@ -8,6 +8,10 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.roteiros.Submissao;
+				import bean.roteiros.EquipeHasUsuarioHasRoteiro;
+				import bean.Utilitarios.CastDeEntidades;
+				import bean.roteiros.Roteiro;
 				import mx.collections.ArrayCollection;
 				import mx.utils.ArrayUtil;
 				import eventos.UsuarioEvent;
@@ -25,7 +29,10 @@
 				//import eventos.FechaPopupEvent;
 				import mx.rpc.events.ResultEvent;
 				import mx.rpc.events.FaultEvent;
-	            
+				
+				private var eur:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
+				private var sub:Submissao = new Submissao();
+					            
 	            private function falha(event:FaultEvent):void {
 					var mensagem:String;
 					try{
@@ -61,18 +68,6 @@
 					var estado: String = String(ControladorDeModulos.getParam());
 					var roteiros: ArrayCollection = new ArrayCollection();
 					listarRoteiros();
-					
-					var grupos: ArrayCollection = new ArrayCollection();
-					grupos.addItem("Grupo A");
-					grupos.addItem("Grupo B");
-					grupos.addItem("Grupo C");
-					grupos.addItem("Grupo D");
-					var classes: ArrayCollection = new ArrayCollection();
-					classes.addItem("Heap.java");
-					classes.addItem("Lista.java");
-					classes.addItem("gerenciaHeap.java");
-					classes.addItem("HeapSort.java");
-					listaGrupos.dataProvider = grupos;
 				}
 				
 				private function listarRoteiros():void{
@@ -80,16 +75,49 @@
 				}
 				
 				private function listarRoteiros_result(event:ResultEvent):void{
-					comboRoteiros.dataProvider = new ArrayCollection(); 
+					comboRoteiros.dataProvider = new ArrayCollection();
+					comboRoteiros.selectedIndex = -1;
 					comboRoteiros.dataProvider = event.result;
+					
+				}				
+				
+				private function pegaEquipesPorRoteiro():void{
+					var rot: Roteiro = CastDeEntidades.castRoteiro(comboRoteiros.selectedItem);
+					inputPeso.text = String(100 - rot.porcentagemTestesAutomaticos) + "%";
+					facade.getOperation("getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe").send(rot.id);
+				}
+				
+				private function getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe_result(event:ResultEvent):void{
+					listaEquipes.dataProvider = new ArrayCollection(); 
+					listaEquipes.dataProvider = event.result;
+				}
+				
+				private function selecaoLabelEquipes(item: *): String{
+					return item.equipe.nome;
+				}
+				
+				private function selecionaEquipe():void{
+					eur = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(listaEquipes.selectedItem);
+					facade.getOperation("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro").send(eur.equipe.id, eur.roteiro.id);
+				}
+				
+				private function getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event:ResultEvent):void{
+					listaIntegrantes.dataProvider = new ArrayCollection(); 
+					listaIntegrantes.dataProvider = event.result;
+					facade.getOperation("getUltimaSubmissaoPorRoteiroEquipe").send(eur.roteiro, eur.equipe);
+				}
+				
+				private function getUltimaSubmissaoPorRoteiroEquipe_result(event:ResultEvent):void{
+					sub = CastDeEntidades.castSubmissao(event.result);
+					baixarImplementacao.enabled = true;
 				}
 				
 				private function chamaModuloCorrecao():void{
-					ControladorDeModulos.criaModulo("modulos/Views/ModuloCorrecao.swf", this, null);
+					//ControladorDeModulos.criaModulo("modulos/Views/ModuloCorrecao.swf", this, null);
 				}
 				
-				private function pegaEquipesPorRoteiro():void{
-					facade.getOperation("listarRoteiros").send();
+				private function selecaoLabelIntegrantes(item: *): String{
+					return item.usuario.nome;
 				}
 				
 			]]>
@@ -97,6 +125,9 @@
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
+			<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe" result="getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe_result(event)" fault="falha(event)"/>
+			<mx:method name="getUltimaSubmissaoPorRoteiroEquipe" result="getUltimaSubmissaoPorRoteiroEquipe_result(event)" fault="falha(event)"/>			
 		</mx:RemoteObject>
 		
 		<mx:Label text="Roteiro:" fontWeight="bold"
@@ -108,17 +139,16 @@
 		<comp:ComboBoxAC labelField="nome" x="72" y="21" width="698" id="comboRoteiros" change="pegaEquipesPorRoteiro()"/>
 		<mx:HRule x="10" y="62" width="760" height="2"/>
 		<mx:HRule x="251" y="234" width="518" height="2"/>
-		<mx:List id="listaGrupos" x="10" y="94" width="226" height="302"/>
+		<mx:List id="listaEquipes" x="10" y="94" width="226" height="302" labelFunction="selecaoLabelEquipes" itemClick="selecionaEquipe()"/>
+		<mx:List id="listaIntegrantes" x="265.95" y="94" width="504.05" height="66" labelFunction="selecaoLabelIntegrantes"/>
 		<mx:VRule x="244" y="62" height="334" width="13.95"/>
-		<mx:Button x="398" y="179" label="Baixar Implementação" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
+		<mx:Button x="398" y="179" label="Baixar Implementação" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="baixarImplementacao" enabled="false"/>
 		<mx:Button x="398" y="329" label="Salvar Nota" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
-		<mx:TextArea x="265" y="94" width="505" height="68"/>
 		<mx:Label text="Nota:" fontWeight="bold"
 			textAlign="left" width="58" x="398" y="275" id="labelNota" fontSize="16"/>
 		<mx:Label text="Peso:" fontWeight="bold"
 			textAlign="left" width="49" x="541" y="278" id="labelPeso"/>
-		<mx:Label fontWeight="bold"
-			textAlign="left" width="49" x="588" y="278" id="inputPeso" height="23"/>
+		<mx:Label fontWeight="bold" textAlign="left" width="49" x="588" y="278" id="inputPeso" height="23"/>
 		<mx:TextInput x="457.05" y="273" width="55.95" id="inputNota" fontSize="16"/>
 		
 		
