@@ -14,7 +14,6 @@
   		<many-to-one name="equipe"	class="br.edu.les.easyCorrection.pojo.roteiros.Equipe" column="equipe_id" />
 		<many-to-one name="roteiro"	class="br.edu.les.easyCorrection.pojo.roteiros.Roteiro" column="roteiro_id" />
 		<many-to-one name="usuario"	class="br.edu.les.easyCorrection.pojo.acesso.Usuario" column="usuario_id"/>
-		<many-to-one name="corretor" class="br.edu.les.easyCorrection.pojo.acesso.Usuario" column="corretor_id"/>
 		
 	</class>
 </hibernate-mapping>
