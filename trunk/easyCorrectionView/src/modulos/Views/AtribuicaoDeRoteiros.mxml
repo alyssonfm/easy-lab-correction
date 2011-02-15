@@ -33,8 +33,8 @@
 				import mx.rpc.events.FaultEvent;
 	            
 	            
-	            private var listaEURPorRoteiro:ArrayCollection = new ArrayCollection();
-	            private var listaEURPorRoteiroECorretor:ArrayCollection = new ArrayCollection();
+//	            private var listaEURPorRoteiro:ArrayCollection = new ArrayCollection();
+//	            private var listaEURPorRoteiroECorretor:ArrayCollection = new ArrayCollection();
 	            
 	            private var roteiro:Roteiro = new Roteiro();
 	            private var corretor:Usuario = new Usuario();
@@ -74,7 +74,6 @@
 					var estado: String = String(ControladorDeModulos.getParam());
 					
 					getRoteirosFechados();
-					getCorretores();
 
 					var grupos: ArrayCollection = new ArrayCollection();
 					grupos.addItem("Grupo A");
@@ -93,6 +92,7 @@
 				public function getRoteirosFechados_result(event:ResultEvent):void{
 					comboRoteiros.dataProvider = event.result;
 					comboRoteiros.selectedIndex = -1;
+					getCorretores();
 				}
 				
 				public function getCorretores():void{
@@ -108,24 +108,16 @@
 				//Change routines
 				
 				private function listaEquipesSemCorretor():void{
-					getListaEquipesSemCorretor();
-				}
-				
-				public function getListaEquipesSemCorretor():void{
 					roteiro = new Roteiro();
 					roteiro = CastDeEntidades.castRoteiro(comboRoteiros.itemSelecionado);
 					facade.getOperation("getEquipeHasUsuarioHasRoteiroDoRoteiroPorCorretor").send(roteiro.id, 0);
 				}
-				
-				public function getListaEquipesSemCorretor_result(event:ResultEvent):void{
+								
+				private function listaEquipesSemCorretor_result(event:ResultEvent):void{
 					listaEquipesPorRoteiro.dataProvider = event.result;
 				}
 				
-				private function listaEquipesDoCorretor():void{
-					getListaEquipesPorRoteiroDoCorretor();
-				}
-				
-				public function getListaEquipesPorRoteiroDoCorretor():void{
+				private function listaEquipesComCorretor():void{
 					corretor = new Usuario();
 					roteiro = new Roteiro();
 					corretor = CastDeEntidades.castUsuario(comboCorretores.itemSelecionado);
@@ -133,18 +125,18 @@
 					facade.getOperation("getEquipeHasUsuarioHasRoteiroDoRoteiroPorCorretor").send(roteiro.id, corretor.idUsuario);
 				}
 				
-				public function getListaEquipesPorRoteiroDoCorretor_result(event:ResultEvent):void{
+				public function getListaEquipesComCorretor_result(event:ResultEvent):void{
 					listaEquipesPorRoteiroDoCorretor.dataProvider = event.result;
 				}
 				
 				
-//				private function chamaTelaCadastraRoteiro():void{
-//					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
-//				}
+				private function chamaTelaCadastraRoteiro():void{
+					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
+				}
 				
-//				private function salvarAgendamento():void{
-//					dispatchEvent(new FechaPopupEvent(this));
-//				}
+				private function salvarAgendamento():void{
+					dispatchEvent(new FechaPopupEvent(this));
+				}
 				
 				private function adicionaGrupo():void{
 					try{
@@ -176,7 +168,7 @@
 			textAlign="left" width="64" x="10" y="22" id="labelTitulo0"/>
 		<mx:Label text="Equipes:" fontWeight="bold"
 			textAlign="left" width="63" x="10" y="72" id="labelTitulo1"/>
-		<comp:ComboBoxAC labelField="nome" x="476" y="21" width="294" change="listaEquipesDoCorretor()" id="comboCorretores"/>
+		<comp:ComboBoxAC labelField="nome" x="476" y="21" width="294" change="listaEquipesComCorretor()" id="comboCorretores"/>
 		<comp:ComboBoxAC labelField="nome" x="73" y="21" width="304" change="listaEquipesSemCorretor()" id="comboRoteiros"/>
 		<mx:HRule x="10" y="61" width="760" height="3"/>
 		<mx:List id="listaEquipesPorRoteiro" x="10" y="100" width="352" height="364"/>
