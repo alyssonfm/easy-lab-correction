@@ -139,7 +139,6 @@ package bean.Utilitarios {
 					e.equipe = castEquipe(objeto.equipe);
 					e.roteiro = castRoteiro(objeto.roteiro);
 					e.usuario = castUsuario(objeto.usuario);
-					e.corretor = castUsuario(objeto.corretor);
 					return e;
 				}
 			}
