@@ -107,18 +107,19 @@
 			textAlign="left" width="93.04999" x="265.95" y="72" id="labelIntegrantes" height="20"/>
 		<comp:ComboBoxAC labelField="nome" x="72" y="21" width="698" id="comboRoteiros" change="pegaEquipesPorRoteiro()"/>
 		<mx:HRule x="10" y="62" width="760" height="2"/>
+		<mx:HRule x="251" y="234" width="518" height="2"/>
 		<mx:List id="listaGrupos" x="10" y="94" width="226" height="302"/>
 		<mx:VRule x="244" y="62" height="334" width="13.95"/>
-		<mx:Button x="399" y="175" label="Baixar Implementação" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
-		<mx:Button x="399" y="273" label="Salvar Nota" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
-		<mx:TextArea x="265" y="94" width="505" height="73"/>
+		<mx:Button x="398" y="193" label="Baixar Implementação" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
+		<mx:Button x="398" y="329" label="Salvar Nota" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
+		<mx:TextArea x="265" y="94" width="505" height="91"/>
 		<mx:Label text="Nota:" fontWeight="bold"
-			textAlign="left" width="58" x="465.9" y="241" id="labelNota" fontSize="16"/>
+			textAlign="left" width="58" x="398" y="275" id="labelNota" fontSize="16"/>
 		<mx:Label text="Peso:" fontWeight="bold"
-			textAlign="left" width="49" x="674" y="243" id="labelPeso"/>
+			textAlign="left" width="49" x="541" y="278" id="labelPeso"/>
 		<mx:Label fontWeight="bold"
-			textAlign="left" width="49" x="721" y="240" id="inputPeso" height="23"/>
-		<mx:TextInput x="524.95" y="239" width="55.95" id="inputNota" fontSize="16"/>
+			textAlign="left" width="49" x="588" y="278" id="inputPeso" height="23"/>
+		<mx:TextInput x="457.05" y="273" width="55.95" id="inputNota" fontSize="16"/>
 		
 		
 </les:ModuleTitleWindow>
