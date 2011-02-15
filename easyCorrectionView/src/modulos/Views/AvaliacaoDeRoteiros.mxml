@@ -110,9 +110,9 @@
 		<mx:HRule x="251" y="234" width="518" height="2"/>
 		<mx:List id="listaGrupos" x="10" y="94" width="226" height="302"/>
 		<mx:VRule x="244" y="62" height="334" width="13.95"/>
-		<mx:Button x="398" y="193" label="Baixar Implementação" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
+		<mx:Button x="398" y="179" label="Baixar Implementação" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
 		<mx:Button x="398" y="329" label="Salvar Nota" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
-		<mx:TextArea x="265" y="94" width="505" height="91"/>
+		<mx:TextArea x="265" y="94" width="505" height="68"/>
 		<mx:Label text="Nota:" fontWeight="bold"
 			textAlign="left" width="58" x="398" y="275" id="labelNota" fontSize="16"/>
 		<mx:Label text="Peso:" fontWeight="bold"
