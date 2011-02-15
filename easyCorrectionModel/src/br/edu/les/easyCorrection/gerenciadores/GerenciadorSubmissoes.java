@@ -156,12 +156,16 @@ public class GerenciadorSubmissoes {
 								.getId());
 		return lista.size();
 	}
+	
+	public List<Submissao> getSubmissoesPorRoteiroEquipe(Roteiro rot, Equipe eq) {
+		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO()
+				.findByEquipeERoteiro(eq.getId(),
+						rot.getId());
+		return lista;
+	} 
 
 	public Integer numeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur) {
-		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO()
-				.findByEquipeERoteiro(eur.getEquipe().getId(),
-						eur.getRoteiro().getId());
-		return lista.size();
+		return getSubmissoesPorRoteiroEquipe(eur.getRoteiro(), eur.getEquipe()).size();
 	}
 
 	public Submissao submeteRoteiro(Submissao submissao)

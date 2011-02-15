@@ -618,6 +618,14 @@ public class Facade {
 	public Integer getNumeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur) {
 		return sistema.numeroSubmissoesPorEUR(eur);
 	}
+	
+	public List<Submissao> getSubmissoesPorRoteiroEquipe(Roteiro roteiro, Equipe equipe){
+		return sistema.getSubmissoesPorRoteiroEquipe(roteiro, equipe);
+	}
+	
+	public Submissao getUltimaSubmissaoPorRoteiroEquipe(Roteiro roteiro, Equipe equipe){
+		return sistema.getUltimaSubmissaoPorRoteiroEquipe(roteiro, equipe);
+	}
 
 	/*******************************************************************
 	 * Facade Avaliacoes
@@ -644,6 +652,16 @@ public class Facade {
 			return sistema.getEquipeHasUsuarioHasRoteiroPorRoteiroComCorretor(idRoteiro, idCorretor);
 		} catch (Throwable e) {
 			log.error("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()", e);
+			throw e;
+		}
+	}
+	
+	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe(
+			Integer idRoteiro) throws Throwable {
+		try {
+			return sistema.getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe(idRoteiro);
+		} catch (Throwable e) {
+			log.error("getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe()", e);
 			throw e;
 		}
 	}

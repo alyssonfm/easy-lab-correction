@@ -284,6 +284,29 @@ public class GerenciadorRoteiros extends Gerenciador {
 			return true;
 		}
 	}
+	
+	/*
+	if (!roteiro.isBloqueado()) {
+		throw new BloqueiaRoteiroException(
+				"O Roteiro já está desbloqueado!"); 
+	} else {
+		if (roteiro.getDataLiberacao().before(dataAtual)
+				&& (roteiro.getDiretorioInterface() == null
+						|| roteiro.getNumeroMaximoParticipantes() <= 0
+						|| roteiro.getNumeroMaximoEnvios() <= 0 || ((roteiro
+						.getPorcentagemTestesAutomaticos() > 0 || roteiro
+						.getPorcentagemTestesAutomaticos() <= 100) && roteiro
+						.getDiretorioTestes() == null))) {
+			throw new LiberaRoteiroException(
+					"O Roteiro "
+							+ roteiro.getNome()
+							+ " não pôde ser liberado devido a falhas em sua especificação!");
+		}
+		// Apenas para garantias que houve sucesso
+		System.out.println("Roteiro " + roteiro.getNome()
+				+ " liberado com sucesso!");
+	}
+*/
 
 	private boolean validaRoteiroJahCriado(Roteiro roteiro)
 			throws CriacaoRoteiroException, EdicaoRoteiroException,
