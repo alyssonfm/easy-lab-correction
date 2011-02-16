@@ -2,8 +2,6 @@ package br.edu.les.easyCorrection.sistema;
 
 import java.util.List;
 
-
-import br.edu.les.easyCorrection.exceptions.BloqueiaRoteiroException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
@@ -216,7 +214,7 @@ public class Sistema {
 
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
 			throws EdicaoRoteiroException, CriacaoRoteiroException,
-			LiberaRoteiroException, BloqueiaRoteiroException {
+			LiberaRoteiroException {
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 

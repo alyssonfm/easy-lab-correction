@@ -1,7 +1,6 @@
 package br.edu.les.easyCorrection.exceptions;
 
 public class LiberaRoteiroException extends EasyCorrectionException {
-
 	/**
 	 * 
 	 */

@@ -22,7 +22,6 @@
 		<property name="diretorioInterface" column="diretorio_interface"/>
 		<property name="diretorioTestes" column="diretorio_testes"/>
 		<property name="numeroMaximoParticipantes" column="numero_maximo_participantes"/>
-		<property name="bloqueado" column="bloqueado"/>
 		<many-to-one name="periodo"	class="br.edu.les.easyCorrection.pojo.sistema.Periodo" column="periodo_id"/>
 		
 	</class>

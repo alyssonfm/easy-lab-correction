@@ -20,7 +20,7 @@ public class Roteiro {
 	private Integer tempoLimiteTestes;
 	private String diretorioInterface;
 	private String diretorioTestes;
-	private boolean bloqueado;
+//	private boolean bloqueado;
 	
 	public Integer getNumeroMaximoParticipantes() {
 		return numeroMaximoParticipantes;
@@ -30,13 +30,13 @@ public class Roteiro {
 		this.numeroMaximoParticipantes = numeroMaximoParticipantes;
 	}
 	
-	public boolean isBloqueado() {
-		return bloqueado;
-	}
-	
-	public void setBloqueado(boolean bloqueado) {
-		this.bloqueado = bloqueado;
-	}
+//	public boolean isBloqueado() {
+//		return bloqueado;
+//	}
+//	
+//	public void setBloqueado(boolean bloqueado) {
+//		this.bloqueado = bloqueado;
+//	}
 	
 	public Integer getId() {
 		return id;
@@ -146,7 +146,7 @@ public class Roteiro {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (bloqueado ? 1231 : 1237);
+//		result = prime * result + (bloqueado ? 1231 : 1237);
 		result = prime
 				* result
 				+ ((dataFinalDiscussao == null) ? 0 : dataFinalDiscussao
@@ -196,8 +196,8 @@ public class Roteiro {
 		if (getClass() != obj.getClass())
 			return false;
 		Roteiro other = (Roteiro) obj;
-		if (bloqueado != other.bloqueado)
-			return false;
+//		if (bloqueado != other.bloqueado)
+//			return false;
 		if (dataFinalDiscussao == null) {
 			if (other.dataFinalDiscussao != null)
 				return false;

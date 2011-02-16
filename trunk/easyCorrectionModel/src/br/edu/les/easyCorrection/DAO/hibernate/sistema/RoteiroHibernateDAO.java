@@ -35,18 +35,28 @@ public class RoteiroHibernateDAO extends AbstractHibernateDAO<Roteiro, Integer> 
 	public List<Roteiro> findByRoteiroLiberado(Date dataAtual) {
 		Query q = getSession()
 				.createQuery(
-						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega > :dataAtual and bloqueado = 0");
+						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega > :dataAtual");
 		q.setParameter("dataAtual", dataAtual);
 		q.setCacheable(true);
 		List<Roteiro> lista = q.list();
 		return instanciaLista(lista);
 	}
 
+	/**
+	 * Consideramos que as datas selecionadas tem seus relogios zerados. Ou
+	 * seja, o data XX-YY-ZZZZ tem o relogio 00:00:00 e isso tem impacto direto
+	 * na definicao de igualdade. Assim, o momento atual da data de hoje serah
+	 * sempre maior do que a data de hoje que estah no banco.
+	 * 
+	 * @param dataAtual
+	 * @param idRoteiro
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Roteiro> findByRoteiroLiberado(Date dataAtual, Integer idRoteiro) {
 		Query q = getSession()
 				.createQuery(
-						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega > :dataAtual and bloqueado = 0 and id = :idRoteiro");
+						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega > :dataAtual and id = :idRoteiro");
 		q.setParameter("dataAtual", dataAtual);
 		q.setParameter("idRoteiro", idRoteiro);
 		q.setCacheable(true);
@@ -56,12 +66,11 @@ public class RoteiroHibernateDAO extends AbstractHibernateDAO<Roteiro, Integer> 
 
 	@SuppressWarnings("unchecked")
 	/**
-	 * Retorna os roteiros que estao fechados, ou seja, a data atual deve ser pelo menos 1 dia apos a data de entrega e o roteiro jah deve estar bloqueado
+	 * Retorna os roteiros que estao fechados, ou seja, a data atual deve ser pelo menos 1 dia apos a data de entrega
 	 */
 	public List<Roteiro> findByRoteiroFechado(Date dataAtual) {
-		Query q = getSession()
-				.createQuery(
-						"from Roteiro where dataFinalEntrega <= :dataAtual and bloqueado = 1");
+		Query q = getSession().createQuery(
+				"from Roteiro where dataFinalEntrega <= :dataAtual");
 		q.setParameter("dataAtual", dataAtual);
 		q.setCacheable(true);
 		List<Roteiro> lista = q.list();
