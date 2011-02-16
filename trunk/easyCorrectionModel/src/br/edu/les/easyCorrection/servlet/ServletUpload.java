@@ -35,7 +35,7 @@ public class ServletUpload extends HttpServlet {
 	//private static final String local = "upload_projetos_epibic"; //url do upload servidor
 	//private static final String local = "/home/demetriogm/"; //url do upload local
 	//public static final String local = "/home/elc" + File.separator + "LEDA" + File.separator + "Roteiros"; //url do upload local
-	public static final String local = System.getProperty("catalina.base") + File.separator + "LEDA" + File.separator + "Roteiros"; //url do upload local
+	public static final String local = System.getProperty("catalina.base") + File.separator + "webapps" + File.separator + "LEDA" + File.separator + "Roteiros"; //url do upload local
 	private static final String curriculoTemp = "/home/desenvolvimento/tomcat6/temp_curriculos/"; //url do temp de currículos servidor
 	//private static final String curriculoTemp = "/home/demetriogm/"; //url do temp de currículos local
 	//private static final String curriculoTemp = "D:/Projetos/"; //url do temp de currículos local

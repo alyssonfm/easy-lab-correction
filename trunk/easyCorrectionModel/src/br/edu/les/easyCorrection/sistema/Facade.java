@@ -584,6 +584,10 @@ public class Facade {
 	public String getNomeArquivoTestes(Roteiro roteiro) {
 		return sistema.getNomeArquivoTestes(roteiro);
 	}
+	
+	public String getNomeArquivoCodigo(Submissao submissao) {
+		return sistema.getNomeArquivoCodigo(submissao);
+	}
 
 	public Submissao submeteRoteiro(Submissao submissao) throws Throwable {
 		try {

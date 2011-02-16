@@ -344,6 +344,10 @@ public class Sistema {
 	public String getNomeArquivoTestes(Roteiro roteiro) {
 		return gerenciadorSubmissoes.getNomeArquivoTestes(roteiro);
 	}
+	
+	public String getNomeArquivoCodigo(Submissao submissao) {
+		return gerenciadorSubmissoes.getNomeArquivoCodigo(submissao);
+	}
 
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiro(
 			Integer idRoteiro) {

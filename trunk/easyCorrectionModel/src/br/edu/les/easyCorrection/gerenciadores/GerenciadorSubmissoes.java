@@ -381,5 +381,12 @@ public class GerenciadorSubmissoes {
 		File dirTestes = new File(diretorioTestes);
 		return primeiraOcorrenciaZip(dirTestes.list());
 	}
+	
+	public String getNomeArquivoCodigo(Submissao submissao) {
+		String diretorioCodigo = ServletUpload.local
+				+ submissao.getUrl().replace("/", File.separator);
+		File dirCodigo = new File(diretorioCodigo);
+		return primeiraOcorrenciaZip(dirCodigo.list());
+	}
 
 }
