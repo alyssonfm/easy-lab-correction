@@ -14,21 +14,17 @@
 				import bean.roteiros.Roteiro;
 				import mx.collections.ArrayCollection;
 				import mx.utils.ArrayUtil;
-				import eventos.UsuarioEvent;
-				import bean.acesso.*;
-				import eventos.RespostaLoginEvent;
 				import eventos.FechaPopupEvent;
-				import mx.utils.Base64Decoder;
-				import mx.controls.Image;
-				import com.adobe.serialization.json.JSON;
-				import mx.controls.Alert;
 				import mx.utils.StringUtil;
 				import Scripts.ControladorDeModulos;
 				import mx.binding.utils.BindingUtils;
-				//import eventos.RespostaLoginEvent;
-				//import eventos.FechaPopupEvent;
 				import mx.rpc.events.ResultEvent;
 				import mx.rpc.events.FaultEvent;
+				
+				
+				private var fileRef:FileReference = new FileReference();
+				private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadRoteiro'));
+				private var nomeArquivoCodigo: String = "";
 				
 				private var eur:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
 				private var sub:Submissao = new Submissao();
@@ -110,14 +106,35 @@
 				private function getUltimaSubmissaoPorRoteiroEquipe_result(event:ResultEvent):void{
 					sub = CastDeEntidades.castSubmissao(event.result);
 					baixarImplementacao.enabled = true;
-				}
-				
-				private function chamaModuloCorrecao():void{
-					//ControladorDeModulos.criaModulo("modulos/Views/ModuloCorrecao.swf", this, null);
-				}
-				
+				}		
+								
 				private function selecaoLabelIntegrantes(item: *): String{
 					return item.usuario.nome;
+				}
+				
+				private function baixarCodigo():void{
+					facade.getOperation("getNomeArquivoCodigo").send(sub);
+				}
+				
+				private function getNomeArquivoCodigo_result(event:ResultEvent):void{
+					nomeArquivoCodigo = String(event.result);
+					try{
+						var variables:URLVariables = new URLVariables();
+						variables.nomeArquivo = sub.url + nomeArquivoCodigo;
+						request.data = variables;
+						fileRef.download(request, nomeArquivoCodigo);		
+					}
+					catch(e: Error){
+						var mensagem:String = "Selecione Uma Equipe.";
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+					}
+				}
+				
+				private function salvarNotaCorretor():void{
+					//Proximos Passos
+					//Pegar Uma Avaliação dada uma submissão
+					//Setar a nota do Corretor na Avaliação
+					//Salvar Avaliação
 				}
 				
 			]]>
@@ -127,7 +144,8 @@
 			<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe" result="getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe_result(event)" fault="falha(event)"/>
-			<mx:method name="getUltimaSubmissaoPorRoteiroEquipe" result="getUltimaSubmissaoPorRoteiroEquipe_result(event)" fault="falha(event)"/>			
+			<mx:method name="getUltimaSubmissaoPorRoteiroEquipe" result="getUltimaSubmissaoPorRoteiroEquipe_result(event)" fault="falha(event)"/>
+			<mx:method name="getNomeArquivoCodigo" result="getNomeArquivoCodigo_result(event)" fault="falha(event)"/>			
 		</mx:RemoteObject>
 		
 		<mx:Label text="Roteiro:" fontWeight="bold"
@@ -142,8 +160,8 @@
 		<mx:List id="listaEquipes" x="10" y="94" width="226" height="302" labelFunction="selecaoLabelEquipes" itemClick="selecionaEquipe()"/>
 		<mx:List id="listaIntegrantes" x="265.95" y="94" width="504.05" height="66" labelFunction="selecaoLabelIntegrantes"/>
 		<mx:VRule x="244" y="62" height="334" width="13.95"/>
-		<mx:Button x="398" y="179" label="Baixar Implementação" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="baixarImplementacao" enabled="false"/>
-		<mx:Button x="398" y="329" label="Salvar Nota" click="chamaModuloCorrecao()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
+		<mx:Button x="398" y="179" label="Baixar Implementação" click="baixarCodigo()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="baixarImplementacao" enabled="false"/>
+		<mx:Button x="398" y="329" label="Salvar Nota" click="salvarNotaCorretor()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
 		<mx:Label text="Nota:" fontWeight="bold"
 			textAlign="left" width="58" x="398" y="275" id="labelNota" fontSize="16"/>
 		<mx:Label text="Peso:" fontWeight="bold"
