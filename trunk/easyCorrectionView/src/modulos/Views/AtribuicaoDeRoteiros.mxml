@@ -75,13 +75,13 @@
 					
 					getRoteirosFechados();
 
-					var grupos: ArrayCollection = new ArrayCollection();
+					/*var grupos: ArrayCollection = new ArrayCollection();
 					grupos.addItem("Grupo A");
 					grupos.addItem("Grupo B");
 					grupos.addItem("Grupo C");
-					grupos.addItem("Grupo D");
+					grupos.addItem("Grupo D");*/
 
-					listaEquipesPorRoteiroSemCorretor.dataProvider = grupos;
+					listaEquipesPorRoteiroSemCorretor.dataProvider = new ArrayCollection();
 					listaEquipesPorRoteiroDoCorretor.dataProvider = new ArrayCollection();
 				}
 				
