@@ -21,8 +21,7 @@ package bean.roteiros{
 		public var porcentagemTestesAutomaticos: Number;
 		public var tempoLimiteTestes: int;
 		public var diretorioInterface: String;
-		public var diretorioTestes: String;
-		public var bloqueado:Boolean;				
+		public var diretorioTestes: String;			
 	}
 }
 

@@ -173,7 +173,6 @@ package bean.Utilitarios {
 				}else{
 					var r:Roteiro = new Roteiro();
 					r.id = objeto.id;
-					r.bloqueado = objeto.bloqueado;
 					r.dataFinalDiscussao = objeto.dataFinalDiscussao;
 					r.dataFinalEntrega = objeto.dataFinalEntrega;
 					r.dataLiberacao = objeto.dataLiberacao;
