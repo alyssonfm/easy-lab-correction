@@ -19,6 +19,7 @@ import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
@@ -360,13 +361,6 @@ public class Sistema {
 		return gerenciadorAvaliacoes
 				.getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe(idRoteiro);
 	}
-	
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroComCorretor(
-			Integer idRoteiro, Integer idCorretor) {
-		return gerenciadorAvaliacoes
-				.getEquipeHasUsuarioHasRoteiroPorRoteiroDoCorretor(idRoteiro,
-						idCorretor);
-	}
 
 	public List<Roteiro> getRoteirosFechados() {
 		return gerenciadorAvaliacoes.getRoteirosFechados();
@@ -374,6 +368,14 @@ public class Sistema {
 
 	public List<Usuario> getCorretores() {
 		return gerenciadorAvaliacoes.getCorretores();
+	}
+
+	public List<Avaliacao> getAvaliacoesDoRoteiroSemCorretor(int roteiroId) {
+		return gerenciadorAvaliacoes.getAvaliacoesDoRoteiroSemCorretor(roteiroId);
+	}
+
+	public List<Avaliacao> getAvaliacoesDoRoteiroComCorretor(int roteiroId, int corretorId) {
+		return gerenciadorAvaliacoes.getAvaliacoesDoRoteiroComCorretor(roteiroId, corretorId);
 	}
 
 }

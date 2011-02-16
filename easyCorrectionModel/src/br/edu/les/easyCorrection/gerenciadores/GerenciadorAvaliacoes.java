@@ -7,6 +7,8 @@ import java.util.List;
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
+import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
@@ -18,16 +20,18 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 	}
 
 	/**
-	 * Esse metodo retorna a lista de equipes (por roteiro) que nao tem corretores ainda   
+	 * Esse metodo retorna a lista de equipes (por roteiro) que nao tem
+	 * corretores ainda
+	 * 
 	 * @param idRoteiro
 	 * @return
 	 */
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiro(
 			Integer idRoteiro) {
 		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
-				.findByRoteiroECorretor(idRoteiro, 0);
+				.findByRoteiroGroupByEquipe(idRoteiro);
 	}
-	
+
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe(
 			Integer idRoteiro) {
 		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
@@ -35,36 +39,53 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 	}
 
 	/**
-	 * Esse metodo retorna a lista de equipes (por roteiro) que jah possuem corretores
+	 * Esse metodo retorna a lista de equipes (por roteiro) que jah possuem
+	 * corretores
+	 * 
 	 * @param idRoteiro
 	 * @param idCorretor
 	 * @return
 	 */
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroDoCorretor(
+	public List<Equipe> getEquipeHasUsuarioHasRoteiroPorRoteiroDoCorretor(
 			Integer idRoteiro, Integer idCorretor) {
-		return DAOFactory.DEFAULT.buildEquipeHasUsuarioHasRoteiroDAO()
-				.findByRoteiroECorretor(idRoteiro, idCorretor);
+		return null;
+		// TODO
 	}
 
 	public List<Roteiro> getRoteirosFechados() {
 		Date dataAtual = easyCorrectionUtil.getDataNow();
-		List<Roteiro> roteirosFechados = DAOFactory.DEFAULT.buildRoteiroDAO()
-				.findByRoteiroLiberado(dataAtual);
-		return roteirosFechados;
+		return DAOFactory.DEFAULT.buildRoteiroDAO().findByRoteiroLiberado(
+				dataAtual);
 	}
 
 	public List<Usuario> getCorretores() {
-		List<GrupoUsuario> professores = DAOFactory.DEFAULT
-				.buildGrupoUsuarioDAO().findByGrupo(2);
-		List<GrupoUsuario> monitores = DAOFactory.DEFAULT
-				.buildGrupoUsuarioDAO().findByGrupo(3);
-		List<GrupoUsuario> corretoresGrupo = professores;
-		corretoresGrupo.addAll(monitores);
+		List<GrupoUsuario> corretoresGU;
+
+		corretoresGU = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByGrupo(2);
+		corretoresGU.addAll(DAOFactory.DEFAULT.buildGrupoUsuarioDAO()
+				.findByGrupo(3));
+
 		ArrayList<Usuario> corretoresUsuarios = new ArrayList<Usuario>();
-		for (GrupoUsuario gu : corretoresGrupo) {
+		for (GrupoUsuario gu : corretoresGU) {
 			corretoresUsuarios.add(gu.getUsuario());
 		}
 		return corretoresUsuarios;
+	}
+
+	public List<Avaliacao> getAvaliacoesDoRoteiroSemCorretor(int roteiroId) {
+		return this.getAvaliacoesDoRoteiroComCorretor(roteiroId, 0);
+	}
+
+	public List<Avaliacao> getAvaliacoesDoRoteiroComCorretor(int roteiroId,
+			int corretorId) {
+
+		if (corretorId <= 0) {
+			return DAOFactory.DEFAULT.buildAvaliacaoDAO()
+					.findByRoteiroSemCorretor(roteiroId);
+		} else {
+			return DAOFactory.DEFAULT.buildAvaliacaoDAO()
+					.findByRoteiroComCorretor(roteiroId, corretorId);
+		}
 	}
 
 }

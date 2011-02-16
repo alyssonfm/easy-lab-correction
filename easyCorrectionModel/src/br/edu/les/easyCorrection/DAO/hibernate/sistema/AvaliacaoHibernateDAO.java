@@ -2,6 +2,7 @@ package br.edu.les.easyCorrection.DAO.hibernate.sistema;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
@@ -9,6 +10,7 @@ import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
 import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
+import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
@@ -44,10 +46,32 @@ public class AvaliacaoHibernateDAO extends
 	
 	public static Avaliacao instanciaAvaliacao(Avaliacao a) throws CampoVazioException{
 		a.setSubmissao(SubmissaoHibernateDAO.instanciaSubmissao(a.getSubmissao()));
-		a.setUsuario(UsuarioHibernateDAO.instanciaUsuario(a.getUsuario()));
+		a.setCorretor(UsuarioHibernateDAO.instanciaUsuario(a.getCorretor()));
 		a = MyPersistenceLayer.deproxy(a, Avaliacao.class);
 		
 		return a;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Avaliacao> findByRoteiroSemCorretor(int idRoteiro) {
+		Query q = getSession().createQuery("from Avaliacao where corretor_id is null and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro GROUP BY submissao.equipeHasUsuarioHasRoteiro.equipe.id");
+		q.setParameter("idRoteiro", idRoteiro);
+		q.setCacheable(true);
+		List <Avaliacao> lista = q.list();
+		instanciaLista(lista);
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Avaliacao> findByRoteiroComCorretor(int idRoteiro,
+			int idCorretor) {
+		Query q = getSession().createQuery("from Avaliacao where corretor_id = :idCorretor and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro GROUP BY submissao.equipeHasUsuarioHasRoteiro.equipe.id");
+		q.setParameter("idRoteiro", idRoteiro);
+		q.setParameter("idCorretor", idCorretor);
+		q.setCacheable(true);
+		List <Avaliacao> lista = q.list();
+		instanciaLista(lista);
+		return lista;
 	}
 
 }

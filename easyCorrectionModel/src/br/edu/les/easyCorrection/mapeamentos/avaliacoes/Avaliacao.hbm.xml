@@ -13,7 +13,7 @@
 		<property name="notaCorrecao" column="nota_correcao"/>
 		<property name="resuladoExecucaoTestes" column="resulado_execucao_testes"/>
 		<property name="penalidade" column="penalidade"/>
-		<many-to-one name="usuario"	class="br.edu.les.easyCorrection.pojo.acesso.Usuario" column="usuario_id"/>
+		<many-to-one name="corretor"	class="br.edu.les.easyCorrection.pojo.acesso.Usuario" column="corretor_id"/>
 		<many-to-one name="submissao"	class="br.edu.les.easyCorrection.pojo.sistema.Submissao" column="submissao_id"/>
 		
 	</class>
