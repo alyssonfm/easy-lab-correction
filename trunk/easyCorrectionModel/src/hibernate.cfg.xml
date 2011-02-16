@@ -6,14 +6,14 @@
 <hibernate-configuration>
 	<session-factory>
 
-		<property name="connection.url">jdbc:mysql://localhost/easylabcorrection?autoReconnect=true</property>
+		<property name="connection.url">jdbc:mysql://localhost/easy_correction?autoReconnect=true</property>
  		<property name="connection.username">root</property>
  		<property name="connection.autocommit">true</property>
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 		
 				<!-- Your database is MySQL-->
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-		<property name="connection.password"></property>
+		<property name="connection.password">root</property>
 		<property name="show_sql">false</property>
 		<property name="format_sql">false</property>	
 		<property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>

@@ -1,7 +1,6 @@
 package br.edu.les.easyCorrection.sistema;
 
 import java.util.Date;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,6 +12,7 @@ import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
+import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
@@ -584,7 +584,7 @@ public class Facade {
 	public String getNomeArquivoTestes(Roteiro roteiro) {
 		return sistema.getNomeArquivoTestes(roteiro);
 	}
-	
+
 	public String getNomeArquivoCodigo(Submissao submissao) {
 		return sistema.getNomeArquivoCodigo(submissao);
 	}
@@ -622,12 +622,14 @@ public class Facade {
 	public Integer getNumeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur) {
 		return sistema.numeroSubmissoesPorEUR(eur);
 	}
-	
-	public List<Submissao> getSubmissoesPorRoteiroEquipe(Roteiro roteiro, Equipe equipe){
+
+	public List<Submissao> getSubmissoesPorRoteiroEquipe(Roteiro roteiro,
+			Equipe equipe) {
 		return sistema.getSubmissoesPorRoteiroEquipe(roteiro, equipe);
 	}
-	
-	public Submissao getUltimaSubmissaoPorRoteiroEquipe(Roteiro roteiro, Equipe equipe){
+
+	public Submissao getUltimaSubmissaoPorRoteiroEquipe(Roteiro roteiro,
+			Equipe equipe) {
 		return sistema.getUltimaSubmissaoPorRoteiroEquipe(roteiro, equipe);
 	}
 
@@ -639,7 +641,7 @@ public class Facade {
 	/**
 	 * Retorna todas as equipes
 	 */
-	
+
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiro(
 			Integer idRoteiro, Integer idCorretor) throws Throwable {
 		try {
@@ -649,23 +651,17 @@ public class Facade {
 			throw e;
 		}
 	}
-	
-	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroComCorretor(
-			Integer idRoteiro, Integer idCorretor) throws Throwable {
-		try {
-			return sistema.getEquipeHasUsuarioHasRoteiroPorRoteiroComCorretor(idRoteiro, idCorretor);
-		} catch (Throwable e) {
-			log.error("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()", e);
-			throw e;
-		}
-	}
-	
+
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe(
 			Integer idRoteiro) throws Throwable {
 		try {
-			return sistema.getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe(idRoteiro);
+			return sistema
+					.getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe(idRoteiro);
 		} catch (Throwable e) {
-			log.error("getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe()", e);
+			log
+					.error(
+							"getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe()",
+							e);
 			throw e;
 		}
 	}
@@ -688,6 +684,24 @@ public class Facade {
 	public List<Usuario> getCorretores() throws Throwable {
 		try {
 			return sistema.getCorretores();
+		} catch (Throwable e) {
+			log.error("getCorretores()", e);
+			throw e;
+		}
+	}
+
+	public List<Avaliacao> getAvaliacoesDoRoteiroSemCorretor(int roteiroId) throws Throwable {
+		try {
+			return sistema.getAvaliacoesDoRoteiroSemCorretor(roteiroId);
+		} catch (Throwable e) {
+			log.error("getCorretores()", e);
+			throw e;
+		}
+	}
+
+	public List<Avaliacao> getAvaliacoesDoRoteiroComCorretor(int roteiroId, int corretorId) throws Throwable {
+		try {
+			return sistema.getAvaliacoesDoRoteiroComCorretor(roteiroId, corretorId);
 		} catch (Throwable e) {
 			log.error("getCorretores()", e);
 			throw e;

@@ -11,7 +11,7 @@ public class Avaliacao {
 	private double notaCorrecao;
 	private String resuladoExecucaoTestes;
 	private double penalidade;
-	private Usuario usuario;
+	private Usuario corretor;
 	
 	
 	public Integer getId() {
@@ -50,11 +50,11 @@ public class Avaliacao {
 	public void setPenalidade(double penalidade) {
 		this.penalidade = penalidade;
 	}
-	public Usuario getUsuario() {
-		return usuario;
+	public Usuario getCorretor() {
+		return corretor;
 	}
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setCorretor(Usuario corretor) {
+		this.corretor = corretor;
 	}
 	
 	
@@ -76,7 +76,7 @@ public class Avaliacao {
 						: resuladoExecucaoTestes.hashCode());
 		result = prime * result
 				+ ((submissao == null) ? 0 : submissao.hashCode());
-		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
+		result = prime * result + ((corretor == null) ? 0 : corretor.hashCode());
 		return result;
 	}
 	@Override
@@ -112,10 +112,10 @@ public class Avaliacao {
 				return false;
 		} else if (!submissao.equals(other.submissao))
 			return false;
-		if (usuario == null) {
-			if (other.usuario != null)
+		if (corretor == null) {
+			if (other.corretor != null)
 				return false;
-		} else if (!usuario.equals(other.usuario))
+		} else if (!corretor.equals(other.corretor))
 			return false;
 		return true;
 	}
