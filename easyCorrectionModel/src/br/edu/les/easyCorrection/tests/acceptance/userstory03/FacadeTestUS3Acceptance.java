@@ -34,7 +34,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 		roteiroTemp.setDataFinalEntrega(translateData(dataFinalEntrega));
 		roteiroTemp.setDataFinalDiscussao(translateData(dataFinalDiscussao));
 
-		roteiroTemp.setBloqueado(bloqueado);
+//		roteiroTemp.setBloqueado(bloqueado);
 
 		// doubleOnes
 		roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);
@@ -90,7 +90,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 				diretorioInterface, roteiroTemp));
 		roteiroTemp.setDiretorioTestes(translateDirectory(diretorioTestes,
 				roteiroTemp));
-		roteiroTemp.setBloqueado(isBloqueado);
+//		roteiroTemp.setBloqueado(isBloqueado);
 
 		// doubleOnes
 		roteiroTemp.setPenalidadeDiasAtraso(penalidadeDiasAtraso);

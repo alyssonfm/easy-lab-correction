@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.edu.les.easyCorrection.exceptions.BloqueiaRoteiroException;
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
@@ -39,7 +38,7 @@ public class GerenciadorRoteirosTC {
 
 		roteiroVariavel = new Roteiro();
 		roteiroVariavel.setId(0);
-		roteiroVariavel.setBloqueado(false);
+//		roteiroVariavel.setBloqueado(false);
 		roteiroVariavel.setNome("Roteiro Teste 2");
 		roteiroVariavel.setNumeroMaximoEnvios(3);
 		roteiroVariavel.setNumeroMaximoParticipantes(10);
@@ -59,7 +58,7 @@ public class GerenciadorRoteirosTC {
 	}
 
 	@Test
-	public void cadastrarEditarBloquearExcluir() throws BloqueiaRoteiroException, LiberaRoteiroException {
+	public void cadastrarEditarBloquearExcluir() throws LiberaRoteiroException {
 		try {
 			roteiroNULL = gr.cadastrarRoteiro(roteiroNULL);
 		} catch (CriacaoRoteiroException e) {
