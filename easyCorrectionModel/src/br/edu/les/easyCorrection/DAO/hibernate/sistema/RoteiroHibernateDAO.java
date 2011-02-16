@@ -35,7 +35,7 @@ public class RoteiroHibernateDAO extends AbstractHibernateDAO<Roteiro, Integer> 
 	public List<Roteiro> findByRoteiroLiberado(Date dataAtual) {
 		Query q = getSession()
 				.createQuery(
-						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual and bloqueado = 0");
+						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega > :dataAtual and bloqueado = 0");
 		q.setParameter("dataAtual", dataAtual);
 		q.setCacheable(true);
 		List<Roteiro> lista = q.list();
@@ -46,7 +46,7 @@ public class RoteiroHibernateDAO extends AbstractHibernateDAO<Roteiro, Integer> 
 	public List<Roteiro> findByRoteiroLiberado(Date dataAtual, Integer idRoteiro) {
 		Query q = getSession()
 				.createQuery(
-						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega >= :dataAtual and bloqueado = 0 and id = :idRoteiro");
+						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega > :dataAtual and bloqueado = 0 and id = :idRoteiro");
 		q.setParameter("dataAtual", dataAtual);
 		q.setParameter("idRoteiro", idRoteiro);
 		q.setCacheable(true);
@@ -61,7 +61,7 @@ public class RoteiroHibernateDAO extends AbstractHibernateDAO<Roteiro, Integer> 
 	public List<Roteiro> findByRoteiroFechado(Date dataAtual) {
 		Query q = getSession()
 				.createQuery(
-						"from Roteiro where dataFinalEntrega < :dataAtual and bloqueado = 1");
+						"from Roteiro where dataFinalEntrega <= :dataAtual and bloqueado = 1");
 		q.setParameter("dataAtual", dataAtual);
 		q.setCacheable(true);
 		List<Roteiro> lista = q.list();
