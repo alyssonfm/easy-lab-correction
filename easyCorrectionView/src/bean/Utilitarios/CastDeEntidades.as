@@ -2,6 +2,7 @@
 package bean.Utilitarios {
 
 	import bean.acesso.*;
+	import bean.avaliacoes.*;
 	import bean.roteiros.*;
 	import bean.sistema.*;
 
@@ -190,7 +191,26 @@ package bean.Utilitarios {
 				}
 			}
 			return objeto;
-		}			
-	}
+		}	
+		
+		public static function castAvaliacao(objeto: *):Avaliacao{
+			if (objeto != null) {
+				if(objeto == undefined){
+					objeto = null;
+				}else{
+					var a:Avaliacao = new Avaliacao();
+					a.id = objeto.id;
+					a.submissao = castSubmissao(objeto.submissao);
+					a.notaAutomatica = objeto.notaAutomatica;
+					a.notaCorrecao = objeto.notaCorrecao;
+					a.resultadoExecucaoTestes = objeto.resultadoExecucaoTestes;
+					a.penalidade = objeto.penalidade;
+					a.corretor = castUsuario(objeto.usuario);
+					return a;
+				}
+			}
+			return objeto;
+		}		
+	}	
 }
 	
