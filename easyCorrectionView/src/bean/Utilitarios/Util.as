@@ -29,6 +29,18 @@ package bean.Utilitarios {
 			return Number(valorIntermediario.replace(",", "."));		
 		}
 		
+		public static function formataTextValorToNumber2(quantidade: String): Number{
+			try{
+				var valorIntermediario: String = concat(quantidade.split("_"));
+				var num: Number = new Number(valorIntermediario.replace(",", "."))
+				num.toPrecision(2);
+			}
+			catch(e: Error){
+				num = 0;
+			}
+			return num;	
+		}
+		
 		public static function formataData(data: Date): String{
 			var df:DateFormatter = new DateFormatter();
 			df.formatString = "DD/MM/YYYY";
