@@ -5,16 +5,20 @@ import java.util.Date;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
+import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
+import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
+import br.edu.les.easyCorrection.util.MsgErros;
+import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class GerenciadorAvaliacoes extends Gerenciador {
-
+	
 	public GerenciadorAvaliacoes() {
 		super();
 	}
@@ -87,5 +91,54 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 					.findByRoteiroComCorretor(roteiroId, corretorId);
 		}
 	}
+	
+	public Avaliacao getAvaliacaoPorRoteiroEquipe(int idRoteiro, int idEquipe){
+		List<Avaliacao> lista = DAOFactory.DEFAULT.buildAvaliacaoDAO().findByRoteiroEquipe(idRoteiro, idEquipe);
+		if(lista.isEmpty()){
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("avaliacao"));
+		}
+		return lista.get(0);
+	}
+	
+	public Avaliacao salvarAvaliacao(Avaliacao avaliacao) throws EasyCorrectionException{
+		try{
+			Avaliacao aval = getAvaliacaoPorRoteiroEquipe(avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getRoteiro().getId(), 
+					avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getEquipe().getId());
+			aval.setCorretor(avaliacao.getCorretor());
+			aval.setNotaCorrecao(avaliacao.getNotaCorrecao());
+			return editarAvaliacao(aval);
+		}
+		catch(Exception e){
+			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("avaliacao"));
+		}
+	}
+	
+	public Avaliacao editarAvaliacao(Avaliacao avaliacao) throws EasyCorrectionException{
+		
+		DAOFactory.DEFAULT.buildAvaliacaoDAO().update(avaliacao);
+		avaliacao.setId(avaliacao.getId());
+		return avaliacao;
+	}
+	
+	public Avaliacao cadastrarAvaliacao(Avaliacao avaliacao){
+		
+		int id = DAOFactory.DEFAULT.buildAvaliacaoDAO().save(avaliacao);
+		avaliacao.setId(id);
+		return avaliacao;
+	}
+	
+	public void excluirAvaliacao(Avaliacao avaliacao) throws EasyCorrectionException{
+		Avaliacao aval = DAOFactory.DEFAULT.buildAvaliacaoDAO().getById(avaliacao.getId());
+		aval= (Avaliacao) SwapperAtributosReflect.swapObject(aval, avaliacao,
+				Avaliacao.class);
+		DAOFactory.DEFAULT.buildAvaliacaoDAO().delete(aval);
+	}
+	
+	public List<Avaliacao> getAvaliacaoPorSubmissao(int idSubmissao){
+		return DAOFactory.DEFAULT.buildAvaliacaoDAO().findBySubmissao(idSubmissao);
+		
+	}
+
+
 
 }
