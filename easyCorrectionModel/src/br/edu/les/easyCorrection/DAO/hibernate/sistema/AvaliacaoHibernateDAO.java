@@ -10,7 +10,6 @@ import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
 import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
-import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
@@ -54,18 +53,41 @@ public class AvaliacaoHibernateDAO extends
 
 	@SuppressWarnings("unchecked")
 	public List<Avaliacao> findByRoteiroSemCorretor(int idRoteiro) {
-		Query q = getSession().createQuery("from Avaliacao where corretor_id is null and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro GROUP BY submissao.equipeHasUsuarioHasRoteiro.equipe.id");
+		Query q = getSession().createQuery("from Avaliacao where corrtetor.idUsuario is null and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
 		q.setParameter("idRoteiro", idRoteiro);
 		q.setCacheable(true);
 		List <Avaliacao> lista = q.list();
 		instanciaLista(lista);
 		return lista;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Avaliacao> findByRoteiroEquipe(int idRoteiro, int idEquipe) {
+		Query q = getSession().createQuery("from Avaliacao where submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro " +
+				" and submissao.equipeHasUsuarioHasRoteiro.equipe.id =:idEquipe");
+		q.setParameter("idEquipe", idEquipe);
+		q.setParameter("idRoteiro", idRoteiro);
+		q.setCacheable(true);
+		List <Avaliacao> lista = q.list();
+		instanciaLista(lista);
+		return lista;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Avaliacao> findBySubmissao(int idSubmissao) {
+		Query q = getSession().createQuery("from Avaliacao where submissao.id = :idSubmissao");
+		q.setParameter("idSubmissao", idSubmissao);
+		q.setCacheable(true);
+		List <Avaliacao> lista = q.list();
+		instanciaLista(lista);
+		return lista;
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public List<Avaliacao> findByRoteiroComCorretor(int idRoteiro,
 			int idCorretor) {
-		Query q = getSession().createQuery("from Avaliacao where corretor_id = :idCorretor and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro GROUP BY submissao.equipeHasUsuarioHasRoteiro.equipe.id");
+		Query q = getSession().createQuery("from Avaliacao where corrtetor.idUsuario = :idCorretor and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
 		q.setParameter("idRoteiro", idRoteiro);
 		q.setParameter("idCorretor", idCorretor);
 		q.setCacheable(true);
