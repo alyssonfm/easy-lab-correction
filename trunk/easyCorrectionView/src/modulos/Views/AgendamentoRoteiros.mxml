@@ -111,6 +111,12 @@
 					case "Data de Entrega":
 						sLabel = Util.formataData(item.dataFinalEntrega);
 						break;
+					case "Status":
+						if(item.bloqueado == false){
+							sLabel = "LIBERADO";
+						} else{
+							sLabel = "BLOQUEADO";
+						}
 				}
 				return sLabel;
 			}
@@ -144,6 +150,7 @@
 				<mx:DataGridColumn headerText="Roteiro" width="80"/>
 				<mx:DataGridColumn headerText="Data de Liberação" width="80"/>
 				<mx:DataGridColumn headerText="Data de Entrega" width="80"/>
+				<mx:DataGridColumn headerText="Status" width="80"/>
 			</mx:columns>
 		</mx:DataGrid>
 		
