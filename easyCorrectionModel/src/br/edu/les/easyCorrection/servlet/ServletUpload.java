@@ -165,6 +165,7 @@ public class ServletUpload extends HttpServlet {
                 	zipinputstream.close();
                 	return false;
                 }
+                zipentry = zipinputstream.getNextEntry();
             }
             zipinputstream.close();
             return true;
