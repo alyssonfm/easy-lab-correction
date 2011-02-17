@@ -3,11 +3,12 @@
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
 						xmlns:les="modulos.sistema.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
-						xmlns:extra="br.com.thinklab.util.control.*"
 	width="800" height="450" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="fechaJanela()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.Utilitarios.Util;
+				import bean.avaliacoes.Avaliacao;
 				import bean.roteiros.Submissao;
 				import bean.roteiros.EquipeHasUsuarioHasRoteiro;
 				import bean.Utilitarios.CastDeEntidades;
@@ -80,10 +81,10 @@
 				private function pegaEquipesPorRoteiro():void{
 					var rot: Roteiro = CastDeEntidades.castRoteiro(comboRoteiros.selectedItem);
 					inputPeso.text = String(100 - rot.porcentagemTestesAutomaticos) + "%";
-					facade.getOperation("getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe").send(rot.id);
+					facade.getOperation("getSubmissoesPorRoteiroEquipeUnicos").send(rot);
 				}
 				
-				private function getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe_result(event:ResultEvent):void{
+				private function getSubmissoesPorRoteiroEquipeUnicos_result(event:ResultEvent):void{
 					listaEquipes.dataProvider = new ArrayCollection(); 
 					listaEquipes.dataProvider = event.result;
 				}
@@ -105,9 +106,20 @@
 				
 				private function getUltimaSubmissaoPorRoteiroEquipe_result(event:ResultEvent):void{
 					sub = CastDeEntidades.castSubmissao(event.result);
-					baixarImplementacao.enabled = true;
+					facade.getOperation("getAvaliacaoPorSubmissao").send(sub.id);
 				}		
-								
+				
+				private function getAvaliacaoPorSubmissao_result(event:ResultEvent):void{
+					var listaAvaliacoes: ArrayCollection = ArrayCollection(event.result);
+					try{
+						inputNota.text = String((listaAvaliacoes.getItemAt(0) as Avaliacao).notaAutomatica);
+					}
+					catch(e: Error){
+						inputNota.text = "0";
+					}
+					baixarImplementacao.enabled = true;	
+				}
+					
 				private function selecaoLabelIntegrantes(item: *): String{
 					return item.usuario.nome;
 				}
@@ -131,11 +143,28 @@
 				}
 				
 				private function salvarNotaCorretor():void{
-					//Proximos Passos
-					//Pegar Uma Avaliação dada uma submissão
-					//Setar a nota do Corretor na Avaliação
-					//Salvar Avaliação
+					if (Util.formataTextValorToNumber2(inputNota.fullText) < 10){
+						var avaliacao: Avaliacao = new Avaliacao();
+						avaliacao.id = 0;
+						avaliacao.submissao = sub;
+						avaliacao.notaCorrecao = Util.formataTextValorToNumber2(inputNota.fullText);
+						avaliacao.notaAutomatica = 0;
+						avaliacao.penalidade = 0;
+						avaliacao.resultadoExecucaoTestes = "";
+						avaliacao.corretor = null;
+						facade.getOperation("salvarAvaliacao").send(avaliacao);
+					}
+					else{
+						var mensagem:String = "A nota deve ser menor que 10.";
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+					}
 				}
+				
+				private function salvarAvaliacao_result(event:ResultEvent):void{
+					var mensagem:String = "Equipe Avaliada Com Sucesso.";
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(false, mensagem));	
+				}
+				
 				
 			]]>
 		</mx:Script>
@@ -143,9 +172,11 @@
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
-			<mx:method name="getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe" result="getEquipeHasUsuarioHasRoteiroPorRoteiroAgrupadoPorEquipe_result(event)" fault="falha(event)"/>
+			<mx:method name="getSubmissoesPorRoteiroEquipeUnicos" result="getSubmissoesPorRoteiroEquipeUnicos_result(event)" fault="falha(event)"/>
 			<mx:method name="getUltimaSubmissaoPorRoteiroEquipe" result="getUltimaSubmissaoPorRoteiroEquipe_result(event)" fault="falha(event)"/>
-			<mx:method name="getNomeArquivoCodigo" result="getNomeArquivoCodigo_result(event)" fault="falha(event)"/>			
+			<mx:method name="getNomeArquivoCodigo" result="getNomeArquivoCodigo_result(event)" fault="falha(event)"/>
+			<mx:method name="salvarAvaliacao" result="salvarAvaliacao_result(event)" fault="falha(event)"/>
+			<mx:method name="getAvaliacaoPorSubmissao" result="getAvaliacaoPorSubmissao_result(event)" fault="falha(event)"/>	
 		</mx:RemoteObject>
 		
 		<mx:Label text="Roteiro:" fontWeight="bold"
@@ -167,7 +198,7 @@
 		<mx:Label text="Peso:" fontWeight="bold"
 			textAlign="left" width="49" x="541" y="278" id="labelPeso"/>
 		<mx:Label fontWeight="bold" textAlign="left" width="49" x="588" y="278" id="inputPeso" height="23"/>
-		<mx:TextInput x="457.05" y="273" width="55.95" id="inputNota" fontSize="16"/>
+		<comp:MaskedTextInput x="464" y="276" inputMask="##,##" width="69" id="inputNota" color="#1B7A0F" text="0"/>
 		
 		
 </les:ModuleTitleWindow>
