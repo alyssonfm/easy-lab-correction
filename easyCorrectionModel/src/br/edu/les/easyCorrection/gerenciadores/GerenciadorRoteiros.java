@@ -245,13 +245,23 @@ public class GerenciadorRoteiros extends Gerenciador {
 
 		// Os testes de LIBERADO são apenas os Gerais
 		validacoesGeraisDeRoteiroEditavel(roteiro);
+		Date antigaData = this.getRoteiro(roteiro.getId()).getDataLiberacao();
 
-//		if (roteiro.getDataLiberacao().before(easyCorrectionUtil.getDataNow())) {
-//			// Se a data de Liberacao eh anterior a hoje, ela nao pode ser
-//			// modificada, assim lemos a do banco e escrevemos novamente
-//			roteiro.setDataLiberacao(this.getRoteiro(roteiro.getId())
-//					.getDataLiberacao());
-//		}
+		// Esse eh um caso especial que no caso de nao haver nenhuma data no
+		// banco deve-se setar alguma, mas nao uma menor que a atual. E caso
+		// haja, essa data nao pode ser modificada, pois por tratar-se da data
+		// de liberacao, ela jah devera ter passado e nao pode ser mudada para
+		// outro dia que nao seja o atual ou futuro
+		if (roteiro.getDataLiberacao().before(easyCorrectionUtil.getDataNow())) {
+			if (antigaData == null) {
+				// Se nao existia data anteriormente nesse campo colocamos a
+				// data atual
+				roteiro.setDataLiberacao(easyCorrectionUtil.getDataNow());
+			} else {
+				// Se jah existia, repetimos a estava anteriormente
+				roteiro.setDataLiberacao(antigaData);
+			}
+		}
 
 		// E checa se este possui as caracteristicas ideais para ser/manter-se
 		// liberado
