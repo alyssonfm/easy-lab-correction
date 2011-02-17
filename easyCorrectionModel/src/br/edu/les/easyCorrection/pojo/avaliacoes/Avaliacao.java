@@ -14,6 +14,22 @@ public class Avaliacao {
 	private Usuario corretor;
 	
 	
+	public Avaliacao(Integer id, 
+			Submissao submissao, 
+			double notaAutomatica,
+			double notaCorrecao, 
+			String resuladoExecucaoTestes,
+			double penalidade, 
+			Usuario corretor) {
+		this.id = id;
+		this.submissao = submissao;
+		this.notaAutomatica = notaAutomatica;
+		this.notaCorrecao = notaCorrecao;
+		this.resuladoExecucaoTestes = resuladoExecucaoTestes;
+		this.penalidade = penalidade;
+		this.corretor = corretor;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
