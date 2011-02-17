@@ -623,9 +623,8 @@ public class Facade {
 		return sistema.numeroSubmissoesPorEUR(eur);
 	}
 
-	public List<Submissao> getSubmissoesPorRoteiroEquipe(Roteiro roteiro,
-			Equipe equipe) {
-		return sistema.getSubmissoesPorRoteiroEquipe(roteiro, equipe);
+	public List<Submissao> getSubmissoesPorRoteiroEquipeUnicos(Roteiro roteiro) {
+		return sistema.getSubmissoesPorRoteiroEquipeUnicos(roteiro);
 	}
 
 	public Submissao getUltimaSubmissaoPorRoteiroEquipe(Roteiro roteiro,
@@ -704,6 +703,34 @@ public class Facade {
 			return sistema.getAvaliacoesDoRoteiroComCorretor(roteiroId, corretorId);
 		} catch (Throwable e) {
 			log.error("getCorretores()", e);
+			throw e;
+		}
+	}
+	
+	public Avaliacao salvarAvaliacao(Avaliacao avaliacao) throws Throwable{
+		try{
+			return sistema.salvarAvaliacao(avaliacao);
+		} catch (Throwable e) {
+			log.error("cadastrarAvaliacao()", e);
+			throw e;
+		}
+	}
+	
+	
+	public void excluirAvaliacao(Avaliacao avaliacao) throws Throwable{
+		try{
+			sistema.excluirAvaliacao(avaliacao);
+		} catch (Throwable e) {
+			log.error("excluirAvaliacao()", e);
+			throw e;
+		}
+	}
+	
+	public List<Avaliacao> getAvaliacaoPorSubmissao(int idSubmissao) throws Throwable{
+		try{
+			return sistema.getAvaliacaoPorSubmissao(idSubmissao);
+		}catch (Throwable e) {
+			log.error("getAvaliacaoPorSubmissao()", e);
 			throw e;
 		}
 	}

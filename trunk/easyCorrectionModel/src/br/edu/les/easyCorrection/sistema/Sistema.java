@@ -282,12 +282,12 @@ public class Sistema {
 						idRoteiro);
 	}
 	
-	public List<Submissao> getSubmissoesPorRoteiroEquipe(Roteiro roteiro, Equipe equipe) {
-		return gerenciadorSubmissoes.getSubmissoesPorRoteiroEquipe(roteiro, equipe);
+	public List<Submissao> getSubmissoesPorRoteiroEquipeUnicos(Roteiro roteiro) {
+		return gerenciadorSubmissoes.getSubmissoesPorRoteiroEquipeUnicos(roteiro);
 	}
 	
 	public Submissao getUltimaSubmissaoPorRoteiroEquipe(Roteiro roteiro, Equipe equipe) {
-		List<Submissao> listaSubmissoes = getSubmissoesPorRoteiroEquipe(roteiro, equipe);
+		List<Submissao> listaSubmissoes = gerenciadorSubmissoes.getSubmissoesPorRoteiroEquipe(roteiro, equipe);
 		return listaSubmissoes.get(listaSubmissoes.size()-1);
 	}
 
@@ -374,6 +374,18 @@ public class Sistema {
 
 	public List<Avaliacao> getAvaliacoesDoRoteiroComCorretor(int roteiroId, int corretorId) {
 		return gerenciadorAvaliacoes.getAvaliacoesDoRoteiroComCorretor(roteiroId, corretorId);
+	}
+	
+	public Avaliacao salvarAvaliacao(Avaliacao avaliacao) throws EasyCorrectionException{
+		return gerenciadorAvaliacoes.salvarAvaliacao(avaliacao);
+	}
+	
+	public void excluirAvaliacao(Avaliacao avaliacao) throws EasyCorrectionException{
+		gerenciadorAvaliacoes.excluirAvaliacao(avaliacao);
+	}
+	
+	public List<Avaliacao> getAvaliacaoPorSubmissao(int idSubmissao){
+		return gerenciadorAvaliacoes.getAvaliacaoPorSubmissao(idSubmissao);
 	}
 
 }
