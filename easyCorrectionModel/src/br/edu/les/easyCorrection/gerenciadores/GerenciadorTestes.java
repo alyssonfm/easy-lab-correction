@@ -1,6 +1,7 @@
 package br.edu.les.easyCorrection.gerenciadores;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
@@ -18,16 +19,21 @@ import junit.textui.TestRunner;
 import org.junit.runner.JUnitCore;
 
 import br.edu.les.easyCorrection.exceptions.ExecucaoTestesException;
+import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
+import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.servlet.ServletUpload;
 
 public class GerenciadorTestes extends Gerenciador {
 
 	private String resultadoErro = "";
 	private boolean erroCompilacao = false;
+	
+	private GerenciadorAvaliacoes gerenciadorAvaliacoes;
 
 	public GerenciadorTestes() {
 		super();
+		gerenciadorAvaliacoes = new GerenciadorAvaliacoes();
 	}
 
 	public TestResult executarTestes(String diretorioTestes,
@@ -89,15 +95,18 @@ public class GerenciadorTestes extends Gerenciador {
 	}
 
 	public String getSaidaDosTestes(TestResult result,
-			EquipeHasUsuarioHasRoteiro equipeUsuarioRoteiro) {
-
+			Submissao submissao) {
+		
+		EquipeHasUsuarioHasRoteiro eur = submissao.getEquipeHasUsuarioHasRoteiro();
 		String relatorio = "";
 
 		int quantTestesRodados = result.runCount();
 		int erros = result.errorCount();
 		int porcAcertos = ((quantTestesRodados - erros) * 100)
 				/ quantTestesRodados;
-
+		double notaTestesAutomaticos = (porcAcertos * eur.getRoteiro()
+				.getPorcentagemTestesAutomaticos()) / 1000;
+		
 		relatorio = "Relatório de Avaliação: \n\n"
 				+ "Total de Testes: "
 				+ quantTestesRodados
@@ -109,13 +118,12 @@ public class GerenciadorTestes extends Gerenciador {
 				+ porcAcertos
 				+ " %\n"
 				+ "Nota dos Testes Automáticos: "
-				+ (porcAcertos * equipeUsuarioRoteiro.getRoteiro()
-						.getPorcentagemTestesAutomaticos()) / 1000
+				+ notaTestesAutomaticos
 				+ "\n\nConsole:\n";
 
 		if (result.wasSuccessful()) {
 			relatorio += "SUCESSO!";
-
+			salvaAvaliacao(submissao, notaTestesAutomaticos, relatorio);
 		} else {
 			Enumeration<TestFailure> failures = result.errors();
 			for (int i = 0; i < result.errorCount(); i++) {
@@ -123,6 +131,28 @@ public class GerenciadorTestes extends Gerenciador {
 			}
 		}
 		return relatorio;
+	}
+	
+	public Avaliacao salvaAvaliacao(Submissao submissao, double notaTestesAutomaticos, String resultadoTestesAutomaticos){
+		try{
+			Avaliacao aval = gerenciadorAvaliacoes.getAvaliacaoPorRoteiroEquipe(submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getId(), 
+					submissao.getEquipeHasUsuarioHasRoteiro().getEquipe().getId());
+			aval.setSubmissao(submissao);
+			aval.setNotaAutomatica(notaTestesAutomaticos);
+			aval.setResuladoExecucaoTestes(resultadoTestesAutomaticos);
+			return gerenciadorAvaliacoes.editarAvaliacao(aval);
+		}
+		catch (Exception e) {
+			Avaliacao aval = new Avaliacao(0, 
+					submissao, 
+					notaTestesAutomaticos, 
+					0.0, 
+					resultadoTestesAutomaticos, 
+					0.0, 
+					null);
+			return gerenciadorAvaliacoes.cadastrarAvaliacao(aval);
+		}	
+		
 	}
 
 }

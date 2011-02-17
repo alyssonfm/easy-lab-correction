@@ -1,23 +1,9 @@
 package br.edu.les.easyCorrection.gerenciadores;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
-
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.TestFailure;
 import junit.framework.TestResult;
-import junit.textui.TestRunner;
-
-import org.junit.runner.JUnitCore;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
@@ -159,8 +145,13 @@ public class GerenciadorSubmissoes {
 	
 	public List<Submissao> getSubmissoesPorRoteiroEquipe(Roteiro rot, Equipe eq) {
 		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO()
-				.findByEquipeERoteiro(eq.getId(),
-						rot.getId());
+			.findByEquipeERoteiro(eq.getId(), rot.getId());
+		return lista;
+	}
+	
+	public List<Submissao> getSubmissoesPorRoteiroEquipeUnicos(Roteiro rot) {
+		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO()
+				.findByEquipeERoteiroUnicos(rot.getId());
 		return lista;
 	} 
 
@@ -286,8 +277,7 @@ public class GerenciadorSubmissoes {
 			return e.getMessage();
 		}
 
-		return gerenciadorTestes.getSaidaDosTestes(resultadoTeste, submissao
-				.getEquipeHasUsuarioHasRoteiro());
+		return gerenciadorTestes.getSaidaDosTestes(resultadoTeste, submissao);
 	}
 
 	public void verificaSeEquipePossuiMaximoParticipantes(
