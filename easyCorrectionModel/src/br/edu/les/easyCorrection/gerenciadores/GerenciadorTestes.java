@@ -23,6 +23,7 @@ import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 import br.edu.les.easyCorrection.servlet.ServletUpload;
+import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 public class GerenciadorTestes extends Gerenciador {
 
@@ -123,13 +124,13 @@ public class GerenciadorTestes extends Gerenciador {
 
 		if (result.wasSuccessful()) {
 			relatorio += "SUCESSO!";
-			salvaAvaliacao(submissao, notaTestesAutomaticos, relatorio);
 		} else {
 			Enumeration<TestFailure> failures = result.errors();
 			for (int i = 0; i < result.errorCount(); i++) {
 				relatorio += failures.nextElement().toString() + "\n";
 			}
 		}
+		salvaAvaliacao(submissao, notaTestesAutomaticos, relatorio);
 		return relatorio;
 	}
 	
@@ -139,16 +140,19 @@ public class GerenciadorTestes extends Gerenciador {
 					submissao.getEquipeHasUsuarioHasRoteiro().getEquipe().getId());
 			aval.setSubmissao(submissao);
 			aval.setNotaAutomatica(notaTestesAutomaticos);
-			aval.setResuladoExecucaoTestes(resultadoTestesAutomaticos);
+			aval.setDataAvaliacao(easyCorrectionUtil.getDataNow());
+			aval.setResultadoExecucaoTestes(resultadoTestesAutomaticos);
 			return gerenciadorAvaliacoes.editarAvaliacao(aval);
 		}
 		catch (Exception e) {
+			
 			Avaliacao aval = new Avaliacao(0, 
 					submissao, 
 					notaTestesAutomaticos, 
 					0.0, 
 					resultadoTestesAutomaticos, 
 					0.0, 
+					easyCorrectionUtil.getDataNow(),
 					null);
 			return gerenciadorAvaliacoes.cadastrarAvaliacao(aval);
 		}	

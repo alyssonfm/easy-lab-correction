@@ -64,7 +64,6 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 
 	public List<Usuario> getCorretores() {
 		List<GrupoUsuario> corretoresGU;
-
 		corretoresGU = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByGrupo(2);
 		corretoresGU.addAll(DAOFactory.DEFAULT.buildGrupoUsuarioDAO()
 				.findByGrupo(3));
