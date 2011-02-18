@@ -59,7 +59,7 @@ public class AvaliacaoHibernateDAO extends
 
 	@SuppressWarnings("unchecked")
 	public List<Avaliacao> findByRoteiroSemCorretor(int idRoteiro) {
-		Query q = getSession().createQuery("from Avaliacao where corrtetor.idUsuario is null and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
+		Query q = getSession().createQuery("from Avaliacao where corretor.idUsuario is null and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
 		q.setParameter("idRoteiro", idRoteiro);
 		q.setCacheable(true);
 		List <Avaliacao> lista = q.list();
@@ -93,7 +93,7 @@ public class AvaliacaoHibernateDAO extends
 	@SuppressWarnings("unchecked")
 	public List<Avaliacao> findByRoteiroComCorretor(int idRoteiro,
 			int idCorretor) {
-		Query q = getSession().createQuery("from Avaliacao where corrtetor.idUsuario = :idCorretor and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
+		Query q = getSession().createQuery("from Avaliacao where corretor.idUsuario = :idCorretor and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
 		q.setParameter("idRoteiro", idRoteiro);
 		q.setParameter("idCorretor", idCorretor);
 		q.setCacheable(true);
