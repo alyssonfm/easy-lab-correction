@@ -1,5 +1,7 @@
 package br.edu.les.easyCorrection.pojo.avaliacoes;
 
+import java.util.Date;
+
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
 
@@ -9,27 +11,35 @@ public class Avaliacao {
 	private Submissao submissao;
 	private double notaAutomatica;
 	private double notaCorrecao;
-	private String resuladoExecucaoTestes;
+	private String resultadoExecucaoTestes;
 	private double penalidade;
+	private Date dataAvaliacao;
 	private Usuario corretor;
-	
 	
 	public Avaliacao(Integer id, 
 			Submissao submissao, 
 			double notaAutomatica,
 			double notaCorrecao, 
 			String resuladoExecucaoTestes,
-			double penalidade, 
+			double penalidade,
+			Date dataAvaliacao,
 			Usuario corretor) {
+		
+		
 		this.id = id;
 		this.submissao = submissao;
 		this.notaAutomatica = notaAutomatica;
 		this.notaCorrecao = notaCorrecao;
-		this.resuladoExecucaoTestes = resuladoExecucaoTestes;
+		this.resultadoExecucaoTestes = resuladoExecucaoTestes;
 		this.penalidade = penalidade;
+		this.dataAvaliacao = dataAvaliacao;
 		this.corretor = corretor;
 	}
 	
+	public Avaliacao() {
+		super();
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -54,12 +64,15 @@ public class Avaliacao {
 	public void setNotaCorrecao(double notaCorrecao) {
 		this.notaCorrecao = notaCorrecao;
 	}
-	public String getResuladoExecucaoTestes() {
-		return resuladoExecucaoTestes;
+	
+	public String getResultadoExecucaoTestes() {
+		return resultadoExecucaoTestes;
 	}
-	public void setResuladoExecucaoTestes(String resuladoExecucaoTestes) {
-		this.resuladoExecucaoTestes = resuladoExecucaoTestes;
+
+	public void setResultadoExecucaoTestes(String resultadoExecucaoTestes) {
+		this.resultadoExecucaoTestes = resultadoExecucaoTestes;
 	}
+
 	public double getPenalidade() {
 		return penalidade;
 	}
@@ -73,11 +86,22 @@ public class Avaliacao {
 		this.corretor = corretor;
 	}
 	
-	
+	public Date getDataAvaliacao() {
+		return dataAvaliacao;
+	}
+
+	public void setDataAvaliacao(Date dataAvaliacao) {
+		this.dataAvaliacao = dataAvaliacao;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((corretor == null) ? 0 : corretor.hashCode());
+		result = prime * result
+				+ ((dataAvaliacao == null) ? 0 : dataAvaliacao.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(notaAutomatica);
@@ -88,13 +112,13 @@ public class Avaliacao {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime
 				* result
-				+ ((resuladoExecucaoTestes == null) ? 0
-						: resuladoExecucaoTestes.hashCode());
+				+ ((resultadoExecucaoTestes == null) ? 0
+						: resultadoExecucaoTestes.hashCode());
 		result = prime * result
 				+ ((submissao == null) ? 0 : submissao.hashCode());
-		result = prime * result + ((corretor == null) ? 0 : corretor.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -104,6 +128,16 @@ public class Avaliacao {
 		if (getClass() != obj.getClass())
 			return false;
 		Avaliacao other = (Avaliacao) obj;
+		if (corretor == null) {
+			if (other.corretor != null)
+				return false;
+		} else if (!corretor.equals(other.corretor))
+			return false;
+		if (dataAvaliacao == null) {
+			if (other.dataAvaliacao != null)
+				return false;
+		} else if (!dataAvaliacao.equals(other.dataAvaliacao))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -118,24 +152,19 @@ public class Avaliacao {
 		if (Double.doubleToLongBits(penalidade) != Double
 				.doubleToLongBits(other.penalidade))
 			return false;
-		if (resuladoExecucaoTestes == null) {
-			if (other.resuladoExecucaoTestes != null)
+		if (resultadoExecucaoTestes == null) {
+			if (other.resultadoExecucaoTestes != null)
 				return false;
-		} else if (!resuladoExecucaoTestes.equals(other.resuladoExecucaoTestes))
+		} else if (!resultadoExecucaoTestes
+				.equals(other.resultadoExecucaoTestes))
 			return false;
 		if (submissao == null) {
 			if (other.submissao != null)
 				return false;
 		} else if (!submissao.equals(other.submissao))
 			return false;
-		if (corretor == null) {
-			if (other.corretor != null)
-				return false;
-		} else if (!corretor.equals(other.corretor))
-			return false;
 		return true;
 	}
-	
-	
+
 	
 }

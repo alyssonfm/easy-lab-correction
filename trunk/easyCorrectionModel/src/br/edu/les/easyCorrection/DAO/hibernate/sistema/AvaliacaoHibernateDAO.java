@@ -12,6 +12,7 @@ import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
+import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 /**
  * <p>Hibernate DAO layer for Agendas</p>
@@ -45,7 +46,12 @@ public class AvaliacaoHibernateDAO extends
 	
 	public static Avaliacao instanciaAvaliacao(Avaliacao a) throws CampoVazioException{
 		a.setSubmissao(SubmissaoHibernateDAO.instanciaSubmissao(a.getSubmissao()));
-		a.setCorretor(UsuarioHibernateDAO.instanciaUsuario(a.getCorretor()));
+		try{
+			a.setCorretor(UsuarioHibernateDAO.instanciaUsuario(a.getCorretor()));
+		}
+		catch(Exception e){
+			a.setCorretor(null);
+		}
 		a = MyPersistenceLayer.deproxy(a, Avaliacao.class);
 		
 		return a;
