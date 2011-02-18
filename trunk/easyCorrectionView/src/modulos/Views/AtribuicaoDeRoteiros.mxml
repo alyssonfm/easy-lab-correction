@@ -96,6 +96,7 @@
 				}
 				
 				private function getListaEquipesSemCorretor():void{
+					comboCorretores.enabled = true;
 					roteiro = new Roteiro();
 					roteiro = CastDeEntidades.castRoteiro(comboRoteiros.selectedItem);
 					facade.getOperation("getAvaliacoesDoRoteiroSemCorretor").send(roteiro.id);
@@ -137,7 +138,7 @@
 
 				private function alocaEquipeAoCorretor():void{
 					var param:Array = new Array();
-					if (listaEquipesPorRoteiroSemCorretor.dataProvider.length != 0){
+					if (listaEquipesPorRoteiroSemCorretor.selectedIndex != -1){
 						var aval: Avaliacao = CastDeEntidades.castAvaliacao(listaEquipesPorRoteiroSemCorretor.selectedItem);
 						if(comboCorretores.selectedIndex != -1){
 							aval.corretor = CastDeEntidades.castUsuario(comboCorretores.selectedItem);
@@ -154,7 +155,7 @@
 				
 				private function desalocaEquipeAoCorretor():void{
 					var param:Array = new Array();
-					if (listaEquipesPorRoteiroDoCorretor.dataProvider.length != 0){
+					if (listaEquipesPorRoteiroDoCorretor.selectedIndex != -1){
 						var aval: Avaliacao = CastDeEntidades.castAvaliacao(listaEquipesPorRoteiroDoCorretor.selectedItem);
 						if(comboCorretores.selectedIndex != -1){
 							aval.corretor = null;
@@ -199,7 +200,7 @@
 		<mx:Label text="Equipes:" fontWeight="bold"
 			textAlign="left" width="63" x="10" y="72" id="labelTitulo1"/>
 		<comp:ComboBoxAC labelField="nome" x="73" y="21" width="304" change="getListaEquipesSemCorretor()" id="comboRoteiros"/>
-		<comp:ComboBoxAC labelField="nome" x="476" y="21" width="294" change="getListaEquipesComCorretor()" id="comboCorretores"/>
+		<comp:ComboBoxAC labelField="nome" x="476" y="21" width="294" change="getListaEquipesComCorretor()" id="comboCorretores" enabled="false"/>
 		<mx:HRule x="10" y="61" width="760" height="3"/>
 		<mx:List id="listaEquipesPorRoteiroSemCorretor" x="10" y="100" width="352" height="408" labelFunction="expoeEquipeDaAvaliacao"/>
 		<mx:Label text="Equipes Selecionadas:" fontWeight="bold"
