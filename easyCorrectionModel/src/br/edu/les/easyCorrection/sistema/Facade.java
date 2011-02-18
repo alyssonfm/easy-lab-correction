@@ -716,6 +716,15 @@ public class Facade {
 		}
 	}
 	
+	public Avaliacao alocaCorretor(Avaliacao avaliacao) throws Throwable{
+		try{
+			return sistema.alocaCorretor(avaliacao);
+		} catch (Throwable e) {
+			log.error("cadastrarAvaliacao()", e);
+			throw e;
+		}
+	}
+	
 	
 	public void excluirAvaliacao(Avaliacao avaliacao) throws Throwable{
 		try{

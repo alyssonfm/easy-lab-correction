@@ -388,4 +388,8 @@ public class Sistema {
 		return gerenciadorAvaliacoes.getAvaliacaoPorSubmissao(idSubmissao);
 	}
 
+	public Avaliacao alocaCorretor(Avaliacao avaliacao) throws EasyCorrectionException {
+		return gerenciadorAvaliacoes.editarAvaliacao(avaliacao);
+	}
+
 }
