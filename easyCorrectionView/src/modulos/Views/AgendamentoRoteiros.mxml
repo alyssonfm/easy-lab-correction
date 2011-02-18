@@ -112,11 +112,12 @@
 						sLabel = Util.formataData(item.dataFinalEntrega);
 						break;
 					case "Status":
+					/*
 						if(item.bloqueado == false){
 							sLabel = "LIBERADO";
 						} else{
 							sLabel = "BLOQUEADO";
-						}
+						}*/
 				}
 				return sLabel;
 			}
