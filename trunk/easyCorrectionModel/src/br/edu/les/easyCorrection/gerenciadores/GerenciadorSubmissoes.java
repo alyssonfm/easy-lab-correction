@@ -148,12 +148,6 @@ public class GerenciadorSubmissoes {
 			.findByEquipeERoteiro(eq.getId(), rot.getId());
 		return lista;
 	}
-	
-	public List<Submissao> getSubmissoesPorRoteiroEquipeUnicos(Roteiro rot) {
-		List<Submissao> lista = DAOFactory.DEFAULT.buildSubmissaoDAO()
-				.findByEquipeERoteiroUnicos(rot.getId());
-		return lista;
-	} 
 
 	public Integer numeroSubmissoesPorEUR(EquipeHasUsuarioHasRoteiro eur) {
 		return getSubmissoesPorRoteiroEquipe(eur.getRoteiro(), eur.getEquipe()).size();
