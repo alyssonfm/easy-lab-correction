@@ -15,7 +15,7 @@ public class Avaliacao {
 	private double penalidade;
 	private Date dataAvaliacao;
 	private Usuario corretor;
-	private boolean corrigida;
+	private boolean corrigido;
 
 	public Avaliacao(Integer id, 
 			Submissao submissao, 
@@ -41,12 +41,12 @@ public class Avaliacao {
 		super();
 	}
 	
-	public boolean isCorrigida() {
-		return corrigida;
+	public boolean isCorrigido() {
+		return corrigido;
 	}
 
-	public void setCorrigida(boolean corrigida) {
-		this.corrigida = corrigida;
+	public void setCorrigido(boolean corrigido) {
+		this.corrigido = corrigido;
 	}
 
 	public Integer getId() {
