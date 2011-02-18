@@ -623,8 +623,8 @@ public class Facade {
 		return sistema.numeroSubmissoesPorEUR(eur);
 	}
 
-	public List<Submissao> getSubmissoesPorRoteiroEquipeUnicos(Roteiro roteiro) {
-		return sistema.getSubmissoesPorRoteiroEquipeUnicos(roteiro);
+	public List<Avaliacao> getAvaliacaoPorRoteiroEquipeUnicos(Roteiro roteiro, Integer us) {
+		return sistema.getAvaliacaoPorRoteiroEquipeUnicos(roteiro, us);
 	}
 
 	public Submissao getUltimaSubmissaoPorRoteiroEquipe(Roteiro roteiro,

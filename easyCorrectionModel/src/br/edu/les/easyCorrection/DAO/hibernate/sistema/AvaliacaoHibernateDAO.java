@@ -101,5 +101,17 @@ public class AvaliacaoHibernateDAO extends
 		instanciaLista(lista);
 		return lista;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Avaliacao> findByEquipeERoteiroUnicos(Integer idRoteiro, Integer idCorretor) {
+		Query q = getSession().createQuery("from Avaliacao where submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro " +
+				"and corretor.idUsuario = :idCorretor " +
+				"GROUP BY submissao.equipeHasUsuarioHasRoteiro.equipe.id");
+		q.setParameter("idRoteiro",idRoteiro);
+		q.setParameter("idCorretor",idCorretor);
+		q.setCacheable(true);
+		List <Avaliacao> lista = q.list();
+		return instanciaLista(lista);
+	}
 
 }

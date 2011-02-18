@@ -99,12 +99,18 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 		return lista.get(0);
 	}
 	
+	public List<Avaliacao> getAvaliacaoPorRoteiroEquipeUnicos(Roteiro rot, Integer us) {
+		List<Avaliacao> lista = DAOFactory.DEFAULT.buildAvaliacaoDAO()
+				.findByEquipeERoteiroUnicos(rot.getId(), us);
+		return lista;
+	} 
+	
 	public Avaliacao salvarAvaliacao(Avaliacao avaliacao) throws EasyCorrectionException{
 		try{
 			Avaliacao aval = getAvaliacaoPorRoteiroEquipe(avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getRoteiro().getId(), 
 					avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getEquipe().getId());
-			aval.setCorretor(avaliacao.getCorretor());
 			aval.setNotaCorrecao(avaliacao.getNotaCorrecao());
+			aval.setCorrigida(avaliacao.isCorrigida());
 			return editarAvaliacao(aval);
 		}
 		catch(Exception e){

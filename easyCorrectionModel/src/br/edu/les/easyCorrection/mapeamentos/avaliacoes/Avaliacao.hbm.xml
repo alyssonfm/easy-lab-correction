@@ -14,6 +14,7 @@
 		<property name="resultadoExecucaoTestes" column="resultado_execucao_testes"/>
 		<property name="penalidade" column="penalidade"/>
 		<property name="dataAvaliacao" column="data_avaliacao"/>
+		<property name="corrigida" column="corrigida"/>
 		<many-to-one name="corretor"	class="br.edu.les.easyCorrection.pojo.acesso.Usuario" column="corretor_id"/>
 		<many-to-one name="submissao"	class="br.edu.les.easyCorrection.pojo.roteiros.Submissao" column="submissao_id"/>
 		

@@ -282,8 +282,8 @@ public class Sistema {
 						idRoteiro);
 	}
 	
-	public List<Submissao> getSubmissoesPorRoteiroEquipeUnicos(Roteiro roteiro) {
-		return gerenciadorSubmissoes.getSubmissoesPorRoteiroEquipeUnicos(roteiro);
+	public List<Avaliacao> getAvaliacaoPorRoteiroEquipeUnicos(Roteiro roteiro, Integer us) {
+		return gerenciadorAvaliacoes.getAvaliacaoPorRoteiroEquipeUnicos(roteiro, us);
 	}
 	
 	public Submissao getUltimaSubmissaoPorRoteiroEquipe(Roteiro roteiro, Equipe equipe) {

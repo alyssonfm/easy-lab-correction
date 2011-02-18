@@ -37,15 +37,6 @@ public class SubmissaoHibernateDAO extends
 		return instanciaLista(lista);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Submissao> findByEquipeERoteiroUnicos(Integer idRoteiro) {
-		Query q = getSession().createQuery("from Submissao where equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro GROUP BY equipeHasUsuarioHasRoteiro.equipe.id");
-		q.setParameter("idRoteiro",idRoteiro);
-		q.setCacheable(true);
-		List <Submissao> lista = q.list();
-		return instanciaLista(lista);
-	}
-	
 	@Override
 	public List<Submissao> instanciaLista(List<Submissao> lista) {
 		try {
