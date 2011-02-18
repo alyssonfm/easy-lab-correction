@@ -204,7 +204,12 @@ package bean.Utilitarios {
 					a.notaCorrecao = objeto.notaCorrecao;
 					a.resultadoExecucaoTestes = objeto.resultadoExecucaoTestes;
 					a.penalidade = objeto.penalidade;
-					a.corretor = castUsuario(objeto.usuario);
+					a.dataAvaliacao = objeto.dataAvaliacao;
+					try{
+						a.corretor = castUsuario(objeto.usuario);
+					}catch(e: Error){
+						a.corretor = null;	
+					}
 					return a;
 				}
 			}

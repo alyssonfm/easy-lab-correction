@@ -12,22 +12,22 @@
     <application path="main.mxml"/>
   </applications>
   <modules>
-    <module application="src/main.mxml" destPath="modulos/Views/AgendamentoRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AgendamentoRoteiros.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/sistema/RecuperacaoSenha.swf" optimize="true" sourcePath="src/modulos/sistema/RecuperacaoSenha.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/sistema/AlteraSenha.swf" optimize="true" sourcePath="src/modulos/sistema/AlteraSenha.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/Views/CadastrarRoteiro.swf" optimize="true" sourcePath="src/modulos/Views/CadastrarRoteiro.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/sistema/MensagemStatus.swf" optimize="true" sourcePath="src/modulos/sistema/MensagemStatus.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/sistema/Login.swf" optimize="true" sourcePath="src/modulos/sistema/Login.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/Cadastros.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/Cadastros.mxml"/>
     <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/DefinirFuncoes.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/DefinirFuncoes.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/Views/AtribuicaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AtribuicaoDeRoteiros.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/Views/Penalidades.swf" optimize="true" sourcePath="src/modulos/Views/Penalidades.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/Views/VisualizacaoDeNotas.swf" optimize="true" sourcePath="src/modulos/Views/VisualizacaoDeNotas.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/Views/AvaliacaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AvaliacaoDeRoteiros.mxml"/>
-    <module application="src/main.mxml" destPath="modulos/Views/SubmissaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/SubmissaoDeRoteiros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/ControleDeAcesso/Cadastros.swf" optimize="true" sourcePath="src/modulos/ControleDeAcesso/Cadastros.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/ModuloCorrecao.swf" optimize="true" sourcePath="src/modulos/Views/ModuloCorrecao.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/Chat.swf" optimize="true" sourcePath="src/modulos/Views/Chat.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/CadastrarRoteiro.swf" optimize="true" sourcePath="src/modulos/Views/CadastrarRoteiro.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/AgendamentoRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AgendamentoRoteiros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/VisualizacaoDeNotas.swf" optimize="true" sourcePath="src/modulos/Views/VisualizacaoDeNotas.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/sistema/MensagemStatus.swf" optimize="true" sourcePath="src/modulos/sistema/MensagemStatus.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/sistema/AlteraSenha.swf" optimize="true" sourcePath="src/modulos/sistema/AlteraSenha.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/ReinicializaBancoDeDados.swf" optimize="true" sourcePath="src/modulos/Views/ReinicializaBancoDeDados.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/AvaliacaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AvaliacaoDeRoteiros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/AtribuicaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/AtribuicaoDeRoteiros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/sistema/RecuperacaoSenha.swf" optimize="true" sourcePath="src/modulos/sistema/RecuperacaoSenha.mxml"/>
     <module application="src/main.mxml" destPath="modulos/Views/CriaEquipe.swf" optimize="true" sourcePath="src/modulos/Views/CriaEquipe.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/Views/SubmissaoDeRoteiros.swf" optimize="true" sourcePath="src/modulos/Views/SubmissaoDeRoteiros.mxml"/>
+    <module application="src/main.mxml" destPath="modulos/sistema/Login.swf" optimize="true" sourcePath="src/modulos/sistema/Login.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>
