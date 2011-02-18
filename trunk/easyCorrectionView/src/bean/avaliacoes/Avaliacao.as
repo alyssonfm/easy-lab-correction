@@ -17,7 +17,7 @@ package bean.avaliacoes{
 		public var penalidade:Number;
 		public var dataAvaliacao:Date;
 		public var corretor: Usuario;
-		public var corrigida: Boolean;
+		public var corrigido: Boolean;
 	}
 }
 
