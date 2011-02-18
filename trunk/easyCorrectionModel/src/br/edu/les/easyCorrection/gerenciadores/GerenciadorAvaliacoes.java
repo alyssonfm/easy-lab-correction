@@ -110,7 +110,7 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 			Avaliacao aval = getAvaliacaoPorRoteiroEquipe(avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getRoteiro().getId(), 
 					avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getEquipe().getId());
 			aval.setNotaCorrecao(avaliacao.getNotaCorrecao());
-			aval.setCorrigida(avaliacao.isCorrigida());
+			aval.setCorrigido(avaliacao.isCorrigido());
 			return editarAvaliacao(aval);
 		}
 		catch(Exception e){
