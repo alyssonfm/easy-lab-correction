@@ -7,6 +7,7 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.Utilitarios.Constantes;
 				import bean.Utilitarios.Util;
 				import bean.avaliacoes.Avaliacao;
 				import bean.roteiros.Submissao;
@@ -21,14 +22,27 @@
 				import mx.binding.utils.BindingUtils;
 				import mx.rpc.events.ResultEvent;
 				import mx.rpc.events.FaultEvent;
+				import com.flexspy.imp.Utils;
+				import mx.effects.Rotate;
+				import mx.controls.Image;
+				import flash.net.navigateToURL;
+				
+				[Bindable]
+	            [Embed(source="../../image/atencao.gif")]
+	            public var atencao:Class;
+	
+	            [Bindable]
+	            [Embed(source="../../image/sucessoCorrecao.png")]
+	            public var sucessoCorrecao:Class;
 				
 				
+				private const FILE_UPLOAD_URL:String = Constantes.urlUploadDonwload;
 				private var fileRef:FileReference = new FileReference();
 				private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadRoteiro'));
 				private var nomeArquivoCodigo: String = "";
 				
 				private var eur:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
-				private var sub:Submissao = new Submissao();
+				private var avaliacao:Avaliacao = new Avaliacao();
 					            
 	            private function falha(event:FaultEvent):void {
 					var mensagem:String;
@@ -81,58 +95,57 @@
 				private function pegaEquipesPorRoteiro():void{
 					var rot: Roteiro = CastDeEntidades.castRoteiro(comboRoteiros.selectedItem);
 					inputPeso.text = String(100 - rot.porcentagemTestesAutomaticos) + "%";
-					facade.getOperation("getSubmissoesPorRoteiroEquipeUnicos").send(rot);
+					var idUsuario: int = SharedObject.getLocal("sistema", "/").data.idUsuario;
+					facade.getOperation("getAvaliacaoPorRoteiroEquipeUnicos").send(rot, idUsuario);
 				}
 				
-				private function getSubmissoesPorRoteiroEquipeUnicos_result(event:ResultEvent):void{
+				private function getAvaliacaoPorRoteiroEquipeUnicos_result(event:ResultEvent):void{
 					listaEquipes.dataProvider = new ArrayCollection(); 
 					listaEquipes.dataProvider = event.result;
 				}
 				
 				private function selecaoLabelEquipes(item: *): String{
-					return item.equipe.nome;
+					return item.submissao.equipeHasUsuarioHasRoteiro.equipe.nome;
 				}
 				
 				private function selecionaEquipe():void{
-					eur = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(listaEquipes.selectedItem);
+					avaliacao = CastDeEntidades.castAvaliacao(listaEquipes.selectedItem);
+					eur = avaliacao.submissao.equipeHasUsuarioHasRoteiro;
 					facade.getOperation("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro").send(eur.equipe.id, eur.roteiro.id);
 				}
 				
 				private function getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event:ResultEvent):void{
 					listaIntegrantes.dataProvider = new ArrayCollection(); 
 					listaIntegrantes.dataProvider = event.result;
-					facade.getOperation("getUltimaSubmissaoPorRoteiroEquipe").send(eur.roteiro, eur.equipe);
-				}
-				
-				private function getUltimaSubmissaoPorRoteiroEquipe_result(event:ResultEvent):void{
-					sub = CastDeEntidades.castSubmissao(event.result);
-					facade.getOperation("getAvaliacaoPorSubmissao").send(sub.id);
-				}		
-				
-				private function getAvaliacaoPorSubmissao_result(event:ResultEvent):void{
-					var listaAvaliacoes: ArrayCollection = ArrayCollection(event.result);
 					try{
-						inputNota.text = String((listaAvaliacoes.getItemAt(0) as Avaliacao).notaAutomatica);
+						var nota: Number = avaliacao.notaCorrecao;
+						if(nota == 10){
+							inputNota.text = String(nota);
+						}else{
+							inputNota.text = "0" + String(nota);
+						}
 					}
 					catch(e: Error){
-						inputNota.text = "0";
+						inputNota.text = "0000";
 					}
-					baixarImplementacao.enabled = true;	
+					facade.getOperation("getNomeArquivoCodigo").send(avaliacao.submissao);
+					
 				}
 					
 				private function selecaoLabelIntegrantes(item: *): String{
 					return item.usuario.nome;
 				}
 				
-				private function baixarCodigo():void{
-					facade.getOperation("getNomeArquivoCodigo").send(sub);
-				}
-				
 				private function getNomeArquivoCodigo_result(event:ResultEvent):void{
 					nomeArquivoCodigo = String(event.result);
+					baixarImplementacao.enabled = true;
+					botaoSalvar.enabled = true;
+				}
+				
+				private function baixarCodigo():void{
 					try{
 						var variables:URLVariables = new URLVariables();
-						variables.nomeArquivo = sub.url + nomeArquivoCodigo;
+						variables.nomeArquivo = avaliacao.submissao.url + nomeArquivoCodigo;
 						request.data = variables;
 						fileRef.download(request, nomeArquivoCodigo);		
 					}
@@ -142,16 +155,11 @@
 					}
 				}
 				
+				
 				private function salvarNotaCorretor():void{
 					if (Util.formataTextValorToNumber2(inputNota.fullText) < 10){
-						var avaliacao: Avaliacao = new Avaliacao();
-						avaliacao.id = 0;
-						avaliacao.submissao = sub;
 						avaliacao.notaCorrecao = Util.formataTextValorToNumber2(inputNota.fullText);
-						avaliacao.notaAutomatica = 0;
-						avaliacao.penalidade = 0;
-						avaliacao.resultadoExecucaoTestes = "";
-						avaliacao.corretor = null;
+						avaliacao.corrigida = true;
 						facade.getOperation("salvarAvaliacao").send(avaliacao);
 					}
 					else{
@@ -162,9 +170,19 @@
 				
 				private function salvarAvaliacao_result(event:ResultEvent):void{
 					var mensagem:String = "Equipe Avaliada Com Sucesso.";
-					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(false, mensagem));	
+					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(false, mensagem));
+					pegaEquipesPorRoteiro();	
 				}
 				
+				private function defIcone(item:Object):Class {
+	                var iconClass:Class;
+	                if (item.corrigida) {
+	                    iconClass = sucessoCorrecao;
+	                } else {
+	                    iconClass = atencao;
+	                }
+	                return iconClass;
+	            }
 				
 			]]>
 		</mx:Script>
@@ -172,11 +190,9 @@
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
-			<mx:method name="getSubmissoesPorRoteiroEquipeUnicos" result="getSubmissoesPorRoteiroEquipeUnicos_result(event)" fault="falha(event)"/>
-			<mx:method name="getUltimaSubmissaoPorRoteiroEquipe" result="getUltimaSubmissaoPorRoteiroEquipe_result(event)" fault="falha(event)"/>
+			<mx:method name="getAvaliacaoPorRoteiroEquipeUnicos" result="getAvaliacaoPorRoteiroEquipeUnicos_result(event)" fault="falha(event)"/>
 			<mx:method name="getNomeArquivoCodigo" result="getNomeArquivoCodigo_result(event)" fault="falha(event)"/>
 			<mx:method name="salvarAvaliacao" result="salvarAvaliacao_result(event)" fault="falha(event)"/>
-			<mx:method name="getAvaliacaoPorSubmissao" result="getAvaliacaoPorSubmissao_result(event)" fault="falha(event)"/>	
 		</mx:RemoteObject>
 		
 		<mx:Label text="Roteiro:" fontWeight="bold"
@@ -188,11 +204,11 @@
 		<comp:ComboBoxAC labelField="nome" x="72" y="21" width="698" id="comboRoteiros" change="pegaEquipesPorRoteiro()"/>
 		<mx:HRule x="10" y="62" width="760" height="2"/>
 		<mx:HRule x="251" y="234" width="518" height="2"/>
-		<mx:List id="listaEquipes" x="10" y="94" width="226" height="302" labelFunction="selecaoLabelEquipes" itemClick="selecionaEquipe()"/>
+		<mx:List id="listaEquipes" x="10" y="94" width="226" height="302" labelFunction="selecaoLabelEquipes" itemClick="selecionaEquipe()" iconFunction="defIcone" fontSize="12" color="#042E8E"/>
 		<mx:List id="listaIntegrantes" x="265.95" y="94" width="504.05" height="66" labelFunction="selecaoLabelIntegrantes"/>
 		<mx:VRule x="244" y="62" height="334" width="13.95"/>
 		<mx:Button x="398" y="179" label="Baixar Implementação" click="baixarCodigo()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="baixarImplementacao" enabled="false"/>
-		<mx:Button x="398" y="329" label="Salvar Nota" click="salvarNotaCorretor()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal"/>
+		<mx:Button x="398" y="329" label="Salvar Nota" click="salvarNotaCorretor()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" enabled="false" id="botaoSalvar"/>
 		<mx:Label text="Nota:" fontWeight="bold"
 			textAlign="left" width="58" x="398" y="275" id="labelNota" fontSize="16"/>
 		<mx:Label text="Peso:" fontWeight="bold"

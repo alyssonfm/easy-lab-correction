@@ -15,8 +15,9 @@ package bean.avaliacoes{
 		public var notaCorrecao:Number;
 		public var resultadoExecucaoTestes:String;
 		public var penalidade:Number;
-		public var dataAvaliacao: Date;
+		public var dataAvaliacao:Date;
 		public var corretor: Usuario;
+		public var corrigida: Boolean;
 	}
 }
 
