@@ -623,8 +623,8 @@ public class Facade {
 		return sistema.numeroSubmissoesPorEUR(eur);
 	}
 
-	public List<Avaliacao> getAvaliacaoPorRoteiroEquipeUnicos(Roteiro roteiro, Integer us) {
-		return sistema.getAvaliacaoPorRoteiroEquipeUnicos(roteiro, us);
+	public List<Avaliacao> getAvaliacaoPorRoteiroEquipePorCorretor(Roteiro roteiro, Integer us) {
+		return sistema.getAvaliacaoPorRoteiroEquipePorCorretor(roteiro, us);
 	}
 
 	public Submissao getUltimaSubmissaoPorRoteiroEquipe(Roteiro roteiro,
@@ -749,6 +749,15 @@ public class Facade {
 			return sistema.getAvaliacoesPorRoteiro(roteiro);
 		}catch (Throwable e) {
 			log.error("getAvaliacaoPorSubmissao()", e);
+			throw e;
+		}
+	}
+	
+	public List<Avaliacao> getAvaliacoesPorEquipeERoteiro(Integer equipeId, Integer roteiroId) throws Throwable{
+		try{
+			return sistema.getAvaliacoesPorEquipeERoteiro(equipeId, roteiroId);
+		}catch (Throwable e) {
+			log.error("getAvaliacoesPorEquipeERoteiro()", e);
 			throw e;
 		}
 	}

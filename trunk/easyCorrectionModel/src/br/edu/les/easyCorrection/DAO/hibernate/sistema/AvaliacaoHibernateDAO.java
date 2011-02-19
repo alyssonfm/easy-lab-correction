@@ -12,7 +12,6 @@ import br.edu.les.easyCorrection.exceptions.CampoVazioException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
-import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
 /**
  * <p>Hibernate DAO layer for Agendas</p>
@@ -103,7 +102,7 @@ public class AvaliacaoHibernateDAO extends
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Avaliacao> findByEquipeERoteiroUnicos(Integer idRoteiro, Integer idCorretor) {
+	public List<Avaliacao> findByEquipeERoteiroPorCorretor(Integer idRoteiro, Integer idCorretor) {
 		Query q = getSession().createQuery("from Avaliacao where submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro " +
 				"and corretor.idUsuario = :idCorretor " +
 				"GROUP BY submissao.equipeHasUsuarioHasRoteiro.equipe.id");
@@ -117,6 +116,17 @@ public class AvaliacaoHibernateDAO extends
 	@SuppressWarnings("unchecked")
 	public List<Avaliacao> findByRoteiro(int idRoteiro) {
 		Query q = getSession().createQuery("from Avaliacao where submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
+		q.setParameter("idRoteiro", idRoteiro);
+		q.setCacheable(true);
+		List <Avaliacao> lista = q.list();
+		instanciaLista(lista);
+		return lista;
+	}
+
+	public List<Avaliacao> findByEquipeERoteiro(Integer idEquipe, Integer idRoteiro) {
+		Query q = getSession().createQuery("from Avaliacao where submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro" +
+				" and submissao.equipeHasUsuarioHasRoteiro.equipe.id = :idEquipe");
+		q.setParameter("idEquipe", idEquipe);
 		q.setParameter("idRoteiro", idRoteiro);
 		q.setCacheable(true);
 		List <Avaliacao> lista = q.list();

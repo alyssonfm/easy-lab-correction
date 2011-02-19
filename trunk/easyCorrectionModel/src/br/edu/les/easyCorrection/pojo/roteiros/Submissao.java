@@ -11,6 +11,23 @@ public class Submissao {
 	private String estado;
 	
 	
+	public Submissao(Integer id, 
+			Date dataSubmissao,
+			EquipeHasUsuarioHasRoteiro equipeHasUsuarioHasRoteiro, 
+			String url,
+			String estado) {
+		super();
+		this.id = id;
+		this.dataSubmissao = dataSubmissao;
+		this.equipeHasUsuarioHasRoteiro = equipeHasUsuarioHasRoteiro;
+		this.url = url;
+		this.estado = estado;
+	}
+	
+	public Submissao() {
+		super();
+	}
+
 	public Integer getId() {
 		return id;
 	}
