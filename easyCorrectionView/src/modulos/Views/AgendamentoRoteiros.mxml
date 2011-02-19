@@ -99,46 +99,42 @@
 				}
 				
 				private function labelGrid(item:*, column:DataGridColumn):String {
-				var sLabel:String = "";
-				var sHeaderText:String = column.headerText;
-				switch (sHeaderText)  {
-					case "Roteiro":
-						sLabel = item.nome;
-						break;
-					case "Data de Liberação":
-						sLabel = Util.formataData(item.dataLiberacao);
-						break;
-					case "Data de Entrega":
-						sLabel = Util.formataData(item.dataFinalEntrega);
-						break;
-					case "Status":
-					/*
-						if(item.bloqueado == false){
-							sLabel = "LIBERADO";
-						} else{
-							sLabel = "BLOQUEADO";
-						}*/
+					var sLabel:String = "";
+					var sHeaderText:String = column.headerText;
+					switch (sHeaderText)  {
+						case "Roteiro":
+							sLabel = item.nome;
+							break;
+						case "Data de Liberação":
+							sLabel = Util.formataData(item.dataLiberacao);
+							break;
+						case "Data de Entrega":
+							sLabel = Util.formataData(item.dataFinalEntrega);
+							break;
+						case "Status":
+						/*
+							if(item.bloqueado == false){
+								sLabel = "LIBERADO";
+							} else{
+								sLabel = "BLOQUEADO";
+							}*/
+					}
+					return sLabel;
 				}
-				return sLabel;
-			}
-			
-			private function chamaEditarRoteiro():void{
-				if(dg_agenda.selectedItem != null){
-					var param:* = dg_agenda.selectedItem;
-					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, param);
-				}else{
+				
+				private function chamaEditarRoteiro():void{
+					if(dg_agenda.selectedItem != null){
+						var param:* = dg_agenda.selectedItem;
+						ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, param);
+					}else{
+						ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
+					}
+				}
+				
+				private function criaRoteiro():void{
 					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
 				}
-			}
-			
-			private function criaRoteiro():void{
-				ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
-			}
-			
-			
-				
-				
-				
+
 			]]>
 		</mx:Script>
 				
