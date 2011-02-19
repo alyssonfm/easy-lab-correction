@@ -144,6 +144,12 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 		
 	}
 
+	public List<Avaliacao> getAvaliacoesPorRoteiro(Roteiro roteiro) {
+		List<Avaliacao> lista = DAOFactory.DEFAULT.buildAvaliacaoDAO()
+			.findByRoteiro(roteiro.getId());
+		return lista;
+	}
+
 
 
 }
