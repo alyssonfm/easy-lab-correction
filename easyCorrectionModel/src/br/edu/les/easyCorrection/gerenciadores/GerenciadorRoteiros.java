@@ -41,6 +41,11 @@ public class GerenciadorRoteiros extends Gerenciador {
 	 */
 	private final int ROTEIRO_FECHADO = 3;
 
+	/*
+	 * Estado posterior a data final para correcao
+	 */
+	private final int ROTEIRO_CORRIGIDO = 4;
+
 	private final double PENALIDADE_DIA_ATRASO_DEFAULT = -1;
 	private final double PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT = -1;
 
@@ -79,11 +84,6 @@ public class GerenciadorRoteiros extends Gerenciador {
 		}
 	}
 
-	/*
-	 * Pseudo codigo do metodo:
-	 * 
-	 * valida_roteiro_antes_da_cria save_changes() exception
-	 */
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
 			throws CriacaoRoteiroException, LiberaRoteiroException {
 
@@ -93,7 +93,12 @@ public class GerenciadorRoteiros extends Gerenciador {
 
 		this.criacaoOuAtualizacaoMsg = "criado";
 
-		if (validaRoteiroInicializandoDiretorios(roteiroTemp)) {
+		// Estes campos podem vir null, soh serao usados apos a primeira edicao
+		// (quando serah adicionado o caminho no servidor)
+		roteiroTemp.setDiretorioTestes("");
+		roteiroTemp.setDiretorioInterface("");
+		
+		if (validaRoteiroEmCriacao(roteiroTemp)) {
 			int aux = DAOFactory.DEFAULT.buildRoteiroDAO().save(roteiroTemp);
 
 			System.out.println("O Roteiro " + roteiroTemp.getNome()
@@ -113,8 +118,9 @@ public class GerenciadorRoteiros extends Gerenciador {
 			throw new EdicaoRoteiroException("Roteiro inexistente!");
 		}
 
-		int estadoAtualRoteiro = computaEstadoRoteiro(roteiroTemp);
 		this.criacaoOuAtualizacaoMsg = "atualizado";
+		
+		int estadoAtualRoteiro = computaEstadoNovoRoteiro(roteiroTemp);
 
 		switch (estadoAtualRoteiro) {
 		case (ROTEIRO_EM_CRIACAO):
@@ -132,11 +138,13 @@ public class GerenciadorRoteiros extends Gerenciador {
 			break;
 
 		case (ROTEIRO_FECHADO):
-			// Essa validacao eh desnecessaria, pois jah foi feita a checagem da
-			// data na computacao do estado
 			validaRoteiroEstadoFechado(roteiroTemp);
-
 			break;
+
+		case (ROTEIRO_CORRIGIDO):
+			validaRoteiroEstadoCorrigido(roteiroTemp);
+			break;
+
 		default:
 			throw new EdicaoRoteiroException(MsgErros.VALORINVALIDO
 					.msg("A edição do roteiro não pôde ser realizada!"));
@@ -175,15 +183,212 @@ public class GerenciadorRoteiros extends Gerenciador {
 	 * ************************************************************
 	 */
 
-	private boolean validaRoteiroInicializandoDiretorios(Roteiro roteiro)
-			throws CriacaoRoteiroException {
+	private int computaEstadoNovoRoteiro(Roteiro roteiroTemp)
+			throws EdicaoRoteiroException {
 
-		// Estes campos podem vir null, soh serao usados apos a primeira edicao
-		// (quando serah adicionado o caminho no servidor)
-		roteiro.setDiretorioTestes("");
-		roteiro.setDiretorioInterface("");
+		// Antes de Computar o estado do novo roteiro, vamos checar se houve
+		// alguma modificacao com relacao ao antigo estado e aplicar as devidas
+		// restricoes
+		if (roteiroTemp == null) {
+			throw new EdicaoRoteiroException(
+					"Roteiro invalido. Tente Novamente...");
+		}
 
-		return validaRoteiroEmCriacao(roteiro);
+		this.checaModificacaoDatas(roteiroTemp);
+		return getEstadoAtualRoteiro(roteiroTemp);
+	}
+
+	private void checaModificacaoDatas(Roteiro roteiroNovo)
+			throws EdicaoRoteiroException {
+
+		// Tempo nesse instante
+		Date dataHoje = easyCorrectionUtil.getDataNow();
+
+		Roteiro roteiroAntigo = this.getRoteiro(roteiroNovo.getId());
+
+		int estadoRoteiroAntigo = (roteiroAntigo == null) ? ROTEIRO_EM_CRIACAO
+				: getEstadoAtualRoteiro(roteiroAntigo);
+
+		switch (estadoRoteiroAntigo) {
+		case (ROTEIRO_EM_CRIACAO):
+		case (ROTEIRO_JAH_CRIADO):
+			// LIBERAR, ENTREGA E DISCUSSAO PODEM SER MUDADAS
+			// Mas soh para o dia atual ou depois
+			if (roteiroNovo.getDataLiberacao() == null
+					|| roteiroNovo.getDataLiberacao().before(dataHoje)) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			} else if (roteiroNovo.getDataFinalEntrega() != null
+					&& roteiroNovo.getDataFinalEntrega().before(dataHoje)) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data Limite para Entrega inválida. O Roteiro não pôde ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			} else if (roteiroNovo.getDataFinalDiscussao() != null
+					&& roteiroNovo.getDataFinalDiscussao().before(dataHoje)) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data Limite para Discussão inválida. O Roteiro não pôde ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			}
+
+			break;
+
+		case (ROTEIRO_LIBERADO):
+			// ENTREGA E DISCUSSAO PODEM SER MUDADAS
+			// Mas soh para o dia atual ou depois
+			// LIBERAR: se nao for modificada: mantem a antiga
+			// se for modificada: soh para o dia atual ou depois
+
+			if (roteiroNovo.getDataLiberacao() == null
+					|| (roteiroNovo.getDataLiberacao().before(dataHoje) && (!roteiroNovo
+							.getDataLiberacao().equals(
+									roteiroAntigo.getDataLiberacao())))) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			} else if (roteiroNovo.getDataFinalEntrega() != null
+					&& roteiroNovo.getDataFinalEntrega().before(dataHoje)) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data Limite para Entrega inválida. O Roteiro não pôde ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			} else if (roteiroNovo.getDataFinalDiscussao() != null
+					&& roteiroNovo.getDataFinalDiscussao().before(dataHoje)) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data Limite para Discussão inválida. O Roteiro não pôde ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			}
+			break;
+
+		case (ROTEIRO_FECHADO):
+			// DISCUSSAO PODEM SER MUDADAS
+			// Mas soh para o dia atual ou depois
+			// LIBERAR E ENTREGA
+			// se nao for modificada: mantem a antiga
+			// se for modificada: soh para o dia atual ou depois
+
+			if (roteiroNovo.getDataLiberacao() == null
+					|| (roteiroNovo.getDataLiberacao().before(dataHoje) && (!roteiroNovo
+							.getDataLiberacao().equals(
+									roteiroAntigo.getDataLiberacao())))) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			} else if (roteiroNovo.getDataFinalEntrega() != null
+					|| (roteiroNovo.getDataFinalEntrega().before(dataHoje) && (!roteiroNovo
+							.getDataFinalEntrega().equals(
+									roteiroAntigo.getDataFinalEntrega())))) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data Limite para Entrega inválida. O Roteiro não pôde ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			} else if (roteiroNovo.getDataFinalDiscussao() != null
+					&& roteiroNovo.getDataFinalDiscussao().before(dataHoje)) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data Limite para Discussão inválida. O Roteiro não pôde ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			}
+			break;
+
+		case (ROTEIRO_CORRIGIDO):
+			// LIBERAR, ENTREGA E DISCUSSAO
+			// se nao for modificada: mantem a antiga
+			// se for modificada: soh para o dia atual ou depois
+
+			if (roteiroNovo.getDataLiberacao() == null
+					|| (roteiroNovo.getDataLiberacao().before(dataHoje) && (!roteiroNovo
+							.getDataLiberacao().equals(
+									roteiroAntigo.getDataLiberacao())))) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			} else if (roteiroNovo.getDataFinalEntrega() != null
+					|| (roteiroNovo.getDataFinalEntrega().before(dataHoje) && (!roteiroNovo
+							.getDataFinalEntrega().equals(
+									roteiroAntigo.getDataFinalEntrega())))) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data Limite para Entrega inválida. O Roteiro não pôde ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			} else if (roteiroNovo.getDataFinalDiscussao() != null
+					|| (roteiroNovo.getDataFinalDiscussao().before(dataHoje) && (!roteiroNovo
+							.getDataFinalDiscussao().equals(
+									roteiroAntigo.getDataFinalDiscussao())))) {
+				throw new EdicaoRoteiroException(
+						MsgErros.VALORINVALIDO
+								.msg("Data Limite para Discussão inválida. O Roteiro não pôde ser "
+										+ criacaoOuAtualizacaoMsg + "!"));
+
+			}
+
+			break;
+
+		default:
+			break;
+		}
+
+		if (roteiroNovo.getDataFinalEntrega() != null
+				&& roteiroNovo.getDataLiberacao() != null
+				&& (roteiroNovo.getDataFinalEntrega().before(
+						roteiroNovo.getDataLiberacao()) || roteiroNovo
+						.getDataFinalEntrega().equals(
+								roteiroNovo.getDataLiberacao()))) {
+			throw new EdicaoRoteiroException(
+					MsgErros.VALORINVALIDO
+							.msg("Data Limite para Entrega anterior/igual à Data de Liberação. O Roteiro não pôde ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+		} else if (roteiroNovo.getDataFinalDiscussao() != null
+				&& roteiroNovo.getDataFinalEntrega() != null
+				&& (roteiroNovo.getDataFinalDiscussao().before(
+						roteiroNovo.getDataFinalEntrega()) || roteiroNovo
+						.getDataFinalDiscussao().equals(
+								roteiroNovo.getDataFinalEntrega()))) {
+			throw new EdicaoRoteiroException(
+					MsgErros.VALORINVALIDO
+							.msg("Data Limite para Discussão anterior/igual à Data Limite para Entrega. O Roteiro não pôde ser "
+									+ criacaoOuAtualizacaoMsg + "!"));
+
+		}
+	}
+
+	private int getEstadoAtualRoteiro(Roteiro roteiro) {
+		// Tempo nesse instante
+		Date tempoAtualExato = Calendar.getInstance().getTime();
+
+		if (roteiro.getDataLiberacao() == null || roteiro.getId() == 0) {
+			return ROTEIRO_EM_CRIACAO;
+		} else if (tempoAtualExato.before(roteiro.getDataLiberacao())) {
+			return ROTEIRO_JAH_CRIADO;
+		} else if (tempoAtualExato.after(roteiro.getDataLiberacao())
+				&& tempoAtualExato.before(roteiro.getDataFinalEntrega())) {
+			return ROTEIRO_LIBERADO;
+		} else if (tempoAtualExato.after(roteiro.getDataFinalEntrega())) {
+			return ROTEIRO_FECHADO;
+		} else if (tempoAtualExato.after(roteiro.getDataFinalDiscussao())) {
+			return ROTEIRO_CORRIGIDO;
+		} else {
+			return ESTADO_INEXISTENTE;
+		}
 	}
 
 	/*
@@ -193,19 +398,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 	private boolean validaRoteiroEmCriacao(Roteiro roteiro)
 			throws CriacaoRoteiroException {
 
-		this.validacoesGeraisDeRoteiroEditavel(roteiro);
-
-		if (roteiro.getDataLiberacao() == null
-				|| roteiro.getDataLiberacao().before(
-						easyCorrectionUtil.getDataNow())) {
-			throw new CriacaoRoteiroException(
-					MsgErros.VALORINVALIDO
-							.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
-									+ criacaoOuAtualizacaoMsg + "!"));
-
-		}
-
-		return true;
+		return this.validacoesBasicasDosAtributosDoRoteiro(roteiro);
 
 	}
 
@@ -243,25 +436,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 			throws EdicaoRoteiroException, CriacaoRoteiroException,
 			LiberaRoteiroException {
 
-		// Os testes de LIBERADO são apenas os Gerais
-		validacoesGeraisDeRoteiroEditavel(roteiro);
-		Date antigaData = this.getRoteiro(roteiro.getId()).getDataLiberacao();
-
-		// Esse eh um caso especial que no caso de nao haver nenhuma data no
-		// banco deve-se setar alguma, mas nao uma menor que a atual. E caso
-		// haja, essa data nao pode ser modificada, pois por tratar-se da data
-		// de liberacao, ela jah devera ter passado e nao pode ser mudada para
-		// outro dia que nao seja o atual ou futuro
-		if (roteiro.getDataLiberacao().before(easyCorrectionUtil.getDataNow())) {
-			if (antigaData == null) {
-				// Se nao existia data anteriormente nesse campo colocamos a
-				// data atual
-				roteiro.setDataLiberacao(easyCorrectionUtil.getDataNow());
-			} else {
-				// Se jah existia, repetimos a estava anteriormente
-				roteiro.setDataLiberacao(antigaData);
-			}
-		}
+		validacoesBasicasDosAtributosDoRoteiro(roteiro);
 
 		// E checa se este possui as caracteristicas ideais para ser/manter-se
 		// liberado
@@ -285,44 +460,28 @@ public class GerenciadorRoteiros extends Gerenciador {
 	 * @param roteiro
 	 * @return
 	 * @throws EdicaoRoteiroException
+	 * @throws CriacaoRoteiroException
 	 */
 	private boolean validaRoteiroEstadoFechado(Roteiro roteiro)
-			throws EdicaoRoteiroException {
+			throws CriacaoRoteiroException {
 
-		Date dataNow = Calendar.getInstance().getTime();
-
-		if (roteiro.getDataFinalEntrega().before(dataNow)) {
-			throw new EdicaoRoteiroException(
-					MsgErros.VALORINVALIDO
-							.msg("Não é possível editar um Roteiro após a data de entrega do mesmo!"));
-		} else {
-			return true;
-		}
+		return validacoesBasicasDosAtributosDoRoteiro(roteiro);
 	}
 
-	private boolean validacoesGeraisDeRoteiroEditavel(Roteiro roteiro)
+	private boolean validaRoteiroEstadoCorrigido(Roteiro roteiro)
+			throws CriacaoRoteiroException {
+
+		return validacoesBasicasDosAtributosDoRoteiro(roteiro);
+
+	}
+
+	private boolean validacoesBasicasDosAtributosDoRoteiro(Roteiro roteiro)
 			throws CriacaoRoteiroException {
 
 		if (roteiro.getNome() == null || roteiro.getNome().equals("")) {
 			throw new CriacaoRoteiroException(MsgErros.NOMEVAZIO
 					.msg("Nome da atividade inválido. O Roteiro não pôde ser "
 							+ criacaoOuAtualizacaoMsg + "!"));
-
-		} else if (roteiro.getDataFinalEntrega() != null
-				&& roteiro.getDataFinalEntrega().before(
-						roteiro.getDataLiberacao())) {
-			throw new CriacaoRoteiroException(
-					MsgErros.VALORINVALIDO
-							.msg("Data Limite para Entrega anterior à Data de Liberação. O Roteiro não pôde ser "
-									+ criacaoOuAtualizacaoMsg + "!"));
-
-		} else if (roteiro.getDataFinalDiscussao() != null
-				&& roteiro.getDataFinalDiscussao().before(
-						roteiro.getDataFinalEntrega())) {
-			throw new CriacaoRoteiroException(
-					MsgErros.VALORINVALIDO
-							.msg("Data Limite para Discussão anterior à Data Limite para Entrega. O Roteiro não pôde ser "
-									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (roteiro.getNumeroMaximoParticipantes() != null
 				&& roteiro.getNumeroMaximoParticipantes() <= 0) {
@@ -374,27 +533,6 @@ public class GerenciadorRoteiros extends Gerenciador {
 									+ criacaoOuAtualizacaoMsg + "!"));
 		} else {
 			return true;
-		}
-	}
-
-	private int computaEstadoRoteiro(Roteiro roteiroTemp) {
-
-		// Tempo nesse instante
-		Date tempoAtualExato = Calendar.getInstance().getTime();
-
-		// A data do roteiro eh setada da seguinte forma: dia XX as 12h, ops...
-
-		if (roteiroTemp.getDataLiberacao() == null || roteiroTemp.getId() == 0) {
-			return ROTEIRO_EM_CRIACAO;
-		} else if (tempoAtualExato.before(roteiroTemp.getDataLiberacao())) {
-			return ROTEIRO_JAH_CRIADO;
-		} else if (tempoAtualExato.after(roteiroTemp.getDataLiberacao())
-				&& tempoAtualExato.before(roteiroTemp.getDataFinalEntrega())) {
-			return ROTEIRO_LIBERADO;
-		} else if (tempoAtualExato.after(roteiroTemp.getDataFinalEntrega())) {
-			return ROTEIRO_FECHADO;
-		} else {
-			return ESTADO_INEXISTENTE;
 		}
 	}
 
