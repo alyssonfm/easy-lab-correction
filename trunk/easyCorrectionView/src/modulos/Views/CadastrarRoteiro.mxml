@@ -296,7 +296,7 @@
 		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"		
 		toolTip="" x="641" y="10" width="129" id="dfDataLiberacao" text="{df.format(new Date())}" change="atualizaDatasDefaut()"/>
 		<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
-		<mx:TextArea x="10" y="78" width="760" height="122" id="inputDescricao" maxChars="5000"/>
+		<mx:TextArea x="10" y="78" width="760" height="122" id="inputDescricao" maxChars="30000"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
