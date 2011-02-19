@@ -4,6 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import bean.avaliacoes.Avaliacao;
 			import bean.Utilitarios.Constantes;
 			import bean.Utilitarios.Util;
 			import com.flexspy.imp.Utils;
@@ -121,9 +122,29 @@
 			private function getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event:ResultEvent):void{
 				var listaEUR: ArrayCollection = event.result as ArrayCollection;
 				integrantesEquipeRoteiro.dataProvider = new ArrayCollection();
+				var idUsuario: int = SharedObject.getLocal("sistema", "/").data.idUsuario;
 				if(listaEUR.length > 0){
 					integrantesEquipeRoteiro.dataProvider = listaEUR;
-				} 
+				}
+				for (var i: int = 0; i < listaEUR.length; i++){
+					var eur: EquipeHasUsuarioHasRoteiro = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(listaEUR.getItemAt(i));
+					if (eur.usuario.idUsuario == idUsuario){
+						facade.getOperation("getAvaliacoesPorEquipeERoteiro").send(eur.equipe.id, eur.roteiro.id);
+						break;
+					}
+				}
+			}
+			
+			private function getAvaliacoesPorEquipeERoteiro_result(event:ResultEvent):void{
+				var listaAva: ArrayCollection = event.result as ArrayCollection;
+				try{
+					var avaliacao: Avaliacao = CastDeEntidades.castAvaliacao(listaAva.getItemAt(0));
+					inputNotaAutomatica.text = Util.formataValor(String(avaliacao.notaAutomatica));
+					inputNotaCorretor.text = Util.formataValor(String(avaliacao.notaCorrecao));
+				} catch(e: Error){
+					inputNotaAutomatica.text = "0,0";
+					inputNotaCorretor.text = "0,0";
+				}
 			}
 			
 			private function carregaArquivos(): void{
@@ -188,8 +209,6 @@
 					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
 				}
 			}
-			
-			
 		]]>
 	</mx:Script>	
 	
@@ -199,6 +218,7 @@
 		<mx:method name="getNomeArquivoTestes" result="getNomeArquivoTestes_result(event)" fault="falha(event)"/>
 		<mx:method name="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro" result="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event)" fault="falha(event)"/>
 		<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
+		<mx:method name="getAvaliacoesPorEquipeERoteiro" result="getAvaliacoesPorEquipeERoteiro_result(event)" fault="falha(event)"/>
 	</mx:RemoteObject>
 		
 	<mx:Canvas label="Roteiros" id="canvasRoteiros">
@@ -219,8 +239,8 @@
 		<mx:List x="10" y="202" visible="false" fontSize="12" width="315" height="155" cornerRadius="20" alpha="0.5" id="projetoCotaList"/>
 		<mx:Label x="331" y="96" text="Descrição:" id="labelDescRoteiro"/>
 		<mx:Label x="333" y="70" text="Título:" id="labelDescRoteiro0"/>
-		<mx:Label x="759" y="14" text="Nota final:"/>
-		<mx:Label y="39" text="Nota dos testes:" x="718"/>
+		<mx:Label x="745" y="38" text="Nota do Corretor:"/>
+		<mx:Label y="10" text="Nota Automática:" x="748"/>
 		<mx:Label x="654" y="422" text="Data de Liberação:"/>
 		<mx:Label x="654" y="450" text="Data de Entrega:"/>
 		<mx:Label x="654" y="478" text="Data Final para Discussão:"/>
@@ -243,7 +263,7 @@
 		<mx:List x="10" y="44" scroll="true" width="264" height="399" id="listaRoteiros" labelField="nome" itemClick="atualizaDadosRoteiro()" fontSize="14"/>
 		<mx:List x="10" y="489" width="267" height="85" labelFunction="labelIntegrantesEquipeRoteiro" id="integrantesEquipeRoteiro"></mx:List>
 		<mx:Label x="386" y="70" width="532" id="inputTituloRoteiro" color="#1B7A0F" text="..."/>
-		<mx:Label x="837" y="14" width="48" id="inputNotaFinal" color="#1B7A0F" text="0,0"/>
-		<mx:Label x="837" y="39" width="48" id="inputNotaTestes" color="#1B7A0F" text="0,0"/>
+		<mx:Label x="870" y="38" width="48" id="inputNotaCorretor" color="#1B7A0F" text="0,0"/>
+		<mx:Label x="870" y="10" width="48" id="inputNotaAutomatica" color="#1B7A0F" text="0,0"/>
 	</mx:Canvas>
 </mx:TabNavigator>

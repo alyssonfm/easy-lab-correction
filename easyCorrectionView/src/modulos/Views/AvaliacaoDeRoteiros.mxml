@@ -96,10 +96,10 @@
 					var rot: Roteiro = CastDeEntidades.castRoteiro(comboRoteiros.selectedItem);
 					inputPeso.text = String(100 - rot.porcentagemTestesAutomaticos) + "%";
 					var idUsuario: int = SharedObject.getLocal("sistema", "/").data.idUsuario;
-					facade.getOperation("getAvaliacaoPorRoteiroEquipeUnicos").send(rot, idUsuario);
+					facade.getOperation("getAvaliacaoPorRoteiroEquipePorCorretor").send(rot, idUsuario);
 				}
 				
-				private function getAvaliacaoPorRoteiroEquipeUnicos_result(event:ResultEvent):void{
+				private function getAvaliacaoPorRoteiroEquipePorCorretor_result(event:ResultEvent):void{
 					listaEquipes.dataProvider = new ArrayCollection(); 
 					listaEquipes.dataProvider = event.result;
 				}
@@ -119,6 +119,7 @@
 					listaIntegrantes.dataProvider = event.result;
 					try{
 						var nota: Number = avaliacao.notaCorrecao;
+						nota = (nota / (100 - avaliacao.submissao.equipeHasUsuarioHasRoteiro.roteiro.porcentagemTestesAutomaticos)) * 100;
 						if(nota == 10){
 							inputNota.text = String(nota);
 						}else{
@@ -158,7 +159,7 @@
 				
 				private function salvarNotaCorretor():void{
 					if (Util.formataTextValorToNumber2(inputNota.fullText) < 10){
-						avaliacao.notaCorrecao = Util.formataTextValorToNumber2(inputNota.fullText) * (100 - avaliacao.submissao.equipeHasUsuarioHasRoteiro.roteiro.porcentagemTestesAutomaticos);
+						avaliacao.notaCorrecao = Util.formataTextValorToNumber2(inputNota.fullText);
 						avaliacao.corrigido = true;
 						facade.getOperation("salvarAvaliacao").send(avaliacao);
 					}
@@ -190,7 +191,7 @@
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
 			<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
-			<mx:method name="getAvaliacaoPorRoteiroEquipeUnicos" result="getAvaliacaoPorRoteiroEquipeUnicos_result(event)" fault="falha(event)"/>
+			<mx:method name="getAvaliacaoPorRoteiroEquipePorCorretor" result="getAvaliacaoPorRoteiroEquipePorCorretor_result(event)" fault="falha(event)"/>
 			<mx:method name="getNomeArquivoCodigo" result="getNomeArquivoCodigo_result(event)" fault="falha(event)"/>
 			<mx:method name="salvarAvaliacao" result="salvarAvaliacao_result(event)" fault="falha(event)"/>
 		</mx:RemoteObject>
