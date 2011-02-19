@@ -158,7 +158,7 @@
 				
 				private function salvarNotaCorretor():void{
 					if (Util.formataTextValorToNumber2(inputNota.fullText) < 10){
-						avaliacao.notaCorrecao = Util.formataTextValorToNumber2(inputNota.fullText);
+						avaliacao.notaCorrecao = Util.formataTextValorToNumber2(inputNota.fullText) * (100 - avaliacao.submissao.equipeHasUsuarioHasRoteiro.roteiro.porcentagemTestesAutomaticos);
 						avaliacao.corrigido = true;
 						facade.getOperation("salvarAvaliacao").send(avaliacao);
 					}
@@ -176,7 +176,7 @@
 				
 				private function defIcone(item:Object):Class {
 	                var iconClass:Class;
-	                if (item.corrigida) {
+	                if (item.corrigido) {
 	                    iconClass = sucessoCorrecao;
 	                } else {
 	                    iconClass = atencao;

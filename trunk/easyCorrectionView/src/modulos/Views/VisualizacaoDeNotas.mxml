@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-	Componente para a tela de login do sistema
--->
-
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
 						xmlns:les="modulos.sistema.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
@@ -11,21 +7,48 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.avaliacoes.Avaliacao;
+				import bean.Utilitarios.CastDeEntidades;
+				import bean.roteiros.Roteiro;
+				import mx.collections.ArrayCollection;
 				import eventos.UsuarioEvent;
 				import bean.acesso.*;
 				import eventos.RespostaLoginEvent;
 				import eventos.FechaPopupEvent;
-				import mx.utils.Base64Decoder;
 				import mx.controls.Image;
 				import com.adobe.serialization.json.JSON;
 				import mx.controls.Alert;
 				import mx.utils.StringUtil;
 				import Scripts.ControladorDeModulos;
 				import mx.binding.utils.BindingUtils;
-				//import eventos.RespostaLoginEvent;
-				//import eventos.FechaPopupEvent;
 				import mx.rpc.events.ResultEvent;
 				import mx.rpc.events.FaultEvent;
+				
+				private function init():void {
+					facade.channelSet = ControladorDeModulos.criaCanal();
+					var estado: String = String(ControladorDeModulos.getParam());
+					listarRoteiros();
+				}
+				
+				private function listarRoteiros():void{
+					facade.getOperation("listarRoteiros").send();
+				}
+				
+				private function listarRoteiros_result(event:ResultEvent):void{
+					comboRoteiros.dataProvider = new ArrayCollection();
+					comboRoteiros.selectedIndex = -1;
+					comboRoteiros.dataProvider = event.result;
+				}
+				
+				private function pegaAvaliacoesPorRoteiro():void{
+					var rot: Roteiro = CastDeEntidades.castRoteiro(comboRoteiros.selectedItem);
+					facade.getOperation("getAvaliacoesPorRoteiro").send(rot);
+				}
+				
+				private function getAvaliacoesPorRoteiro_result(event:ResultEvent):void{
+					dgNotas.dataProvider = new ArrayCollection();
+					dgNotas.dataProvider = event.result as ArrayCollection;
+				}
 	            
 	            private function falha(event:FaultEvent):void {
 					var mensagem:String;
@@ -46,98 +69,52 @@
 					dispatchEvent(new FechaPopupEvent(this));
 				}
 				
-				/*
-				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
-				 *	então devemos mostra uma mensagem de erro
-				 */
-				private function lancaEvento(event:FaultEvent):void {
-					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
-						event.fault, event.token, event.message);
-					dispatchEvent(e);
-				}
-				
-				private function init():void {
-					
-					facade.channelSet = ControladorDeModulos.criaCanal();
-					var estado: String = String(ControladorDeModulos.getParam());
-					
-				}
-				
-				private function chamaTelaCadastraRoteiro():void{
-					ControladorDeModulos.criaModulo("modulos/Views/CadastrarRoteiro.swf", this, null);
-				}
-				
-				private function salvarAgendamento():void{
-					dispatchEvent(new FechaPopupEvent(this));
-				}
-				
+				private function labelGrid(item:*, column:DataGridColumn):String {
+					var sLabel:String = "";
+					var sHeaderText:String = column.headerText;
+					switch (sHeaderText)  {
+						case "Matrícula":
+							sLabel = item.submissao.equipeHasUsuarioHasRoteiro.usuario.login;
+							break;
+						case "Nome do aluno":
+							sLabel = item.submissao.equipeHasUsuarioHasRoteiro.usuario.nome;
+							break;
+						case "Porcentagem (Testes Automáticos)":
+							sLabel = item.submissao.equipeHasUsuarioHasRoteiro.roteiro.porcentagemTestesAutomaticos;
+							break;
+						case "Nota1 (Testes Automáticos)":
+							sLabel = item.notaAutomatica;
+							break;
+						case "Nota2 (Corretor)":
+							sLabel = item.notaCorrecao;
+							break;
+						case "Nota":
+							sLabel = (item.notaAutomatica + item.notaCorrecao); 
+							break;
+					}
+					return sLabel;
+				}				
 				
 			]]>
 		</mx:Script>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
+			<mx:method name="getAvaliacoesPorRoteiro" result="getAvaliacoesPorRoteiro_result(event)" fault="falha(event)"/>
 		</mx:RemoteObject>
-		<mx:TabNavigator height="448">	
-			<mx:Canvas label="Roteiro 1" id="labelRoteiro1">
-				<mx:DataGrid x="10" y="10" width="750" height="394" wordWrap="true">
-					<mx:columns>
-						<mx:DataGridColumn headerText="Matrícula" width="50"/>
-						<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
-						<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
-						<mx:DataGridColumn headerText="Nota2 (Correção do Monitor)" width="50"/>
-						<mx:DataGridColumn headerText="Nota3 (Penalidades)" width="50"/>
-						<mx:DataGridColumn headerText="Nota" width="50"/>
-					</mx:columns>
-				</mx:DataGrid>
-			</mx:Canvas>
-			<mx:Canvas label="Roteiro 2" id="labelRoteiro2">
-				<mx:DataGrid x="10" y="21" width="750" height="383" wordWrap="true">
-					<mx:columns>
-						<mx:DataGridColumn headerText="Matrícula" width="50"/>
-						<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
-						<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
-						<mx:DataGridColumn headerText="Nota2 (Correção do Monitor)" width="50"/>
-						<mx:DataGridColumn headerText="Nota3 (Penalidades)" width="50"/>
-						<mx:DataGridColumn headerText="Nota" width="50"/>
-					</mx:columns>
-				</mx:DataGrid>
-			</mx:Canvas>
-			<mx:Canvas label="Roteiro 3" id="labelRoteiro3">
-				<mx:DataGrid x="10" y="21" width="750" height="383" wordWrap="true">
-					<mx:columns>
-						<mx:DataGridColumn headerText="Matrícula" width="50"/>
-						<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
-						<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
-						<mx:DataGridColumn headerText="Nota2 (Correção do Monitor)" width="50"/>
-						<mx:DataGridColumn headerText="Nota3 (Penalidades)" width="50"/>
-						<mx:DataGridColumn headerText="Nota" width="50"/>
-					</mx:columns>
-				</mx:DataGrid>
-			</mx:Canvas>
-			<mx:Canvas label="Roteiro 4" id="labelRoteiro4">
-				<mx:DataGrid x="10" y="21" width="750" height="383" wordWrap="true">
-					<mx:columns>
-						<mx:DataGridColumn headerText="Matrícula" width="50"/>
-						<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
-						<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
-						<mx:DataGridColumn headerText="Nota2 (Correção do Monitor)" width="50"/>
-						<mx:DataGridColumn headerText="Nota3 (Penalidades)" width="50"/>
-						<mx:DataGridColumn headerText="Nota" width="50"/>
-					</mx:columns>
-				</mx:DataGrid>
-			</mx:Canvas>
-			<mx:Canvas label="Todos" id="quadroResumo">
-				<mx:DataGrid x="10" y="21" width="750" height="383" wordWrap="true">
-					<mx:columns>
-						<mx:DataGridColumn headerText="Aluno/Roteiro" width="80"/>
-						<mx:DataGridColumn headerText="Roteiro 1" width="80"/>
-						<mx:DataGridColumn headerText="Roteiro 2" width="80"/>
-						<mx:DataGridColumn headerText="Roteiro 3" width="80"/>
-						<mx:DataGridColumn headerText="Roteiro 4" width="80"/>
-					</mx:columns>
-				</mx:DataGrid>
-			</mx:Canvas>
-		</mx:TabNavigator>
-		<mx:Button x="298.05" y="456" click="salvarAgendamento()" label="   Salvar" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSalvar"/>
 		
+		<mx:ComboBox x="73" y="10" width="697" id="comboRoteiros" change="pegaAvaliacoesPorRoteiro()" enter="pegaAvaliacoesPorRoteiro()" labelField="nome"></mx:ComboBox>
+		<mx:HRule x="10" y="40" width="760" height="10"/>
+		<mx:DataGrid x="10" y="58" width="760" height="426" wordWrap="true" id="dgNotas" labelFunction="labelGrid">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Matrícula" width="50"/>
+				<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
+				<mx:DataGridColumn headerText="Porcentagem (Testes Automáticos)" width="50"/>
+				<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
+				<mx:DataGridColumn headerText="Nota2 (Corretor)" width="50"/>
+				<mx:DataGridColumn headerText="Nota" width="50"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:Label x="10" y="11.5" width="65" id="caminho0" textAlign="left" text="Roteiro:" fontWeight="bold"/>
+					
 </les:ModuleTitleWindow>
