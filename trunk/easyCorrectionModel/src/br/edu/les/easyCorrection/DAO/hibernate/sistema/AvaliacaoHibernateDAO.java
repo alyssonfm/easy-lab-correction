@@ -113,5 +113,15 @@ public class AvaliacaoHibernateDAO extends
 		List <Avaliacao> lista = q.list();
 		return instanciaLista(lista);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Avaliacao> findByRoteiro(int idRoteiro) {
+		Query q = getSession().createQuery("from Avaliacao where submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
+		q.setParameter("idRoteiro", idRoteiro);
+		q.setCacheable(true);
+		List <Avaliacao> lista = q.list();
+		instanciaLista(lista);
+		return lista;
+	}
 
 }
