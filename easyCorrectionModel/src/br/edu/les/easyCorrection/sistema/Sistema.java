@@ -283,8 +283,8 @@ public class Sistema {
 						idRoteiro);
 	}
 	
-	public List<Avaliacao> getAvaliacaoPorRoteiroEquipeUnicos(Roteiro roteiro, Integer us) {
-		return gerenciadorAvaliacoes.getAvaliacaoPorRoteiroEquipeUnicos(roteiro, us);
+	public List<Avaliacao> getAvaliacaoPorRoteiroEquipePorCorretor(Roteiro roteiro, Integer us) {
+		return gerenciadorAvaliacoes.getAvaliacaoPorRoteiroEquipePorCorretor(roteiro, us);
 	}
 	
 	public Submissao getUltimaSubmissaoPorRoteiroEquipe(Roteiro roteiro, Equipe equipe) {
@@ -400,12 +400,28 @@ public class Sistema {
 			Equipe eq = avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getEquipe();
 			List<EquipeHasUsuarioHasRoteiro> listaEUR = getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(eq.getId(), roteiro.getId());
 			for (EquipeHasUsuarioHasRoteiro eur : listaEUR) {
-				Avaliacao avaAux = avaliacao;
-				avaAux.getSubmissao().setEquipeHasUsuarioHasRoteiro(eur);
+				Submissao sub = new Submissao(avaliacao.getSubmissao().getId(), 
+						avaliacao.getSubmissao().getDataSubmissao(), 
+						eur, 
+						avaliacao.getSubmissao().getEstado(), 
+						avaliacao.getResultadoExecucaoTestes());
+				Avaliacao avaAux = new Avaliacao(avaliacao.getId(),
+												sub,
+												avaliacao.getNotaAutomatica(),
+												avaliacao.getNotaCorrecao(),
+												avaliacao.getResultadoExecucaoTestes(),
+												avaliacao.getPenalidade(),
+												avaliacao.getDataAvaliacao(),
+												avaliacao.getCorretor());
 				listaCompleta.add(avaAux);
 			}
 		}
 		return listaCompleta;
+	}
+
+	public List<Avaliacao> getAvaliacoesPorEquipeERoteiro(Integer equipe,
+			Integer roteiro) {
+		return gerenciadorAvaliacoes.getAvaliacoesPorEquipeERoteiro(equipe, roteiro);
 	}
 
 }

@@ -99,9 +99,9 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 		return lista.get(0);
 	}
 	
-	public List<Avaliacao> getAvaliacaoPorRoteiroEquipeUnicos(Roteiro rot, Integer us) {
+	public List<Avaliacao> getAvaliacaoPorRoteiroEquipePorCorretor(Roteiro rot, Integer us) {
 		List<Avaliacao> lista = DAOFactory.DEFAULT.buildAvaliacaoDAO()
-				.findByEquipeERoteiroUnicos(rot.getId(), us);
+				.findByEquipeERoteiroPorCorretor(rot.getId(), us);
 		return lista;
 	} 
 	
@@ -109,13 +109,18 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 		try{
 			Avaliacao aval = getAvaliacaoPorRoteiroEquipe(avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getRoteiro().getId(), 
 					avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getEquipe().getId());
-			aval.setNotaCorrecao(avaliacao.getNotaCorrecao());
+			aval.setNotaCorrecao(calculaNotaCorretor(avaliacao.getNotaCorrecao(), 
+					avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getRoteiro().getPorcentagemTestesAutomaticos()));
 			aval.setCorrigido(avaliacao.isCorrigido());
 			return editarAvaliacao(aval);
 		}
 		catch(Exception e){
 			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("avaliacao"));
 		}
+	}
+	
+	private double calculaNotaCorretor(double notaBruta, double porcentagemCorrecao){
+		return (notaBruta * (100 - porcentagemCorrecao)) / 100;
 	}
 	
 	public Avaliacao editarAvaliacao(Avaliacao avaliacao) throws EasyCorrectionException{
@@ -148,6 +153,13 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 		List<Avaliacao> lista = DAOFactory.DEFAULT.buildAvaliacaoDAO()
 			.findByRoteiro(roteiro.getId());
 		return lista;
+	}
+
+	public List<Avaliacao> getAvaliacoesPorEquipeERoteiro(Integer equipeId,
+			Integer roteiroId) {
+		List<Avaliacao> lista = DAOFactory.DEFAULT.buildAvaliacaoDAO()
+		.findByEquipeERoteiro(equipeId, roteiroId);
+	return lista;
 	}
 
 

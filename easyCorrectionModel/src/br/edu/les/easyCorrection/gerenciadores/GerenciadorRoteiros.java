@@ -287,7 +287,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 								.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
-			} else if (roteiroNovo.getDataFinalEntrega() != null
+			} else if (roteiroNovo.getDataFinalEntrega() == null
 					|| (roteiroNovo.getDataFinalEntrega().before(dataHoje) && (!roteiroNovo
 							.getDataFinalEntrega().equals(
 									roteiroAntigo.getDataFinalEntrega())))) {
@@ -320,7 +320,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 								.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
-			} else if (roteiroNovo.getDataFinalEntrega() != null
+			} else if (roteiroNovo.getDataFinalEntrega() == null
 					|| (roteiroNovo.getDataFinalEntrega().before(dataHoje) && (!roteiroNovo
 							.getDataFinalEntrega().equals(
 									roteiroAntigo.getDataFinalEntrega())))) {
@@ -329,7 +329,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 								.msg("Data Limite para Entrega inválida. O Roteiro não pôde ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
-			} else if (roteiroNovo.getDataFinalDiscussao() != null
+			} else if (roteiroNovo.getDataFinalDiscussao() == null
 					|| (roteiroNovo.getDataFinalDiscussao().before(dataHoje) && (!roteiroNovo
 							.getDataFinalDiscussao().equals(
 									roteiroAntigo.getDataFinalDiscussao())))) {

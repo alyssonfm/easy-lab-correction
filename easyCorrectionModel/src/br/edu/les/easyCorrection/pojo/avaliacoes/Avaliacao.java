@@ -21,7 +21,7 @@ public class Avaliacao {
 			Submissao submissao, 
 			double notaAutomatica,
 			double notaCorrecao, 
-			String resuladoExecucaoTestes,
+			String resultadoExecucaoTestes,
 			double penalidade,
 			Date dataAvaliacao,
 			Usuario corretor) {
@@ -31,7 +31,7 @@ public class Avaliacao {
 		this.submissao = submissao;
 		this.notaAutomatica = notaAutomatica;
 		this.notaCorrecao = notaCorrecao;
-		this.resultadoExecucaoTestes = resuladoExecucaoTestes;
+		this.resultadoExecucaoTestes = resultadoExecucaoTestes;
 		this.penalidade = penalidade;
 		this.dataAvaliacao = dataAvaliacao;
 		this.corretor = corretor;
