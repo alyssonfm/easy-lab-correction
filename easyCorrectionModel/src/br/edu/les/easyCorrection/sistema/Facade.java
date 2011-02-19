@@ -743,5 +743,14 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public List<Avaliacao> getAvaliacoesPorRoteiro(Roteiro roteiro) throws Throwable{
+		try{
+			return sistema.getAvaliacoesPorRoteiro(roteiro);
+		}catch (Throwable e) {
+			log.error("getAvaliacaoPorSubmissao()", e);
+			throw e;
+		}
+	}
 
 }

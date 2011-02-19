@@ -1,5 +1,6 @@
 package br.edu.les.easyCorrection.sistema;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
@@ -390,6 +391,21 @@ public class Sistema {
 
 	public Avaliacao alocaCorretor(Avaliacao avaliacao) throws EasyCorrectionException {
 		return gerenciadorAvaliacoes.editarAvaliacao(avaliacao);
+	}
+
+	public List<Avaliacao> getAvaliacoesPorRoteiro(Roteiro roteiro) {
+		List<Avaliacao> listaCompleta = new ArrayList<Avaliacao>();
+		List<Avaliacao> lista = gerenciadorAvaliacoes.getAvaliacoesPorRoteiro(roteiro);
+		for (Avaliacao avaliacao : lista) {
+			Equipe eq = avaliacao.getSubmissao().getEquipeHasUsuarioHasRoteiro().getEquipe();
+			List<EquipeHasUsuarioHasRoteiro> listaEUR = getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(eq.getId(), roteiro.getId());
+			for (EquipeHasUsuarioHasRoteiro eur : listaEUR) {
+				Avaliacao avaAux = avaliacao;
+				avaAux.getSubmissao().setEquipeHasUsuarioHasRoteiro(eur);
+				listaCompleta.add(avaAux);
+			}
+		}
+		return listaCompleta;
 	}
 
 }
