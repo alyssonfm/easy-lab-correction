@@ -343,12 +343,14 @@ public class GerenciadorSubmissoes {
 
 	public void alocaEquipesParaAlunos(Roteiro rot, List<Equipe> equipes,
 			List<GrupoUsuario> alunos) throws EasyCorrectionException {
-		for (int i = 0; i < alunos.size(); i++) {
-			EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
-			eur.setRoteiro(rot);
-			eur.setEquipe(equipes.get(i));
-			eur.setUsuario(alunos.get(i).getUsuario());
-			cadastraEquipeHasUsuarioHasRoteiro(eur);
+		if (alunos.size() != 0){
+			for (int i = 0; i < alunos.size(); i++) {
+				EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
+				eur.setRoteiro(rot);
+				eur.setEquipe(equipes.get(i));
+				eur.setUsuario(alunos.get(i).getUsuario());
+				cadastraEquipeHasUsuarioHasRoteiro(eur);
+			}
 		}
 	}
 
