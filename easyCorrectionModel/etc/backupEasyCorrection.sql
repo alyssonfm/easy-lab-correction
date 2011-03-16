@@ -354,7 +354,6 @@ CREATE TABLE `roteiro` (
   `diretorio_interface` varchar(255) DEFAULT NULL,
   `diretorio_testes` varchar(255) DEFAULT NULL,
   `numero_maximo_participantes` int(10) unsigned DEFAULT NULL,
-  `bloqueado` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `roteiro_FKIndex1` (`periodo_id`),
   CONSTRAINT `roteiro_ibfk_1` FOREIGN KEY (`periodo_id`) REFERENCES `periodo` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -365,8 +364,8 @@ CREATE TABLE `roteiro` (
 --
 
 /*!40000 ALTER TABLE `roteiro` DISABLE KEYS */;
-INSERT INTO `roteiro` (`id`,`periodo_id`,`nome`,`descricao`,`data_liberacao`,`data_final_entrega`,`data_final_discussao`,`numero_maximo_envios`,`penalidade_dias_atraso`,`porcentagem_testes_automaticos`,`tempo_limite_testes`,`diretorio_interface`,`diretorio_testes`,`numero_maximo_participantes`,`bloqueado`) VALUES 
- (51,1,'Algum Roteiro Teste','Roteiro AEw','2011-02-17','2011-02-17','2011-03-10',3,'5.00','100.00',10,'/periodo2010.2/interface/51/','/periodo2010.2/testes/51/',1,0);
+INSERT INTO `roteiro` (`id`,`periodo_id`,`nome`,`descricao`,`data_liberacao`,`data_final_entrega`,`data_final_discussao`,`numero_maximo_envios`,`penalidade_dias_atraso`,`porcentagem_testes_automaticos`,`tempo_limite_testes`,`diretorio_interface`,`diretorio_testes`,`numero_maximo_participantes`) VALUES 
+ (51,1,'Algum Roteiro Teste','Roteiro AEw','2011-02-17','2011-02-17','2011-03-10',3,'5.00','100.00',10,'/periodo2010.2/interface/51/','/periodo2010.2/testes/51/',1);
 /*!40000 ALTER TABLE `roteiro` ENABLE KEYS */;
 
 
@@ -427,7 +426,6 @@ INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`,`email`,`periodo_id`) VALUES
  (5,'abmar','Abmar','4297f44b13955235245b2497399d7a93','abmar@gmail.com',NULL),
  (133,'demetriogm','Demetrio','4297f44b13955235245b2497399d7a93','dem@gmail.com',NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-
 
 
 

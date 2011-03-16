@@ -47,7 +47,7 @@
 				buttonVisualizarNotas.enabled = false;
 				buttonVisulizarCorrecao.enabled = false;
 				
-				listarRoteiros();
+				getRoteirosLiberados();
 			}
 			
 			private function getGrupoUsuarioPorUsuario():void{
@@ -55,7 +55,7 @@
 			}
 			
 			private function temRoteiro(event: ObjetoEvent):void{
-				listarRoteiros();
+				getRoteirosLiberados();
 			}
 			
 			private function falha(event:FaultEvent):void {
@@ -73,11 +73,11 @@
 				ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
 			}
 			
-			private function listarRoteiros():void{
-				facade.getOperation("listarRoteiros").send();
+			private function getRoteirosLiberados():void{
+				facade.getOperation("getRoteirosLiberados").send();
 			}
 			
-			private function listarRoteiros_result(event:ResultEvent):void{
+			private function getRoteirosLiberados_result(event:ResultEvent):void{
 				listaRoteiros.dataProvider = event.result as ArrayCollection;
 				if ((listaRoteiros.dataProvider as ArrayCollection).length == 0){
 					buttonBaixarTestes.enabled = false;
@@ -213,7 +213,7 @@
 	</mx:Script>	
 	
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">		
-		<mx:method name="listarRoteiros" result="listarRoteiros_result(event)" fault="falha(event)"/>
+		<mx:method name="getRoteirosLiberados" result="getRoteirosLiberados_result(event)" fault="falha(event)"/>
 		<mx:method name="getNomeArquivoInterface" result="getNomeArquivoInterface_result(event)" fault="falha(event)"/>
 		<mx:method name="getNomeArquivoTestes" result="getNomeArquivoTestes_result(event)" fault="falha(event)"/>
 		<mx:method name="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro" result="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event)" fault="falha(event)"/>
