@@ -17,5 +17,5 @@
     <mx:ViewStack x="0" y="164" id="viewPrincipal" width="1034" height="329"/>
     <mx:HRule id="hr" x="28" y="129" width="934.95" height="11"/>
     <mx:VRule id="vr" x="18" y="15" height="120" width="20"/>
-    	
+    
 </mx:Application>

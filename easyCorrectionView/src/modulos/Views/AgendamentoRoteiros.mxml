@@ -105,13 +105,20 @@
 						case "Roteiro":
 							sLabel = item.nome;
 							break;
-						case "Data de Liberação":
+						case "Data da Liberação":
 							sLabel = Util.formataData(item.dataLiberacao);
 							break;
-						case "Data de Entrega":
+						case "Hor. da Liberação":
+							sLabel = item.dataLiberacao.getHours() + ":" + item.dataLiberacao.getMinutes();
+							break;
+						case "Data da Entrega":
 							sLabel = Util.formataData(item.dataFinalEntrega);
 							break;
+						case "Hor. da Entrega":
+							sLabel = item.dataFinalEntrega.getHours() + ":" + item.dataFinalEntrega.getMinutes();
+							break;
 						case "Status":
+							break;
 						/*
 							if(item.bloqueado == false){
 								sLabel = "LIBERADO";
@@ -145,9 +152,11 @@
 		<mx:DataGrid x="10" y="46" width="760" height="438" id="dg_agenda" labelFunction="labelGrid" itemClick="chamaEditarRoteiro()">
 			<mx:columns>
 				<mx:DataGridColumn headerText="Roteiro" width="80"/>
-				<mx:DataGridColumn headerText="Data de Liberação" width="80"/>
-				<mx:DataGridColumn headerText="Data de Entrega" width="80"/>
-				<mx:DataGridColumn headerText="Status" width="80"/>
+				<mx:DataGridColumn headerText="Data da Liberação" width="50"/>
+				<mx:DataGridColumn headerText="Hor. da Liberação" width="50"/>
+				<mx:DataGridColumn headerText="Data da Entrega" width="50"/>
+				<mx:DataGridColumn headerText="Hor. da Entrega" width="50"/>
+				<mx:DataGridColumn headerText="Status" width="50"/>
 			</mx:columns>
 		</mx:DataGrid>
 		
