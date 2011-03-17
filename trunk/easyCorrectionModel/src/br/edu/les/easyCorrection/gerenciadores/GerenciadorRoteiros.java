@@ -67,14 +67,14 @@ public class GerenciadorRoteiros extends Gerenciador {
 	}
 
 	public List<Roteiro> getRoteirosLiberados() {
-		Date dataAtual = easyCorrectionUtil.getDataNow();
+		Date dataAtual = easyCorrectionUtil.getRealTime();
 		List<Roteiro> roteirosLiberados = DAOFactory.DEFAULT.buildRoteiroDAO()
 				.findByRoteiroLiberado(dataAtual);
 		return roteirosLiberados;
 	}
 
 	public Roteiro getRoteiroLiberado(Integer id) {
-		Date dataAtual = easyCorrectionUtil.getDataNow();
+		Date dataAtual = easyCorrectionUtil.getRealTime();
 		List<Roteiro> lista = DAOFactory.DEFAULT.buildRoteiroDAO()
 				.findByRoteiroLiberado(dataAtual, id);
 		if (!lista.isEmpty()) {
