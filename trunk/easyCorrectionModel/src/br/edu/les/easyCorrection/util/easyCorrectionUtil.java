@@ -85,6 +85,11 @@ public class easyCorrectionUtil {
 		c.set(Calendar.MILLISECOND, 0);
 		return c.getTime();
 	}
+	
+	public static Date getRealTime() {
+		Calendar c = Calendar.getInstance();
+		return c.getTime();
+	}
 
 	public static Date formataData(String data) throws Exception {
 		if (data == null || data.equals(""))
