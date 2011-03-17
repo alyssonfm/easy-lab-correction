@@ -117,7 +117,10 @@
 //					}
 					dfDataDiscussao.selectedDate = dfDataDiscussao as Date;
 					dfDataDiscussao.text = Util.formataData(roteiro.dataFinalDiscussao);
-					dfDataMaxima.selectedDate = roteiro.dataFinalEntrega as Date;
+					var horarioLimite: Date = roteiro.dataFinalEntrega as Date;
+					inputHora.text = String(horarioLimite.getHours());
+					inputMinuto.text = String(horarioLimite.getMinutes());
+					dfDataMaxima.selectedDate = horarioLimite;
 					dfDataMaxima.text = Util.formataData(roteiro.dataFinalEntrega);
 					dfDataLiberacao.selectedDate = roteiro.dataLiberacao as Date;
 					dfDataLiberacao.text = Util.formataData(roteiro.dataLiberacao);
@@ -198,9 +201,11 @@
 				}
 				
 				private function preencheRoteiro():void{
-//					roteiro.bloqueado = bloqueado;
+					//roteiro.bloqueado = bloqueado;
 					roteiro.dataFinalDiscussao= Util.formataDataStringEmDate(dfDataDiscussao.text);
-					roteiro.dataFinalEntrega = Util.formataDataStringEmDate(dfDataMaxima.text);
+					var dataLimiteEntrega: Date = Util.formataDataStringEmDate(dfDataMaxima.text);
+					dataLimiteEntrega.setHours(Number(inputHora.text), Number(inputMinuto.text),0,0);						
+					roteiro.dataFinalEntrega = dataLimiteEntrega; 
 					roteiro.dataLiberacao = Util.formataDataStringEmDate(dfDataLiberacao.text);
 					roteiro.descricao = inputDescricao.text;
 					roteiro.nome = inputTitulo.text;
@@ -212,21 +217,47 @@
 					roteiro.periodo = periodo;
 					roteiro.porcentagemTestesAutomaticos = Util.formataTextValorToNumber(inputPorcentagem.text);
 					roteiro.tempoLimiteTestes = int(inputTempoLimite.text);
+					
+				}
+				
+				private function checaHora(): Boolean{
+					try{
+						if( Number(inputHora.text) > 23 ||
+							Number(inputMinuto.text) > 59){
+							return false;
+						}
+					}catch(e: Error){
+						return false;
+					}
+					return true;
 				}
 				
 				private function editarRoteiro():void{
 					if(roteiro.id != 0){
-						preencheRoteiro();
-						ehCadastro = false;
-						facade.getOperation("editarRoteiro").send(CastDeEntidades.castRoteiro(roteiro));
-					}	
+						if (checaHora()){
+							preencheRoteiro();
+							ehCadastro = false;
+							facade.getOperation("editarRoteiro").send(CastDeEntidades.castRoteiro(roteiro));
+						}
+						else{
+							var param:Array = new Array(true, "Horário limite para entrega inválido. (Intervalo: 00:00 ~ 23:59)");
+							ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+						}	
+					}					
 				}
 				
 				private function cadastrarRoteiro():void{
-					roteiro = new Roteiro();
-					preencheRoteiro();
-					ehCadastro = true;
-					facade.getOperation("cadastrarRoteiro").send(CastDeEntidades.castRoteiro(roteiro));
+					var horaValida: Boolean = checaHora();
+					if (checaHora()){
+						roteiro = new Roteiro();
+						preencheRoteiro();
+						ehCadastro = true;
+						facade.getOperation("cadastrarRoteiro").send(CastDeEntidades.castRoteiro(roteiro));
+					}
+					else{
+						var param:Array = new Array(true, "Horário limite para entrega inválido. (Intervalo: 00:00 ~ 23:59)");
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
+					}
 				}
 				
 				private function cadastrarRoteiro_result(event:ResultEvent):void{
@@ -301,31 +332,37 @@
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
 		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"
-		toolTip="" x="247" y="223" width="129" id="dfDataMaxima"/>
+		toolTip="" x="236" y="223" width="129" id="dfDataMaxima"/>
+		<mx:TextInput x="675" y="221" id="inputHora" width="35" restrict="[0-9]" maxChars="2" text="00"/>
+		<mx:TextInput x="730" y="221" id="inputMinuto" width="40" restrict="[0-9]" maxChars="2" text="00"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
 		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"
-		toolTip="" x="641" y="223" width="129" id="dfDataDiscussao"/>
-		<mx:TextInput x="247" y="251" id="inputMaximoEquipe" width="129" restrict="[0-9]" maxChars="2" text="1"/>
-		<mx:TextInput x="641" y="251" id="inputNumeroMaxEnvios" width="129" restrict="[0-9]" maxChars="2" text="3"/>
-		<extra:DecimalInput x="247" y="281"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalidade" width="129" text="0.5"/>
+		toolTip="" x="236" y="253" width="129" id="dfDataDiscussao"/>
+		<mx:TextInput x="675" y="253" id="inputMaximoEquipe" width="95" restrict="[0-9]" maxChars="2" text="1"/>
+		<mx:TextInput x="236" y="283" id="inputNumeroMaxEnvios" width="113" restrict="[0-9]" maxChars="2" text="3"/>
+		<extra:DecimalInput x="675" y="283"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalidade" width="95" text="0.5"/>
 		<extra:DecimalInput x="285" y="328"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPorcentagem" width="91" text="100"/>
 		<mx:TextInput x="641" y="330" id="inputTempoLimite" width="95" restrict="[0-9]" maxChars="2" text="10"/>
 		<mx:Label text="Máximo de integrantes por equipe:" fontWeight="bold"
-			textAlign="left" width="239" x="10" y="253" id="labelAutomatica0"/>
+			textAlign="left" width="239" x="407" y="255" id="labelAutomatica0"/>
 		<mx:Label text="Penalidade por dia de atraso:" fontWeight="bold"
-			textAlign="left" width="201" x="10" y="283"/>
+			textAlign="left" width="201" x="407" y="285"/>
 		<mx:Label text="Número máximo de envios:" fontWeight="bold"
-			textAlign="left" width="191" x="415" y="253" id="labelAutomatica3"/>
+			textAlign="left" width="191" x="10" y="285" id="labelAutomatica3"/>
+		<mx:Label text="Horário limite para entrega (hh:mm):" fontWeight="bold"
+			textAlign="left" width="260" x="407" y="223" id="labelHorario"/>
 		<mx:Label text="Time-limit dos teste por método:" fontWeight="bold"
 			textAlign="left" width="224" x="415" y="332" id="labelAutomatica5"/>
 		<mx:Label text="ms" fontWeight="bold"
 			textAlign="left" width="27" x="744" y="332" id="labelAutomatica6"/>
+		<mx:Label text=":" fontWeight="bold"
+			textAlign="left" width="17" x="718" y="223" id="labelAutomatica8"/>
 		<mx:Label text="Data Máxima para entrega:" fontWeight="bold"
-			textAlign="left" width="191" x="10" y="225" id="labelAutomatica1"/>
+			textAlign="left" width="201" x="10" y="225" id="labelAutomatica1"/>
 		<mx:Label text="Data Máxima para discussão:" fontWeight="bold"
-			textAlign="left" width="201" x="415" y="225" id="labelAutomatica2"/>
+			textAlign="left" width="218" x="10" y="255" id="labelAutomatica2"/>
 		<mx:Label text="Data da liberação:" fontWeight="bold"
 			textAlign="left" width="131" x="508" y="12" id="labelAutomatica4"/>
 		<mx:HRule x="10" y="364" width="760"/>
