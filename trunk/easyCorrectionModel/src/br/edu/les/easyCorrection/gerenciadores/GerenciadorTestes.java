@@ -66,6 +66,7 @@ public class GerenciadorTestes extends Gerenciador {
 		};
 
 		try {
+			
 			javaCompiler.run(null, out, erro, "-sourcepath", diretorioSource
 					+ ";" + diretorioInterface + ";" + diretorioTestes,
 					"-classpath", diretorioLib + "junit.jar",
@@ -88,11 +89,17 @@ public class GerenciadorTestes extends Gerenciador {
 
 		if (erroCompilacao) {
 			erroCompilacao = false;
-			System.err.println(erro);
-			throw new ExecucaoTestesException(erro.toString());
+			throw new ExecucaoTestesException(removeDiretorio(resultadoErro, diretorioTestes, diretorioSource, diretorioInterface));
 		}
 		
 		return result;
+	}
+	
+	private String removeDiretorio(String resultadoErro, String dt, String ds, String di){
+		String res = resultadoErro.replace(dt, "");
+		res = res.replace(ds, "");
+		res = res.replace(di, "");
+		return res;
 	}
 
 	public String getSaidaDosTestes(TestResult result,
@@ -127,7 +134,7 @@ public class GerenciadorTestes extends Gerenciador {
 		} else {
 			Enumeration<TestFailure> failures = result.errors();
 			for (int i = 0; i < result.errorCount(); i++) {
-				relatorio += failures.nextElement().toString() + "\n";
+				relatorio += failures.nextElement().trace() + "\n";
 			}
 		}
 		salvaAvaliacao(submissao, notaTestesAutomaticos, relatorio);
