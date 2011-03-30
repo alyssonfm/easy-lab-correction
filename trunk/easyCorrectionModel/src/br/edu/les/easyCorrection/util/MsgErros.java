@@ -92,6 +92,11 @@ public enum MsgErros {
 			return "Está equipe já contém o número máximo de participantes. Por favor cadastre-se em outra equipe.";
 		}
 	},
+	TEMPO_MAXIMO_SUBMISSOES_EXCEDIDO{
+		public String msg(String... args) {
+			return "Erro no envio! Submissão fora do horário de liberação para submissões do " + args[0];
+		}
+	},
 	NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO{
 		public String msg(String... args) {
 			return "Erro no envio! A sua equipe já alcançou o limite de submissões do " + args[0];

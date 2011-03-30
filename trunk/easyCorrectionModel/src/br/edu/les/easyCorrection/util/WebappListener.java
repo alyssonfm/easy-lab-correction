@@ -13,10 +13,13 @@ public class WebappListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		System.out.println("Iniciando context listener "
 				+ sce.getServletContext().getContextPath() + "...");
+		
+		
+		/*
 		if (sce.getServletContext().getContextPath().equals(
 				"/easyCorrectionModel")) {
 			new Agendador();
-		}
+		}*/
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {
