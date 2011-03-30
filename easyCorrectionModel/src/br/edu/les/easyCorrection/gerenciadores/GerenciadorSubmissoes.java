@@ -156,18 +156,28 @@ public class GerenciadorSubmissoes {
 	public Submissao submeteRoteiro(Submissao submissao)
 			throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(submissao)) {
-			if (numeroSubmissoes(submissao) < (submissao
+			if(!easyCorrectionUtil.isNull(gerenciadorRoteiros.getRoteiroLiberado(submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getId()))){
+				if (numeroSubmissoes(submissao) < (submissao
 					.getEquipeHasUsuarioHasRoteiro().getRoteiro()
 					.getNumeroMaximoEnvios())) {
-				submissao.setDataSubmissao(easyCorrectionUtil.getDataNow());
-				Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(
-						submissao);
-				submissao.setId(id);
+				
+					submissao.setDataSubmissao(easyCorrectionUtil.getDataNow());
+					Integer id = DAOFactory.DEFAULT.buildSubmissaoDAO().save(
+							submissao);
+					submissao.setId(id);
+				}
+				else{
+					throw new EasyCorrectionException(
+							MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO
+									.msg(submissao.getEquipeHasUsuarioHasRoteiro()
+											.getRoteiro().getNome()));
+				}
 			} else {
 				throw new EasyCorrectionException(
-						MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO
+						MsgErros.TEMPO_MAXIMO_SUBMISSOES_EXCEDIDO
 								.msg(submissao.getEquipeHasUsuarioHasRoteiro()
 										.getRoteiro().getNome()));
+
 			}
 		}
 		return submissao;
