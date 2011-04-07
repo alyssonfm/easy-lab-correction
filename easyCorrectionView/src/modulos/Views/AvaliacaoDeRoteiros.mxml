@@ -158,13 +158,13 @@
 				
 				
 				private function salvarNotaCorretor():void{
-					if (Util.formataTextValorToNumber2(inputNota.fullText) < 10){
+					if (Util.formataTextValorToNumber2(inputNota.fullText) <= 10){
 						avaliacao.notaCorrecao = Util.formataTextValorToNumber2(inputNota.fullText);
 						avaliacao.corrigido = true;
 						facade.getOperation("salvarAvaliacao").send(avaliacao);
 					}
 					else{
-						var mensagem:String = "A nota deve ser menor que 10.";
+						var mensagem:String = "A nota deve ser menor ou igual a 10.";
 						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
 					}
 				}
