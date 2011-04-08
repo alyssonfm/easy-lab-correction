@@ -7,6 +7,7 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import mx.utils.ObjectUtil;
 				import bean.avaliacoes.Avaliacao;
 				import bean.Utilitarios.CastDeEntidades;
 				import bean.roteiros.Roteiro;
@@ -93,7 +94,23 @@
 							break;
 					}
 					return sLabel;
-				}				
+				}
+				
+				private function compareNome(itemA:Object, itemB:Object):int {  
+					return ObjectUtil.stringCompare(
+						itemA.submissao.equipeHasUsuarioHasRoteiro.usuario.nome,  
+						itemB.submissao.equipeHasUsuarioHasRoteiro.usuario.nome,   
+						true
+					);
+				}
+				
+				private function compareLogin(itemA:Object, itemB:Object):int {  
+					return ObjectUtil.stringCompare(
+						itemA.submissao.equipeHasUsuarioHasRoteiro.usuario.login,  
+						itemB.submissao.equipeHasUsuarioHasRoteiro.usuario.login,   
+						true
+					);
+				}
 				
 			]]>
 		</mx:Script>
@@ -107,8 +124,8 @@
 		<mx:HRule x="10" y="40" width="760" height="10"/>
 		<mx:DataGrid x="10" y="58" width="760" height="426" wordWrap="true" id="dgNotas" labelFunction="labelGrid">
 			<mx:columns>
-				<mx:DataGridColumn headerText="Matrícula" width="50"/>
-				<mx:DataGridColumn headerText="Nome do aluno"  width="150"/>
+				<mx:DataGridColumn headerText="Matrícula" width="50" sortCompareFunction="compareLogin"/>
+				<mx:DataGridColumn headerText="Nome do aluno"  width="150" sortable="true" sortCompareFunction="compareNome"/>
 				<mx:DataGridColumn headerText="Porcentagem (Testes Automáticos)" width="50"/>
 				<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
 				<mx:DataGridColumn headerText="Nota2 (Corretor)" width="50"/>
