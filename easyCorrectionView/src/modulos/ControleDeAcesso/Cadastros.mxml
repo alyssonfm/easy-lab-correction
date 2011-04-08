@@ -63,6 +63,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.utils.ObjectUtil;
 			import bean.acesso.*;
 			import bean.Utilitarios.Util;
 			import mx.utils.StringUtil;
@@ -985,6 +986,22 @@
 				handleValidaUsuario(event);
 			}
 			
+			private function compareNome(itemA:Object, itemB:Object):int {  
+				return ObjectUtil.stringCompare(
+					itemA.usuario.nome,  
+					itemB.usuario.nome,   
+					true
+				);
+			}
+			
+			private function compareLogin(itemA:Object, itemB:Object):int {  
+				return ObjectUtil.stringCompare(
+					itemA.usuario.login,  
+					itemB.usuario.login,   
+					true
+				);
+			}
+			
 		]]>
 	</mx:Script>
 	
@@ -1097,8 +1114,8 @@
 			<mx:DataGrid x="10" y="168.5" width="602" height="188.5" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
 					 labelFunction="labelGridUsuarios" id="dgUsuarios">
 				<mx:columns>
-					<mx:DataGridColumn headerText="Login" dataField="id" width="200"/>
-					<mx:DataGridColumn headerText="Usuário"/>
+					<mx:DataGridColumn headerText="Login" width="200" sortCompareFunction="compareLogin"/>
+					<mx:DataGridColumn headerText="Usuário" sortCompareFunction="compareNome"/>
 				</mx:columns>
 			</mx:DataGrid>
 		</mx:Canvas>
