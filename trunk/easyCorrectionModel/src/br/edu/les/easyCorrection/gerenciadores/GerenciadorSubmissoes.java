@@ -253,35 +253,42 @@ public class GerenciadorSubmissoes {
 
 	public String rodarTestesAutomaticos(Submissao submissao)
 			throws EasyCorrectionException {
-
-		String diretorioTestes = ServletUpload.local
-				+ submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro()
-						.getDiretorioTestes().replace("/", File.separator);
-		String diretorioInterface = ServletUpload.local
-				+ submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro()
-						.getDiretorioInterface().replace("/", File.separator);
-		String diretorioSource = ServletUpload.local
-				+ submissao.getUrl().replace("/", File.separator);
-
-		File dirTestes = new File(diretorioTestes);
-		String arquivoDeTeste = primeiraOcorrencia(dirTestes.list());
-		File dirInterface = new File(diretorioInterface);
-		String arquivoDeInterface = primeiraOcorrencia(dirInterface.list());
-		File dirSource = new File(diretorioSource);
-		String arquivoSource = primeiraOcorrencia(dirSource.list());
-
-		TestResult resultadoTeste;
-
-		try {
-			resultadoTeste = gerenciadorTestes.executarTestes(diretorioTestes,
-					arquivoDeTeste, diretorioInterface, arquivoDeInterface,
-					diretorioSource, arquivoSource);
-		} catch (ExecucaoTestesException e) {
-			excluirSubmissao(submissao);
-			return e.getMessage();
+		
+		if(submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro().getPorcentagemTestesAutomaticos() > 0){
+			String diretorioTestes = ServletUpload.local
+					+ submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro()
+							.getDiretorioTestes().replace("/", File.separator);
+			String diretorioInterface = ServletUpload.local
+					+ submissao.getEquipeHasUsuarioHasRoteiro().getRoteiro()
+							.getDiretorioInterface().replace("/", File.separator);
+			String diretorioSource = ServletUpload.local
+					+ submissao.getUrl().replace("/", File.separator);
+	
+			File dirTestes = new File(diretorioTestes);
+			String arquivoDeTeste = primeiraOcorrencia(dirTestes.list());
+			File dirInterface = new File(diretorioInterface);
+			String arquivoDeInterface = primeiraOcorrencia(dirInterface.list());
+			File dirSource = new File(diretorioSource);
+			String arquivoSource = primeiraOcorrencia(dirSource.list());
+	
+			TestResult resultadoTeste;
+	
+			try {
+				resultadoTeste = gerenciadorTestes.executarTestes(diretorioTestes,
+						arquivoDeTeste, diretorioInterface, arquivoDeInterface,
+						diretorioSource, arquivoSource);
+			} catch (ExecucaoTestesException e) {
+				excluirSubmissao(submissao);
+				return e.getMessage();
+			}
+	
+			return gerenciadorTestes.getSaidaDosTestes(resultadoTeste, submissao);
 		}
-
-		return gerenciadorTestes.getSaidaDosTestes(resultadoTeste, submissao);
+		else{
+			String resultado = "Este roteiro não possui testes automáticos.";
+			gerenciadorTestes.salvaAvaliacao(submissao, 0, resultado);
+			return "Resultado: " + resultado;
+		}
 	}
 
 	public void verificaSeEquipePossuiMaximoParticipantes(
