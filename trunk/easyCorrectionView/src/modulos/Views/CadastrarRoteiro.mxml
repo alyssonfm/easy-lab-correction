@@ -109,20 +109,20 @@
 					inputDescricao.text = roteiro.descricao;
 
 					var horarioDiscussao: Date = roteiro.dataFinalDiscussao as Date;
-					inputHoraDiscussao.text = String(horarioDiscussao.getHours());
-					inputMinutoDiscussao.text = String(horarioDiscussao.getMinutes());
+					inputHoraDiscussao.text = Util.organizaUnidadeTempo(String(horarioDiscussao.getHours()));
+					inputMinutoDiscussao.text = Util.organizaUnidadeTempo(String(horarioDiscussao.getMinutes()));
 					dfDataDiscussao.selectedDate = horarioDiscussao;
 					dfDataDiscussao.text = Util.formataData(roteiro.dataFinalDiscussao);
 					
 					var horarioLimite: Date = roteiro.dataFinalEntrega as Date;
-					inputHora.text = String(horarioLimite.getHours());
-					inputMinuto.text = String(horarioLimite.getMinutes());
+					inputHora.text = Util.organizaUnidadeTempo(String(horarioLimite.getHours()));
+					inputMinuto.text = Util.organizaUnidadeTempo(String(horarioLimite.getMinutes()));
 					dfDataMaxima.selectedDate = horarioLimite;
 					dfDataMaxima.text = Util.formataData(roteiro.dataFinalEntrega);
 					
 					var horarioLiberacao: Date = roteiro.dataLiberacao as Date;
-					inputHoraLiberacao.text = String(horarioLiberacao.getHours());
-					inputMinutoLiberacao.text = String(horarioLiberacao.getMinutes());
+					inputHoraLiberacao.text = Util.organizaUnidadeTempo(String(horarioLiberacao.getHours()));
+					inputMinutoLiberacao.text = Util.organizaUnidadeTempo(String(horarioLiberacao.getMinutes()));
 					dfDataLiberacao.selectedDate = horarioLiberacao;
 					dfDataLiberacao.text = Util.formataData(roteiro.dataLiberacao);
 					
