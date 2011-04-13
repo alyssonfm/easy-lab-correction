@@ -100,7 +100,8 @@
 				
 				public function envioCompleto(evt:Event):void {
 					request = new URLRequest(FILE_UPLOAD_URL);
-					facade.getOperation("rodarTestesAutomaticos").send(CastDeEntidades.castSubmissao(submissao));
+					var sub: Submissao = CastDeEntidades.castSubmissao(submissao);
+					facade.getOperation("rodarTestesAutomaticos").send(sub);
 				}
 				
 				public function rodarTestesAutomaticos_result(event:ResultEvent):void{
