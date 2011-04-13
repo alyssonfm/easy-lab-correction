@@ -57,7 +57,7 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 	}
 
 	public List<Roteiro> getRoteirosFechados() {
-		Date dataAtual = easyCorrectionUtil.getDataNow();
+		Date dataAtual = easyCorrectionUtil.getRealTime();
 		return DAOFactory.DEFAULT.buildRoteiroDAO().findByRoteiroFechado(
 				dataAtual);
 	}
