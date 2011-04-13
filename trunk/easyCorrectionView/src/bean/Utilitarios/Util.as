@@ -5,6 +5,7 @@ package bean.Utilitarios {
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
+	
 	import mx.collections.ArrayCollection;
 	import mx.formatters.DateFormatter;
 	
@@ -110,6 +111,13 @@ package bean.Utilitarios {
 				randTexto += chars.substr((Math.floor(Math.random()*(chars.length-1))+1),1);
 			}
 			return randTexto;
+		}
+		
+		public static function organizaUnidadeTempo(unidade: String): String{
+			if(unidade.length == 1){
+				return "0" + unidade;
+			}
+			return unidade;
 		}
 	}
 }
