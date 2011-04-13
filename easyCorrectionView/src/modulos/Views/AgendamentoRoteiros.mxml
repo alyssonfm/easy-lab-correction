@@ -109,13 +109,15 @@
 							sLabel = Util.formataData(item.dataLiberacao);
 							break;
 						case "Hor. da Liberação":
-							sLabel = item.dataLiberacao.getHours() + ":" + item.dataLiberacao.getMinutes();
+							sLabel = Util.organizaUnidadeTempo(String(item.dataLiberacao.getHours())) + ":" + 
+								Util.organizaUnidadeTempo(String(item.dataLiberacao.getMinutes()));
 							break;
 						case "Data da Entrega":
 							sLabel = Util.formataData(item.dataFinalEntrega);
 							break;
 						case "Hor. da Entrega":
-							sLabel = item.dataFinalEntrega.getHours() + ":" + item.dataFinalEntrega.getMinutes();
+							sLabel = Util.organizaUnidadeTempo(String(item.dataFinalEntrega.getHours())) + ":" + 
+								Util.organizaUnidadeTempo(String(item.dataFinalEntrega.getMinutes()));
 							break;
 						case "Status":
 							break;
