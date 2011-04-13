@@ -98,6 +98,12 @@
 					inputDataFinal.text = Util.formataData(roteiro.dataFinalDiscussao);
 					inputDataEntrega.text = Util.formataData(roteiro.dataFinalEntrega);
 					inputDataLiberacao.text = Util.formataData(roteiro.dataLiberacao);
+					inputHoraDiscussao.text = Util.organizaUnidadeTempo(String(roteiro.dataFinalDiscussao.hours)) + ":" + 
+						Util.organizaUnidadeTempo(String(roteiro.dataFinalDiscussao.minutes));
+					inputHoraEntrega.text = Util.organizaUnidadeTempo(String(roteiro.dataFinalEntrega.hours)) + ":" + 
+						Util.organizaUnidadeTempo(String(roteiro.dataFinalEntrega.minutes));
+					inputHoraLiberacao.text = Util.organizaUnidadeTempo(String(roteiro.dataLiberacao.hours)) + ":" + 
+						Util.organizaUnidadeTempo(String(roteiro.dataLiberacao.minutes));
 					
 					// mostra os integrantes da equipe
 					// integrantesEquipeRoteiro
@@ -241,9 +247,9 @@
 		<mx:Label x="333" y="70" text="Título:" id="labelDescRoteiro0"/>
 		<mx:Label x="745" y="38" text="Nota do Corretor:"/>
 		<mx:Label y="10" text="Nota Automática:" x="748"/>
-		<mx:Label x="654" y="422" text="Data de Liberação:"/>
-		<mx:Label x="654" y="450" text="Data de Entrega:"/>
-		<mx:Label x="654" y="478" text="Data Final para Discussão:"/>
+		<mx:Label x="588" y="423" text="Data de Liberação:"/>
+		<mx:Label x="588" y="450" text="Data de Entrega:"/>
+		<mx:Label x="588" y="478" text="Data Final para Discussão:"/>
 		<mx:Label x="331" y="422" text="Número máximo de envios:"/>
 		<mx:Label x="331" y="450" text="Máximo de Integrantes por Equipe:"/>
 		<mx:Label x="331" y="478" text="Penalidade por dia de atraso:"/>
@@ -251,12 +257,15 @@
 		<mx:Label x="10" y="378" text="Meus Projetos:" fontStyle="normal" fontWeight="bold" fontSize="14" id="meusProjetosLabel" visible="false"/>
 		<mx:Label x="10" y="176" text="Projetos da Cota Atual:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetosCotaLabel" visible="false"/>
 		<mx:VRule x="302" y="13" height="577"  width="1"/>
-		<mx:Label x="556" y="478" width="51" id="inputPenalidades" color="#1B7A0F" text="0" textAlign="right"/>
-		<mx:Label x="567" y="450" width="40" id="inputIntegrantesPorEquipe" color="#1B7A0F" text="0" textAlign="right"/>
-		<mx:Label x="567" y="422" width="40" id="inputNumeroMaximoEnvios" color="#1B7A0F" text="0" textAlign="right"/>
-		<mx:Label x="830" y="422" width="88" id="inputDataLiberacao" color="#1B7A0F"/>
-		<mx:Label x="830" y="450" width="88" id="inputDataEntrega" color="#1B7A0F"/>
-		<mx:Label x="830" y="478" width="88" id="inputDataFinal" color="#1B7A0F"/>
+		<mx:Label x="557" y="478" width="16" id="inputPenalidades" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="557" y="450" width="16" id="inputIntegrantesPorEquipe" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="557" y="422" width="16" id="inputNumeroMaximoEnvios" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="769" y="422" width="93" id="inputDataLiberacao" color="#1B7A0F"/>
+		<mx:Label x="769" y="450" width="93" id="inputDataEntrega" color="#1B7A0F"/>
+		<mx:Label x="769" y="478" width="93" id="inputDataFinal" color="#1B7A0F"/>
+		<mx:Label x="864" y="422" width="54" id="inputHoraLiberacao" color="#1B7A0F"/>
+		<mx:Label x="864" y="450" width="54" id="inputHoraEntrega" color="#1B7A0F"/>
+		<mx:Label x="864" y="478" width="54" id="inputHoraDiscussao" color="#1B7A0F"/>
 		<mx:TextArea x="331" y="124" width="587" height="279" backgroundAlpha="0.0" id="resumoText" editable="false" alpha="0.5" cornerRadius="10"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
