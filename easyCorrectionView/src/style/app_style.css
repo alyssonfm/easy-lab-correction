@@ -66,6 +66,11 @@ ButtonBar {
 	text-align: left;
 }
 
+List {
+	font-size: 12pt;
+	color: #042E8E;
+}
+
 Button {
 	theme-color: #DBA628;
 	color: #042E8E;
