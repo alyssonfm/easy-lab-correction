@@ -156,7 +156,6 @@
 					}
 				}
 				
-				
 				private function salvarNotaCorretor():void{
 					if (Util.formataTextValorToNumber2(inputNota.fullText) <= 10){
 						avaliacao.notaCorrecao = Util.formataTextValorToNumber2(inputNota.fullText);
