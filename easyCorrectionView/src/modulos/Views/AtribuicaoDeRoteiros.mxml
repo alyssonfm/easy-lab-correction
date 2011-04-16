@@ -11,6 +11,7 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.roteiros.EquipeHasUsuarioHasRoteiro;
 				import bean.avaliacoes.Avaliacao;
 				import bean.Utilitarios.CastDeEntidades;
 				import bean.roteiros.Roteiro;
@@ -133,7 +134,7 @@
 				}
 								
 				private function expoeEquipeDaAvaliacao(item: *): String{
-                        return item.submissao.equipeHasUsuarioHasRoteiro.equipe.nome;
+                	return item.submissao.equipeHasUsuarioHasRoteiro.equipe.nome;
                 }
 
 				private function alocaEquipeAoCorretor():void{
@@ -175,6 +176,30 @@
 					getListaEquipesComCorretor();
 				}
 				
+				private function selecionaEquipeAlocada(): void{
+					var avaliacao: Avaliacao = CastDeEntidades.castAvaliacao(listaEquipesPorRoteiroDoCorretor.selectedItem);
+					selecionaEquipe(avaliacao);
+				}
+				
+				private function selecionaEquipeDesalocada(): void{
+					var avaliacao: Avaliacao = CastDeEntidades.castAvaliacao(listaEquipesPorRoteiroSemCorretor.selectedItem);
+					selecionaEquipe(avaliacao);
+				}
+				
+				private function selecionaEquipe(avaliacao: Avaliacao):void{
+					var eur: EquipeHasUsuarioHasRoteiro = avaliacao.submissao.equipeHasUsuarioHasRoteiro;
+					facade.getOperation("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro").send(eur.equipe.id, eur.roteiro.id);
+				}
+				
+				private function getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event:ResultEvent):void{
+					listaIntegrantes.dataProvider = new ArrayCollection(); 
+					listaIntegrantes.dataProvider = event.result;
+				}
+				
+				private function selecaoLabelIntegrantes(item: *): String{
+					return item.usuario.nome;
+				}
+				
 				private function exibeMensagem(mensagem: String): void{
 					var param:Array = new Array(true, mensagem);
 					ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this, param);
@@ -190,6 +215,7 @@
 			<mx:method name="getAvaliacoesDoRoteiroSemCorretor" result="getListaEquipesSemCorretor_result(event)" fault="falha(event)"/>
 			<mx:method name="getAvaliacoesDoRoteiroComCorretor" result="getListaEquipesComCorretor_result(event)" fault="falha(event)"/>
 			<mx:method name="alocaCorretor" result="atualizaEstado_result(event)" fault="falha(event)"/>
+			<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
 			
 		</mx:RemoteObject>
 		
@@ -202,12 +228,11 @@
 		<comp:ComboBoxAC labelField="nome" x="73" y="21" width="304" change="getListaEquipesSemCorretor()" id="comboRoteiros"/>
 		<comp:ComboBoxAC labelField="nome" x="476" y="21" width="294" change="getListaEquipesComCorretor()" id="comboCorretores" enabled="false"/>
 		<mx:HRule x="10" y="61" width="760" height="3"/>
-		<mx:List id="listaEquipesPorRoteiroSemCorretor" x="10" y="100" width="352" height="408" labelFunction="expoeEquipeDaAvaliacao"/>
-		<mx:Label text="Equipes Selecionadas:" fontWeight="bold"
-			textAlign="left" width="155" x="418" y="72" id="labelTitulo2"/>
-		<mx:List id="listaEquipesPorRoteiroDoCorretor" x="418" y="100" width="352" height="408" labelFunction="expoeEquipeDaAvaliacao"></mx:List>
-		<mx:Button x="370" y="246" width="40" click="alocaEquipeAoCorretor()" height="40" icon="@Embed(source='../../image/right.png')" fontStyle="normal" fontWeight="bold" fillAlphas="[0.0, 0.0, 0.0, 0.0]" fillColors="[#FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF]" borderColor="#FFFFFF" cornerRadius="20" themeColor="#37612B" id="button2"/>
-		<mx:Button x="370" y="294" width="40" click="desalocaEquipeAoCorretor()" height="40" icon="@Embed(source='../../image/left.png')" fontStyle="normal" fontWeight="bold" fillAlphas="[0.0, 0.0, 0.0, 0.0]" fillColors="[#FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF]" borderColor="#FFFFFF" cornerRadius="20" themeColor="#37612B" id="button1"/>
+		<mx:List id="listaEquipesPorRoteiroSemCorretor" x="10" y="100" width="352" height="295" labelFunction="expoeEquipeDaAvaliacao" itemClick="selecionaEquipeDesalocada()"/>
+		<mx:Label text="Equipes Selecionadas:" fontWeight="bold" textAlign="left" width="155" x="418" y="72" id="labelTitulo2"/>
+		<mx:List id="listaEquipesPorRoteiroDoCorretor" x="418" y="100" width="352" height="295" labelFunction="expoeEquipeDaAvaliacao" itemClick="selecionaEquipeAlocada()"></mx:List>
+		<mx:Button x="370" y="201" width="40" click="alocaEquipeAoCorretor()" height="40" icon="@Embed(source='../../image/right.png')" fontStyle="normal" fontWeight="bold" fillAlphas="[0.0, 0.0, 0.0, 0.0]" fillColors="[#FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF]" borderColor="#FFFFFF" cornerRadius="20" themeColor="#37612B" id="button2"/>
+		<mx:Button x="370" y="249" width="40" click="desalocaEquipeAoCorretor()" height="40" icon="@Embed(source='../../image/left.png')" fontStyle="normal" fontWeight="bold" fillAlphas="[0.0, 0.0, 0.0, 0.0]" fillColors="[#FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF]" borderColor="#FFFFFF" cornerRadius="20" themeColor="#37612B" id="button1"/>
 		<mx:Label text="Total de Equipes sem Avaliador:" fontWeight="bold"
 			textAlign="left" width="219" x="10" y="516" id="labelTitulo3"/>
 		<mx:Label text="Total de Equipes alocadas por corretor:" fontWeight="bold"
@@ -216,6 +241,9 @@
 			textAlign="left" width="78" x="692" y="516" id="labelTitulo6"/>
 		<mx:Label text="{listaEquipesPorRoteiroSemCorretor.dataProvider.length}" fontWeight="bold"
 			textAlign="left" width="63" x="237" y="516" id="labelTitulo4"/>
+		<mx:Label text="Integrantes: " fontWeight="bold"
+			textAlign="left" width="93.04999" x="10" y="403" id="labelIntegrantes" height="20"/>
+		<mx:List id="listaIntegrantes" x="10" y="424" width="760" height="84" labelFunction="selecaoLabelIntegrantes"/>
 		
 		
 </les:ModuleTitleWindow>
