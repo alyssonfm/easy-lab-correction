@@ -229,7 +229,7 @@
 		<mx:Label x="21" y="126" width="656" id="caminho" textAlign="center"/>
 		<mx:Label x="16" y="10" width="69" id="caminho0" textAlign="left" text="Roteiro:" fontWeight="bold"/>
 		<mx:Label x="18" y="38" width="69" id="caminho1" textAlign="left" text="Equipe:" fontWeight="bold"/>
-		<mx:Label x="89" y="38" width="69" id="nomeDaEquipe" textAlign="left" text="..." fontWeight="bold" color="#048E2B"/>
+		<mx:Label x="89" y="38" width="237" id="nomeDaEquipe" textAlign="left" text="..." fontWeight="bold" color="#048E2B"/>
 		<mx:Button x="257" y="156" label="   Submeter Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSubmeterRoteiro" click="submeteRoteiro()"/>
 		<mx:HRule x="21" y="192" width="656" height="9"/>
 		<mx:HRule x="21" y="70" width="656" height="10"/>
