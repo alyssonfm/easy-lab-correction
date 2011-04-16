@@ -44,9 +44,7 @@
 				getGrupoUsuarioPorUsuario();
 				buttonBaixarTestes.enabled = false;
 				buttonBaixarInterface.enabled = false;
-				buttonVisualizarNotas.enabled = false;
 				buttonVisulizarCorrecao.enabled = false;
-				
 				getRoteirosLiberados();
 			}
 			
