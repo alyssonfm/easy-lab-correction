@@ -1,0 +1,13 @@
+#TeXlipse project settings
+#Mon Apr 18 00:10:37 GMT-03:00 2011
+builderNum=4
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=tmp
+mainTexFile=DocumentacaoELC.tex
+outputFile=DocumentacaoELC.pdf
+langSpell=en
+markDer=true
+srcDir=
