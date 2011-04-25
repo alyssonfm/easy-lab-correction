@@ -1,3 +1,189 @@
 \section{Requisitos Arquiteturais}
 
-\subsection{Requisitos Não Funcionais}
+\subsection{Requisitos Não-Funcionais}
+
+Os requisitos não-funcionais (RNFs) da Linha de Produto ELC foram elencados
+e divididos em tipos de acordo com [SOMMERVILLE 2010], Figura 1. Alguns dos
+RNFs foram resultantes de acordos entre o cliente, professores da disciplina, que estabeleceram as datas das iterações e entregas, e os desenvolvedores, que já possuíam bom conhecimento de algumas linguagens e tecnologias.
+
+\begin{figure} 
+	\centering
+		\includegraphics[scale=0.8]{imagens/figura1.png}
+	\caption{Tipos de requisitos não-funcionais [Sommerville 2010]}
+\end{figure}
+
+\subsubsection{Requisitos de Produto}
+
+A seguir são apresentados os requisitos de produto elencados para o sistema
+\textit{Easy Lab Correction}.
+
+\begin{figure}[htb] 
+	\centering
+		\includegraphics[scale=1]{imagens/portabilidade.png}
+		\caption{Requisitos de Portabilidade}
+\end{figure}
+
+\begin{figure}[htb] 
+	\centering
+		\includegraphics[scale=1]{imagens/confiabilidade.png}
+		\caption{Requisitos de Confiabilidade}
+\end{figure}
+
+\begin{figure} 
+	\centering
+		\includegraphics[scale=1]{imagens/eficiencia.png}
+		\caption{Requisitos de Eficiência}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[scale=1]{imagens/usabilidade.png}
+		\caption{Requisitos de Usabilidade}
+\end{figure}
+
+\subsubsection{Requisitos Organizacionais}
+
+A seguir são apresentados os requisitos organizacionais elencados para o sistema
+\textit{Easy Lab Correction}.
+
+\begin{figure}
+	\centering
+		\includegraphics[scale=1]{imagens/entrega.png}
+		\caption{Requisitos de Entrega}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[scale=1]{imagens/implementacao.png}
+		\caption{Requisitos de Implementação}
+\end{figure}
+
+\begin{figure}
+	\centering
+		\includegraphics[scale=1]{imagens/protecao.png}
+		\caption{Requisitos de Proteção}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+		\includegraphics[scale=1]{imagens/privacidade.png}
+		\caption{Requisitos de Privacidade}
+\end{figure}
+
+\newpage
+\subsection{Requisitos Funcionais}
+
+Por tratar-se de uma Linha de Produto, o ELC disponibiliza uma \textit{checklist} com
+todas as funcionalidades passíveis de implementação e inserção em futuros
+membros da linha. Essa \textit{checklist} deve ser disponibilizada ao cliente e
+deve ser preenchida como parte de um Requisito Não-Funcional de Entrega (descrito na seção anterior).
+
+\subsubsection{Funcionalidades Selecionadas}
+
+Em conversas com o cliente ficou acordado que o foco do projeto é o de manter o
+sistema ELC - LEDA, melhorar os RNFs, produtizá-lo e por fim, adicionar
+novas funcionalidades. Assim, os requisitos abaixo foram inicialmente selecionados.
+
+\begin{itemize}
+  \item Criar tipos de roteiro
+  \item Correção online das atividades, com adição de comentários ao código.
+\end{itemize}
+
+Para Projeto II almeja-se expandir o sistema para outros clientes e desenvolver
+novas funcionalidades da linha de produto, como por exemplo, a geração de casos de teste automática partindo de modelos e, a disponibilização de serviços para utilização de ferramentas online.
+
+\subsection{Riscos Arquiteturais Críticos}
+
+As decisões de projeto para o sistema ELC seguem um padrão de projetos amplamente utilizado pela comunidade, o qual reúne FLEX, JAVA e MYSQL. Essa combinação tem gerado bons frutos em diversos setores da engenharia de software, tais como produtividade, inovação, segurança, entre outros. No entanto, alguns riscos são de conhecimento geral.
+ 
+A interface com o usuário, Flex + Action Script, apresenta dois riscos críticos, que podem ser contornados com a utilização de técnicas básicas.
+ 
+O primeiro deles é a incompatibilidade entre os objetos em ActionScript com objetos Java. Caso não sejam tomadas às devidas precauções, a comunicação entre os dois pode gerar objetos ou atributos de objetos nulos, sem motivo e especificação prévia, o que compromete a confiabilidade do sistema. Uma solução para esse problema é o mapeamento de dados entre as duas linguagens, o que pode ser feito de duas formas: criação de BEANS (objetos semelhantes aos objetos Java, para realizar conversão de tipos) ou utilizar o padrão Command (Framework Cairngorm) que quebra os objetos em seus atributos e passa-os como parâmetros.
+ 
+O segundo risco crítico está relacionado com a dependência do Adobe Flash Player para a exibição da interface gráfica. Constatou-se que plugins antigos do flash player exibem interfaces incompletas e com falhas na execução, como é o caso das versões mais antigas para o sistema operacional Linux que não possuem mapeamentos de caracteres com acentuação, ou seja, caracteres acentuados nestas versões se transformam em caracteres indesejados. Para o correto funcionamento deste, é preciso manter o plugin atualizado nos terminais clientes.
+
+A utilização de Servlets como provedores de serviços cria um risco adicional. Estes serviços utilizados para enviar e-mails, fazer download e upload de arquivos, utilizam os métodos doPost e doGet que podem ser acessados facilmente por atacantes, comprometendo assim a segurança do sistema. Para contornar esse problema, necessita-se unir a execução destes métodos a uma sessão do usuário, para que só sejam executados por usuários credenciados.
+
+Outro risco crítico está na política de Backup do banco de dados. O administrador responsável pelo sistema deve sempre verificar se o backup dos dados está realmente sendo enviado para o local correto.
+
+Por fim, o risco de estouro de memória ao realizar vários deployments no servidor Tomcat. É de amplo conhecimento da comunidade que o Tomcat não tem uma boa política de administração de deployments das aplicações. Com o Flex requer uma grande carga de deployment, por motivos desconhecidos provoca-se estouro de memória e ocasiona travamento temporário das aplicações hospedadas. Para contornar esse risco, por hora, deve-se evitar usar o Tomcat Manager e utilizar o deployment manual na pasta de aplicações.
+
+\section{Visão Lógica}
+
+\subsection{Questionário para escolha do Padrão Arquitetural}
+
+Após analisar as condições do sistema implantado atualmente, as possíveis
+funcionalidades adicionais e os Requisitos Funcionais e Não-Funcionais do novo
+Sistema, foram respondidas algumas questões fundamentais para o projeto da
+arquitetura, baseadas em [SOMMERVILLE 2010].
+
+\begin{itemize}
+  \item Existe uma arquitetura de aplicações genérica que pode agir como
+  template para o sistema que está sendo projetado? \newline
+  \textit{Sim, o template de Transaction-Processing Systems, mais
+  especificamente, de Sistemas de Informação. Esse tipo de sistema é
+  caracterizado por permitir acesso controlado a uma grande base de informação,
+  um banco de dados compartilhado por exemplo. O mesmo é modelado usando o padrão arquitetural de camadas (ou máquina abstrata, ver Figura 10).}
+  	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.5]{imagens/camadas.png}
+		\caption{Modelo de Camadas ou Máquina Abstrata}
+	\end{figure}
+	\item Como o sistema será distribuído através de processos? \newline
+	\textit{O ELC será distribuído entre os vários clientes e um servidor}
+	\item Qual ou quais estilos arquiteturais são apropriados para o sistema?
+	\newline
+	\textit{O modelo de camadas unido com o cliente-servidor (ver Figura 11). O
+	primeiro é responsável por organizar o acesso à base de dados. As múltiplas camadas modularizam o sistema, garantem portabilidade entre vários ambientes, por dividir deveres em vários níveis, e.g a camada inferior é a única a comunicar-se com o hardware. E, principalmente, flexibiliza a arquitetura horizontalmente, pois facilita o acréscimo de funcionalidades localizadamente na arquitetura, sem preocupar-se com os níveis inferiores. O último permite que separemos o sistema em 3 níveis básicos: os clientes remotos, pela web; o servidor de processamento de aplicações, com os serviços e funcionalidades do sistema e; o servidor de administração de dados, o servidor de Banco de Dados. O ELC é uma linha de produto que oferece ambientes web de apoio ao ensino de programação. Portanto, a opção de arquitetura híbrida proposta permite ter a flexibilidade requisitada por uma linha de produto, a manipulação dos estados de um ambiente de programação e a disponibilidade da web.}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.5]{imagens/arquitetura.png}
+		\caption{Arquitetura Cliente-Servidor de três camadas}
+	\end{figure}
+	\item Qual será a abordagem fundamental usada para Estrutura o sistema?
+	\newline \textit{O modelo de camadas formará a base	principal do sistema, no
+	entanto, este terá alguns componentes adicionais da arquitetura cliente-servidor.}
+	\item Como as estruturas unitárias do sistema são decompostas em módulos?
+	\newline \textit{Iremos utilizar uma decomposição orientada a objetos, com
+	uma modularização através de componentes.}
+	\item Qual estratégia será utilizada para controlar as operações das unidades
+	do sistema? \newline \textit{Duas estratégias serão utilizadas. A primeira será
+	o controle centralizado com o modelo de call-return, que executará as requisições às camadas de comunicação, processamento e dados sequencialmente. E a segunda estratégia é o Broadcast model, utilizada para sistemas orientados a eventos, no caso, a GUI comunica-se com o restante do sistema através de eventos e as requisições de serviço ao servidor (modelo cliente-servidor) podem também ser considerados eventos.}
+	\item Alguma desvantagem pode ser prevista nesse modelo? \newline \textit{Sim,
+	as mudanças em camadas inferiores são custosas, as camadas diminuem também a eficiência e ao trabalhar com uma arquitetura híbrida o projeto do sistema e a criação de novos componentes deve ser cuidadosa para escolher a melhor forma de implementação.}
+	\item Como a arquitetura será avaliada? \newline \textit{Pelo cliente
+	inicialmente, em sala de aula através da avaliação de pares e pela professora, ao término.}
+\end{itemize}
+
+\subsection{Decisões Chave para a Estrutura da Arquitetura}
+
+\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1]{imagens/dc1.png}
+\end{figure}
+
+\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1]{imagens/dc2.png}
+\end{figure}
+
+\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1]{imagens/dc3.png}
+\end{figure}
+
+\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1]{imagens/dc45.png}
+\end{figure}
+
+\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1]{imagens/dc67.png}
+\end{figure}
+
+\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1]{imagens/dc8.png}
+\end{figure}
+
