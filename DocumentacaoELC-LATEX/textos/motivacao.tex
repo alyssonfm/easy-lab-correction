@@ -19,7 +19,7 @@ O ELC encontra-se em uso na disciplina de Laboratório de Estrutura de Dados (LED
 Uma Linha de Produto de Software consiste em um conjunto de aplicações com uma arquitetura comum. Cada aplicação é especializada a partir de um subconjunto de funcionalidades centrais e genéricas comum.
  
 Vários são os tipos de especialização que a família de aplicações pode ser
-desenvolvida [Sommervile 2010], a linha de produto ELC (beta) segue a
+desenvolvida [SOMMERVILLE 2010], a linha de produto ELC (beta) segue a
 \textit{especialização funcional}, na qual versões de aplicações são criadas para clientes específicos com requisitos diferentes. Assim, apenas os componentes das funcionalidades do sistema devem adaptar-se ou novas funcionalidades devem ser adicionadas. Questões como mudança de plataforma ou de ambientes não são considerados.
 
 Linhas de Produto de Software são projetadas para serem reconfiguradas, ou seja, devem ser genéricas e permitir facilmente sua especialização. Essa reconfiguração pode acontecer em dois momentos, no momento da implantação ou no momento de projeto do novo membro da família de aplicações. O primeiro caso é amplamente utilizado em pacotes de software verticais projetados para aplicações específicas e com alto grau de similaridade, nesses casos a arquitetura deve ser amplamente reconfigurável não necessitando de acréscimos de funcionalidades no momento de implantação do software, o que requer ampla experiência da equipe de elicitação de requisitos e de desenvolvedores no nicho escolhido. A segunda forma de reuso ocorre em tempo de projeto, e partes do código fonte do núcleo do sistema pode ser modificado o que permite uma maior flexibilidade.
@@ -27,16 +27,13 @@ Linhas de Produto de Software são projetadas para serem reconfiguradas, ou seja,
 Para o projeto ELC foi escolhida a segunda alternativa devido a pouca experiência da equipe e, principalmente, o baixo número de funcionalidades atualmente desenvolvidas. Dessa forma, a equipe de desenvolvimento discutirá uma nova arquitetura que englobe não apenas as necessidades de um cliente, mas permita que uma série de requisitos funcionais e não funcionais sejam desenvolvidos ou adaptados.
  
 Para adaptar uma linha de produto em uma única aplicação alguns passos são necessários:
-
-1.	Elicitar os requisites dos stakeholders;
-
-2.	Escolher o membro da família com maior similaridade;
-
-3.	Renegociar os requisitos;
-
-4.	Adaptar o sistema existente;
-
-5.	Entregar o novo membro da família ao cliente.
+\begin{enumerate}
+  \item Elicitar os requisites dos stakeholders;
+  \item Escolher o membro da família com maior similaridade;
+  \item Renegociar os requisitos;
+  \item Adaptar o sistema existente;
+  \item Entregar o novo membro da família ao cliente.
+\end{enumerate}
 
 \subsection{Objetivo do Projeto}
 
@@ -48,7 +45,6 @@ disciplina de Projeto II) propõe-se buscar novos clientes com necessidades
 similares e assim
 expandir a família de aplicações.
 
-\newpage
 \section{Stakeholders}
 
 Os \textit{stakeholders} envolvidos no Sistema são:
