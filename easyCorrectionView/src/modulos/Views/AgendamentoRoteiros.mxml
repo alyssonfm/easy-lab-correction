@@ -63,7 +63,7 @@
 				
 				private function init():void {
 					
-					facade.channelSet = ControladorDeModulos.criaCanal();
+					facade.channelSet = ControladorDeModulos.criaCanal("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 					var estado: String = String(ControladorDeModulos.getParam());
 					systemManager.addEventListener(ObjetoEvent.ObjetoEventConst, atualizaLista);
 					listarRoteiros();
@@ -117,16 +117,13 @@
 							break;
 						case "Hor. da Entrega":
 							sLabel = Util.organizaUnidadeTempo(String(item.dataFinalEntrega.getHours())) + ":" + 
-								Util.organizaUnidadeTempo(String(item.dataFinalEntrega.getMinutes()));
+							Util.organizaUnidadeTempo(String(item.dataFinalEntrega.getMinutes()));
 							break;
 						case "Status":
+							
 							break;
-						/*
-							if(item.bloqueado == false){
-								sLabel = "LIBERADO";
-							} else{
-								sLabel = "BLOQUEADO";
-							}*/
+						case "Submissões":
+							break;
 					}
 					return sLabel;
 				}
@@ -159,6 +156,7 @@
 				<mx:DataGridColumn headerText="Data da Entrega" width="50"/>
 				<mx:DataGridColumn headerText="Hor. da Entrega" width="50"/>
 				<mx:DataGridColumn headerText="Status" width="50"/>
+				<mx:DataGridColumn headerText="Submissões" width="50"/>
 			</mx:columns>
 		</mx:DataGrid>
 		
