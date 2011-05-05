@@ -1,9 +1,19 @@
 package br.edu.les.easyCorrection.util;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.quartz.Job;
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.Trigger;
+import org.quartz.TriggerUtils;
+import org.quartz.impl.StdSchedulerFactory;
 
 
 public class Agendador {
@@ -12,15 +22,23 @@ public class Agendador {
 	public static boolean comecou = false;
 	
 	public Agendador() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 12);
-		calendar.set(Calendar.MINUTE, 02);
-		calendar.set(Calendar.SECOND, 0);
-		Date time = calendar.getTime();
 		
-		timer = new Timer();
-		//timer.schedule(new RemindTask(), time);
-		timer.scheduleAtFixedRate(new RemindTask(), time, 86400000);
+		try{
+			SchedulerFactory sf = new StdSchedulerFactory();
+			Scheduler sched = sf.getScheduler();
+			 
+			JobDetail job = new JobDetail("dispara_email", "grupo", DumpJob.class);
+			Trigger semanal = TriggerUtils.makeWeeklyTrigger("weekly", TriggerUtils.SUNDAY, 12, 10); 
+			sched.scheduleJob(job, semanal);
+			
+			sched.start();
+		}catch(SchedulerException e){}
+	}
+	
+	public class DumpJob implements Job{
+	    public void execute(JobExecutionContext arg0) throws JobExecutionException{
+	        System.out.println("Trabalhando com  o Quartz: " + new Date());
+	    }
 	}
 	
 	class RemindTask extends TimerTask {
