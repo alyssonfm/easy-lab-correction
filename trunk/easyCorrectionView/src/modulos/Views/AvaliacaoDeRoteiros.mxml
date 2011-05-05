@@ -75,7 +75,7 @@
 				
 				private function init():void {
 					
-					facade.channelSet = ControladorDeModulos.criaCanal();
+					facade.channelSet = ControladorDeModulos.criaCanal("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 					var estado: String = String(ControladorDeModulos.getParam());
 					var roteiros: ArrayCollection = new ArrayCollection();
 					listarRoteiros();

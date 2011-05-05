@@ -26,7 +26,7 @@
 				import mx.rpc.events.FaultEvent;
 				
 				private function init():void {
-					facade.channelSet = ControladorDeModulos.criaCanal();
+					facade.channelSet = ControladorDeModulos.criaCanal("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 					var estado: String = String(ControladorDeModulos.getParam());
 					listarRoteiros();
 				}
