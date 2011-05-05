@@ -1,14 +1,9 @@
-// Flash Player Version Detection - Rev 1.6
-// Detect Client Browser type
-// Copyright(c) 2005-2006 Adobe Macromedia Software, LLC. All rights reserved.
+//Flash Player Version Detection - Rev 1.6
+//Detect Client Browser type
+//Copyright(c) 2005-2006 Adobe Macromedia Software, LLC. All rights reserved.
 var isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
 var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
 var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
-var server = "localhost";
-var serverDoor = "8080";
-//var server = "les.dsc.ufcg.edu.br";
-//Servidor
-
 
 function ControlVersion()
 {
@@ -82,7 +77,7 @@ function ControlVersion()
 	return version;
 }
 
-// JavaScript helper required to detect Flash Player PlugIn version information
+//JavaScript helper required to detect Flash Player PlugIn version information
 function GetSwfVer(){
 	// NS/Opera version >= 3 check for Flash plugin in plugin array
 	var flashVer = -1;
@@ -122,7 +117,7 @@ function GetSwfVer(){
 	return flashVer;
 }
 
-// When called with reqMajorVer, reqMinorVer, reqRevision returns true if that version or greater is available
+//When called with reqMajorVer, reqMinorVer, reqRevision returns true if that version or greater is available
 function DetectFlashVer(reqMajorVer, reqMinorVer, reqRevision)
 {
 	versionStr = GetSwfVer();
@@ -141,7 +136,7 @@ function DetectFlashVer(reqMajorVer, reqMinorVer, reqRevision)
 		var versionMinor      = versionArray[1];
 		var versionRevision   = versionArray[2];
 
-        	// is the major.revision >= requested major.revision AND the minor version >= requested minor
+     	// is the major.revision >= requested major.revision AND the minor version >= requested minor
 		if (versionMajor > parseFloat(reqMajorVer)) {
 			return true;
 		} else if (versionMajor == parseFloat(reqMajorVer)) {
@@ -158,136 +153,160 @@ function DetectFlashVer(reqMajorVer, reqMinorVer, reqRevision)
 
 function AC_AddExtension(src, ext)
 {
-  if (src.indexOf('?') != -1)
-    return src.replace(/\?/, ext+'?'); 
-  else
-    return src + ext;
+if (src.indexOf('?') != -1)
+ return src.replace(/\?/, ext+'?'); 
+else
+ return src + ext;
 }
 
 function AC_Generateobj(objAttrs, params, embedAttrs) 
 { 
-    var str = '';
-    if (isIE && isWin && !isOpera)
-    {
-  		str += '<object ';
-  		for (var i in objAttrs)
-  			str += i + '="' + objAttrs[i] + '" ';
-  		str += '>';
-  		for (var i in params)
-  			str += '<param name="' + i + '" value="' + params[i] + '" /> ';
-  		str += '</object>';
-    } else {
-  		str += '<embed ';
-  		for (var i in embedAttrs)
-  			str += i + '="' + embedAttrs[i] + '" ';
-  		str += '> </embed>';
-    }
+ var str = '';
+ if (isIE && isWin && !isOpera)
+ {
+		str += '<object ';
+		for (var i in objAttrs)
+			str += i + '="' + objAttrs[i] + '" ';
+		str += '>';
+		for (var i in params)
+			str += '<param name="' + i + '" value="' + params[i] + '" /> ';
+		str += '</object>';
+ } else {
+		str += '<embed ';
+		for (var i in embedAttrs)
+			str += i + '="' + embedAttrs[i] + '" ';
+		str += '> </embed>';
+ }
 
-    document.write(str);
+ document.write(str);
 }
 
 function AC_FL_RunContent(){
-  var ret = 
-    AC_GetArgs
-    (  arguments, ".swf", "movie", "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
-     , "application/x-shockwave-flash"
-    );
-  AC_Generateobj(ret.objAttrs, ret.params, ret.embedAttrs);
+var ret = 
+ AC_GetArgs
+ (  arguments, ".swf", "movie", "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+  , "application/x-shockwave-flash"
+ );
+AC_Generateobj(ret.objAttrs, ret.params, ret.embedAttrs);
 }
 
 function AC_GetArgs(args, ext, srcParamName, classid, mimeType){
-  var ret = new Object();
-  ret.embedAttrs = new Object();
-  ret.params = new Object();
-  ret.objAttrs = new Object();
-  for (var i=0; i < args.length; i=i+2){
-    var currArg = args[i].toLowerCase();    
+var ret = new Object();
+ret.embedAttrs = new Object();
+ret.params = new Object();
+ret.objAttrs = new Object();
+for (var i=0; i < args.length; i=i+2){
+ var currArg = args[i].toLowerCase();    
 
-    switch (currArg){	
-      case "classid":
-        break;
-      case "pluginspage":
-        ret.embedAttrs[args[i]] = args[i+1];
-        break;
-      case "src":
-      case "movie":	
-        args[i+1] = AC_AddExtension(args[i+1], ext);
-        ret.embedAttrs["src"] = args[i+1];
-        ret.params[srcParamName] = args[i+1];
-        break;
-      case "onafterupdate":
-      case "onbeforeupdate":
-      case "onblur":
-      case "oncellchange":
-      case "onclick":
-      case "ondblClick":
-      case "ondrag":
-      case "ondragend":
-      case "ondragenter":
-      case "ondragleave":
-      case "ondragover":
-      case "ondrop":
-      case "onfinish":
-      case "onfocus":
-      case "onhelp":
-      case "onmousedown":
-      case "onmouseup":
-      case "onmouseover":
-      case "onmousemove":
-      case "onmouseout":
-      case "onkeypress":
-      case "onkeydown":
-      case "onkeyup":
-      case "onload":
-      case "onlosecapture":
-      case "onpropertychange":
-      case "onreadystatechange":
-      case "onrowsdelete":
-      case "onrowenter":
-      case "onrowexit":
-      case "onrowsinserted":
-      case "onstart":
-      case "onscroll":
-      case "onbeforeeditfocus":
-      case "onactivate":
-      case "onbeforedeactivate":
-      case "ondeactivate":
-      case "type":
-      case "codebase":
-        ret.objAttrs[args[i]] = args[i+1];
-        break;
-      case "id":
-      case "width":
-      case "height":
-      case "align":
-      case "vspace": 
-      case "hspace":
-      case "class":
-      case "title":
-      case "accesskey":
-      case "name":
-      case "tabindex":
-        ret.embedAttrs[args[i]] = ret.objAttrs[args[i]] = args[i+1];
-        break;
-      default:
-        ret.embedAttrs[args[i]] = ret.params[args[i]] = args[i+1];
-    }
-  }
-  ret.objAttrs["classid"] = classid;
-  if (mimeType) ret.embedAttrs["type"] = mimeType;
-  return ret;
+ switch (currArg){	
+   case "classid":
+     break;
+   case "pluginspage":
+     ret.embedAttrs[args[i]] = args[i+1];
+     break;
+   case "src":
+   case "movie":	
+     args[i+1] = AC_AddExtension(args[i+1], ext);
+     ret.embedAttrs["src"] = args[i+1];
+     ret.params[srcParamName] = args[i+1];
+     break;
+   case "onafterupdate":
+   case "onbeforeupdate":
+   case "onblur":
+   case "oncellchange":
+   case "onclick":
+   case "ondblClick":
+   case "ondrag":
+   case "ondragend":
+   case "ondragenter":
+   case "ondragleave":
+   case "ondragover":
+   case "ondrop":
+   case "onfinish":
+   case "onfocus":
+   case "onhelp":
+   case "onmousedown":
+   case "onmouseup":
+   case "onmouseover":
+   case "onmousemove":
+   case "onmouseout":
+   case "onkeypress":
+   case "onkeydown":
+   case "onkeyup":
+   case "onload":
+   case "onlosecapture":
+   case "onpropertychange":
+   case "onreadystatechange":
+   case "onrowsdelete":
+   case "onrowenter":
+   case "onrowexit":
+   case "onrowsinserted":
+   case "onstart":
+   case "onscroll":
+   case "onbeforeeditfocus":
+   case "onactivate":
+   case "onbeforedeactivate":
+   case "ondeactivate":
+   case "type":
+   case "codebase":
+     ret.objAttrs[args[i]] = args[i+1];
+     break;
+   case "id":
+   case "width":
+   case "height":
+   case "align":
+   case "vspace": 
+   case "hspace":
+   case "class":
+   case "title":
+   case "accesskey":
+   case "name":
+   case "tabindex":
+     ret.embedAttrs[args[i]] = ret.objAttrs[args[i]] = args[i+1];
+     break;
+   default:
+     ret.embedAttrs[args[i]] = ret.params[args[i]] = args[i+1];
+ }
+}
+ret.objAttrs["classid"] = classid;
+if (mimeType) ret.embedAttrs["type"] = mimeType;
+return ret;
+}
+
+function getCanalSeguro() {
+	return true;
+}
+
+function getProtocolo() {
+	if (getCanalSeguro()) {
+		return "https://";
+	} else {
+		return "http://";
+	}
+}
+
+function getPorta() {
+	if (getCanalSeguro()) {
+		return ":8443/";
+	} else {
+		return ":8080/";
+	}
+}
+
+function getUrlAMFCanal(destino) {
+	return "http://" + top.location.host + ":8080/" + destino + "/messagebroker/amf";
+}
+
+function getUrlAMFCanalSeguro(destino) {
+	return "https://" + top.location.host + ":8443/" + destino + "/messagebroker/amfsecure";
 }
 
 function getUrlSendMail() {
-	return "http://" + server + ":" + serverDoor + "/easyCorrection/SendMailServlet";
+	return getProtocolo() + top.location.host + getPorta() + "easyCorrection/SendMailServlet";
 }
 
 function downLoadRoteiro() {
-	return "http://" + server + ":" + serverDoor + "/easyCorrection/downloadArquivo";
-}
-
-function getUrlAMFCanal() {
-	return "http://" + server + ":" + serverDoor + "/easyCorrection/messagebroker/amf";
+	return getProtocolo() + top.location.host + getPorta() + "easyCorrection/downloadArquivo";
 }
 
 
