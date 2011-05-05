@@ -22,7 +22,7 @@ import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
 import br.edu.les.easyCorrection.util.easyCorrectionUtil;
 
-public class GerenciadorAcesso extends Gerenciador{
+public class GerenciadorAcesso extends Gerenciador {
 
 	private GerenciadorSubmissoes gerenciadorSubmissoes;
 	private GerenciadorRoteiros gerenciadorRoteiros;
@@ -36,8 +36,8 @@ public class GerenciadorAcesso extends Gerenciador{
 	public Menu getMenu(Integer id) {
 		List<Menu> menu = DAOFactory.DEFAULT.buildMenuDAO().findById(id);
 		if (menu.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
-					.msg("menu"));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.OBJ_NOT_FOUND.msg("menu"));
 		}
 		return menu.get(0);
 	}
@@ -59,21 +59,21 @@ public class GerenciadorAcesso extends Gerenciador{
 			if (easyCorrectionUtil.isNull(menu.getIdMenu())
 					|| menu.getIdMenu().equals(new Integer(0))) {
 				// Verifica se o rotulo ou o nome ja existe
-				m = consultarMenuPorRotuloENome(menu.getNome(), menu
-						.getRotulo());
+				m = consultarMenuPorRotuloENome(menu.getNome(),
+						menu.getRotulo());
 				// Se o rótulo/nome não existe e e o id é null
 				if (easyCorrectionUtil.isNull(m)) {
 					Integer id = DAOFactory.DEFAULT.buildMenuDAO().save(menu);
 					menu.setIdMenu(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(m)) {
-					throw new ValorDuplicadoException(MsgErros.VALOR_DUPLICADO
-							.msg("nome ou rotulo"));
+					throw new ValorDuplicadoException(
+							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 				// Se o id eh diferente de null
 			} else {
-				men = consultarMenuPorRotuloENome(menu.getNome(), menu
-						.getRotulo());
+				men = consultarMenuPorRotuloENome(menu.getNome(),
+						menu.getRotulo());
 				if (easyCorrectionUtil.isNull(men)) {
 					men = getMenu(menu.getIdMenu());
 					men = (Menu) SwapperAtributosReflect.swapObject(men, menu,
@@ -84,8 +84,8 @@ public class GerenciadorAcesso extends Gerenciador{
 							Menu.class);
 					DAOFactory.DEFAULT.buildMenuDAO().update(men);
 				} else {
-					throw new ValorDuplicadoException(MsgErros.VALOR_DUPLICADO
-							.msg("nome ou rotulo"));
+					throw new ValorDuplicadoException(
+							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 			}
 		}
@@ -113,8 +113,8 @@ public class GerenciadorAcesso extends Gerenciador{
 			if (easyCorrectionUtil.isNull(funcao.getIdFuncao())
 					|| funcao.getIdFuncao().equals(new Integer(0))) {
 				// Verifica se o rótulo ou o nome já existe
-				f = consultarFuncaoNomeERotulo(funcao.getNome(), funcao
-						.getRotulo());
+				f = consultarFuncaoNomeERotulo(funcao.getNome(),
+						funcao.getRotulo());
 				// Se o rótulo/nome não existe e e o id é null
 				if (easyCorrectionUtil.isNull(f)) {
 					Integer id = DAOFactory.DEFAULT.buildFuncaoDAO().save(
@@ -122,13 +122,13 @@ public class GerenciadorAcesso extends Gerenciador{
 					funcao.setIdFuncao(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(f)) {
-					throw new ValorDuplicadoException(MsgErros.VALOR_DUPLICADO
-							.msg("nome ou rotulo"));
+					throw new ValorDuplicadoException(
+							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 				// Se o id é diferente de null
 			} else {
-				fun = consultarFuncaoNomeERotulo(funcao.getNome(), funcao
-						.getRotulo());
+				fun = consultarFuncaoNomeERotulo(funcao.getNome(),
+						funcao.getRotulo());
 				if (easyCorrectionUtil.isNull(fun)) {
 					fun = getFuncao(funcao.getIdFuncao());
 					fun = (Funcao) SwapperAtributosReflect.swapObject(fun,
@@ -139,8 +139,8 @@ public class GerenciadorAcesso extends Gerenciador{
 							funcao, Funcao.class);
 					DAOFactory.DEFAULT.buildFuncaoDAO().update(fun);
 				} else {
-					throw new ValorDuplicadoException(MsgErros.VALOR_DUPLICADO
-							.msg("nome ou rotulo"));
+					throw new ValorDuplicadoException(
+							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 			}
 		}
@@ -150,8 +150,8 @@ public class GerenciadorAcesso extends Gerenciador{
 	public Funcao getFuncao(Integer id) {
 		List<Funcao> funcao = DAOFactory.DEFAULT.buildFuncaoDAO().findById(id);
 		if (funcao.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
-					.msg("funcao"));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.OBJ_NOT_FOUND.msg("funcao"));
 		}
 		return funcao.get(0);
 	}
@@ -204,8 +204,8 @@ public class GerenciadorAcesso extends Gerenciador{
 					grupo.setIdGrupo(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(g)) {
-					throw new ValorDuplicadoException(MsgErros.VALOR_DUPLICADO
-							.msg("nome"));
+					throw new ValorDuplicadoException(
+							MsgErros.VALOR_DUPLICADO.msg("nome"));
 				}
 				// Se o id é diferente de null
 			} else {
@@ -220,8 +220,8 @@ public class GerenciadorAcesso extends Gerenciador{
 							Grupo.class);
 					DAOFactory.DEFAULT.buildGrupoDAO().update(gr);
 				} else {
-					throw new ValorDuplicadoException(MsgErros.VALOR_DUPLICADO
-							.msg("nome"));
+					throw new ValorDuplicadoException(
+							MsgErros.VALOR_DUPLICADO.msg("nome"));
 				}
 			}
 		}
@@ -231,8 +231,8 @@ public class GerenciadorAcesso extends Gerenciador{
 	public Grupo getGrupo(Integer id) {
 		List<Grupo> grupo = DAOFactory.DEFAULT.buildGrupoDAO().findById(id);
 		if (grupo.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
-					.msg("grupo"));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.OBJ_NOT_FOUND.msg("grupo"));
 		}
 		return grupo.get(0);
 	}
@@ -259,8 +259,8 @@ public class GerenciadorAcesso extends Gerenciador{
 	public Grupo getGrupoPorNome(String nome) {
 		List<Grupo> lista = DAOFactory.DEFAULT.buildGrupoDAO().findByNome(nome);
 		if (lista.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
-					.msg("grupo"));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.OBJ_NOT_FOUND.msg("grupo"));
 		}
 		return lista.get(0);
 	}
@@ -334,8 +334,8 @@ public class GerenciadorAcesso extends Gerenciador{
 		List<Permissao> permissao = DAOFactory.DEFAULT.buildPermissaoDAO()
 				.findById(id);
 		if (permissao.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
-					.msg("permissao"));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.OBJ_NOT_FOUND.msg("permissao"));
 		}
 		return permissao.get(0);
 	}
@@ -368,8 +368,8 @@ public class GerenciadorAcesso extends Gerenciador{
 		List<GrupoUsuario> grupoUsuario = DAOFactory.DEFAULT
 				.buildGrupoUsuarioDAO().findById(id);
 		if (grupoUsuario.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
-					.msg("usuario grupo"));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.OBJ_NOT_FOUND.msg("usuario grupo"));
 		}
 		return grupoUsuario.get(0);
 	}
@@ -396,7 +396,7 @@ public class GerenciadorAcesso extends Gerenciador{
 	public List<GrupoUsuario> listarGrupoUsuario() {
 		return DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findAllGrupoUsuario();
 	}
-	
+
 	public List<GrupoUsuario> listarGrupoUsuarioPorGrupo(String nomeGrupo) {
 		return DAOFactory.DEFAULT.buildGrupoUsuarioDAO().findByGrupo(nomeGrupo);
 	}
@@ -405,8 +405,8 @@ public class GerenciadorAcesso extends Gerenciador{
 		List<Usuario> usuario = DAOFactory.DEFAULT.buildUsuarioDAO().findById(
 				id);
 		if (usuario.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
-					.msg("usuario"));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.OBJ_NOT_FOUND.msg("usuario"));
 		}
 		return usuario.get(0);
 	}
@@ -415,8 +415,8 @@ public class GerenciadorAcesso extends Gerenciador{
 		List<Usuario> usuario = DAOFactory.DEFAULT.buildUsuarioDAO()
 				.findByLogin(login);
 		if (usuario.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
-					.msg("usuario"));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.OBJ_NOT_FOUND.msg("usuario"));
 		}
 		return usuario.get(0);
 	}
@@ -426,8 +426,8 @@ public class GerenciadorAcesso extends Gerenciador{
 		List<GrupoUsuario> lista = DAOFactory.DEFAULT.buildGrupoUsuarioDAO()
 				.findByUsuarioEGrupo(idGrupo, idUsuario);
 		if (lista.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
-					.msg("grupo usuario"));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.OBJ_NOT_FOUND.msg("grupo usuario"));
 		}
 		return lista.get(0);
 	}
@@ -473,18 +473,18 @@ public class GerenciadorAcesso extends Gerenciador{
 						equipe.setNome("Equipe " + index);
 					}
 					Equipe e = gerenciadorSubmissoes.cadastraEquipe(equipe);
-					if(i == 0){
+					if (i == 0) {
 						alocaUsuarioEquipe(grupoUsuario.getUsuario(), e);
 					}
 				}
-			}
-			else{
+			} else {
 				alocaUsuarioEquipe(grupoUsuario.getUsuario());
 			}
 		}
 	}
-	
-	public void alocaUsuarioEquipe(Usuario us, Equipe eq) throws EasyCorrectionException{
+
+	public void alocaUsuarioEquipe(Usuario us, Equipe eq)
+			throws EasyCorrectionException {
 		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
 		for (Roteiro roteiro : rots) {
 			EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
@@ -494,14 +494,15 @@ public class GerenciadorAcesso extends Gerenciador{
 			gerenciadorSubmissoes.cadastraEquipeHasUsuarioHasRoteiro(eur);
 		}
 	}
-	
-	public void alocaUsuarioEquipe(Usuario us) throws EasyCorrectionException{
+
+	public void alocaUsuarioEquipe(Usuario us) throws EasyCorrectionException {
 		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
 		for (Roteiro roteiro : rots) {
-			List<EquipeHasUsuarioHasRoteiro> eurs = gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiroPorRoteiro(roteiro.getId());
+			List<EquipeHasUsuarioHasRoteiro> eurs = gerenciadorSubmissoes
+					.getEquipeHasUsuarioHasRoteiroPorRoteiro(roteiro.getId());
 			Equipe eq = gerenciadorSubmissoes.getEquipes().get(0);
-			if (eurs.size() > 0){
-				int novoId = eurs.get(eurs.size()-1).getEquipe().getId() + 1;
+			if (eurs.size() > 0) {
+				int novoId = eurs.get(eurs.size() - 1).getEquipe().getId() + 1;
 				eq = gerenciadorSubmissoes.getEquipe(novoId);
 			}
 			EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
@@ -519,16 +520,16 @@ public class GerenciadorAcesso extends Gerenciador{
 		Usuario usu = new Usuario();
 
 		if (easyCorrectionUtil.isNull(grupoUsuario)) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
-					.msg("O GrupoUsuario"));
+			throw new EasyCorrectionException(
+					MsgErros.OBJ_NOT_FOUND.msg("O GrupoUsuario"));
 		}
 		if (easyCorrectionUtil.isNull(grupoUsuario.getUsuario())) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
-					.msg("O Usuario"));
+			throw new EasyCorrectionException(
+					MsgErros.OBJ_NOT_FOUND.msg("O Usuario"));
 		}
 		if (easyCorrectionUtil.isNull(grupoUsuario.getGrupo())) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
-					.msg("O Grupo"));
+			throw new EasyCorrectionException(
+					MsgErros.OBJ_NOT_FOUND.msg("O Grupo"));
 		}
 
 		if (!easyCorrectionUtil.isNull(grupoUsuario.getUsuario())) {
@@ -572,15 +573,15 @@ public class GerenciadorAcesso extends Gerenciador{
 				try {
 					us = getUsuario(grupoUsuario.getUsuario().getIdUsuario());
 					if (!easyCorrectionUtil.isNull(u)) {
-						if (!grupoUsuario.getUsuario().getIdUsuario().equals(
-								u.getIdUsuario())) {
+						if (!grupoUsuario.getUsuario().getIdUsuario()
+								.equals(u.getIdUsuario())) {
 							throw new ObjetoNaoEncontradoException(
 									MsgErros.LOGIN.msg(""));
 						}
 					}
 					if (!easyCorrectionUtil.isNull(usu)) {
-						if (!grupoUsuario.getUsuario().getIdUsuario().equals(
-								usu.getIdUsuario())) {
+						if (!grupoUsuario.getUsuario().getIdUsuario()
+								.equals(usu.getIdUsuario())) {
 							throw new ObjetoNaoEncontradoException(
 									MsgErros.EMAIL.msg(""));
 						}
@@ -591,12 +592,12 @@ public class GerenciadorAcesso extends Gerenciador{
 					grupoUsuario.getUsuario().setIdUsuario(us.getIdUsuario());
 				} catch (ObjetoNaoEncontradoException e) {
 					if (!easyCorrectionUtil.isNull(u)) {
-						throw new ObjetoNaoEncontradoException(MsgErros.LOGIN
-								.msg(""));
+						throw new ObjetoNaoEncontradoException(
+								MsgErros.LOGIN.msg(""));
 					}
 					if (!easyCorrectionUtil.isNull(usu)) {
-						throw new ObjetoNaoEncontradoException(MsgErros.EMAIL
-								.msg(""));
+						throw new ObjetoNaoEncontradoException(
+								MsgErros.EMAIL.msg(""));
 					}
 				}
 			}
@@ -611,8 +612,8 @@ public class GerenciadorAcesso extends Gerenciador{
 			throws EasyCorrectionException {
 
 		if (easyCorrectionUtil.isNull(usuario)) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
-					.msg("O Usuario"));
+			throw new EasyCorrectionException(
+					MsgErros.OBJ_NOT_FOUND.msg("O Usuario"));
 		}
 		// Gera o md5 da senha
 		String senha = GeraMd5.md5(usuario.getSenha());
@@ -627,18 +628,19 @@ public class GerenciadorAcesso extends Gerenciador{
 
 	public void excluirUsuario(GrupoUsuario grupoUsuario)
 			throws EasyCorrectionException {
-		
+
 		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
-		if(grupoUsuario.getGrupo().getNome().equals("Aluno") && rots.size() > 0){
-			throw new EasyCorrectionException(MsgErros.USUARIO_ALOCADO
-					.msg("O GrupoUsuario"));
+		if (grupoUsuario.getGrupo().getNome().equals("Aluno")
+				&& rots.size() > 0) {
+			throw new EasyCorrectionException(
+					MsgErros.USUARIO_ALOCADO.msg("O GrupoUsuario"));
 		}
-		
+
 		if (easyCorrectionUtil.isNull(grupoUsuario)) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
-					.msg("O GrupoUsuario"));
+			throw new EasyCorrectionException(
+					MsgErros.OBJ_NOT_FOUND.msg("O GrupoUsuario"));
 		}
-		
+
 		// Exclui grupoUsuario
 		GrupoUsuario gU = getGrupoUsuario(grupoUsuario.getIdGrupoUsuario());
 		gU = (GrupoUsuario) SwapperAtributosReflect.swapObject(gU,
@@ -647,8 +649,8 @@ public class GerenciadorAcesso extends Gerenciador{
 
 		// Exclui usuário
 		Usuario u = getUsuario(grupoUsuario.getUsuario().getIdUsuario());
-		u = (Usuario) SwapperAtributosReflect.swapObject(u, grupoUsuario
-				.getUsuario(), Usuario.class);
+		u = (Usuario) SwapperAtributosReflect.swapObject(u,
+				grupoUsuario.getUsuario(), Usuario.class);
 		DAOFactory.DEFAULT.buildUsuarioDAO().delete(u);
 	}
 
@@ -701,14 +703,15 @@ public class GerenciadorAcesso extends Gerenciador{
 		String senha = GeraMd5.md5(novaSenha);
 		Usuario usuarioBanco = getUsuarioPorLogin(usuario.getLogin());
 
-		if (!easyCorrectionUtil.isNull(usuarioBanco)) {
+		if (!easyCorrectionUtil.isNull(usuarioBanco)
+				&& usuarioBanco.getSenha().equals(usuario.getSenha())) {
 			usuarioBanco.setSenha(senha);
 			DAOFactory.DEFAULT.buildUsuarioDAO().update(usuarioBanco);
 		} else {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
-					.msg("usuario"));
+			throw new ObjetoNaoEncontradoException(
+					MsgErros.OBJ_NOT_FOUND.msg("usuario"));
 		}
 		return usuarioBanco;
 	}
-	
+
 }
