@@ -18,7 +18,7 @@
 			
 			private function init():void {
 				input_login.setFocus();
-				facade.channelSet = ControladorDeModulos.criaCanal();
+				facade.channelSet = ControladorDeModulos.criaCanal("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 				systemManager.addEventListener(FechaPopupEvent.FechaPopup_Event, fechaJanelaMensagemAtual);
 			}
 			

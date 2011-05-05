@@ -38,7 +38,7 @@
 			private var roteiro: Roteiro = new Roteiro();
 			
 			private function init():void {
-				facade.channelSet = ControladorDeModulos.criaCanal();
+				facade.channelSet = ControladorDeModulos.criaCanal("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 				ControladorDeModulos.getParam();
 				this.systemManager.addEventListener(ObjetoEvent.ObjetoEventConst, temRoteiro);
 				getGrupoUsuarioPorUsuario();
