@@ -709,7 +709,7 @@ public class GerenciadorAcesso extends Gerenciador {
 			DAOFactory.DEFAULT.buildUsuarioDAO().update(usuarioBanco);
 		} else {
 			throw new ObjetoNaoEncontradoException(
-					MsgErros.OBJ_NOT_FOUND.msg("usuario"));
+					MsgErros.AUTENTICACAO.msg());
 		}
 		return usuarioBanco;
 	}
