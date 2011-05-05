@@ -296,7 +296,7 @@ private function menuItemPressionado(event: MenuEvent):void  {
  * Método para iniciar a aplicação (é chamado quando a aplicação inicia no browser)
  */
 private function init():void {
-	facade.channelSet = ControladorDeModulos.criaCanal();
+	facade.channelSet = ControladorDeModulos.criaCanal("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 	inicializaMenus();
 	escutaEventos();
 	geraBLinks();
