@@ -14,6 +14,7 @@ package Scripts {
 	import mx.managers.PopUpManagerChildList;
 	import mx.messaging.ChannelSet;
 	import mx.messaging.channels.AMFChannel;
+	import mx.messaging.channels.SecureAMFChannel;
 	import mx.modules.IModuleInfo;
 	import mx.modules.ModuleManager;
 
@@ -101,9 +102,13 @@ package Scripts {
 			popup.y = (sizeHeight - popup.height) / 2;
 		}
 
-		public static function criaCanal():ChannelSet {
-			var channel:AMFChannel =
-				new AMFChannel("my-amf", ExternalInterface.call('getUrlAMFCanal'));
+		public static function criaCanal(destino:String, canalSeguro:Boolean):ChannelSet {
+			var channel:AMFChannel = null;
+			if (canalSeguro) {
+				channel = new SecureAMFChannel("my-secure-amf", ExternalInterface.call('getUrlAMFCanalSeguro', destino));
+			} else {
+				channel = new AMFChannel("my-amf", ExternalInterface.call('getUrlAMFCanal', destino));
+			}
 
 			var channelSet:ChannelSet = new ChannelSet();
 			channelSet.addChannel(channel);
