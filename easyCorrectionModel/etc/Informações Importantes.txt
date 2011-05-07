@@ -1,0 +1,5 @@
+1. [SUPORTE][LES] O sistema deve permitir entradas em Unicode
+
+    Como Resolvi:
+    Fui no arquivo /etc/sysconfig/i18n e alterei o
+	LANG="en_US.UTF-8" para LANG="pt_BR.iso88591"
