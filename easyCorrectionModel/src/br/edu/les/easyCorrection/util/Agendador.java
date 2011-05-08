@@ -1,9 +1,10 @@
 package br.edu.les.easyCorrection.util;
 
-import java.util.Date;
+import java.text.ParseException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.quartz.CronTrigger;
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
@@ -24,21 +25,20 @@ public class Agendador {
 	public Agendador() {
 		
 		try{
-			SchedulerFactory sf = new StdSchedulerFactory();
-			Scheduler sched = sf.getScheduler();
-			 
-			JobDetail job = new JobDetail("dispara_email", "grupo", DumpJob.class);
-			Trigger semanal = TriggerUtils.makeWeeklyTrigger("weekly", TriggerUtils.SUNDAY, 12, 10); 
-			sched.scheduleJob(job, semanal);
 			
-			sched.start();
-		}catch(SchedulerException e){}
-	}
-	
-	public class DumpJob implements Job{
-	    public void execute(JobExecutionContext arg0) throws JobExecutionException{
-	        System.out.println("Trabalhando com  o Quartz: " + new Date());
-	    }
+			SchedulerFactory sf=new StdSchedulerFactory();
+		    Scheduler sched=sf.getScheduler();
+		    JobDetail jobDump = new JobDetail("job1","group1", DumpBD.class);
+		    JobDetail jobSend = new JobDetail("job2","group2", DumpSender.class);
+		    Trigger dumpBD = TriggerUtils.makeWeeklyTrigger("dump_Trigger", TriggerUtils.FRIDAY, 23, 00);
+		    sched.scheduleJob(jobDump, dumpBD);
+		    Trigger enviarDump = TriggerUtils.makeWeeklyTrigger("send_Trigger", TriggerUtils.FRIDAY, 23, 10);
+		    sched.scheduleJob(jobSend,enviarDump);
+		    sched.start();
+		    
+		}catch(SchedulerException e){
+			e.printStackTrace();
+		}
 	}
 	
 	class RemindTask extends TimerTask {
