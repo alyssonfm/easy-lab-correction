@@ -219,21 +219,6 @@ public class Sistema {
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 
-	// public Roteiro bloquearRoteiro(Roteiro roteiroTemp)
-	// throws BloqueiaRoteiroException, LiberaRoteiroException {
-	// return gerenciadorRoteiros.bloquearRoteiro(roteiroTemp);
-	// }
-	//
-	// public Roteiro desbloquearRoteiro(Roteiro roteiroTemp)
-	// throws BloqueiaRoteiroException, LiberaRoteiroException {
-	// return gerenciadorRoteiros.desbloquearRoteiro(roteiroTemp);
-	// }
-	//
-	// public Roteiro liberarRoteiro(Roteiro roteiroTemp)
-	// throws LiberaRoteiroException, BloqueiaRoteiroException {
-	// return gerenciadorRoteiros.liberarRoteiro(roteiroTemp);
-	// }
-
 	public void excluirRoteiro(Roteiro roteiro) throws ExclusaoRoteiroException {
 		gerenciadorRoteiros.excluirRoteiro(roteiro);
 	}
