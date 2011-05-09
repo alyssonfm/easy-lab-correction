@@ -14,6 +14,8 @@ public class Constantes {
 	public static final String diretorioBackupBancoDeDados = "D:/Graduação/";
 	public static final String arquivoBackupBancoDeDados = "backupEasyLabCorrection0000.sql";
 	
+	public static final String palavrasProibidas = "System.exit";
+	
 	// Augusto1's directory
 //	public static final String arquivoBackupBancoDeDados = "C:/Graduacao/LES/workspace/easyCorrectionModel/etc/backupEasyCorrection.sql";
 	
