@@ -3,7 +3,7 @@ package br.edu.les.easyCorrection.tests.system;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-public class SuiteTesteGerenciadores {
+public class ManagerTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(
