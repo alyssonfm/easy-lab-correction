@@ -20,7 +20,6 @@ public class Roteiro {
 	private Integer tempoLimiteTestes;
 	private String diretorioInterface;
 	private String diretorioTestes;
-//	private boolean bloqueado;
 	
 	public Integer getNumeroMaximoParticipantes() {
 		return numeroMaximoParticipantes;
@@ -29,14 +28,6 @@ public class Roteiro {
 	public void setNumeroMaximoParticipantes(Integer numeroMaximoParticipantes) {
 		this.numeroMaximoParticipantes = numeroMaximoParticipantes;
 	}
-	
-//	public boolean isBloqueado() {
-//		return bloqueado;
-//	}
-//	
-//	public void setBloqueado(boolean bloqueado) {
-//		this.bloqueado = bloqueado;
-//	}
 	
 	public Integer getId() {
 		return id;

@@ -1,0 +1,36 @@
+Regras para Documentação e Refatoramento:
+
+Name Mapping:
+gerenciadores -> managers:
+	Gerenciador -> Manager
+	GerenciadorAcesso -> PermissionManager
+	GerenciadorAvaliacoes -> AssessmentManager/ EvaluationManager
+	GerenciadorRoteiros -> AssignmentManager / ExerciseManager 
+	GerenciadorSubmissoes -> SubmissionManager
+	GerenciadorTestes -> TestManager
+	NADA -> CompilationManager
+	NADA -> UserManager
+	NADA -> TeamManager
+	NADA -> ChatManager
+
+pojo -> pojo:
+	acesso -> permission:
+		Funcao -> Function
+		Menu -> Menu
+		Grupo -> Group
+		Permissao -> Permission
+	NADA -> user:
+		GrupoUsuario -> UserGroup
+		Usuario -> User
+	avaliacoes -> evaluation/assessment:
+		Avaliacao -> Evaluation/Assessment
+		Chat -> Chat
+	roteiros -> Assignment/Exercise:
+		Equipe -> Team
+		EquipeHasUsuarioHasRoteiro -> TeamHasUserHasAssignement/TeamHasUserHasExercise
+		Roteiro -> Assignment/Exercise
+		Submissao -> Submission
+	sistema -> system:
+		Periodo -> Stage
+		
+

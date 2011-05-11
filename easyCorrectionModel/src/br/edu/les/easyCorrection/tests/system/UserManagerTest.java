@@ -6,48 +6,31 @@ import org.junit.Test;
 import br.edu.les.easyCorrection.sistema.Facade;
 
 /**
- * This test class is going to test the AccessManager, that has the following
- * roles: Permission CRUD, UserGroup CRUD, User CRUD and User Authentication
- * 
- * @author AUGUSTO
+ * This test class is going to test the UserManager, that has the following
+ * roles: UserGroup CRUD, User CRUD and User Authentication
  * 
  */
-public class AccessManagerTest {
+public class UserManagerTest {
 
 	private Facade facade;
 
-	public AccessManagerTest() {
+	public UserManagerTest() {
 		facade = new Facade();
 	}
 
 	@BeforeClass
-	public void startClass() {
+	public void restartDatabase() {
 		facade.reinicializaBancoDeDados();
-	}
-
-//	@Before
-//	public void setUpMethod() {
-//
-//	}
-//
-//	@After
-//	public void tearDownMethod() {
-//
-//	}
-
-	@Test
-	public void permissionCRUDTest() {
-
 	}
 
 	@Test
 	public void userGroupCRUDTest() {
-
+		
 	}
 
 	@Test
 	public void userCRUDTest() {
-
+		
 	}
 
 	@Test
