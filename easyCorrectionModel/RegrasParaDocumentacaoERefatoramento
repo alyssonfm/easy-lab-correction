@@ -4,8 +4,8 @@ Name Mapping:
 gerenciadores -> managers:
 	Gerenciador -> Manager
 	GerenciadorAcesso -> PermissionManager
-	GerenciadorAvaliacoes -> AssessmentManager/ EvaluationManager
-	GerenciadorRoteiros -> AssignmentManager / ExerciseManager 
+	GerenciadorAvaliacoes -> AssessmentManager
+	GerenciadorRoteiros -> AssignmentManager 
 	GerenciadorSubmissoes -> SubmissionManager
 	GerenciadorTestes -> TestManager
 	NADA -> CompilationManager
@@ -22,13 +22,13 @@ pojo -> pojo:
 	NADA -> user:
 		GrupoUsuario -> UserGroup
 		Usuario -> User
-	avaliacoes -> evaluation/assessment:
-		Avaliacao -> Evaluation/Assessment
+	avaliacoes -> assessment:
+		Avaliacao -> Assessment
 		Chat -> Chat
-	roteiros -> Assignment/Exercise:
+	roteiros -> Assignment:
 		Equipe -> Team
-		EquipeHasUsuarioHasRoteiro -> TeamHasUserHasAssignement/TeamHasUserHasExercise
-		Roteiro -> Assignment/Exercise
+		EquipeHasUsuarioHasRoteiro -> TeamHasUserHasAssignement
+		Roteiro -> Assignment
 		Submissao -> Submission
 	sistema -> system:
 		Periodo -> Stage
