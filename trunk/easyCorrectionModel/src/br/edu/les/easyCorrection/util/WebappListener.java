@@ -16,7 +16,8 @@ public class WebappListener implements ServletContextListener {
 		
 		if (sce.getServletContext().getContextPath().equals(
 				"/easyCorrectionModel")) {
-			new Agendador();
+			//1 - Sunday, 2 - Monday, 3 - Tuesday, 4 - Wednesday, 5 - Thusday, 6 - Friday, 7 - Saturday  
+			new Agendador(6, 23, 0);
 		}
 	}
 
