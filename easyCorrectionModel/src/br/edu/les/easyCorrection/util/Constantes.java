@@ -10,7 +10,9 @@ public class Constantes {
 	
 	//Demetrio's directory
 	public static final String nomeEsquemaBanco = "easyLabCorrection";
+	//public static final String caminhoComandoDump = "mysqldump -uelc -p123 -r";
 	public static final String caminhoComandoDump = "C:/xampp/mysql/bin/mysqldump.exe -uelc -p123 -r";
+	//public static final String diretorioBackupBancoDeDados = "/home/elc/";
 	public static final String diretorioBackupBancoDeDados = "D:/Graduação/";
 	public static final String arquivoBackupBancoDeDados = "backupEasyLabCorrection0000.sql";
 	
