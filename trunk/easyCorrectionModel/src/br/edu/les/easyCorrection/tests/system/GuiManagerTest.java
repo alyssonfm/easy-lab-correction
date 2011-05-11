@@ -3,15 +3,19 @@ package br.edu.les.easyCorrection.tests.system;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import br.edu.les.easyCorrection.sistema.Facade;
-
-
-public class TestaGerenciadorAcesso {
+/**
+ * This test class is going to test the AccessManager
+ * @author AUGUSTO
+ *
+ */
+public class GuiManagerTest {
 	
 	private Facade facade; 
 	
-	public TestaGerenciadorAcesso() {
+	public GuiManagerTest() {
 		facade = new Facade();
 	}
 	
@@ -30,6 +34,12 @@ public class TestaGerenciadorAcesso {
 		
 	}
 	
-	
+	@Test
+	public void menuTest(){
+		
+		
+		
+		
+	}
 	
 }

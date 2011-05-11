@@ -1,6 +1,6 @@
 package br.edu.les.easyCorrection.tests.system;
 
 
-public class TestaGerenciadorRoteiros {
+public class AssignementManagerTest {
 
 }
