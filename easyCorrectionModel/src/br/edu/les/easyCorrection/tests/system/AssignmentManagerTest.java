@@ -5,8 +5,8 @@ import org.junit.Test;
 import br.edu.les.easyCorrection.sistema.Facade;
 
 /**
- * This test class is going to test the PermissionManager, that has the
- * following roles: Menu CRUD, Function CRUD, Group CRUD
+ * This test class is going to test the AssignmentManager, that has the
+ * following roles: Assignment CRUD
  * 
  */
 public class AssignmentManagerTest {
@@ -18,17 +18,7 @@ public class AssignmentManagerTest {
 	}
 
 	@Test
-	public void menuTest() {
-
-	}
-
-	@Test
-	public void functionTest() {
-
-	}
-
-	@Test
-	public void groupTest() {
+	public void AssignmentCRUDTest() {
 
 	}
 
