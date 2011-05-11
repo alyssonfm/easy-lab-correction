@@ -106,6 +106,10 @@ public class GerenciadorAcesso extends Gerenciador {
 		return DAOFactory.DEFAULT.buildMenuDAO().findAll();
 	}
 
+	/*
+	 * FUNCAO
+	 */
+	
 	public Funcao cadastrarFuncao(Funcao funcao) throws EasyCorrectionException {
 		Funcao f = new Funcao();
 		Funcao fun = new Funcao();
@@ -190,6 +194,10 @@ public class GerenciadorAcesso extends Gerenciador {
 		return DAOFactory.DEFAULT.buildFuncaoDAO().findByMenu(idMenu);
 	}
 
+	/*
+	 * GRUPO
+	 */
+	
 	public Grupo cadastrarGrupo(Grupo grupo) throws EasyCorrectionException {
 		Grupo g = new Grupo();
 		Grupo gr = new Grupo();
@@ -265,6 +273,10 @@ public class GerenciadorAcesso extends Gerenciador {
 		return lista.get(0);
 	}
 
+	/*
+	 * PERMISSAO
+	 */
+	
 	public List<Permissao> cadastrarPermissao(List<Permissao> permissoes)
 			throws EasyCorrectionException {
 		Permissao p = new Permissao();
@@ -364,6 +376,10 @@ public class GerenciadorAcesso extends Gerenciador {
 		return DAOFactory.DEFAULT.buildPermissaoDAO().findByIdGrupo(idGrupo);
 	}
 
+	/*
+	 * GRUPO USUARIO
+	 */
+	
 	public GrupoUsuario getGrupoUsuario(Integer id) {
 		List<GrupoUsuario> grupoUsuario = DAOFactory.DEFAULT
 				.buildGrupoUsuarioDAO().findById(id);
@@ -437,6 +453,10 @@ public class GerenciadorAcesso extends Gerenciador {
 				idUsuario);
 	}
 
+	/*
+	 * USUARIO
+	 */
+	
 	public Usuario consultarUsuarioPorLogin(String login) {
 		List<Usuario> lista = DAOFactory.DEFAULT.buildUsuarioDAO().findByLogin(
 				login);
@@ -455,6 +475,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		return null;
 	}
 
+	// PUBLIC??? 
 	public void verificaSeNumeroUsuarioMaiorEquipe(GrupoUsuario grupoUsuario)
 			throws EasyCorrectionException {
 		Equipe equipe = new Equipe();
@@ -483,6 +504,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		}
 	}
 
+	// PUBLIC??? (MOVE TO System)
 	public void alocaUsuarioEquipe(Usuario us, Equipe eq)
 			throws EasyCorrectionException {
 		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
@@ -495,6 +517,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		}
 	}
 
+	// PUBLIC??? (MOVE TO System)
 	public void alocaUsuarioEquipe(Usuario us) throws EasyCorrectionException {
 		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
 		for (Roteiro roteiro : rots) {
