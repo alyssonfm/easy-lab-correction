@@ -36,9 +36,6 @@ public class ServletUpload extends HttpServlet {
 	//private static final String local = "/home/demetriogm/"; //url do upload local
 	//public static final String local = "/home/elc" + File.separator + "LEDA" + File.separator + "Roteiros"; //url do upload local
 	public static final String local = System.getProperty("catalina.base") + File.separator + "webapps" + File.separator + "LEDA" + File.separator + "Roteiros"; //url do upload local
-	private static final String curriculoTemp = "/home/desenvolvimento/tomcat6/temp_curriculos/"; //url do temp de currículos servidor
-	//private static final String curriculoTemp = "/home/demetriogm/"; //url do temp de currículos local
-	//private static final String curriculoTemp = "D:/Projetos/"; //url do temp de currículos local
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
@@ -48,110 +45,17 @@ public class ServletUpload extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getRequestURI().endsWith("PegaIdCurriculoPorNomeEDataNascimento")) {
-			PegaIdCurriculoPorNomeEDataNascimento(request, response);
+		if (request.getRequestURI().endsWith("downloadArquivo")){
+			downloadArquivo(request, response);
 		}
 		else{
-			if (request.getRequestURI().endsWith("PegaIdCurriculoPorCPF")){
-				PegaIdCurriculoPorCPF(request,response);
-			}
-			else{
-				if (request.getRequestURI().endsWith("PegaCurriculo")){
-					PegaCurriculo(request,response);
-				}
-				else{
-					if (request.getRequestURI().endsWith("downloadArquivo")){
-						downloadArquivo(request, response);
-					}
-					else{
-						fazUpload(request, response);
-					}
-				}
-			}
-		}
-	}
-	
-	protected void PegaIdCurriculoPorNomeEDataNascimento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String nome = request.getParameter("nome");
-		String data = request.getParameter("data");
-		response.setContentType("text/xml");
-		
-		nome = URLEncoder.encode(nome, "UTF-8");
-		
-		URL url = new URL("http://servicosweb.cnpq.br/srvcurriculo/servlet/ServletID?nome=" + nome 
-				+ "&data=" + data);
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-		
-		String line;
-		ServletOutputStream out = response.getOutputStream();
-		while ((line = br.readLine()) != null) {
-			out.println(line);
-		}
-	}
-	
-	protected void PegaIdCurriculoPorCPF(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String cpf = request.getParameter("cpf");
-		response.setContentType("text/xml");
-		
-		cpf = URLEncoder.encode(cpf, "UTF-8");
-		
-		URL url = new URL("http://servicosweb.cnpq.br/srvcurriculo/servlet/ServletID?cpf=" + cpf);
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-		
-		String line;
-		ServletOutputStream out = response.getOutputStream();
-		while ((line = br.readLine()) != null) {
-			out.println(line);
-		}
-	}
-	
-	protected void PegaCurriculo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id");
-		response.setContentType("text/xml");
-		
-		id = URLEncoder.encode(id, "UTF-8");
-		
-		URL url = new URL("http://servicosweb.cnpq.br/srvcurriculo/servlet/ServletZip?id=" + id);
-		
-		InputStream br = url.openStream();
-		FileOutputStream fos = new FileOutputStream(new File(curriculoTemp));
-		int b;
-		while((b = br.read()) != -1){
-			fos.write(b);
-		}
-		fos.flush();
-		fos.close();
-		br.close();
-		ServletOutputStream out = response.getOutputStream();
-		unZip(out);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected void unZip(ServletOutputStream out){
-		try {
-			ZipFile zf = new ZipFile(curriculoTemp);
-			Enumeration entries = zf.entries();
-
-			if (entries.hasMoreElements()) {
-				ZipEntry ze = (ZipEntry) entries.nextElement();
-				BufferedReader br = new BufferedReader(
-					new InputStreamReader(zf.getInputStream(ze)));
-				String line;
-				while ((line = br.readLine()) != null) {
-					out.println(line);
-				}
-				br.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			fazUpload(request, response);
 		}
 	}
 	
 	public static boolean checaArquivo(String pastaDestino, String nomeArquivo)  throws IOException{
-   	 try
-        {
+   	 	try{
+   	 		
             String destinationname = pastaDestino;
             byte[] buf = new byte[1024];
             ZipInputStream zipinputstream = null;
