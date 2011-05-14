@@ -7,7 +7,7 @@ import org.hibernate.Session;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -42,7 +42,7 @@ public class EquipeHibernateDAO extends
 			for (Equipe e : lista) {
 				e = instanciaEquipe(e);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -51,7 +51,7 @@ public class EquipeHibernateDAO extends
 		return lista;
 	}
 	
-	public static Equipe instanciaEquipe(Equipe e) throws CampoVazioException{
+	public static Equipe instanciaEquipe(Equipe e) throws EmptyFieldException{
 		e = MyPersistenceLayer.deproxy(e, Equipe.class);
 		
 		return e;

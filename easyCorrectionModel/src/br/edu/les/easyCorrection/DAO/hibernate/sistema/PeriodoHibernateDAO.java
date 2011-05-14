@@ -6,7 +6,7 @@ import org.hibernate.Session;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -32,7 +32,7 @@ public class PeriodoHibernateDAO extends
 			for (Periodo p : lista) {
 				p = instanciaPeriodo(p);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -41,7 +41,7 @@ public class PeriodoHibernateDAO extends
 		return lista;
 	}
 	
-	public static Periodo instanciaPeriodo(Periodo p) throws CampoVazioException{
+	public static Periodo instanciaPeriodo(Periodo p) throws EmptyFieldException{
 		p = MyPersistenceLayer.deproxy(p, Periodo.class);
 		
 		return p;

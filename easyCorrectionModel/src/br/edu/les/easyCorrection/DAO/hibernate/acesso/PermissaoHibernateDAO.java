@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.Permissao;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -64,7 +64,7 @@ public class PermissaoHibernateDAO extends
 			for (Permissao p : lista) {
 				p = instanciaPermissao(p);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -73,7 +73,7 @@ public class PermissaoHibernateDAO extends
 		return lista;
 	}
 	
-	public static Permissao instanciaPermissao(Permissao p) throws CampoVazioException{
+	public static Permissao instanciaPermissao(Permissao p) throws EmptyFieldException{
 		p.setFuncao(FuncaoHibernateDAO.instanciaFuncao(p.getFuncao()));
 		p.setGrupo(GrupoHibernateDAO.instanciaGrupo(p.getGrupo()));
 		p = MyPersistenceLayer.deproxy(p, Permissao.class);

@@ -11,7 +11,7 @@ import org.hibernate.criterion.SimpleExpression;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -63,7 +63,7 @@ public class MenuHibernateDAO extends
 			for (Menu m : lista) {
 				m = instanciaMenu(m);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -72,7 +72,7 @@ public class MenuHibernateDAO extends
 		return lista;
 	}
 	
-	public static Menu instanciaMenu(Menu m) throws CampoVazioException{
+	public static Menu instanciaMenu(Menu m) throws EmptyFieldException{
 		m = MyPersistenceLayer.deproxy(m, Menu.class);
 		
 		return m;

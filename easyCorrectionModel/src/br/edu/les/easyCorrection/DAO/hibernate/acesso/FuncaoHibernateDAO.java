@@ -11,7 +11,7 @@ import org.hibernate.criterion.SimpleExpression;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -69,7 +69,7 @@ public class FuncaoHibernateDAO extends
 			for (Funcao f : lista) {
 				f = instanciaFuncao(f);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -78,7 +78,7 @@ public class FuncaoHibernateDAO extends
 		return lista;
 	}
 	
-	public static Funcao instanciaFuncao(Funcao f) throws CampoVazioException{
+	public static Funcao instanciaFuncao(Funcao f) throws EmptyFieldException{
 		f.setMenu(MenuHibernateDAO.instanciaMenu(f.getMenu()));
 		f = MyPersistenceLayer.deproxy(f, Funcao.class);
 		

@@ -9,7 +9,7 @@ import org.hibernate.criterion.SimpleExpression;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -87,7 +87,7 @@ public class GrupoUsuarioHibernateDAO extends
 			for (GrupoUsuario gu : lista) {
 				gu = instanciaGrupoUsuario(gu);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -96,7 +96,7 @@ public class GrupoUsuarioHibernateDAO extends
 		return lista;
 	}
 	
-	public static GrupoUsuario instanciaGrupoUsuario(GrupoUsuario gu) throws CampoVazioException{
+	public static GrupoUsuario instanciaGrupoUsuario(GrupoUsuario gu) throws EmptyFieldException{
 		gu.setGrupo(GrupoHibernateDAO.instanciaGrupo(gu.getGrupo()));
 		gu.setUsuario(UsuarioHibernateDAO.instanciaUsuario(gu.getUsuario()));
 		gu= MyPersistenceLayer.deproxy(gu, GrupoUsuario.class);

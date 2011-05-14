@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -34,7 +34,7 @@ public class AvaliacaoHibernateDAO extends
 			for (Avaliacao a : lista) {
 				a = instanciaAvaliacao(a);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -43,7 +43,7 @@ public class AvaliacaoHibernateDAO extends
 		return lista;
 	}
 	
-	public static Avaliacao instanciaAvaliacao(Avaliacao a) throws CampoVazioException{
+	public static Avaliacao instanciaAvaliacao(Avaliacao a) throws EmptyFieldException{
 		a.setSubmissao(SubmissaoHibernateDAO.instanciaSubmissao(a.getSubmissao()));
 		try{
 			a.setCorretor(UsuarioHibernateDAO.instanciaUsuario(a.getCorretor()));

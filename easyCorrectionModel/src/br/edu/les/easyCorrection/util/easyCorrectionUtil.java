@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import br.edu.les.easyCorrection.exceptions.AtributoNaoExisteException;
+import br.edu.les.easyCorrection.exceptions.AttributeNotExistingException;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 
 public class easyCorrectionUtil {
@@ -119,7 +119,7 @@ public class easyCorrectionUtil {
 	 *             Caso o atributo especificado nao exista.
 	 */
 	public static Object getAtributo(Object objeto, String atributo,
-			boolean isBoolean) throws AtributoNaoExisteException {
+			boolean isBoolean) throws AttributeNotExistingException {
 		try {
 			Method m = null;
 			if (isBoolean) {
@@ -132,7 +132,7 @@ public class easyCorrectionUtil {
 			Object valor = m.invoke(objeto);
 			return valor;
 		} catch (Exception e) {
-			throw new AtributoNaoExisteException(MsgErros.ATRIBUTO_INVALIDO
+			throw new AttributeNotExistingException(MsgErros.ATRIBUTO_INVALIDO
 					.msg(atributo));
 		}
 	}
