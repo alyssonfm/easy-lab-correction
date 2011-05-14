@@ -24,7 +24,14 @@ public class Menu implements Serializable {
 	
 	private String rotulo;
 
+	public Menu() {
+	}
 	
+	public Menu(Integer idMenu, String nome, String rotulo) {
+		this.setIdMenu(idMenu);
+		this.setNome(nome);
+		this.setRotulo(rotulo);
+	}
 
 	public Integer getIdMenu() {
 		return idMenu;

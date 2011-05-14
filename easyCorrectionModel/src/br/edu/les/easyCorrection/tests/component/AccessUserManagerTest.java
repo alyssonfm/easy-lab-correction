@@ -10,17 +10,12 @@ import br.edu.les.easyCorrection.sistema.Facade;
  * roles: UserGroup CRUD, User CRUD and User Authentication
  * 
  */
-public class UserManagerTest {
+public class AccessUserManagerTest {
 
 	private Facade facade;
 
-	public UserManagerTest() {
+	public AccessUserManagerTest() {
 		facade = new Facade();
-	}
-
-	@BeforeClass
-	public void restartDatabase() {
-		facade.reinicializaBancoDeDados();
 	}
 
 	@Test

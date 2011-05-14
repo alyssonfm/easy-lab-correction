@@ -8,11 +8,10 @@ gerenciadores -> managers:
 	GerenciadorRoteiros -> AssignmentManager 
 	GerenciadorSubmissoes -> SubmissionManager
 	GerenciadorTestes -> TestManager
-	Divisão de TestManager -> CompilationManager
-	Divisão de AccessUserManager -> AccessPermissionManager
-	Dividir de SubmissionManager -> TeamManager
-	Divisão de TestManager -> TeamUserAssignmentManager
-	NADA -> ChatManager
+	Divisão de Gerenciador de Testes -> CompilationManager
+	Divisão de Gerenciador de Submissões -> AccessUserManager
+	Dividir de Gerenciador de Submissões -> TeamManager
+	Divisão de Gerenciador de Submissões -> TeamUserAssignmentManager	
 
 pojo -> pojo:
 	acesso -> permission:
@@ -42,3 +41,4 @@ Documentacao:
 	* Só métodos por enquanto
 4 - Gerenciadores
  	* Só métodos por enquanto
+ 	* Usar o padrão CRUD no inglês: Create, Retrive, Update and Delete nos metodos

@@ -42,6 +42,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		return menu.get(0);
 	}
 
+	// TODO: TO PRIVATE
 	public Menu consultarMenuPorRotuloENome(String rotulo, String nome) {
 		List<Menu> lista = DAOFactory.DEFAULT.buildMenuDAO().findByNomeERotulo(
 				nome, rotulo);
@@ -52,6 +53,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		}
 	}
 
+	
 	public Menu cadastrarMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = new Menu();
 		Menu men = new Menu();
