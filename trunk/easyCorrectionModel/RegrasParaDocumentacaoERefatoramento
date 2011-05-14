@@ -3,14 +3,15 @@ Regras para Documentação e Refatoramento:
 Name Mapping:
 gerenciadores -> managers:
 	Gerenciador -> Manager
-	GerenciadorAcesso -> PermissionManager
+	GerenciadorAcesso -> AccessPermissionManager
 	GerenciadorAvaliacoes -> AssessmentManager
 	GerenciadorRoteiros -> AssignmentManager 
 	GerenciadorSubmissoes -> SubmissionManager
 	GerenciadorTestes -> TestManager
-	NADA -> CompilationManager
-	NADA -> UserManager
-	NADA -> TeamManager
+	Divisão de TestManager -> CompilationManager
+	Divisão de AccessUserManager -> AccessPermissionManager
+	Dividir de SubmissionManager -> TeamManager
+	Divisão de TestManager -> TeamUserAssignmentManager
 	NADA -> ChatManager
 
 pojo -> pojo:
@@ -33,4 +34,5 @@ pojo -> pojo:
 	sistema -> system:
 		Periodo -> Stage
 		
+
 
