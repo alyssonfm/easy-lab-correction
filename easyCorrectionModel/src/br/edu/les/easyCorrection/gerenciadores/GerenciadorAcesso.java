@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
-import br.edu.les.easyCorrection.exceptions.AutenticacaoException;
+import br.edu.les.easyCorrection.exceptions.AuthenticationException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
 import br.edu.les.easyCorrection.exceptions.ValorDuplicadoException;
@@ -706,7 +706,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		List<Usuario> lista = DAOFactory.DEFAULT.buildUsuarioDAO()
 				.findByLoginESenha(usuario.getLogin(), usuario.getSenha());
 		if (lista.isEmpty()) {
-			throw new AutenticacaoException(MsgErros.AUTENTICACAO.msg());
+			throw new AuthenticationException(MsgErros.AUTENTICACAO.msg());
 		}
 		return lista.get(0);
 
