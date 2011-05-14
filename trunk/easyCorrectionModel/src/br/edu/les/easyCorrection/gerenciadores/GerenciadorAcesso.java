@@ -26,11 +26,13 @@ public class GerenciadorAcesso extends Gerenciador {
 
 	private GerenciadorSubmissoes gerenciadorSubmissoes;
 	private GerenciadorRoteiros gerenciadorRoteiros;
+	private TeamManager teamManager;
 
 	public GerenciadorAcesso() {
 		super();
 		gerenciadorSubmissoes = new GerenciadorSubmissoes();
 		gerenciadorRoteiros = new GerenciadorRoteiros();
+		teamManager = new TeamManager();
 	}
 
 	public Menu getMenu(Integer id) {
@@ -528,7 +530,7 @@ public class GerenciadorAcesso extends Gerenciador {
 			Equipe eq = gerenciadorSubmissoes.getEquipes().get(0);
 			if (eurs.size() > 0) {
 				int novoId = eurs.get(eurs.size() - 1).getEquipe().getId() + 1;
-				eq = gerenciadorSubmissoes.getEquipe(novoId);
+				eq = teamManager.getEquipe(novoId);
 			}
 			EquipeHasUsuarioHasRoteiro eur = new EquipeHasUsuarioHasRoteiro();
 			eur.setEquipe(eq);
