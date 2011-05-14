@@ -55,7 +55,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		}
 	}
 
-	
+	//TODO Separar
 	public Menu cadastrarMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = new Menu();
 		Menu men = new Menu();
@@ -486,18 +486,18 @@ public class GerenciadorAcesso extends Gerenciador {
 		if (grupoUsuario.getGrupo().getNome().equalsIgnoreCase("Aluno")) {
 			List<GrupoUsuario> gu = DAOFactory.DEFAULT.buildGrupoUsuarioDAO()
 					.findByGrupo("Aluno");
-			List<Equipe> equipes = gerenciadorSubmissoes.getEquipes();
+			List<Equipe> equipes = teamManager.getEquipes();
 			int numeroUsuario = gu.size() + 1;
 			if (numeroUsuario > equipes.size()) {
 				for (int i = 0; i < 5; i++) {
-					equipes = gerenciadorSubmissoes.getEquipes();
+					equipes = teamManager.getEquipes();
 					if (equipes.isEmpty()) {
 						equipe.setNome("Equipe 1");
 					} else {
 						int index = equipes.get(equipes.size() - 1).getId() + 1;
 						equipe.setNome("Equipe " + index);
 					}
-					Equipe e = gerenciadorSubmissoes.cadastraEquipe(equipe);
+					Equipe e = teamManager.cadastraEquipe(equipe);
 					if (i == 0) {
 						alocaUsuarioEquipe(grupoUsuario.getUsuario(), e);
 					}
@@ -517,7 +517,7 @@ public class GerenciadorAcesso extends Gerenciador {
 			eur.setEquipe(eq);
 			eur.setUsuario(us);
 			eur.setRoteiro(roteiro);
-			gerenciadorSubmissoes.cadastraEquipeHasUsuarioHasRoteiro(eur);
+			teamManager.cadastraEquipeHasUsuarioHasRoteiro(eur);
 		}
 	}
 
@@ -525,9 +525,9 @@ public class GerenciadorAcesso extends Gerenciador {
 	public void alocaUsuarioEquipe(Usuario us) throws EasyCorrectionException {
 		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
 		for (Roteiro roteiro : rots) {
-			List<EquipeHasUsuarioHasRoteiro> eurs = gerenciadorSubmissoes
+			List<EquipeHasUsuarioHasRoteiro> eurs = teamManager
 					.getEquipeHasUsuarioHasRoteiroPorRoteiro(roteiro.getId());
-			Equipe eq = gerenciadorSubmissoes.getEquipes().get(0);
+			Equipe eq = teamManager.getEquipes().get(0);
 			if (eurs.size() > 0) {
 				int novoId = eurs.get(eurs.size() - 1).getEquipe().getId() + 1;
 				eq = teamManager.getEquipe(novoId);
@@ -536,7 +536,7 @@ public class GerenciadorAcesso extends Gerenciador {
 			eur.setEquipe(eq);
 			eur.setUsuario(us);
 			eur.setRoteiro(roteiro);
-			gerenciadorSubmissoes.cadastraEquipeHasUsuarioHasRoteiro(eur);
+			teamManager.cadastraEquipeHasUsuarioHasRoteiro(eur);
 		}
 	}
 
