@@ -6,7 +6,7 @@ import br.edu.les.easyCorrection.sistema.Facade;
 
 /**
  * This test class is going to test the PermissionManager, that has the
- * following roles: Menu CRUD, Function CRUD, Group CRUD
+ * following roles: Menu CRUD, Function CRUD, Group CRUD and Permission CRUD
  * 
  */
 public class PermissionManagerTest {
