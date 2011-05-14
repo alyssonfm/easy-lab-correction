@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
-import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.CreateAssignmentException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
@@ -85,10 +85,10 @@ public class GerenciadorRoteiros extends Gerenciador {
 	}
 
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
-			throws CriacaoRoteiroException, LiberaRoteiroException {
+			throws CreateAssignmentException, LiberaRoteiroException {
 
 		if (roteiroTemp == null) {
-			throw new CriacaoRoteiroException("Roteiro inexistente!");
+			throw new CreateAssignmentException("Roteiro inexistente!");
 		}
 
 		this.criacaoOuAtualizacaoMsg = "criado";
@@ -106,12 +106,12 @@ public class GerenciadorRoteiros extends Gerenciador {
 
 			return DAOFactory.DEFAULT.buildRoteiroDAO().getById(aux);
 		} else {
-			throw new CriacaoRoteiroException("Roteiro não pôde ser criado");
+			throw new CreateAssignmentException("Roteiro não pôde ser criado");
 		}
 	}
 
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
-			throws EdicaoRoteiroException, CriacaoRoteiroException,
+			throws EdicaoRoteiroException, CreateAssignmentException,
 			LiberaRoteiroException {
 
 		if (roteiroTemp == null) {
@@ -396,14 +396,14 @@ public class GerenciadorRoteiros extends Gerenciador {
 	 */
 
 	private boolean validaRoteiroEmCriacao(Roteiro roteiro)
-			throws CriacaoRoteiroException {
+			throws CreateAssignmentException {
 
 		return this.validacoesBasicasDosAtributosDoRoteiro(roteiro);
 
 	}
 
 	private boolean validaRoteiroJahCriado(Roteiro roteiro)
-			throws CriacaoRoteiroException, EdicaoRoteiroException {
+			throws CreateAssignmentException, EdicaoRoteiroException {
 
 		// Os testes de JAH_CRIADO são somados aos de EM_CRIACAO
 		validaRoteiroEmCriacao(roteiro);
@@ -433,7 +433,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 	}
 
 	private boolean validaRoteiroEstadoLiberado(Roteiro roteiro)
-			throws EdicaoRoteiroException, CriacaoRoteiroException,
+			throws EdicaoRoteiroException, CreateAssignmentException,
 			LiberaRoteiroException {
 
 		validacoesBasicasDosAtributosDoRoteiro(roteiro);
@@ -460,39 +460,39 @@ public class GerenciadorRoteiros extends Gerenciador {
 	 * @param roteiro
 	 * @return
 	 * @throws EdicaoRoteiroException
-	 * @throws CriacaoRoteiroException
+	 * @throws CreateAssignmentException
 	 */
 	private boolean validaRoteiroEstadoFechado(Roteiro roteiro)
-			throws CriacaoRoteiroException {
+			throws CreateAssignmentException {
 
 		return validacoesBasicasDosAtributosDoRoteiro(roteiro);
 	}
 
 	private boolean validaRoteiroEstadoCorrigido(Roteiro roteiro)
-			throws CriacaoRoteiroException {
+			throws CreateAssignmentException {
 
 		return validacoesBasicasDosAtributosDoRoteiro(roteiro);
 
 	}
 
 	private boolean validacoesBasicasDosAtributosDoRoteiro(Roteiro roteiro)
-			throws CriacaoRoteiroException {
+			throws CreateAssignmentException {
 
 		if (roteiro.getNome() == null || roteiro.getNome().equals("")) {
-			throw new CriacaoRoteiroException(MsgErros.NOMEVAZIO
+			throw new CreateAssignmentException(MsgErros.NOMEVAZIO
 					.msg("Nome da atividade inválido. O Roteiro não pôde ser "
 							+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (roteiro.getNumeroMaximoParticipantes() != null
 				&& roteiro.getNumeroMaximoParticipantes() <= 0) {
-			throw new CriacaoRoteiroException(
+			throw new CreateAssignmentException(
 					MsgErros.VALORINVALIDO
 							.msg("O número máximo de integrantes deve ser sempre maior ou igual a 1 integrante. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (roteiro.getNumeroMaximoEnvios() != null
 				&& roteiro.getNumeroMaximoEnvios() <= 0) {
-			throw new CriacaoRoteiroException(
+			throw new CreateAssignmentException(
 					MsgErros.VALORINVALIDO
 							.msg("O número máximo de envios deve ser sempre maior ou igual a 1. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
@@ -500,7 +500,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 		} else if (roteiro.getPenalidadeDiasAtraso() != PENALIDADE_DIA_ATRASO_DEFAULT
 				&& roteiro.getPenalidadeDiasAtraso() < 0.0
 				|| roteiro.getPenalidadeDiasAtraso() > 10.0) {
-			throw new CriacaoRoteiroException(
+			throw new CreateAssignmentException(
 					MsgErros.VALORINVALIDO
 							.msg("A Penalidade por dia de atraso deve ser sempre maior ou igual a 0,0 e menor ou igual a 10,0. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
@@ -508,7 +508,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 		} else if (roteiro.getPorcentagemTestesAutomaticos() != PORCENTAGEM_TESTES_AUTOMATICOS_DEFAULT
 				&& (roteiro.getPorcentagemTestesAutomaticos() < 0 || roteiro
 						.getPorcentagemTestesAutomaticos() > 100)) {
-			throw new CriacaoRoteiroException(
+			throw new CreateAssignmentException(
 					MsgErros.VALORINVALIDO
 							.msg("A Porcentagem automática da avaliação deve ser sempre >= 0 e <= 100. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
@@ -518,7 +518,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 				&& ((roteiro.getPorcentagemTestesAutomaticos() > 0 && roteiro
 						.getPorcentagemTestesAutomaticos() <= 100) && roteiro
 						.getTempoLimiteTestes() <= 0)) {
-			throw new CriacaoRoteiroException(
+			throw new CreateAssignmentException(
 					MsgErros.VALORINVALIDO
 							.msg("Time-limit de execução dos testes por método inválido, deve ser sempre > 0 quando a Porcentagem Automática de Avaliação for > 0 e <= 100. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
@@ -527,7 +527,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 				.getTempoLimiteTestes() != null)
 				&& (roteiro.getPorcentagemTestesAutomaticos() == 0 && roteiro
 						.getTempoLimiteTestes() != 0)) {
-			throw new CriacaoRoteiroException(
+			throw new CreateAssignmentException(
 					MsgErros.VALORINVALIDO
 							.msg("Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
