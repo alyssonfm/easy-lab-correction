@@ -12,6 +12,7 @@ import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAvaliacoes;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorSubmissoes;
+import br.edu.les.easyCorrection.gerenciadores.TeamManager;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
@@ -32,12 +33,14 @@ public class Sistema {
 	private GerenciadorRoteiros gerenciadorRoteiros;
 	private GerenciadorSubmissoes gerenciadorSubmissoes;
 	private GerenciadorAvaliacoes gerenciadorAvaliacoes;
+	private TeamManager teamManager;
 
 	public Sistema() {
 		gerenciadorAcesso = new GerenciadorAcesso();
 		gerenciadorRoteiros = new GerenciadorRoteiros();
 		gerenciadorSubmissoes = new GerenciadorSubmissoes();
 		gerenciadorAvaliacoes = new GerenciadorAvaliacoes();
+		teamManager = new TeamManager();
 	}
 
 	public void reinicializaBancoDeDados(String script) {
@@ -206,10 +209,10 @@ public class Sistema {
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
 			throws EasyCorrectionException {
 		Roteiro rot = gerenciadorRoteiros.cadastrarRoteiro(roteiroTemp);
-		List<Equipe> equipes = gerenciadorSubmissoes.getEquipes();
+		List<Equipe> equipes = teamManager.getEquipes();
 		List<GrupoUsuario> alunos = gerenciadorAcesso
 				.listarGrupoUsuarioPorGrupo("Aluno");
-		gerenciadorSubmissoes.alocaEquipesParaAlunos(rot, equipes, alunos);
+		teamManager.alocaEquipesParaAlunos(rot, equipes, alunos);
 		return rot;
 	}
 
@@ -235,35 +238,35 @@ public class Sistema {
 
 	public EquipeHasUsuarioHasRoteiro getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
 			Integer idUsuario, Integer idRoteiro) {
-		return gerenciadorSubmissoes
+		return teamManager
 				.getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(idUsuario,
 						idRoteiro);
 	}
 
 	public List<Equipe> getEquipes() {
-		return gerenciadorSubmissoes.getEquipes();
+		return teamManager.getEquipes();
 	}
 
 	public Equipe getEquipe(int id) {
-		return gerenciadorSubmissoes.getEquipe(id);
+		return teamManager.getEquipe(id);
 	}
 
 	public Equipe getEquipePorNome(String nomeEquipe) throws Throwable {
-		return gerenciadorSubmissoes.getEquipePorNome(nomeEquipe);
+		return teamManager.getEquipePorNome(nomeEquipe);
 	}
 
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiros() {
-		return gerenciadorSubmissoes.getEquipeHasUsuarioHasRoteiros();
+		return teamManager.getEquipeHasUsuarioHasRoteiros();
 	}
 
 	public EquipeHasUsuarioHasRoteiro cadastraEquipeHasUsuarioHasRoteiro(
 			EquipeHasUsuarioHasRoteiro equr) throws EasyCorrectionException {
-		return gerenciadorSubmissoes.cadastraEquipeHasUsuarioHasRoteiro(equr);
+		return teamManager.cadastraEquipeHasUsuarioHasRoteiro(equr);
 	}
 
 	public List<EquipeHasUsuarioHasRoteiro> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
 			Integer idEquipe, Integer idRoteiro) {
-		return gerenciadorSubmissoes
+		return teamManager
 				.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(idEquipe,
 						idRoteiro);
 	}
@@ -288,7 +291,7 @@ public class Sistema {
 	}
 
 	public int getEquipeAlocadas(Integer idRoteiro) {
-		return gerenciadorSubmissoes.getEquipeAlocadas(idRoteiro);
+		return teamManager.getEquipeAlocadas(idRoteiro);
 	}
 
 	public EquipeHasUsuarioHasRoteiro mudarEquipe(EquipeHasUsuarioHasRoteiro eur)
@@ -299,7 +302,7 @@ public class Sistema {
 			throw new EasyCorrectionException(MsgErros.ALUNO_INEXISTENTE
 					.msg(""));
 		}
-		return gerenciadorSubmissoes.mudarEquipe(eur);
+		return teamManager.mudarEquipe(eur);
 	}
 
 	public Submissao getSubmissao(int submissaoId) {
@@ -311,7 +314,7 @@ public class Sistema {
 	}
 
 	public Equipe cadastrarEquipe(Equipe e) throws EasyCorrectionException {
-		return gerenciadorSubmissoes.cadastraEquipe(e);
+		return teamManager.cadastraEquipe(e);
 	}
 
 	public Integer numeroSubmissoes(Submissao submissao) {
