@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
+import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.sistema.Facade;
 
@@ -20,9 +21,11 @@ import br.edu.les.easyCorrection.sistema.Facade;
 public class AccessPermissionManagerTest {
 
 	private Facade facade;
+	private GerenciadorAcesso access;
 
 	public AccessPermissionManagerTest() {
 		facade = new Facade();
+		access = new GerenciadorAcesso();
 	}
 
 	@BeforeClass
@@ -32,8 +35,6 @@ public class AccessPermissionManagerTest {
 	
 	@Test
 	public void menuTest() {
-		
-		GerenciadorAcesso access = new GerenciadorAcesso();
 		
 		/*
 		 * RETRIEVE 
@@ -53,20 +54,16 @@ public class AccessPermissionManagerTest {
 
 		//Menu mNULL = null;
 		Menu mERROR1 = new Menu(-1, "jkjkjkj", "Kjkjk");
-		Menu mERROR2 = new Menu(0, "jkjkjkj", "Kjkjk");
 		Menu m4 = new Menu(1, null, "Kjkjk");
-		Menu m5 = new Menu(2, "", "Kjkjk");
-		Menu m6 = new Menu(3, "kjlk", null);
-		Menu m7 = new Menu(3, "kjlk", "");
+		Menu m5 = new Menu(1, "", "Kjkjk");
+		Menu m6 = new Menu(1, "kjlk", null);
+		Menu m7 = new Menu(1, "kjlk", "");
+		
 		
 		try {
 			access.cadastrarMenu(mERROR1);
 		} catch (EasyCorrectionException e2) {
 			// WE ARE CHECKING IF THE EXCEPTION IS BEING RAISED ONLY, NOT THE MESSAGE IT SENDS 
-		}
-		try {
-			access.cadastrarMenu(mERROR2);
-		} catch (EasyCorrectionException e2) {
 		}
 		try {
 			access.cadastrarMenu(m4);
@@ -84,6 +81,15 @@ public class AccessPermissionManagerTest {
 			access.cadastrarMenu(m7);
 		} catch (EasyCorrectionException e2) {
 		}
+		
+		// MENU OK
+		Menu mOK = new Menu(1, "OK", "MENUOK");
+		try {
+			access.cadastrarMenu(mOK);
+		} catch (EasyCorrectionException e2) {
+			e2.printStackTrace();
+		}
+		
 		
 		/*
 		 * RETRIEVE 
@@ -103,10 +109,10 @@ public class AccessPermissionManagerTest {
 		 * UPDATE
 		 */
 		
-		Menu m10 = new Menu(1, null, "Kjkjk");
-		Menu m11 = new Menu(2, "", "Kjkjk");
-		Menu m12 = new Menu(3, "kjlk", null);
-		Menu m13 = new Menu(3, "kjlk", "");
+		Menu m10 = new Menu(1, null, "MENUOK");
+		Menu m11 = new Menu(2, "", "MENUOK");
+		Menu m12 = new Menu(3, "OK", null);
+		Menu m13 = new Menu(3, "OK", "");
 		
 		try {
 			access.cadastrarMenu(m10);
@@ -136,15 +142,130 @@ public class AccessPermissionManagerTest {
 			access.excluirMenu(mERROR1);
 		} catch (EasyCorrectionException e) {
 		}
-		try {
-			access.excluirMenu(mERROR2);
-		} catch (EasyCorrectionException e) {
-		}
 	}
 
 	@Test
 	public void functionTest() {
+	
+		Funcao fNULL1 = access.getFuncao(1); // NULL
+		List<Funcao> list1 = access.listarFuncao(); // EMPTY
+		Funcao f0 = access.consultarFuncaoNomeERotulo("90909", "909090"); // NULL
+		List<Funcao> list3 = access.consultarFuncaoPorMenu(1); // EMPTY
+		
+		Assert.assertNull(fNULL1);
+		Assert.assertNotSame(list1.size(), 0);
+		Assert.assertNull(f0);
+		Assert.assertEquals(list3.size(), 0);
+		
+		/*
+		 * CREATE
+		 */
 
+		Menu menuOK = new Menu(1, "OK", "MENUOK");
+		
+		Funcao f1 = new Funcao(-1, menuOK, "9090", "klkl");  
+		Funcao f2 = new Funcao(1, null, "9090", "klkl");
+		Funcao f3 = new Funcao(1, menuOK, null, "klkl");
+		Funcao f4 = new Funcao(1, menuOK, "", "klkl");
+		Funcao f5 = new Funcao(1, menuOK, "90909", null);
+		Funcao f6 = new Funcao(1, menuOK, "90909", "");
+		
+		try {
+			access.cadastrarFuncao(f1);
+		} catch (EasyCorrectionException e7) {
+		}
+		try {
+			access.cadastrarFuncao(f2);
+		} catch (EasyCorrectionException e6) {
+		}
+		try {
+			access.cadastrarFuncao(f3);
+		} catch (EasyCorrectionException e5) {
+		}
+		try {
+			access.cadastrarFuncao(f4);
+		} catch (EasyCorrectionException e4) {
+		}
+		try {
+			access.cadastrarFuncao(f5);
+		} catch (EasyCorrectionException e3) {
+		}
+		try {
+			access.cadastrarFuncao(f6);
+		} catch (EasyCorrectionException e2) {
+		}
+		
+		Funcao fOK = new Funcao(1, menuOK, "OK", "FUNCAOOK");
+		
+		try {
+			access.cadastrarFuncao(fOK);
+		} catch (EasyCorrectionException e1) {
+			e1.printStackTrace();
+		}
+		
+		/*
+		 * RETRIEVE
+		 */
+		
+		Funcao fNULL2 = access.getFuncao(-1); // NULL
+		List<Funcao> list4 = access.listarFuncao(); // NOT EMPTY
+		List<Funcao> list5 = access.consultarFuncaoPorMenu(-1); // EMPTY
+		List<Funcao> list6 = access.consultarFuncaoPorMenu(2); // EMPTY
+		Funcao f7 = access.consultarFuncaoNomeERotulo(null, "FUNCAOOK"); // NULL
+		Funcao f8 = access.consultarFuncaoNomeERotulo("", "FUNCAOOK"); // NULL
+		Funcao f9 = access.consultarFuncaoNomeERotulo("OK", null); // NULL
+		Funcao f10 = access.consultarFuncaoNomeERotulo("OK", ""); // NULL
+		
+
+		Assert.assertNull(fNULL2);
+		Assert.assertNotSame(list4.size(), 0);
+		Assert.assertEquals(list5.size(), 0);
+		Assert.assertEquals(list6.size(), 0);
+		Assert.assertNull(f7);
+		Assert.assertNull(f8);
+		Assert.assertNull(f9);
+		Assert.assertNull(f10);
+		
+		/*
+		 * UPDATE 
+		 */
+		
+		Funcao f11 = new Funcao(-1, menuOK, "9090", "klkl");  
+		Funcao f12 = new Funcao(1, null, "9090", "klkl");
+		Funcao f13 = new Funcao(1, menuOK, null, "klkl");
+		Funcao f14 = new Funcao(1, menuOK, "", "klkl");
+		Funcao f15 = new Funcao(1, menuOK, "90909", null);
+		Funcao f16 = new Funcao(1, menuOK, "90909", "");
+		
+		/*
+		 * DELETE
+		 */
+		
+		try {
+			access.excluirFuncao(f11);
+		} catch (EasyCorrectionException e) {
+		}
+		try {
+			access.excluirFuncao(f12);
+		} catch (EasyCorrectionException e) {
+		}
+		try {
+			access.excluirFuncao(f13);
+		} catch (EasyCorrectionException e) {
+		}
+		try {
+			access.excluirFuncao(f14);
+		} catch (EasyCorrectionException e) {
+		}
+		try {
+			access.excluirFuncao(f15);
+		} catch (EasyCorrectionException e) {
+		}
+		try {
+			access.excluirFuncao(f16);
+		} catch (EasyCorrectionException e) {
+		}
+		
 	}
 
 	@Test

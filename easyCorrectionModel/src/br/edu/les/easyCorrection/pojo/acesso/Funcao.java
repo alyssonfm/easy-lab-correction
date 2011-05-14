@@ -26,7 +26,15 @@ public class Funcao implements Serializable {
 	
 	private String rotulo;
 
+	public Funcao() {
+	}
 	
+	public Funcao(Integer idFuncao, Menu menu, String nome, String rotulo) {
+		this.setIdFuncao(idFuncao);
+		this.setMenu(menu);
+		this.setNome(nome);
+		this.setRotulo(rotulo);
+	}
 
 	public Integer getIdFuncao() {
 		return idFuncao;
