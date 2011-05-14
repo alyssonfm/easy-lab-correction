@@ -1,4 +1,4 @@
-package br.edu.les.easyCorrection.tests.system;
+package br.edu.les.easyCorrection.tests.component;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

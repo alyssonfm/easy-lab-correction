@@ -1,4 +1,4 @@
-package br.edu.les.easyCorrection.tests.system;
+package br.edu.les.easyCorrection.tests.component;
 
 import br.edu.les.easyCorrection.sistema.Facade;
 
