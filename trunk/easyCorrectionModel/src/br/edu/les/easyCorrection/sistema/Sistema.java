@@ -3,7 +3,7 @@ package br.edu.les.easyCorrection.sistema;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.les.easyCorrection.exceptions.CriacaoRoteiroException;
+import br.edu.les.easyCorrection.exceptions.CreateAssignmentException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
 import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
@@ -217,7 +217,7 @@ public class Sistema {
 	}
 
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
-			throws EdicaoRoteiroException, CriacaoRoteiroException,
+			throws EdicaoRoteiroException, CreateAssignmentException,
 			LiberaRoteiroException {
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
