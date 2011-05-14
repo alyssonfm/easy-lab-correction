@@ -34,5 +34,11 @@ pojo -> pojo:
 	sistema -> system:
 		Periodo -> Stage
 		
-
-
+Documentacao:
+1 - Exceptions:
+ 	* Checar se tah sendo usada
+2 - Servlet
+3 - Util 
+	* Só métodos por enquanto
+4 - Gerenciadores
+ 	* Só métodos por enquanto
