@@ -8,7 +8,7 @@ import org.hibernate.Session;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -83,7 +83,7 @@ public class RoteiroHibernateDAO extends AbstractHibernateDAO<Roteiro, Integer> 
 			for (Roteiro r : lista) {
 				r = instanciaRoteiro(r);
 			}
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		} finally {
 			HibernateUtil.closeSession();
@@ -92,7 +92,7 @@ public class RoteiroHibernateDAO extends AbstractHibernateDAO<Roteiro, Integer> 
 	}
 
 	public static Roteiro instanciaRoteiro(Roteiro r)
-			throws CampoVazioException {
+			throws EmptyFieldException {
 		r.setPeriodo(PeriodoHibernateDAO.instanciaPeriodo(r.getPeriodo()));
 		r = MyPersistenceLayer.deproxy(r, Roteiro.class);
 

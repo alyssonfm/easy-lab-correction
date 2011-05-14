@@ -9,7 +9,7 @@ import org.hibernate.criterion.SimpleExpression;
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.DAO.hibernate.sistema.PeriodoHibernateDAO;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -58,7 +58,7 @@ public class UsuarioHibernateDAO extends
 			for (Usuario u : lista) {
 				u = instanciaUsuario(u);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -67,7 +67,7 @@ public class UsuarioHibernateDAO extends
 		return lista;
 	}
 	
-	public static Usuario instanciaUsuario(Usuario u) throws CampoVazioException{
+	public static Usuario instanciaUsuario(Usuario u) throws EmptyFieldException{
 		u.setPeriodo(PeriodoHibernateDAO.instanciaPeriodo(u.getPeriodo()));
 		u = MyPersistenceLayer.deproxy(u, Usuario.class);
 		return u;

@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -74,7 +74,7 @@ public class EquipeHasUsuarioHasRoteiroHibernateDAO extends
 			for (EquipeHasUsuarioHasRoteiro e : lista) {
 				e = instanciaEquipeHasUsuarioHasRoteiro(e);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -83,7 +83,7 @@ public class EquipeHasUsuarioHasRoteiroHibernateDAO extends
 		return lista;
 	}
 	
-	public static EquipeHasUsuarioHasRoteiro instanciaEquipeHasUsuarioHasRoteiro(EquipeHasUsuarioHasRoteiro e) throws CampoVazioException{
+	public static EquipeHasUsuarioHasRoteiro instanciaEquipeHasUsuarioHasRoteiro(EquipeHasUsuarioHasRoteiro e) throws EmptyFieldException{
 		e.setEquipe(EquipeHibernateDAO.instanciaEquipe(e.getEquipe()));
 		e.setRoteiro(RoteiroHibernateDAO.instanciaRoteiro(e.getRoteiro()));
 		e.setUsuario(UsuarioHibernateDAO.instanciaUsuario(e.getUsuario()));

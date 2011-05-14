@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.avaliacoes.Chat;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -33,7 +33,7 @@ public class ChatHibernateDAO extends
 			for (Chat c : lista) {
 				c = instanciaChat(c);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -42,7 +42,7 @@ public class ChatHibernateDAO extends
 		return lista;
 	}
 	
-	public static Chat instanciaChat(Chat c) throws CampoVazioException{
+	public static Chat instanciaChat(Chat c) throws EmptyFieldException{
 		c.setEquipe(EquipeHibernateDAO.instanciaEquipe(c.getEquipe()));
 		c.setRoteiro(RoteiroHibernateDAO.instanciaRoteiro(c.getRoteiro()));
 		c.setUsuarioDestino(UsuarioHibernateDAO.instanciaUsuario(c.getUsuarioDestino()));

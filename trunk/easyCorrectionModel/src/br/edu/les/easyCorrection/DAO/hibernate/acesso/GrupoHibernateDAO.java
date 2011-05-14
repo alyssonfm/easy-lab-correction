@@ -7,7 +7,7 @@ import org.hibernate.criterion.Restrictions;
 
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.les.easyCorrection.exceptions.CampoVazioException;
+import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
 import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
@@ -41,7 +41,7 @@ public class GrupoHibernateDAO extends
 			for (Grupo g : lista) {
 				g = instanciaGrupo(g);
 			}	
-		} catch (CampoVazioException e) {
+		} catch (EmptyFieldException e) {
 			throw new ViolacaoConstraintException(e.getMessage());
 		}
 		finally{
@@ -50,7 +50,7 @@ public class GrupoHibernateDAO extends
 		return lista;
 	}
 	
-	public static Grupo instanciaGrupo(Grupo g) throws CampoVazioException{
+	public static Grupo instanciaGrupo(Grupo g) throws EmptyFieldException{
 		g = MyPersistenceLayer.deproxy(g, Grupo.class);
 		return g;
 	}
