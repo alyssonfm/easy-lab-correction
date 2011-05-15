@@ -10,6 +10,7 @@ import org.junit.Test;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
+import br.edu.les.easyCorrection.pojo.acesso.Grupo;
 import br.edu.les.easyCorrection.pojo.acesso.Menu;
 import br.edu.les.easyCorrection.sistema.Facade;
 
@@ -237,9 +238,39 @@ public class AccessPermissionManagerTest {
 		Funcao f15 = new Funcao(1, menuOK, "90909", null);
 		Funcao f16 = new Funcao(1, menuOK, "90909", "");
 		
+		try {
+			access.cadastrarFuncao(f11);
+		} catch (EasyCorrectionException e6) {
+		}
+		try {
+			access.cadastrarFuncao(f12);
+		} catch (EasyCorrectionException e5) {
+		}
+		try {
+			access.cadastrarFuncao(f13);
+		} catch (EasyCorrectionException e4) {
+		}
+		try {
+			access.cadastrarFuncao(f14);
+		} catch (EasyCorrectionException e3) {
+		}
+		try {
+			access.cadastrarFuncao(f15);
+		} catch (EasyCorrectionException e2) {
+		}
+		try {
+			access.cadastrarFuncao(f16);
+		} catch (EasyCorrectionException e1) {
+		}
+		
 		/*
 		 * DELETE
 		 */
+		
+		try {
+			access.excluirFuncao(fNULL2);
+		} catch (EasyCorrectionException e) {
+		}
 		
 		try {
 			access.excluirFuncao(f11);
@@ -271,6 +302,94 @@ public class AccessPermissionManagerTest {
 	@Test
 	public void groupTest() {
 
+		Grupo gNULL1 = access.getGrupo(1); // NULL
+		Grupo gNULL2 = access.getGrupoPorNome("Grupo");  // NULL
+		Grupo gNULL3 = access.getGrupoPorNome("Grupo"); // NULL
+		List<Grupo> lista1 = access.listarGrupo(); // EMPTY
+		
+		Assert.assertNull(gNULL1);
+		Assert.assertNull(gNULL2);
+		Assert.assertNull(gNULL3);
+		Assert.assertEquals(lista1.size(), 0); 	
+		
+		/*
+		 * CREATE
+		 */
+		
+		Grupo g1 = new Grupo(-1, "OK");
+		Grupo g2 = new Grupo(1, null);
+		Grupo g3 = new Grupo(1, "");
+
+		try {
+			access.cadastrarGrupo(g1);
+		} catch (EasyCorrectionException e) {
+		}
+		try {
+			access.cadastrarGrupo(g2);
+		} catch (EasyCorrectionException e) {
+		}
+		try {
+			access.cadastrarGrupo(g3);
+		} catch (EasyCorrectionException e) {
+		}
+
+		Grupo gOK = new Grupo(1, "OK");
+		try {
+			access.cadastrarGrupo(gOK);
+		} catch (EasyCorrectionException e) {
+			e.printStackTrace();
+		}
+		
+		/*
+		 * RETRIEVE
+		 */
+		
+		Grupo gNULL4 = access.getGrupo(-1); // NULL
+		Grupo gNULL5 = access.getGrupoPorNome(null);  // NULL
+		Grupo gNULL6 = access.getGrupoPorNome("");  // NULL
+		Grupo gNULL7 = access.getGrupoPorNome(null); // NULL
+		Grupo gNULL8 = access.getGrupoPorNome(""); // NULL
+		List<Grupo> lista2 = access.listarGrupo(); // NOT EMPTY
+		
+		Assert.assertNull(gNULL4);
+		Assert.assertNull(gNULL5);
+		Assert.assertNull(gNULL6);
+		Assert.assertNull(gNULL7);
+		Assert.assertNull(gNULL8);
+		Assert.assertNotSame(lista2.size(), 0);
+		
+		/*
+		 * UPDATE
+		 */
+		
+		Grupo g4 = new Grupo(1, null);
+		Grupo g5 = new Grupo(1, "");
+		
+		try {
+			access.cadastrarGrupo(g4);
+		} catch (EasyCorrectionException e) {
+		}
+		try {
+			access.cadastrarGrupo(g5);
+		} catch (EasyCorrectionException e) {
+		}
+		
+		/*
+		 * DELETE
+		 */
+		
+		try {
+			access.excluirGrupo(gNULL2);
+		} catch (EasyCorrectionException e) {
+		}
+		try {
+			access.excluirGrupo(g4);
+		} catch (EasyCorrectionException e) {
+		}
+		try {
+			access.excluirGrupo(g5);
+		} catch (EasyCorrectionException e) {
+		}
 	}
 
 	@Test
