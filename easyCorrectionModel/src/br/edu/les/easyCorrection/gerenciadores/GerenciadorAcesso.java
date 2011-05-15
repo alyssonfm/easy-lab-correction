@@ -5,9 +5,9 @@ import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.AuthenticationException;
+import br.edu.les.easyCorrection.exceptions.DuplicateValueException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
 import br.edu.les.easyCorrection.exceptions.ObjectNotFoundException;
-import br.edu.les.easyCorrection.exceptions.DuplicateValueException;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
@@ -44,8 +44,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		return menu.get(0);
 	}
 
-	// TODO: TO PRIVATE
-	public Menu consultarMenuPorRotuloENome(String rotulo, String nome) {
+	private Menu consultarMenuPorRotuloENome(String rotulo, String nome) {
 		List<Menu> lista = DAOFactory.DEFAULT.buildMenuDAO().findByNomeERotulo(
 				nome, rotulo);
 		if (!lista.isEmpty()) {
@@ -55,7 +54,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		}
 	}
 
-	//TODO Separar
+	// TODO: Separar em CreateMenu and UpdateMenu
 	public Menu cadastrarMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = new Menu();
 		Menu men = new Menu();
@@ -113,7 +112,8 @@ public class GerenciadorAcesso extends Gerenciador {
 	/*
 	 * FUNCAO
 	 */
-	
+
+	// TODO: Separar em CreateFunction and UpdateFunction
 	public Funcao cadastrarFuncao(Funcao funcao) throws EasyCorrectionException {
 		Funcao f = new Funcao();
 		Funcao fun = new Funcao();
@@ -164,8 +164,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		return funcao.get(0);
 	}
 
-	// TODO: Mudar para deixar como no padrao
-	public Funcao consultarFuncaoNomeERotulo(String nome, String rotulo) {
+	private Funcao consultarFuncaoNomeERotulo(String nome, String rotulo) {
 		List<Funcao> lista = DAOFactory.DEFAULT.buildFuncaoDAO()
 				.findByNomeERotulo(nome, rotulo);
 		if (!lista.isEmpty()) {
@@ -202,7 +201,7 @@ public class GerenciadorAcesso extends Gerenciador {
 	/*
 	 * GRUPO
 	 */
-	
+	// TODO: Separar em CreateGroup and UpdateGroup
 	public Grupo cadastrarGrupo(Grupo grupo) throws EasyCorrectionException {
 		Grupo g = new Grupo();
 		Grupo gr = new Grupo();
@@ -260,10 +259,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		DAOFactory.DEFAULT.buildGrupoDAO().delete(g);
 	}
 
-	// TODO: Metodos iguais com retornos diferentes. Vamos padronizar, os outros metodos
-	// dessa classe lancam uma excecao quando nao encontram o objeto. Entao deleta esse 
-	// metodo e mantem o getGrupoPorNome
-	public Grupo consultarGrupoPorNome(String nome) {
+	private Grupo consultarGrupoPorNome(String nome) {
 
 		List<Grupo> lista = DAOFactory.DEFAULT.buildGrupoDAO().findByNome(nome);
 		if (!lista.isEmpty()) {
@@ -360,7 +356,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		return permissao.get(0);
 	}
 
-	public List<Funcao> verificaPermissoes(Integer idUsuario) {
+	private List<Funcao> verificaPermissoes(Integer idUsuario) {
 		List<Funcao> listaFuncao = new LinkedList<Funcao>();
 		List<GrupoUsuario> listaGU = DAOFactory.DEFAULT.buildGrupoUsuarioDAO()
 				.findByUsuarioId(idUsuario);
@@ -445,7 +441,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		return usuario.get(0);
 	}
 
-	public GrupoUsuario getGrupoUsuarioPorGrupoEUsuario(Integer idGrupo,
+	private GrupoUsuario getGrupoUsuarioPorGrupoEUsuario(Integer idGrupo,
 			Integer idUsuario) {
 		List<GrupoUsuario> lista = DAOFactory.DEFAULT.buildGrupoUsuarioDAO()
 				.findByUsuarioEGrupo(idGrupo, idUsuario);
@@ -474,7 +470,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		return null;
 	}
 
-	public Usuario getUsuarioPorEmail(String email) {
+	private Usuario getUsuarioPorEmail(String email) {
 		List<Usuario> lista = DAOFactory.DEFAULT.buildUsuarioDAO().findByEmail(
 				email);
 		if (!lista.isEmpty()) {
@@ -482,9 +478,8 @@ public class GerenciadorAcesso extends Gerenciador {
 		}
 		return null;
 	}
-
-	// PUBLIC??? 
-	public void verificaSeNumeroUsuarioMaiorEquipe(GrupoUsuario grupoUsuario)
+ 
+	private void verificaSeNumeroUsuarioMaiorEquipe(GrupoUsuario grupoUsuario)
 			throws EasyCorrectionException {
 		Equipe equipe = new Equipe();
 		if (grupoUsuario.getGrupo().getNome().equalsIgnoreCase("Aluno")) {
@@ -512,8 +507,8 @@ public class GerenciadorAcesso extends Gerenciador {
 		}
 	}
 
-	// PUBLIC??? (MOVE TO System)
-	public void alocaUsuarioEquipe(Usuario us, Equipe eq)
+	// TODO: MOVE TO System
+	private void alocaUsuarioEquipe(Usuario us, Equipe eq)
 			throws EasyCorrectionException {
 		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
 		for (Roteiro roteiro : rots) {
@@ -525,8 +520,8 @@ public class GerenciadorAcesso extends Gerenciador {
 		}
 	}
 
-	// PUBLIC??? (MOVE TO System)
-	public void alocaUsuarioEquipe(Usuario us) throws EasyCorrectionException {
+	// TODO: MOVE TO System
+	private void alocaUsuarioEquipe(Usuario us) throws EasyCorrectionException {
 		List<Roteiro> rots = gerenciadorRoteiros.listarRoteiros();
 		for (Roteiro roteiro : rots) {
 			List<EquipeHasUsuarioHasRoteiro> eurs = teamManager
@@ -706,7 +701,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		return funcoes;
 	}
 
-	public Usuario verificaLoginESenha(Usuario usuario) {
+	private Usuario verificaLoginESenha(Usuario usuario) {
 		List<Usuario> lista = DAOFactory.DEFAULT.buildUsuarioDAO()
 				.findByLoginESenha(usuario.getLogin(), usuario.getSenha());
 		if (lista.isEmpty()) {
@@ -716,7 +711,7 @@ public class GerenciadorAcesso extends Gerenciador {
 
 	}
 
-	public boolean verificaRepetido(List<Funcao> lista, Funcao funcao) {
+	private boolean verificaRepetido(List<Funcao> lista, Funcao funcao) {
 		for (Funcao f : lista) {
 			if (f.equals(funcao)) {
 				return true;

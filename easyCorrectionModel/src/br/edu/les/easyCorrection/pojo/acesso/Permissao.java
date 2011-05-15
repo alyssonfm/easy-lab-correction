@@ -24,8 +24,15 @@ public class Permissao implements Serializable {
 	
 	private Funcao funcao;
 
-	
+	public Permissao() {
+	}
 
+	public Permissao(Integer idPermissao, Grupo grupo, Funcao funcao) {
+		this.setIdPermissao(idPermissao);
+		this.setGrupo(grupo);
+		this.setFuncao(funcao);
+	}
+	
 	public Integer getIdPermissao() {
 		return idPermissao;
 	}
