@@ -164,6 +164,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		return funcao.get(0);
 	}
 
+	// TODO: Mudar para deixar como no padrao
 	public Funcao consultarFuncaoNomeERotulo(String nome, String rotulo) {
 		List<Funcao> lista = DAOFactory.DEFAULT.buildFuncaoDAO()
 				.findByNomeERotulo(nome, rotulo);
@@ -259,6 +260,9 @@ public class GerenciadorAcesso extends Gerenciador {
 		DAOFactory.DEFAULT.buildGrupoDAO().delete(g);
 	}
 
+	// TODO: Metodos iguais com retornos diferentes. Vamos padronizar, os outros metodos
+	// dessa classe lancam uma excecao quando nao encontram o objeto. Entao deleta esse 
+	// metodo e mantem o getGrupoPorNome
 	public Grupo consultarGrupoPorNome(String nome) {
 
 		List<Grupo> lista = DAOFactory.DEFAULT.buildGrupoDAO().findByNome(nome);

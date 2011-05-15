@@ -22,8 +22,14 @@ public class Grupo implements Serializable {
 	
 	private String nome;
 
-	
+	public Grupo() {
+	}
 
+	public Grupo(Integer idGrupo, String nome) {
+		this.setIdGrupo(idGrupo);
+		this.setNome(nome);
+	}
+	
 	public Integer getIdGrupo() {
 		return idGrupo;
 	}
