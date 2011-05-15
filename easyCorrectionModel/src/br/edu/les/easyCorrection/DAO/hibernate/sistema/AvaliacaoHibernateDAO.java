@@ -9,7 +9,7 @@ import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.DAO.hibernate.acesso.UsuarioHibernateDAO;
 import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
-import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
+import br.edu.les.easyCorrection.exceptions.ConstraintViolationException;
 import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
@@ -35,7 +35,7 @@ public class AvaliacaoHibernateDAO extends
 				a = instanciaAvaliacao(a);
 			}	
 		} catch (EmptyFieldException e) {
-			throw new ViolacaoConstraintException(e.getMessage());
+			throw new ConstraintViolationException(e.getMessage());
 		}
 		finally{
 			HibernateUtil.closeSession();

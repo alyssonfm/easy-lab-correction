@@ -9,7 +9,7 @@ import org.hibernate.Session;
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
-import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
+import br.edu.les.easyCorrection.exceptions.ConstraintViolationException;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
@@ -84,7 +84,7 @@ public class RoteiroHibernateDAO extends AbstractHibernateDAO<Roteiro, Integer> 
 				r = instanciaRoteiro(r);
 			}
 		} catch (EmptyFieldException e) {
-			throw new ViolacaoConstraintException(e.getMessage());
+			throw new ConstraintViolationException(e.getMessage());
 		} finally {
 			HibernateUtil.closeSession();
 		}

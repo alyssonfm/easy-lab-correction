@@ -7,9 +7,9 @@ import java.util.List;
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.CreateAssignmentException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
-import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
-import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
-import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
+import br.edu.les.easyCorrection.exceptions.EditingAssignmentException;
+import br.edu.les.easyCorrection.exceptions.ExclusionAssignmentException;
+import br.edu.les.easyCorrection.exceptions.ReleasesAssignmentException;
 import br.edu.les.easyCorrection.pojo.roteiros.Roteiro;
 import br.edu.les.easyCorrection.util.MsgErros;
 import br.edu.les.easyCorrection.util.SwapperAtributosReflect;
@@ -85,7 +85,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 	}
 
 	public Roteiro cadastrarRoteiro(Roteiro roteiroTemp)
-			throws CreateAssignmentException, LiberaRoteiroException {
+			throws CreateAssignmentException, ReleasesAssignmentException {
 
 		if (roteiroTemp == null) {
 			throw new CreateAssignmentException("Roteiro inexistente!");
@@ -111,11 +111,11 @@ public class GerenciadorRoteiros extends Gerenciador {
 	}
 
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
-			throws EdicaoRoteiroException, CreateAssignmentException,
-			LiberaRoteiroException {
+			throws EditingAssignmentException, CreateAssignmentException,
+			ReleasesAssignmentException {
 
 		if (roteiroTemp == null) {
-			throw new EdicaoRoteiroException("Roteiro inexistente!");
+			throw new EditingAssignmentException("Roteiro inexistente!");
 		}
 
 		this.criacaoOuAtualizacaoMsg = "atualizado";
@@ -146,7 +146,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 			break;
 
 		default:
-			throw new EdicaoRoteiroException(MsgErros.VALORINVALIDO
+			throw new EditingAssignmentException(MsgErros.VALORINVALIDO
 					.msg("A edição do roteiro não pôde ser realizada!"));
 		}
 
@@ -162,7 +162,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 			System.out.println("Roteiro atualizado com sucesso!");
 
 		} catch (EasyCorrectionException e) {
-			throw new EdicaoRoteiroException("Roteiro inexistente!");
+			throw new EditingAssignmentException("Roteiro inexistente!");
 		}
 		return r;
 	}
@@ -170,10 +170,10 @@ public class GerenciadorRoteiros extends Gerenciador {
 	/*
 	 * Nao estah sendo usado ainda... E nao estah em nossos planos usa-lo...
 	 */
-	public void excluirRoteiro(Roteiro roteiro) throws ExclusaoRoteiroException {
+	public void excluirRoteiro(Roteiro roteiro) throws ExclusionAssignmentException {
 
 		if (roteiro == null) {
-			throw new ExclusaoRoteiroException("Roteiro inexistente!");
+			throw new ExclusionAssignmentException("Roteiro inexistente!");
 		}
 		DAOFactory.DEFAULT.buildRoteiroDAO().delete(roteiro);
 	}
@@ -184,13 +184,13 @@ public class GerenciadorRoteiros extends Gerenciador {
 	 */
 
 	private int computaEstadoNovoRoteiro(Roteiro roteiroTemp)
-			throws EdicaoRoteiroException {
+			throws EditingAssignmentException {
 
 		// Antes de Computar o estado do novo roteiro, vamos checar se houve
 		// alguma modificacao com relacao ao antigo estado e aplicar as devidas
 		// restricoes
 		if (roteiroTemp == null) {
-			throw new EdicaoRoteiroException(
+			throw new EditingAssignmentException(
 					"Roteiro invalido. Tente Novamente...");
 		}
 
@@ -199,7 +199,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 	}
 
 	private void checaModificacaoDatas(Roteiro roteiroNovo)
-			throws EdicaoRoteiroException {
+			throws EditingAssignmentException {
 
 		// Tempo nesse instante
 		Date dataHoje = easyCorrectionUtil.getDataNow();
@@ -216,21 +216,21 @@ public class GerenciadorRoteiros extends Gerenciador {
 			// Mas soh para o dia atual ou depois
 			if (roteiroNovo.getDataLiberacao() == null
 					|| roteiroNovo.getDataLiberacao().before(dataHoje)) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (roteiroNovo.getDataFinalEntrega() != null
 					&& roteiroNovo.getDataFinalEntrega().before(dataHoje)) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data Limite para Entrega inválida. O Roteiro não pôde ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (roteiroNovo.getDataFinalDiscussao() != null
 					&& roteiroNovo.getDataFinalDiscussao().before(dataHoje)) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data Limite para Discussão inválida. O Roteiro não pôde ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
@@ -249,21 +249,21 @@ public class GerenciadorRoteiros extends Gerenciador {
 					|| (roteiroNovo.getDataLiberacao().before(dataHoje) && (!roteiroNovo
 							.getDataLiberacao().equals(
 									roteiroAntigo.getDataLiberacao())))) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (roteiroNovo.getDataFinalEntrega() != null
 					&& roteiroNovo.getDataFinalEntrega().before(dataHoje)) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data Limite para Entrega inválida. O Roteiro não pôde ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (roteiroNovo.getDataFinalDiscussao() != null
 					&& roteiroNovo.getDataFinalDiscussao().before(dataHoje)) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data Limite para Discussão inválida. O Roteiro não pôde ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
@@ -282,7 +282,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 					|| (roteiroNovo.getDataLiberacao().before(dataHoje) && (!roteiroNovo
 							.getDataLiberacao().equals(
 									roteiroAntigo.getDataLiberacao())))) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
@@ -291,14 +291,14 @@ public class GerenciadorRoteiros extends Gerenciador {
 					|| (roteiroNovo.getDataFinalEntrega().before(dataHoje) && (!roteiroNovo
 							.getDataFinalEntrega().equals(
 									roteiroAntigo.getDataFinalEntrega())))) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data Limite para Entrega inválida. O Roteiro não pôde ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (roteiroNovo.getDataFinalDiscussao() != null
 					&& roteiroNovo.getDataFinalDiscussao().before(dataHoje)) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data Limite para Discussão inválida. O Roteiro não pôde ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
@@ -315,7 +315,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 					|| (roteiroNovo.getDataLiberacao().before(dataHoje) && (!roteiroNovo
 							.getDataLiberacao().equals(
 									roteiroAntigo.getDataLiberacao())))) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data de Liberação inválida. O roteiro não pôde ser ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
@@ -324,7 +324,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 					|| (roteiroNovo.getDataFinalEntrega().before(dataHoje) && (!roteiroNovo
 							.getDataFinalEntrega().equals(
 									roteiroAntigo.getDataFinalEntrega())))) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data Limite para Entrega inválida. O Roteiro não pôde ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
@@ -333,7 +333,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 					|| (roteiroNovo.getDataFinalDiscussao().before(dataHoje) && (!roteiroNovo
 							.getDataFinalDiscussao().equals(
 									roteiroAntigo.getDataFinalDiscussao())))) {
-				throw new EdicaoRoteiroException(
+				throw new EditingAssignmentException(
 						MsgErros.VALORINVALIDO
 								.msg("Data Limite para Discussão inválida. O Roteiro não pôde ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
@@ -352,7 +352,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 						roteiroNovo.getDataLiberacao()) || roteiroNovo
 						.getDataFinalEntrega().equals(
 								roteiroNovo.getDataLiberacao()))) {
-			throw new EdicaoRoteiroException(
+			throw new EditingAssignmentException(
 					MsgErros.VALORINVALIDO
 							.msg("Data Limite para Entrega anterior/igual à Data de Liberação. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
@@ -363,7 +363,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 						roteiroNovo.getDataFinalEntrega()) || roteiroNovo
 						.getDataFinalDiscussao().equals(
 								roteiroNovo.getDataFinalEntrega()))) {
-			throw new EdicaoRoteiroException(
+			throw new EditingAssignmentException(
 					MsgErros.VALORINVALIDO
 							.msg("Data Limite para Discussão anterior/igual à Data Limite para Entrega. O Roteiro não pôde ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
@@ -403,7 +403,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 	}
 
 	private boolean validaRoteiroJahCriado(Roteiro roteiro)
-			throws CreateAssignmentException, EdicaoRoteiroException {
+			throws CreateAssignmentException, EditingAssignmentException {
 
 		// Os testes de JAH_CRIADO são somados aos de EM_CRIACAO
 		validaRoteiroEmCriacao(roteiro);
@@ -419,13 +419,13 @@ public class GerenciadorRoteiros extends Gerenciador {
 		if ((roteiro.getDiretorioTestes() != null && !roteiro
 				.getDiretorioTestes().equals(""))
 				&& !roteiro.getDiretorioTestes().endsWith(testesDirDefault)) {
-			throw new EdicaoRoteiroException(
+			throw new EditingAssignmentException(
 					"Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/<roteiro_id>/'. O Roteiro não pôde ser atualizado!");
 		} else if ((roteiro.getDiretorioInterface() != null && !roteiro
 				.getDiretorioInterface().equals(""))
 				&& !roteiro.getDiretorioInterface().endsWith(
 						interfaceDirDefault)) {
-			throw new EdicaoRoteiroException(
+			throw new EditingAssignmentException(
 					"Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/<roteiro_id>/'. O Roteiro não pôde ser atualizado!");
 		}
 
@@ -433,8 +433,8 @@ public class GerenciadorRoteiros extends Gerenciador {
 	}
 
 	private boolean validaRoteiroEstadoLiberado(Roteiro roteiro)
-			throws EdicaoRoteiroException, CreateAssignmentException,
-			LiberaRoteiroException {
+			throws EditingAssignmentException, CreateAssignmentException,
+			ReleasesAssignmentException {
 
 		validacoesBasicasDosAtributosDoRoteiro(roteiro);
 
@@ -446,7 +446,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 				|| ((roteiro.getPorcentagemTestesAutomaticos() > 0 || roteiro
 						.getPorcentagemTestesAutomaticos() <= 100) && roteiro
 						.getDiretorioTestes() == null)) {
-			throw new LiberaRoteiroException(
+			throw new ReleasesAssignmentException(
 					"O Roteiro "
 							+ roteiro.getNome()
 							+ " não pôde ser liberado devido a falhas em sua especificação!");
@@ -459,7 +459,7 @@ public class GerenciadorRoteiros extends Gerenciador {
 	 * 
 	 * @param roteiro
 	 * @return
-	 * @throws EdicaoRoteiroException
+	 * @throws EditingAssignmentException
 	 * @throws CreateAssignmentException
 	 */
 	private boolean validaRoteiroEstadoFechado(Roteiro roteiro)

@@ -3,8 +3,8 @@ package br.edu.les.easyCorrection.tests.acceptance.userstory04;
 import java.util.Calendar;
 
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
-import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
-import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
+import br.edu.les.easyCorrection.exceptions.ExclusionAssignmentException;
+import br.edu.les.easyCorrection.exceptions.ObjectNotFoundException;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
@@ -111,7 +111,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 			getEquipe(equipeDeEntradaId);
 		}
 		catch(Exception e){
-			throw new ObjetoNaoEncontradoException(MsgErros.EQUIPE_INEXISTENTE
+			throw new ObjectNotFoundException(MsgErros.EQUIPE_INEXISTENTE
 					.msg(""));
 		}
 		equipeUsuarioRoteiro.setEquipe(getEquipe(equipeDeEntradaId));

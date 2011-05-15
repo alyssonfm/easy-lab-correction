@@ -18,7 +18,7 @@ import junit.textui.TestRunner;
 
 import org.junit.runner.JUnitCore;
 
-import br.edu.les.easyCorrection.exceptions.ExecucaoTestesException;
+import br.edu.les.easyCorrection.exceptions.ExecutionTestsException;
 import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
 import br.edu.les.easyCorrection.pojo.roteiros.Submissao;
@@ -40,7 +40,7 @@ public class GerenciadorTestes extends Gerenciador {
 	public TestResult executarTestes(String diretorioTestes,
 			String arquivoDeTeste, String diretorioInterface,
 			String arquivoDeInterface, String diretorioSource,
-			String arquivoSource) throws ExecucaoTestesException {
+			String arquivoSource) throws ExecutionTestsException {
 
 		String diretorioLib = (ServletUpload.local + "/").replace("/",
 				File.separator);
@@ -84,12 +84,12 @@ public class GerenciadorTestes extends Gerenciador {
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-			throw new ExecucaoTestesException(e.getMessage());
+			throw new ExecutionTestsException(e.getMessage());
 		}
 
 		if (erroCompilacao) {
 			erroCompilacao = false;
-			throw new ExecucaoTestesException(removeDiretorio(resultadoErro, diretorioTestes, diretorioSource, diretorioInterface));
+			throw new ExecutionTestsException(removeDiretorio(resultadoErro, diretorioTestes, diretorioSource, diretorioInterface));
 		}
 		
 		return result;

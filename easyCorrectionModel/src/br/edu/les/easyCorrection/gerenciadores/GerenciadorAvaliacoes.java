@@ -6,7 +6,7 @@ import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
-import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
+import br.edu.les.easyCorrection.exceptions.ObjectNotFoundException;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.acesso.Usuario;
 import br.edu.les.easyCorrection.pojo.avaliacoes.Avaliacao;
@@ -94,7 +94,7 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 	public Avaliacao getAvaliacaoPorRoteiroEquipe(int idRoteiro, int idEquipe){
 		List<Avaliacao> lista = DAOFactory.DEFAULT.buildAvaliacaoDAO().findByRoteiroEquipe(idRoteiro, idEquipe);
 		if(lista.isEmpty()){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("avaliacao"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND.msg("avaliacao"));
 		}
 		return lista.get(0);
 	}
@@ -115,7 +115,7 @@ public class GerenciadorAvaliacoes extends Gerenciador {
 			return editarAvaliacao(aval);
 		}
 		catch(Exception e){
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("avaliacao"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND.msg("avaliacao"));
 		}
 	}
 	

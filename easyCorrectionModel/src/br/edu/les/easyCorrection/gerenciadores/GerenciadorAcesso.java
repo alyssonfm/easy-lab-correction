@@ -6,8 +6,8 @@ import java.util.List;
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.AuthenticationException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
-import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
-import br.edu.les.easyCorrection.exceptions.ValorDuplicadoException;
+import br.edu.les.easyCorrection.exceptions.ObjectNotFoundException;
+import br.edu.les.easyCorrection.exceptions.DuplicateValueException;
 import br.edu.les.easyCorrection.pojo.acesso.Funcao;
 import br.edu.les.easyCorrection.pojo.acesso.Grupo;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
@@ -38,7 +38,7 @@ public class GerenciadorAcesso extends Gerenciador {
 	public Menu getMenu(Integer id) {
 		List<Menu> menu = DAOFactory.DEFAULT.buildMenuDAO().findById(id);
 		if (menu.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.OBJ_NOT_FOUND.msg("menu"));
 		}
 		return menu.get(0);
@@ -71,7 +71,7 @@ public class GerenciadorAcesso extends Gerenciador {
 					menu.setIdMenu(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(m)) {
-					throw new ValorDuplicadoException(
+					throw new DuplicateValueException(
 							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 				// Se o id eh diferente de null
@@ -88,7 +88,7 @@ public class GerenciadorAcesso extends Gerenciador {
 							Menu.class);
 					DAOFactory.DEFAULT.buildMenuDAO().update(men);
 				} else {
-					throw new ValorDuplicadoException(
+					throw new DuplicateValueException(
 							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 			}
@@ -130,7 +130,7 @@ public class GerenciadorAcesso extends Gerenciador {
 					funcao.setIdFuncao(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(f)) {
-					throw new ValorDuplicadoException(
+					throw new DuplicateValueException(
 							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 				// Se o id é diferente de null
@@ -147,7 +147,7 @@ public class GerenciadorAcesso extends Gerenciador {
 							funcao, Funcao.class);
 					DAOFactory.DEFAULT.buildFuncaoDAO().update(fun);
 				} else {
-					throw new ValorDuplicadoException(
+					throw new DuplicateValueException(
 							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 			}
@@ -158,7 +158,7 @@ public class GerenciadorAcesso extends Gerenciador {
 	public Funcao getFuncao(Integer id) {
 		List<Funcao> funcao = DAOFactory.DEFAULT.buildFuncaoDAO().findById(id);
 		if (funcao.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.OBJ_NOT_FOUND.msg("funcao"));
 		}
 		return funcao.get(0);
@@ -216,7 +216,7 @@ public class GerenciadorAcesso extends Gerenciador {
 					grupo.setIdGrupo(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(g)) {
-					throw new ValorDuplicadoException(
+					throw new DuplicateValueException(
 							MsgErros.VALOR_DUPLICADO.msg("nome"));
 				}
 				// Se o id é diferente de null
@@ -232,7 +232,7 @@ public class GerenciadorAcesso extends Gerenciador {
 							Grupo.class);
 					DAOFactory.DEFAULT.buildGrupoDAO().update(gr);
 				} else {
-					throw new ValorDuplicadoException(
+					throw new DuplicateValueException(
 							MsgErros.VALOR_DUPLICADO.msg("nome"));
 				}
 			}
@@ -243,7 +243,7 @@ public class GerenciadorAcesso extends Gerenciador {
 	public Grupo getGrupo(Integer id) {
 		List<Grupo> grupo = DAOFactory.DEFAULT.buildGrupoDAO().findById(id);
 		if (grupo.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.OBJ_NOT_FOUND.msg("grupo"));
 		}
 		return grupo.get(0);
@@ -271,7 +271,7 @@ public class GerenciadorAcesso extends Gerenciador {
 	public Grupo getGrupoPorNome(String nome) {
 		List<Grupo> lista = DAOFactory.DEFAULT.buildGrupoDAO().findByNome(nome);
 		if (lista.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.OBJ_NOT_FOUND.msg("grupo"));
 		}
 		return lista.get(0);
@@ -300,7 +300,7 @@ public class GerenciadorAcesso extends Gerenciador {
 					DAOFactory.DEFAULT.buildPermissaoDAO().update(p);
 					lista.add(p);
 
-				} catch (ObjetoNaoEncontradoException e) {
+				} catch (ObjectNotFoundException e) {
 					Integer id = DAOFactory.DEFAULT.buildPermissaoDAO().save(
 							permissao);
 					permissao.setIdPermissao(id);
@@ -350,7 +350,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		List<Permissao> permissao = DAOFactory.DEFAULT.buildPermissaoDAO()
 				.findById(id);
 		if (permissao.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.OBJ_NOT_FOUND.msg("permissao"));
 		}
 		return permissao.get(0);
@@ -388,7 +388,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		List<GrupoUsuario> grupoUsuario = DAOFactory.DEFAULT
 				.buildGrupoUsuarioDAO().findById(id);
 		if (grupoUsuario.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.OBJ_NOT_FOUND.msg("usuario grupo"));
 		}
 		return grupoUsuario.get(0);
@@ -404,7 +404,7 @@ public class GerenciadorAcesso extends Gerenciador {
 				gUs = (GrupoUsuario) SwapperAtributosReflect.swapObject(gUs,
 						grupoUsuario, GrupoUsuario.class);
 				DAOFactory.DEFAULT.buildGrupoUsuarioDAO().update(gUs);
-			} catch (ObjetoNaoEncontradoException e) {
+			} catch (ObjectNotFoundException e) {
 				Integer id = DAOFactory.DEFAULT.buildGrupoUsuarioDAO().save(
 						grupoUsuario);
 				grupoUsuario.setIdGrupoUsuario(id);
@@ -425,7 +425,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		List<Usuario> usuario = DAOFactory.DEFAULT.buildUsuarioDAO().findById(
 				id);
 		if (usuario.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.OBJ_NOT_FOUND.msg("usuario"));
 		}
 		return usuario.get(0);
@@ -435,7 +435,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		List<Usuario> usuario = DAOFactory.DEFAULT.buildUsuarioDAO()
 				.findByLogin(login);
 		if (usuario.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.OBJ_NOT_FOUND.msg("usuario"));
 		}
 		return usuario.get(0);
@@ -446,7 +446,7 @@ public class GerenciadorAcesso extends Gerenciador {
 		List<GrupoUsuario> lista = DAOFactory.DEFAULT.buildGrupoUsuarioDAO()
 				.findByUsuarioEGrupo(idGrupo, idUsuario);
 		if (lista.isEmpty()) {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.OBJ_NOT_FOUND.msg("grupo usuario"));
 		}
 		return lista.get(0);
@@ -590,7 +590,7 @@ public class GerenciadorAcesso extends Gerenciador {
 							grupoUsuario.getUsuario(), Usuario.class);
 					DAOFactory.DEFAULT.buildUsuarioDAO().update(us);
 					grupoUsuario.getUsuario().setIdUsuario(us.getIdUsuario());
-				} catch (ObjetoNaoEncontradoException e) {
+				} catch (ObjectNotFoundException e) {
 					Integer id = DAOFactory.DEFAULT.buildUsuarioDAO().save(
 							grupoUsuario.getUsuario());
 					grupoUsuario.getUsuario().setIdUsuario(id);
@@ -602,14 +602,14 @@ public class GerenciadorAcesso extends Gerenciador {
 					if (!easyCorrectionUtil.isNull(u)) {
 						if (!grupoUsuario.getUsuario().getIdUsuario()
 								.equals(u.getIdUsuario())) {
-							throw new ObjetoNaoEncontradoException(
+							throw new ObjectNotFoundException(
 									MsgErros.LOGIN.msg(""));
 						}
 					}
 					if (!easyCorrectionUtil.isNull(usu)) {
 						if (!grupoUsuario.getUsuario().getIdUsuario()
 								.equals(usu.getIdUsuario())) {
-							throw new ObjetoNaoEncontradoException(
+							throw new ObjectNotFoundException(
 									MsgErros.EMAIL.msg(""));
 						}
 					}
@@ -617,13 +617,13 @@ public class GerenciadorAcesso extends Gerenciador {
 							grupoUsuario.getUsuario(), Usuario.class);
 					DAOFactory.DEFAULT.buildUsuarioDAO().update(us);
 					grupoUsuario.getUsuario().setIdUsuario(us.getIdUsuario());
-				} catch (ObjetoNaoEncontradoException e) {
+				} catch (ObjectNotFoundException e) {
 					if (!easyCorrectionUtil.isNull(u)) {
-						throw new ObjetoNaoEncontradoException(
+						throw new ObjectNotFoundException(
 								MsgErros.LOGIN.msg(""));
 					}
 					if (!easyCorrectionUtil.isNull(usu)) {
-						throw new ObjetoNaoEncontradoException(
+						throw new ObjectNotFoundException(
 								MsgErros.EMAIL.msg(""));
 					}
 				}
@@ -735,7 +735,7 @@ public class GerenciadorAcesso extends Gerenciador {
 			usuarioBanco.setSenha(senha);
 			DAOFactory.DEFAULT.buildUsuarioDAO().update(usuarioBanco);
 		} else {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.AUTENTICACAO.msg());
 		}
 		return usuarioBanco;

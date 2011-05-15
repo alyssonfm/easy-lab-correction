@@ -7,9 +7,9 @@ import junit.framework.TestResult;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
-import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
-import br.edu.les.easyCorrection.exceptions.ExecucaoTestesException;
-import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
+import br.edu.les.easyCorrection.exceptions.ExclusionAssignmentException;
+import br.edu.les.easyCorrection.exceptions.ExecutionTestsException;
+import br.edu.les.easyCorrection.exceptions.ObjectNotFoundException;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
@@ -177,7 +177,7 @@ public class GerenciadorSubmissoes {
 				resultadoTeste = gerenciadorTestes.executarTestes(diretorioTestes,
 						arquivoDeTeste, diretorioInterface, arquivoDeInterface,
 						diretorioSource, arquivoSource);
-			} catch (ExecucaoTestesException e) {
+			} catch (ExecutionTestsException e) {
 				excluirSubmissao(submissao);
 				return e.getMessage();
 			}
@@ -197,7 +197,7 @@ public class GerenciadorSubmissoes {
 	
 	public void excluirSubmissao(Submissao sub) throws EasyCorrectionException {
 		if (sub == null) {
-			throw new ExclusaoRoteiroException("Submissao inexistente!");
+			throw new ExclusionAssignmentException("Submissao inexistente!");
 		}
 		Submissao submissao = getSubmissao(sub.getId());
 		submissao = (Submissao) SwapperAtributosReflect.swapObject(submissao,
