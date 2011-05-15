@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.edu.les.easyCorrection.DAO.hibernate.DAOFactory;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
-import br.edu.les.easyCorrection.exceptions.ObjetoNaoEncontradoException;
+import br.edu.les.easyCorrection.exceptions.ObjectNotFoundException;
 import br.edu.les.easyCorrection.pojo.acesso.GrupoUsuario;
 import br.edu.les.easyCorrection.pojo.roteiros.Equipe;
 import br.edu.les.easyCorrection.pojo.roteiros.EquipeHasUsuarioHasRoteiro;
@@ -27,7 +27,7 @@ public class TeamManager extends Gerenciador{
 				nome);
 		Equipe eq = equipes.get(0);
 		if (easyCorrectionUtil.isNull(eq)) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
 					.msg("equipe"));
 		}
 		return eq;
@@ -36,7 +36,7 @@ public class TeamManager extends Gerenciador{
 	public Equipe getEquipe(int id) {
 		Equipe equipe = DAOFactory.DEFAULT.buildEquipeDAO().getById(id);
 		if (easyCorrectionUtil.isNull(equipe)) {
-			throw new ObjetoNaoEncontradoException(MsgErros.OBJ_NOT_FOUND.msg("equipe"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND.msg("equipe"));
 		}
 		return equipe;
 	}
@@ -45,20 +45,20 @@ public class TeamManager extends Gerenciador{
 		throws EasyCorrectionException {
 	
 		if (eur.getRoteiro().getNumeroMaximoParticipantes() == 1) {
-			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INDIVIDUAL
+			throw new ObjectNotFoundException(MsgErros.ROTEIRO_INDIVIDUAL
 					.msg(""));
 		}
 		if (eur.getRoteiro().getNumeroMaximoParticipantes() == getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
 				eur.getEquipe().getId(), eur.getRoteiro().getId()).size()) {
 			String[] params = { eur.getEquipe().getNome(),
 					eur.getRoteiro().getNumeroMaximoParticipantes().toString() };
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.EQUIPE_HAS_ROTEIRO_COMPLETA.msg(params));
 		}
 		try {
 			getEquipe(eur.getEquipe().getId());
 		} catch (Exception e) {
-			throw new ObjetoNaoEncontradoException(MsgErros.EQUIPE_INEXISTENTE.msg(""));
+			throw new ObjectNotFoundException(MsgErros.EQUIPE_INEXISTENTE.msg(""));
 		}
 		
 		EquipeHasUsuarioHasRoteiro equipeUsuarioRoteiro = getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
@@ -98,13 +98,13 @@ public class TeamManager extends Gerenciador{
 
 	public int getEquipeAlocadas(Integer idRoteiro) {
 		if (easyCorrectionUtil.isNull(idRoteiro) || idRoteiro < 1) {
-			throw new ObjetoNaoEncontradoException(
+			throw new ObjectNotFoundException(
 					MsgErros.ID_ROTEIRO_INEXISTENTE.msg(""));
 		}
 
 		Roteiro roteiro = gerenciadorRoteiros.getRoteiro(idRoteiro);
 		if (roteiro == null) {
-			throw new ObjetoNaoEncontradoException(MsgErros.ROTEIRO_INEXISTENTE
+			throw new ObjectNotFoundException(MsgErros.ROTEIRO_INEXISTENTE
 					.msg(""));
 		}
 

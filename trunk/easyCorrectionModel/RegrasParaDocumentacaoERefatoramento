@@ -36,6 +36,7 @@ pojo -> pojo:
 Documentacao:
 1 - Exceptions:
  	* Checar se tah sendo usada
+ 	* A classe SubmissionAssignmentException não é usada por ninguém no sistema, deveria ser usada pelo Gerenciador de Submissões.
 2 - Servlet
 3 - Util 
 	* Só métodos por enquanto

@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import br.edu.les.easyCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.les.easyCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.les.easyCorrection.exceptions.EmptyFieldException;
-import br.edu.les.easyCorrection.exceptions.ViolacaoConstraintException;
+import br.edu.les.easyCorrection.exceptions.ConstraintViolationException;
 import br.edu.les.easyCorrection.pojo.sistema.Periodo;
 import br.edu.les.easyCorrection.util.MyPersistenceLayer;
 
@@ -33,7 +33,7 @@ public class PeriodoHibernateDAO extends
 				p = instanciaPeriodo(p);
 			}	
 		} catch (EmptyFieldException e) {
-			throw new ViolacaoConstraintException(e.getMessage());
+			throw new ConstraintViolationException(e.getMessage());
 		}
 		finally{
 			HibernateUtil.closeSession();

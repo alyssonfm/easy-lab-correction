@@ -5,9 +5,9 @@ import java.util.List;
 
 import br.edu.les.easyCorrection.exceptions.CreateAssignmentException;
 import br.edu.les.easyCorrection.exceptions.EasyCorrectionException;
-import br.edu.les.easyCorrection.exceptions.EdicaoRoteiroException;
-import br.edu.les.easyCorrection.exceptions.ExclusaoRoteiroException;
-import br.edu.les.easyCorrection.exceptions.LiberaRoteiroException;
+import br.edu.les.easyCorrection.exceptions.EditingAssignmentException;
+import br.edu.les.easyCorrection.exceptions.ExclusionAssignmentException;
+import br.edu.les.easyCorrection.exceptions.ReleasesAssignmentException;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAcesso;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorAvaliacoes;
 import br.edu.les.easyCorrection.gerenciadores.GerenciadorRoteiros;
@@ -217,12 +217,12 @@ public class Sistema {
 	}
 
 	public Roteiro editarRoteiro(Roteiro roteiroTemp)
-			throws EdicaoRoteiroException, CreateAssignmentException,
-			LiberaRoteiroException {
+			throws EditingAssignmentException, CreateAssignmentException,
+			ReleasesAssignmentException {
 		return gerenciadorRoteiros.editarRoteiro(roteiroTemp);
 	}
 
-	public void excluirRoteiro(Roteiro roteiro) throws ExclusaoRoteiroException {
+	public void excluirRoteiro(Roteiro roteiro) throws ExclusionAssignmentException {
 		gerenciadorRoteiros.excluirRoteiro(roteiro);
 	}
 
