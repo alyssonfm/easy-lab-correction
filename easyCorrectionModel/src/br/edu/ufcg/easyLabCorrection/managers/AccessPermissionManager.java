@@ -2,6 +2,7 @@ package br.edu.ufcg.easyLabCorrection.managers;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.AuthenticationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.DuplicateValueException;
@@ -35,14 +36,15 @@ public class AccessPermissionManager extends Manager {
 	public Menu getMenu(Integer id) {
 		List<Menu> menu = DAOFactory.DEFAULT.buildMenuDAO().findById(id);
 		if (menu.isEmpty()) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND.msg("menu"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+					.msg("menu"));
 		}
 		return menu.get(0);
 	}
 
-	// TODO: TO PRIVATE
-	public Menu consultMenuByLabelAndName(String rotulo, String nome) {
-		List<Menu> lista = DAOFactory.DEFAULT.buildMenuDAO().findByNameAndLabel(nome, rotulo);
+	private Menu consultMenuByLabelAndName(String rotulo, String nome) {
+		List<Menu> lista = DAOFactory.DEFAULT.buildMenuDAO()
+				.findByNameAndLabel(nome, rotulo);
 		if (!lista.isEmpty()) {
 			return lista.get(0);
 		} else {
@@ -50,7 +52,7 @@ public class AccessPermissionManager extends Manager {
 		}
 	}
 
-	//TODO Separar
+	// TODO Separar
 	public Menu saveMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = new Menu();
 		Menu men = new Menu();
@@ -58,21 +60,19 @@ public class AccessPermissionManager extends Manager {
 			if (easyCorrectionUtil.isNull(menu.getMenuId())
 					|| menu.getMenuId().equals(new Integer(0))) {
 				// Verifica se o rotulo ou o nome ja existe
-				m = consultMenuByLabelAndName(menu.getName(),
-						menu.getLabel());
+				m = consultMenuByLabelAndName(menu.getName(), menu.getLabel());
 				// Se o rotulo/nome nao existe e o id é null
 				if (easyCorrectionUtil.isNull(m)) {
 					Integer id = DAOFactory.DEFAULT.buildMenuDAO().save(menu);
 					menu.setMenuId(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(m)) {
-					throw new DuplicateValueException(
-							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
+					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+							.msg("nome ou rotulo"));
 				}
 				// Se o id eh diferente de null
 			} else {
-				men = consultMenuByLabelAndName(menu.getName(),
-						menu.getLabel());
+				men = consultMenuByLabelAndName(menu.getName(), menu.getLabel());
 				if (easyCorrectionUtil.isNull(men)) {
 					men = getMenu(menu.getMenuId());
 					men = (Menu) SwapperAtributosReflect.swapObject(men, menu,
@@ -83,8 +83,8 @@ public class AccessPermissionManager extends Manager {
 							Menu.class);
 					DAOFactory.DEFAULT.buildMenuDAO().update(men);
 				} else {
-					throw new DuplicateValueException(
-							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
+					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+							.msg("nome ou rotulo"));
 				}
 			}
 		}
@@ -97,7 +97,7 @@ public class AccessPermissionManager extends Manager {
 		DAOFactory.DEFAULT.buildMenuDAO().delete(m);
 	}
 
-	public List<Menu> listOrderMenus() {
+	public List<Menu> listOrderedMenus() {
 		return DAOFactory.DEFAULT.buildMenuDAO().findAllByOrder();
 	}
 
@@ -108,15 +108,17 @@ public class AccessPermissionManager extends Manager {
 	/*
 	 * FUNCTION
 	 */
-	public Function saveFunction(Function function) throws EasyCorrectionException {
+	// TODO: Separar em CreateFunction and UpdateFunction
+	public Function saveFunction(Function function)
+			throws EasyCorrectionException {
 		Function f = new Function();
 		Function fun = new Function();
 		if (!easyCorrectionUtil.isNull(function)) {
 			if (easyCorrectionUtil.isNull(function.getFunctionId())
 					|| function.getFunctionId().equals(new Integer(0))) {
 				// Verifica se o rótulo ou o nome já existe
-				f = consultFunctionByNameAndLabel(function.getName(),
-						function.getLabel());
+				f = consultFunctionByNameAndLabel(function.getName(), function
+						.getLabel());
 				// Se o rótulo/nome não existe e e o id é null
 				if (easyCorrectionUtil.isNull(f)) {
 					Integer id = DAOFactory.DEFAULT.buildFunctionDAO().save(
@@ -124,8 +126,8 @@ public class AccessPermissionManager extends Manager {
 					function.setFunctionId(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(f)) {
-					throw new DuplicateValueException(
-							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
+					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+							.msg("nome ou rotulo"));
 				}
 				// Se o id é diferente de null
 			} else {
@@ -141,8 +143,8 @@ public class AccessPermissionManager extends Manager {
 							function, Function.class);
 					DAOFactory.DEFAULT.buildFunctionDAO().update(fun);
 				} else {
-					throw new DuplicateValueException(
-							MsgErros.VALOR_DUPLICADO.msg("nome ou rotulo"));
+					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+							.msg("nome ou rotulo"));
 				}
 			}
 		}
@@ -150,15 +152,16 @@ public class AccessPermissionManager extends Manager {
 	}
 
 	public Function getFunction(Integer id) {
-		List<Function> functions = DAOFactory.DEFAULT.buildFunctionDAO().findById(id);
+		List<Function> functions = DAOFactory.DEFAULT.buildFunctionDAO()
+				.findById(id);
 		if (functions.isEmpty()) {
-			throw new ObjectNotFoundException(
-					MsgErros.OBJ_NOT_FOUND.msg("funcao"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+					.msg("funcao"));
 		}
 		return functions.get(0);
 	}
 
-	public Function consultFunctionByNameAndLabel(String name, String label) {
+	private Function consultFunctionByNameAndLabel(String name, String label) {
 		List<Function> list = DAOFactory.DEFAULT.buildFunctionDAO()
 				.findByNameAndLabel(name, label);
 		if (!list.isEmpty()) {
@@ -170,7 +173,8 @@ public class AccessPermissionManager extends Manager {
 
 	private boolean containsFunction(List<Permission> list, Function function) {
 		for (Permission p : list) {
-			if (p.getFunction().getFunctionId().equals(function.getFunctionId())) {
+			if (p.getFunction().getFunctionId()
+					.equals(function.getFunctionId())) {
 				return true;
 			}
 		}
@@ -181,14 +185,15 @@ public class AccessPermissionManager extends Manager {
 		return DAOFactory.DEFAULT.buildFunctionDAO().findAll();
 	}
 
-	public void deleteFunction(Function function) throws EasyCorrectionException {
+	public void deleteFunction(Function function)
+			throws EasyCorrectionException {
 		Function f = getFunction(function.getFunctionId());
-		f = (Function) SwapperAtributosReflect
-				.swapObject(f, function, Function.class);
+		f = (Function) SwapperAtributosReflect.swapObject(f, function,
+				Function.class);
 		DAOFactory.DEFAULT.buildFunctionDAO().delete(f);
 	}
 
-	public List<Function> consultFunctionByMenu(Integer menuId) {
+	public List<Function> consultFunctionsByMenu(Integer menuId) {
 		return DAOFactory.DEFAULT.buildFunctionDAO().findByMenu(menuId);
 	}
 
@@ -209,8 +214,8 @@ public class AccessPermissionManager extends Manager {
 					group.setGroupId(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(g)) {
-					throw new DuplicateValueException(
-							MsgErros.VALOR_DUPLICADO.msg("nome"));
+					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+							.msg("nome"));
 				}
 				// Se o id é diferente de null
 			} else {
@@ -225,8 +230,8 @@ public class AccessPermissionManager extends Manager {
 							Group.class);
 					DAOFactory.DEFAULT.buildGroupDAO().update(gr);
 				} else {
-					throw new DuplicateValueException(
-							MsgErros.VALOR_DUPLICADO.msg("nome"));
+					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+							.msg("nome"));
 				}
 			}
 		}
@@ -236,8 +241,8 @@ public class AccessPermissionManager extends Manager {
 	public Group getGroup(Integer id) {
 		List<Group> group = DAOFactory.DEFAULT.buildGroupDAO().findById(id);
 		if (group.isEmpty()) {
-			throw new ObjectNotFoundException(
-					MsgErros.OBJ_NOT_FOUND.msg("grupo"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+					.msg("grupo"));
 		}
 		return group.get(0);
 	}
@@ -252,7 +257,7 @@ public class AccessPermissionManager extends Manager {
 		DAOFactory.DEFAULT.buildGroupDAO().delete(g);
 	}
 
-	public Group consultGroupByName(String name) {
+	private Group consultGroupByName(String name) {
 		List<Group> list = DAOFactory.DEFAULT.buildGroupDAO().findByName(name);
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -263,8 +268,8 @@ public class AccessPermissionManager extends Manager {
 	public Group getGroupByName(String name) {
 		List<Group> list = DAOFactory.DEFAULT.buildGroupDAO().findByName(name);
 		if (list.isEmpty()) {
-			throw new ObjectNotFoundException(
-					MsgErros.OBJ_NOT_FOUND.msg("grupo"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+					.msg("grupo"));
 		}
 		return list.get(0);
 	}
@@ -272,7 +277,7 @@ public class AccessPermissionManager extends Manager {
 	/*
 	 * PERMISSION
 	 */
-	
+
 	public List<Permission> savePermission(List<Permission> permissions)
 			throws EasyCorrectionException {
 		Permission p = new Permission();
@@ -316,13 +321,15 @@ public class AccessPermissionManager extends Manager {
 		}
 		// gravando as novas permissoes
 		for (Permission addPermission : newList) {
-			if (!containsFunction(permissaoDoGrupoBanco, addPermission.getFunction())) {
+			if (!containsFunction(permissaoDoGrupoBanco, addPermission
+					.getFunction())) {
 				Integer id = DAOFactory.DEFAULT.buildPermissionDAO().save(
 						addPermission);
 				addPermission.setPermissionId(id);
 			} else {
-				List<Permission> anotherP = DAOFactory.DEFAULT.buildPermissionDAO()
-						.findByGroupAndFunction(g.getGroupId(),
+				List<Permission> anotherP = DAOFactory.DEFAULT
+						.buildPermissionDAO().findByGroupAndFunction(
+								g.getGroupId(),
 								addPermission.getFunction().getFunctionId());
 				addPermission = anotherP.get(0); // eh garantido que a lista não
 				// é vazia
@@ -342,20 +349,21 @@ public class AccessPermissionManager extends Manager {
 		List<Permission> permissions = DAOFactory.DEFAULT.buildPermissionDAO()
 				.findById(id);
 		if (permissions.isEmpty()) {
-			throw new ObjectNotFoundException(
-					MsgErros.OBJ_NOT_FOUND.msg("permissao"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+					.msg("permissao"));
 		}
 		return permissions.get(0);
 	}
 
-	public List<Function> verifyPermissions(Integer userId) {
+	private List<Function> verifyPermissions(Integer userId) {
 		List<Function> functionsList = new LinkedList<Function>();
 		List<UserGroup> GUlist = DAOFactory.DEFAULT.buildUserGroupDAO()
 				.findByUserId(userId);
 		if (!GUlist.isEmpty()) {
 			for (UserGroup gU : GUlist) {
-				List<Permission> pList = DAOFactory.DEFAULT.buildPermissionDAO()
-						.findByGroupId(gU.getGroup().getGroupId());
+				List<Permission> pList = DAOFactory.DEFAULT
+						.buildPermissionDAO().findByGroupId(
+								gU.getGroup().getGroupId());
 				if (!pList.isEmpty()) {
 					for (Permission p : pList) {
 						if (!verifyRepeated(functionsList, p.getFunction())) {
@@ -376,10 +384,11 @@ public class AccessPermissionManager extends Manager {
 	 * USER GROUP
 	 */
 	public UserGroup getUserGroup(Integer id) {
-		List<UserGroup> userGroup = DAOFactory.DEFAULT.buildUserGroupDAO().findById(id);
+		List<UserGroup> userGroup = DAOFactory.DEFAULT.buildUserGroupDAO()
+				.findById(id);
 		if (userGroup.isEmpty()) {
-			throw new ObjectNotFoundException(
-					MsgErros.OBJ_NOT_FOUND.msg("usuario grupo"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+					.msg("usuario grupo"));
 		}
 		return userGroup.get(0);
 	}
@@ -414,61 +423,55 @@ public class AccessPermissionManager extends Manager {
 	public User getUser(Integer id) {
 		List<User> users = DAOFactory.DEFAULT.buildUserDAO().findById(id);
 		if (users.isEmpty()) {
-			throw new ObjectNotFoundException(
-					MsgErros.OBJ_NOT_FOUND.msg("usuario"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+					.msg("usuario"));
 		}
 		return users.get(0);
 	}
 
 	public User getUserByLogin(String login) {
-		List<User> users = DAOFactory.DEFAULT.buildUserDAO()
-				.findByLogin(login);
+		List<User> users = DAOFactory.DEFAULT.buildUserDAO().findByLogin(login);
 		if (users.isEmpty()) {
-			throw new ObjectNotFoundException(
-					MsgErros.OBJ_NOT_FOUND.msg("usuario"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+					.msg("usuario"));
 		}
 		return users.get(0);
 	}
 
-	public UserGroup getUserGroupByGroupAndUser(Integer groupId,
-			Integer userId) {
+	private UserGroup getUserGroupByGroupAndUser(Integer groupId, Integer userId) {
 		List<UserGroup> list = DAOFactory.DEFAULT.buildUserGroupDAO()
 				.findByUserAndGroup(groupId, userId);
 		if (list.isEmpty()) {
-			throw new ObjectNotFoundException(
-					MsgErros.OBJ_NOT_FOUND.msg("grupo usuario"));
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+					.msg("grupo usuario"));
 		}
 		return list.get(0);
 	}
 
 	public List<UserGroup> getUserGroupByUser(Integer userId) {
-		return DAOFactory.DEFAULT.buildUserGroupDAO().findByUserId(
-				userId);
+		return DAOFactory.DEFAULT.buildUserGroupDAO().findByUserId(userId);
 	}
 
 	/*
 	 * USER
 	 */
 	public User consultUserByLogin(String login) {
-		List<User> list = DAOFactory.DEFAULT.buildUserDAO().findByLogin(
-				login);
+		List<User> list = DAOFactory.DEFAULT.buildUserDAO().findByLogin(login);
 		if (!list.isEmpty()) {
 			return list.get(0);
 		}
 		return null;
 	}
 
-	public User getUserByEmail(String email) {
-		List<User> list = DAOFactory.DEFAULT.buildUserDAO().findByEmail(
-				email);
+	private User getUserByEmail(String email) {
+		List<User> list = DAOFactory.DEFAULT.buildUserDAO().findByEmail(email);
 		if (!list.isEmpty()) {
 			return list.get(0);
 		}
 		return null;
 	}
 
-	// PUBLIC??? 
-	public void verifyIfUsersNumberGreaterThenTeamsNumber(UserGroup userGroup)
+	private void verifyIfUsersNumberGreaterThenTeamsNumber(UserGroup userGroup)
 			throws EasyCorrectionException {
 		Team team = new Team();
 		if (userGroup.getGroup().getName().equalsIgnoreCase("Aluno")) {
@@ -496,8 +499,8 @@ public class AccessPermissionManager extends Manager {
 		}
 	}
 
-	// PUBLIC??? (MOVE TO System)
-	public void allocateUserToTeam(User us, Team te)
+	// TODO: MOVE TO System
+	private void allocateUserToTeam(User us, Team te)
 			throws EasyCorrectionException {
 		List<Assignment> assigns = assignmentManager.listAssignments();
 		for (Assignment roteiro : assigns) {
@@ -509,8 +512,8 @@ public class AccessPermissionManager extends Manager {
 		}
 	}
 
-	// PUBLIC??? (MOVE TO System)
-	public void allocateUserToTeam(User us) throws EasyCorrectionException {
+	// TODO: MOVE TO System
+	private void allocateUserToTeam(User us) throws EasyCorrectionException {
 		List<Assignment> assigns = assignmentManager.listAssignments();
 		for (Assignment assignment : assigns) {
 			List<TeamHasUserHasAssignment> eurs = teamManager
@@ -535,21 +538,20 @@ public class AccessPermissionManager extends Manager {
 		User use = new User();
 
 		if (easyCorrectionUtil.isNull(userGroup)) {
-			throw new EasyCorrectionException(
-					MsgErros.OBJ_NOT_FOUND.msg("O GrupoUsuario"));
+			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+					.msg("O GrupoUsuario"));
 		}
 		if (easyCorrectionUtil.isNull(userGroup.getUser())) {
-			throw new EasyCorrectionException(
-					MsgErros.OBJ_NOT_FOUND.msg("O Usuario"));
+			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+					.msg("O Usuario"));
 		}
 		if (easyCorrectionUtil.isNull(userGroup.getGroup())) {
-			throw new EasyCorrectionException(
-					MsgErros.OBJ_NOT_FOUND.msg("O Grupo"));
+			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+					.msg("O Grupo"));
 		}
 
 		if (!easyCorrectionUtil.isNull(userGroup.getUser())) {
-			if (!userGroup.getUser().getUserId()
-					.equals(new Integer(0))) {
+			if (!userGroup.getUser().getUserId().equals(new Integer(0))) {
 				u = getUser(userGroup.getUser().getUserId());
 				if (!u.getPassword().equals(userGroup.getUser().getPassword())) {
 					// Gera o md5 da senha
@@ -563,7 +565,8 @@ public class AccessPermissionManager extends Manager {
 				if (userGroup.getUser().getPassword().equals("")) {
 					password = MD5Generator.md5(userGroup.getUser().getLogin());
 				} else {
-					password = MD5Generator.md5(userGroup.getUser().getPassword());
+					password = MD5Generator.md5(userGroup.getUser()
+							.getPassword());
 				}
 				userGroup.getUser().setPassword(password);
 			}
@@ -588,17 +591,17 @@ public class AccessPermissionManager extends Manager {
 				try {
 					us = getUser(userGroup.getUser().getUserId());
 					if (!easyCorrectionUtil.isNull(u)) {
-						if (!userGroup.getUser().getUserId()
-								.equals(u.getUserId())) {
-							throw new ObjectNotFoundException(
-									MsgErros.LOGIN.msg(""));
+						if (!userGroup.getUser().getUserId().equals(
+								u.getUserId())) {
+							throw new ObjectNotFoundException(MsgErros.LOGIN
+									.msg(""));
 						}
 					}
 					if (!easyCorrectionUtil.isNull(use)) {
-						if (!userGroup.getUser().getUserId()
-								.equals(use.getUserId())) {
-							throw new ObjectNotFoundException(
-									MsgErros.EMAIL.msg(""));
+						if (!userGroup.getUser().getUserId().equals(
+								use.getUserId())) {
+							throw new ObjectNotFoundException(MsgErros.EMAIL
+									.msg(""));
 						}
 					}
 					us = (User) SwapperAtributosReflect.swapObject(us,
@@ -607,12 +610,12 @@ public class AccessPermissionManager extends Manager {
 					userGroup.getUser().setUserId(us.getUserId());
 				} catch (ObjectNotFoundException e) {
 					if (!easyCorrectionUtil.isNull(u)) {
-						throw new ObjectNotFoundException(
-								MsgErros.LOGIN.msg(""));
+						throw new ObjectNotFoundException(MsgErros.LOGIN
+								.msg(""));
 					}
 					if (!easyCorrectionUtil.isNull(use)) {
-						throw new ObjectNotFoundException(
-								MsgErros.EMAIL.msg(""));
+						throw new ObjectNotFoundException(MsgErros.EMAIL
+								.msg(""));
 					}
 				}
 			}
@@ -623,49 +626,46 @@ public class AccessPermissionManager extends Manager {
 		return userGroup;
 	}
 
-	public User updateUser(User user)
-			throws EasyCorrectionException {
+	public User updateUser(User user) throws EasyCorrectionException {
 
 		if (easyCorrectionUtil.isNull(user)) {
-			throw new EasyCorrectionException(
-					MsgErros.OBJ_NOT_FOUND.msg("O Usuario"));
+			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+					.msg("O Usuario"));
 		}
 		// Gera o md5 da senha
 		String password = MD5Generator.md5(user.getPassword());
 		user.setPassword(password);
 
 		User us = getUser(user.getUserId());
-		us = (User) SwapperAtributosReflect.swapObject(us, user,
-				User.class);
+		us = (User) SwapperAtributosReflect.swapObject(us, user, User.class);
 		DAOFactory.DEFAULT.buildUserDAO().update(us);
 		return us;
 	}
 
-	public void deleteUser(UserGroup userGroup)
-			throws EasyCorrectionException {
+	public void deleteUser(UserGroup userGroup) throws EasyCorrectionException {
 
 		List<Assignment> assigns = assignmentManager.listAssignments();
 		if (userGroup.getGroup().getName().equals("Aluno")
 				&& assigns.size() > 0) {
-			throw new EasyCorrectionException(
-					MsgErros.USUARIO_ALOCADO.msg("O GrupoUsuario"));
+			throw new EasyCorrectionException(MsgErros.USUARIO_ALOCADO
+					.msg("O GrupoUsuario"));
 		}
 
 		if (easyCorrectionUtil.isNull(userGroup)) {
-			throw new EasyCorrectionException(
-					MsgErros.OBJ_NOT_FOUND.msg("O GrupoUsuario"));
+			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+					.msg("O GrupoUsuario"));
 		}
 
 		// Exclui grupoUsuario
 		UserGroup ug = getUserGroup(userGroup.getUserGroupId());
-		ug = (UserGroup) SwapperAtributosReflect.swapObject(ug,
-				userGroup, UserGroup.class);
+		ug = (UserGroup) SwapperAtributosReflect.swapObject(ug, userGroup,
+				UserGroup.class);
 		DAOFactory.DEFAULT.buildUserGroupDAO().delete(ug);
 
 		// Exclui usuário
 		User u = getUser(userGroup.getUser().getUserId());
-		u = (User) SwapperAtributosReflect.swapObject(u,
-				userGroup.getUser(), User.class);
+		u = (User) SwapperAtributosReflect.swapObject(u, userGroup.getUser(),
+				User.class);
 		DAOFactory.DEFAULT.buildUserDAO().delete(u);
 	}
 
@@ -690,7 +690,7 @@ public class AccessPermissionManager extends Manager {
 		return functions;
 	}
 
-	public User verifyLoginAndPassword(User user) {
+	private User verifyLoginAndPassword(User user) {
 		List<User> list = DAOFactory.DEFAULT.buildUserDAO()
 				.findByLoginAndPassword(user.getLogin(), user.getPassword());
 		if (list.isEmpty()) {
@@ -700,7 +700,7 @@ public class AccessPermissionManager extends Manager {
 
 	}
 
-	public boolean verifyRepeated(List<Function> list, Function function) {
+	private boolean verifyRepeated(List<Function> list, Function function) {
 		for (Function f : list) {
 			if (f.equals(function)) {
 				return true;
@@ -723,8 +723,7 @@ public class AccessPermissionManager extends Manager {
 			bdUser.setPassword(password);
 			DAOFactory.DEFAULT.buildUserDAO().update(bdUser);
 		} else {
-			throw new ObjectNotFoundException(
-					MsgErros.AUTENTICACAO.msg());
+			throw new ObjectNotFoundException(MsgErros.AUTENTICACAO.msg());
 		}
 		return bdUser;
 	}
