@@ -1,0 +1,35 @@
+#--------------------------------------------------------------------------------------------
+# Teste de Aceitacao do sistema easyLabCorrection
+# Equipe de Desenvolvimento:
+# ----- Alysson Filgueira
+# ----- Augusto Macedo
+# ----- Demetrio Mestre
+#--------------------------------------------------------------------------------------------
+
+#####################################################################################
+# US 05: Submissão de Roteiros e Execução dos testes
+#####################################################################################
+
+reinicializaBancoDeDados
+
+# Cria equipes inicialmente
+equipeID1=criaEquipe
+
+# Cadastramos alunos (O GrupoID de Aluno no sistema é 4)
+idGrupo=getAlunoGrupoID
+idGrupoUsuarioA=cadastrarUsuario grupoId=${idGrupo} nome="AlunoA" login="alunoa" senha="123123" email="a@hotmail.com"
+
+# Cadastra Roteiro
+idRoteiro1=cadastrarRoteiro periodoId=1 nome="Roteiro 1" descricao="Roteiro de Testes" dataLiberacao="+7_DIAS" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" \
+numeroMaximoEnvios=3 penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=100 \
+numeroMaximoParticipantes=2 bloqueado=false
+
+idRoteiro2=editarRoteiro roteiroId=${idRoteiro1} \
+periodoId=1 nome="Roteiro2" descricao= dataLiberacao="AGORA" dataFinalEntrega="+14_DIAS" dataFinalDiscussao="+21_DIAS" numeroMaximoEnvios=3 \
+penalidadeDiasAtraso=0.5 porcentagemTestesAutomaticos=50 tempoLimiteTestes=1000 diretorioInterface="INTERFACE_DEFAULT_OK" diretorioTestes="TESTES_DEFAULT_OK" numeroMaximoParticipantes=3 bloqueado=false
+
+#ID do Teste: a
+expectError "O Caminho do servidor para submissões não foi aceito. Deve seguir o template: periodo<semestre>/submissoes/roteiro_<id>/<nomeEquipe>/" \
+criarSubmissao roteiroId=${idRoteiro2} equipeId=${equipeID1} grupousuarioId=${idGrupoUsuarioA} url="periodo<semestre>/submissoes/roteiro2_Equipe 1/"
+
+
