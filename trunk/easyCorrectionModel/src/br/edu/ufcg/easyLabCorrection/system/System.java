@@ -160,11 +160,11 @@ public class System {
 	}
 
 	public List<Menu> listOrderMenus() {
-		return accessPermissionManager.listOrderMenus();
+		return accessPermissionManager.listOrderedMenus();
 	}
 
 	public List<Function> consultFunctionByMenu(Integer idMenu) {
-		return accessPermissionManager.consultFunctionByMenu(idMenu);
+		return accessPermissionManager.consultFunctionsByMenu(idMenu);
 	}
 
 	public Group getGroupByName(String name) {
