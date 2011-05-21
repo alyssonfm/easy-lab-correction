@@ -12,7 +12,7 @@ import org.junit.runner.JUnitCore;
 import br.edu.ufcg.easyLabCorrection.exceptions.ExecutionTestsException;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.TeamHasUserHasAssignment;
+import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 

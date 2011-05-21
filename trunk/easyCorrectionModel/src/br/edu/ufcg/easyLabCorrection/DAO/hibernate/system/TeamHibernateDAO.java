@@ -7,7 +7,7 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.ufcg.easyLabCorrection.exceptions.ConstraintViolationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EmptyFieldException;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.Team;
+import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.util.MyPersistenceLayer;
 
 /**

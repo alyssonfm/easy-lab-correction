@@ -6,8 +6,8 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.Team;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.TeamHasUserHasAssignment;
+import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
+import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
@@ -41,6 +41,19 @@ public class TeamManager extends Manager {
 		return t;
 	}
 
+	public Team getTeam(int id) {
+		Team team = DAOFactory.DEFAULT.buildTeamDAO().getById(id);
+		if (easyCorrectionUtil.isNull(team)) {
+			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+					.msg("Team"));
+		}
+		return team;
+	}
+
+	public List<Team> getTeams() {
+		return DAOFactory.DEFAULT.buildTeamDAO().findAll();
+	}
+
 	public Team getTeamByName(String name) {
 		List<Team> Teams = DAOFactory.DEFAULT.buildTeamDAO().findByName(name);
 		Team te = Teams.get(0);
@@ -51,13 +64,39 @@ public class TeamManager extends Manager {
 		return te;
 	}
 
-	public Team getTeam(int id) {
-		Team team = DAOFactory.DEFAULT.buildTeamDAO().getById(id);
-		if (easyCorrectionUtil.isNull(team)) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
-					.msg("Team"));
+	public int getAllocatedTeams(Assignment assignment) {
+		if (assignment == null) {
+			throw new ObjectNotFoundException(MsgErros.ROTEIRO_INEXISTENTE
+					.msg(""));
 		}
-		return team;
+		List<TeamHasUserHasAssignment> list = DAOFactory.DEFAULT
+				.buildTeamHasUserHasAssignmentDAO().findByAssignment(
+						assignment.getId());
+		return list.size();
+	}
+
+	private boolean isTeamFull(TeamHasUserHasAssignment tua)
+			throws EasyCorrectionException {
+		List<TeamHasUserHasAssignment> list = getTeamHasUserHasAssignmentByTeamAndAssignment(
+				tua.getTeam().getId(), tua.getAssignment().getId());
+		if (list.size() >= tua.getAssignment().getParticipantsMaxNumber()) {
+			throw new EasyCorrectionException(
+					MsgErros.NUMERO_MAXIMO_PARTICIPANTES.msg(""));
+		}
+		return true;
+	}
+
+	public void allocateTeamsForUsers(Assignment assign, List<Team> teams,
+			List<UserGroup> users) throws EasyCorrectionException {
+		if (users.size() != 0) {
+			for (int i = 0; i < users.size(); i++) {
+				TeamHasUserHasAssignment tua = new TeamHasUserHasAssignment();
+				tua.setAssignment(assign);
+				tua.setTeam(teams.get(i));
+				tua.setUser(users.get(i).getUser());
+				saveTeamHasUserHasAssignment(tua);
+			}
+		}
 	}
 
 	public TeamHasUserHasAssignment changeTeam(TeamHasUserHasAssignment tua)
@@ -120,33 +159,18 @@ public class TeamManager extends Manager {
 		return DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO()
 				.findByAssignmentGroupByTeam(assignmentId);
 	}
-	
+
 	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignmentGroupByTeam(
 			Integer assignmentId) {
 		return DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO()
 				.findByAssignmentGroupByTeam(assignmentId);
 	}
-	
-	//TODO: It is not being used!
+
+	// TODO: It is not being used!
 	private List<Team> getTeamHasUserHasAssignmentByCorrectorAssignment(
 			Integer assignmentId, Integer correctorId) {
 		return null;
 		// TODO
-	}
-
-	public int getAllocatedTeams(Assignment assignment) {
-		if (assignment == null) {
-			throw new ObjectNotFoundException(MsgErros.ROTEIRO_INEXISTENTE
-					.msg(""));
-		}
-		List<TeamHasUserHasAssignment> list = DAOFactory.DEFAULT
-				.buildTeamHasUserHasAssignmentDAO().findByAssignment(
-						assignment.getId());
-		return list.size();
-	}
-
-	public List<Team> getTeams() {
-		return DAOFactory.DEFAULT.buildTeamDAO().findAll();
 	}
 
 	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignments() {
@@ -164,17 +188,6 @@ public class TeamManager extends Manager {
 		return tua;
 	}
 
-	private boolean isTeamFull(TeamHasUserHasAssignment tua)
-			throws EasyCorrectionException {
-		List<TeamHasUserHasAssignment> list = getTeamHasUserHasAssignmentByTeamAndAssignment(
-				tua.getTeam().getId(), tua.getAssignment().getId());
-		if (list.size() >= tua.getAssignment().getParticipantsMaxNumber()) {
-			throw new EasyCorrectionException(
-					MsgErros.NUMERO_MAXIMO_PARTICIPANTES.msg(""));
-		}
-		return true;
-	}
-
 	private void deleteTeamHasUserHasAssignment(TeamHasUserHasAssignment tua)
 			throws EasyCorrectionException {
 		TeamHasUserHasAssignment localTua = getTeamHasUserHasAssignmentByUserAndAssignment(
@@ -182,18 +195,5 @@ public class TeamManager extends Manager {
 		localTua = (TeamHasUserHasAssignment) SwapperAtributosReflect
 				.swapObject(localTua, tua, TeamHasUserHasAssignment.class);
 		DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO().delete(localTua);
-	}
-
-	public void allocateTeamsForUsers(Assignment assign, List<Team> teams,
-			List<UserGroup> users) throws EasyCorrectionException {
-		if (users.size() != 0) {
-			for (int i = 0; i < users.size(); i++) {
-				TeamHasUserHasAssignment tua = new TeamHasUserHasAssignment();
-				tua.setAssignment(assign);
-				tua.setTeam(teams.get(i));
-				tua.setUser(users.get(i).getUser());
-				saveTeamHasUserHasAssignment(tua);
-			}
-		}
 	}
 }

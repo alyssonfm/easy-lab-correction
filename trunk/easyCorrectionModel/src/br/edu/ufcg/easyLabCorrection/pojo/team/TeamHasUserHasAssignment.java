@@ -1,5 +1,6 @@
-package br.edu.ufcg.easyLabCorrection.pojo.assignments;
+package br.edu.ufcg.easyLabCorrection.pojo.team;
 
+import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 
 public class TeamHasUserHasAssignment {

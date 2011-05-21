@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.pojo.assignments;
+package br.edu.ufcg.easyLabCorrection.pojo.team;
 
 public class Team {
 	

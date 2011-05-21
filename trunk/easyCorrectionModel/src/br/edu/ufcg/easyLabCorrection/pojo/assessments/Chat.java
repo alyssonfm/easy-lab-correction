@@ -3,7 +3,7 @@ package br.edu.ufcg.easyLabCorrection.pojo.assessments;
 import java.util.Date;
 
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.Team;
+import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 
 public class Chat {
