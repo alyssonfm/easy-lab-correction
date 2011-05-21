@@ -1,6 +1,5 @@
 package br.edu.ufcg.easyLabCorrection.tests.component;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.edu.ufcg.easyLabCorrection.system.Facade;

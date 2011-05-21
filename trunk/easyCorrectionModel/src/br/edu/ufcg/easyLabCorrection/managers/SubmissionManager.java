@@ -27,43 +27,46 @@ public class SubmissionManager {
 		testManager = new TestManager();
 	}
 
-	public Integer submissionNumber(Submission submission) {
+	public Integer getSubmissionNumber(Submission submission) {
 		List<Submission> list = DAOFactory.DEFAULT.buildSubmissionDAO()
 				.findByTeamAndAssignment(
 						submission.getTeamHasUserHasAssignment().getTeam()
 								.getId(),
-						submission.getTeamHasUserHasAssignment().getAssignment()
-								.getId());
+						submission.getTeamHasUserHasAssignment()
+								.getAssignment().getId());
 		return list.size();
 	}
-	
-	public List<Submission> getSubmissionsByAssignmentAndTeam(Assignment assign, Team team) {
+
+	public List<Submission> getSubmissionsByAssignmentAndTeam(
+			Assignment assign, Team team) {
 		List<Submission> list = DAOFactory.DEFAULT.buildSubmissionDAO()
-			.findByTeamAndAssignment(team.getId(), assign.getId());
+				.findByTeamAndAssignment(team.getId(), assign.getId());
 		return list;
 	}
 
-	public Integer getSubmissionNumberByTua(TeamHasUserHasAssignment tua) {
-		return getSubmissionsByAssignmentAndTeam(tua.getAssignment(), tua.getTeam()).size();
+	public Integer getSubmissionNumberByTUA(TeamHasUserHasAssignment tua) {
+		return getSubmissionsByAssignmentAndTeam(tua.getAssignment(),
+				tua.getTeam()).size();
 	}
 
-	public Submission submitAssignment(Submission submission, Assignment assignment)
-			throws EasyCorrectionException {
+	public Submission submitAssignment(Submission submission,
+			Assignment assignment) throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(submission)) {
-			if(!easyCorrectionUtil.isNull(assignment)){
-				if (submissionNumber(submission) < (submission
-					.getTeamHasUserHasAssignment().getAssignment()
-					.getSendMaxNumber())) {
-				
-					submission.setSubmissionDate(easyCorrectionUtil.getDataNow());
+			if (!easyCorrectionUtil.isNull(assignment)) {
+				if (getSubmissionNumber(submission) < (submission
+						.getTeamHasUserHasAssignment().getAssignment()
+						.getSendMaxNumber())) {
+
+					submission.setSubmissionDate(easyCorrectionUtil
+							.getDataNow());
 					Integer id = DAOFactory.DEFAULT.buildSubmissionDAO().save(
 							submission);
 					submission.setId(id);
-				}
-				else{
+				} else {
 					throw new EasyCorrectionException(
 							MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO
-									.msg(submission.getTeamHasUserHasAssignment()
+									.msg(submission
+											.getTeamHasUserHasAssignment()
 											.getAssignment().getName()));
 				}
 			} else {
@@ -77,13 +80,14 @@ public class SubmissionManager {
 		return submission;
 	}
 
-	public String firstOccurrence(String[] fileList) {
+	private String firstOccurrence(String[] fileList) {
 		try {
 			String fileName = "";
 			for (int i = 0; i < fileList.length; i++) {
 				fileName = fileList[i];
-				if (fileName.substring(fileName.length() - 4,
-						fileName.length()).equals("java")) {
+				if (fileName
+						.substring(fileName.length() - 4, fileName.length())
+						.equals("java")) {
 					return fileName;
 				}
 			}
@@ -92,13 +96,14 @@ public class SubmissionManager {
 		return null;
 	}
 
-	public String zipFirstOccurrence(String[] fileList) {
+	private String zipFirstOccurrence(String[] fileList) {
 		try {
 			String fileName = "";
 			for (int i = 0; i < fileList.length; i++) {
 				fileName = fileList[i];
-				if (fileName.substring(fileName.length() - 3,
-						fileName.length()).equals("zip")) {
+				if (fileName
+						.substring(fileName.length() - 3, fileName.length())
+						.equals("zip")) {
 					return fileName;
 				}
 			}
@@ -107,7 +112,8 @@ public class SubmissionManager {
 		return null;
 	}
 
-	public String[] compilerParameters(String libDirectory,
+	// TODO: It is not being used!
+	private String[] compilerParameters(String libDirectory,
 			String sourceDirectory, String interfaceDirectory,
 			String testsDirectory, String[] sourceFileList,
 			String[] interfaceFileList, String[] testsFileList) {
@@ -121,22 +127,22 @@ public class SubmissionManager {
 		String fileName = "";
 		for (int i = 0; i < sourceFileList.length; i++) {
 			fileName = sourceFileList[i];
-			if (fileName.substring(fileName.length() - 4,
-					fileName.length()).equals("java")) {
+			if (fileName.substring(fileName.length() - 4, fileName.length())
+					.equals("java")) {
 				params.add(sourceDirectory + fileName);
 			}
 		}
 		for (int i = 0; i < interfaceFileList.length; i++) {
 			fileName = interfaceFileList[i];
-			if (fileName.substring(fileName.length() - 4,
-					fileName.length()).equals("java")) {
+			if (fileName.substring(fileName.length() - 4, fileName.length())
+					.equals("java")) {
 				params.add(interfaceDirectory + fileName);
 			}
 		}
 		for (int i = 0; i < testsFileList.length; i++) {
 			fileName = testsFileList[i];
-			if (fileName.substring(fileName.length() - 4,
-					fileName.length()).equals("java")) {
+			if (fileName.substring(fileName.length() - 4, fileName.length())
+					.equals("java")) {
 				params.add(testsDirectory + fileName);
 			}
 		}
@@ -145,63 +151,71 @@ public class SubmissionManager {
 		return params.toArray(new String[params.size()]);
 	}
 
+	/*
+	 * TODO: Move to System
+	 * 
+	 * Idea: The compiler filenames will be build on the System and the
+	 * TestManager will receive the filename completely build
+	 */
 	public String runAutomaticTests(Submission submission)
 			throws EasyCorrectionException {
-		
-		if(submission.getTeamHasUserHasAssignment().getAssignment().getAutomaticTestsPercentage() > 0){
+
+		if (submission.getTeamHasUserHasAssignment().getAssignment()
+				.getAutomaticTestsPercentage() > 0) {
 			String testsDirectory = ServletUpload.local
 					+ submission.getTeamHasUserHasAssignment().getAssignment()
 							.getTestsDirectory().replace("/", File.separator);
 			String interfaceDirectory = ServletUpload.local
 					+ submission.getTeamHasUserHasAssignment().getAssignment()
-							.getInterfaceDirectory().replace("/", File.separator);
+							.getInterfaceDirectory().replace("/",
+									File.separator);
 			String sourceDirectory = ServletUpload.local
 					+ submission.getUrl().replace("/", File.separator);
-	
+
 			File testsDir = new File(testsDirectory);
 			String testFile = firstOccurrence(testsDir.list());
 			File interfaceDir = new File(interfaceDirectory);
 			String interfaceFile = firstOccurrence(interfaceDir.list());
 			File sourceDir = new File(sourceDirectory);
 			String sourceFile = firstOccurrence(sourceDir.list());
-	
+
 			TestResult testResult;
-	
+
 			try {
-				testResult = testManager.executeTests(testsDirectory,
-						testFile, interfaceDirectory, interfaceFile,
-						sourceDirectory, sourceFile);
+				testResult = testManager.executeTests(testsDirectory, testFile,
+						interfaceDirectory, interfaceFile, sourceDirectory,
+						sourceFile);
 			} catch (ExecutionTestsException e) {
 				deleteSubmission(submission);
 				return e.getMessage();
 			}
-	
+
 			return testManager.getTestsExecutionOut(testResult, submission);
-		}
-		else{
+		} else {
 			String result = "Este roteiro não possui testes automáticos.";
 			testManager.saveAssessment(submission, 0, result);
 			return "Resultado: " + result;
 		}
 	}
-	
+
 	public Submission getSubmission(int submissionId) {
 		return DAOFactory.DEFAULT.buildSubmissionDAO().getById(submissionId);
 	}
-	
+
 	public void deleteSubmission(Submission sub) throws EasyCorrectionException {
 		if (sub == null) {
 			throw new ExclusionAssignmentException("Submissão inexistente!");
 		}
 		Submission submission = getSubmission(sub.getId());
-		submission = (Submission) SwapperAtributosReflect.swapObject(submission,
-				sub, Submission.class);
+		submission = (Submission) SwapperAtributosReflect.swapObject(
+				submission, sub, Submission.class);
 		DAOFactory.DEFAULT.buildSubmissionDAO().delete(submission);
 	}
 
 	public String getInterfaceFileName(Assignment assignment) {
 		String interfaceDirectory = ServletUpload.local
-				+ assignment.getInterfaceDirectory().replace("/", File.separator);
+				+ assignment.getInterfaceDirectory().replace("/",
+						File.separator);
 		File interfaceDir = new File(interfaceDirectory);
 		return firstOccurrence(interfaceDir.list());
 	}
@@ -212,7 +226,7 @@ public class SubmissionManager {
 		File testsDir = new File(testsDirectory);
 		return zipFirstOccurrence(testsDir.list());
 	}
-	
+
 	public String getSourceFileName(Submission submission) {
 		String sourceDirectory = ServletUpload.local
 				+ submission.getUrl().replace("/", File.separator);
