@@ -73,7 +73,7 @@ public class AssignmentManager extends Manager {
 		return releasedAssignments;
 	}
 
-	public Assignment getReleasedAssignments(Integer id) {
+	public Assignment getReleasedAssignment(Integer id) {
 		Date currentDate = easyCorrectionUtil.getRealTime();
 		List<Assignment> list = DAOFactory.DEFAULT.buildAssignmentDAO()
 				.findByReleasedAssignments(currentDate, id);
@@ -82,6 +82,12 @@ public class AssignmentManager extends Manager {
 		} else {
 			return null;
 		}
+	}
+	
+	public List<Assignment> getClosedAssignments() {
+		Date currentDate = easyCorrectionUtil.getRealTime();
+		return DAOFactory.DEFAULT.buildAssignmentDAO().findByClosedAssignments(
+				currentDate);
 	}
 
 	public Assignment saveAssignment(Assignment assignmentTemp)

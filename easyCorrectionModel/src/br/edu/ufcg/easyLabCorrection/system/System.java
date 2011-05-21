@@ -1,7 +1,9 @@
 package br.edu.ufcg.easyLabCorrection.system;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
 import br.edu.ufcg.easyLabCorrection.exceptions.CreateAssignmentException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EditingAssignmentException;
@@ -9,6 +11,7 @@ import br.edu.ufcg.easyLabCorrection.exceptions.ExclusionAssignmentException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ReleasesAssignmentException;
 import br.edu.ufcg.easyLabCorrection.managers.AccessPermissionManager;
+import br.edu.ufcg.easyLabCorrection.managers.AccessUserManager;
 import br.edu.ufcg.easyLabCorrection.managers.AssessmentManager;
 import br.edu.ufcg.easyLabCorrection.managers.AssignmentManager;
 import br.edu.ufcg.easyLabCorrection.managers.SubmissionManager;
@@ -25,12 +28,14 @@ import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
 import br.edu.ufcg.easyLabCorrection.pojo.system.Period;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
+import br.edu.ufcg.easyLabCorrection.util.MD5Generator;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 public class System {
 
 	private AccessPermissionManager accessPermissionManager;
+	private AccessUserManager accessUserManager;
 	private AssignmentManager assignmentManager;
 	private SubmissionManager submissionManager;
 	private AssessmentManager assessmentManager;
@@ -38,6 +43,7 @@ public class System {
 
 	public System() {
 		accessPermissionManager = new AccessPermissionManager();
+		accessUserManager = new AccessUserManager();
 		assignmentManager = new AssignmentManager();
 		submissionManager = new SubmissionManager();
 		assessmentManager = new AssessmentManager();
@@ -52,7 +58,8 @@ public class System {
 		accessPermissionManager.deleteMenu(menu);
 	}
 
-	public void deleteFunction(Function function) throws EasyCorrectionException {
+	public void deleteFunction(Function function)
+			throws EasyCorrectionException {
 		accessPermissionManager.deleteFunction(function);
 	}
 
@@ -60,9 +67,8 @@ public class System {
 		accessPermissionManager.deleteGroup(group);
 	}
 
-	public void deleteUser(UserGroup userGroup)
-			throws EasyCorrectionException {
-		accessPermissionManager.deleteUser(userGroup);
+	public void deleteUser(UserGroup userGroup) throws EasyCorrectionException {
+		accessUserManager.deleteUser(userGroup);
 	}
 
 	/******************************************** Controle de Acesso EasyCorrection *********************************************/
@@ -76,7 +82,7 @@ public class System {
 	}
 
 	public UserGroup getUserGroup(Integer id) {
-		return accessPermissionManager.getUserGroup(id);
+		return accessUserManager.getUserGroup(id);
 	}
 
 	public Menu getMenu(Integer id) {
@@ -88,14 +94,15 @@ public class System {
 	}
 
 	public User getUser(Integer id) {
-		return accessPermissionManager.getUser(id);
+		return accessUserManager.getUser(id);
 	}
 
 	public User getUserByLogin(String login) {
-		return accessPermissionManager.getUserByLogin(login);
+		return accessUserManager.getUserByLogin(login);
 	}
 
-	public Function saveFunction(Function function) throws EasyCorrectionException {
+	public Function saveFunction(Function function)
+			throws EasyCorrectionException {
 		return accessPermissionManager.saveFunction(function);
 	}
 
@@ -105,7 +112,7 @@ public class System {
 
 	public UserGroup saveUserGroup(UserGroup userGroup)
 			throws EasyCorrectionException {
-		return accessPermissionManager.saveUserGroup(userGroup);
+		return accessUserManager.saveUserGroup(userGroup);
 	}
 
 	public Menu saveMenu(Menu menu) throws EasyCorrectionException {
@@ -119,11 +126,11 @@ public class System {
 
 	public UserGroup saveUser(UserGroup userGroup)
 			throws EasyCorrectionException {
-		return accessPermissionManager.saveUser(userGroup);
+		return accessUserManager.saveUser(userGroup);
 	}
 
 	public List<User> listUsers() {
-		return accessPermissionManager.listUsers();
+		return accessUserManager.listUsers();
 	}
 
 	public List<Group> listGroups() {
@@ -139,15 +146,30 @@ public class System {
 	}
 
 	public List<Function> validateUser(User user) {
-		return accessPermissionManager.validateUser(user);
+
+		List<Function> functions = new LinkedList<Function>();
+
+		// Gera o md5 da senha
+		String password = MD5Generator.md5(user.getPassword());
+		user.setPassword(password);
+
+		// Verifica se o login e senha são válidas
+		User u = accessUserManager.verifyLoginAndPassword(user);
+		if (!easyCorrectionUtil.isNull(u)) {
+			// Verifica as permissões do usuário e retorna um conjunto de
+			// funções
+			functions = accessPermissionManager
+					.verifyPermissions(u.getUserId());
+		}
+		return functions;
 	}
 
 	public List<UserGroup> listUserGroups() {
-		return accessPermissionManager.listUserGroups();
+		return accessUserManager.listUserGroups();
 	}
 
 	public List<UserGroup> listUserGroupsByGroup(String groupName) {
-		return accessPermissionManager.listUserGroupsByGroup(groupName);
+		return accessUserManager.listUserGroupsByGroup(groupName);
 	}
 
 	public List<Permission> consultPermissionsByGroup(Integer groupId) {
@@ -173,25 +195,24 @@ public class System {
 
 	/*-------------------------------------- USUARIOS -------------------------------------------*/
 
-	public User updateUser(User user)
-			throws EasyCorrectionException {
-		return accessPermissionManager.updateUser(user);
+	public User updateUser(User user) throws EasyCorrectionException {
+		return accessUserManager.updateUser(user);
 	}
 
 	public User consultUserByLogin(String login) {
-		return accessPermissionManager.consultUserByLogin(login);
+		return accessUserManager.consultUserByLogin(login);
 	}
 
 	public List<UserGroup> consultUserByGroup(Integer groupId) {
-		return accessPermissionManager.consultUserByGroup(groupId);
+		return accessUserManager.consultUserByGroup(groupId);
 	}
 
 	public List<UserGroup> getUserGroupByUser(Integer userId) {
-		return accessPermissionManager.getUserGroupByUser(userId);
+		return accessUserManager.getUserGroupByUser(userId);
 	}
 
 	public User changePassword(User user, String newPassword) {
-		return accessPermissionManager.changePassword(user, newPassword);
+		return accessUserManager.changePassword(user, newPassword);
 	}
 
 	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
@@ -211,7 +232,7 @@ public class System {
 			throws EasyCorrectionException {
 		Assignment assign = assignmentManager.saveAssignment(tempAssignment);
 		List<Team> teams = teamManager.getTeams();
-		List<UserGroup> users = accessPermissionManager
+		List<UserGroup> users = accessUserManager
 				.listUserGroupsByGroup("Aluno");
 		teamManager.allocateTeamsForUsers(assign, teams, users);
 		return assign;
@@ -223,7 +244,8 @@ public class System {
 		return assignmentManager.updateAssignment(tempAssignment);
 	}
 
-	public void deleteAssignment(Assignment assignment) throws ExclusionAssignmentException {
+	public void deleteAssignment(Assignment assignment)
+			throws ExclusionAssignmentException {
 		assignmentManager.deleteAssignment(assignment);
 	}
 
@@ -239,8 +261,8 @@ public class System {
 
 	public TeamHasUserHasAssignment getTeamHasUserHasAssignmentByUserAndAssignment(
 			Integer idUsuario, Integer idRoteiro) {
-		return teamManager
-				.getTeamHasUserHasAssignmentByUserAndAssignment(idUsuario, idRoteiro);
+		return teamManager.getTeamHasUserHasAssignmentByUserAndAssignment(
+				idUsuario, idRoteiro);
 	}
 
 	public List<Team> getTeams() {
@@ -266,23 +288,28 @@ public class System {
 
 	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByTeamAndAssignment(
 			Integer teamId, Integer assignmentId) {
-		return teamManager
-				.getTeamHasUserHasAssignmentByTeamAndAssignment(teamId,
-						assignmentId);
+		return teamManager.getTeamHasUserHasAssignmentByTeamAndAssignment(
+				teamId, assignmentId);
 	}
-	
-	public List<Assessment> getAssessmentByAssignmentAndCorrector(Assignment assignment, Integer us) {
-		return assessmentManager.getAssessmentByAssignmentAndCorrector(assignment, us);
+
+	public List<Assessment> getAssessmentByAssignmentAndCorrector(
+			Assignment assignment, Integer us) {
+		return assessmentManager.getAssessmentByAssignmentAndCorrector(
+				assignment, us);
 	}
-	
-	public Submission getLastSubmissionByAssignmentAndTeam(Assignment assignment, Team team) {
-		List<Submission> submissionList = submissionManager.getSubmissionsByAssignmentAndTeam(assignment, team);
-		return submissionList.get(submissionList.size()-1);
+
+	public Submission getLastSubmissionByAssignmentAndTeam(
+			Assignment assignment, Team team) {
+		List<Submission> submissionList = submissionManager
+				.getSubmissionsByAssignmentAndTeam(assignment, team);
+		return submissionList.get(submissionList.size() - 1);
 	}
 
 	public Submission submitAssignment(Submission submission)
 			throws EasyCorrectionException {
-		Assignment assignment = assignmentManager.getReleasedAssignments(submission.getTeamHasUserHasAssignment().getAssignment().getId());
+		Assignment assignment = assignmentManager
+				.getReleasedAssignment(submission.getTeamHasUserHasAssignment()
+						.getAssignment().getId());
 		return submissionManager.submitAssignment(submission, assignment);
 	}
 
@@ -293,8 +320,8 @@ public class System {
 
 	public int getAllocatedTeams(Integer assignmentId) {
 		if (easyCorrectionUtil.isNull(assignmentId) || assignmentId < 1) {
-			throw new ObjectNotFoundException(
-					MsgErros.ID_ROTEIRO_INEXISTENTE.msg(""));
+			throw new ObjectNotFoundException(MsgErros.ID_ROTEIRO_INEXISTENTE
+					.msg(""));
 		}
 		Assignment assignment = assignmentManager.getAssignment(assignmentId);
 		return teamManager.getAllocatedTeams(assignment);
@@ -302,8 +329,7 @@ public class System {
 
 	public TeamHasUserHasAssignment changeTeam(TeamHasUserHasAssignment tua)
 			throws EasyCorrectionException {
-		UserGroup ug = getUserGroupByUser(
-				tua.getUser().getUserId()).get(0);
+		UserGroup ug = getUserGroupByUser(tua.getUser().getUserId()).get(0);
 		if (!ug.getGroup().getName().equals("Aluno")) {
 			throw new EasyCorrectionException(MsgErros.ALUNO_INEXISTENTE
 					.msg(""));
@@ -324,11 +350,11 @@ public class System {
 	}
 
 	public Integer submissionNumber(Submission submission) {
-		return submissionManager.submissionNumber(submission);
+		return submissionManager.getSubmissionNumber(submission);
 	}
 
 	public Integer getSubmissionNumberByTua(TeamHasUserHasAssignment tua) {
-		return submissionManager.getSubmissionNumberByTua(tua);
+		return submissionManager.getSubmissionNumberByTUA(tua);
 	}
 
 	public String getInterfaceFileName(Assignment assignment) {
@@ -338,75 +364,80 @@ public class System {
 	public String getTestsFileName(Assignment assignment) {
 		return submissionManager.getTestsFileName(assignment);
 	}
-	
+
 	public String getSourceFileName(Submission submission) {
 		return submissionManager.getSourceFileName(submission);
 	}
 
 	public List<TeamHasUserHasAssignment> getTemHasUserHasAssignmentByAssignment(
 			Integer assignmentId) {
-		return assessmentManager
-				.getTemHasUserHasAssignmentByAssignment(assignmentId);
+		return teamManager.getTemHasUserHasAssignmentByAssignment(assignmentId);
 	}
-	
+
 	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignmentGroupByTeam(
 			Integer assignmentId) {
-		return assessmentManager
+		return teamManager
 				.getTeamHasUserHasAssignmentByAssignmentGroupByTeam(assignmentId);
 	}
 
 	public List<Assignment> getClosedAssignments() {
-		return assessmentManager.getClosedAssignments();
+		return assignmentManager.getClosedAssignments();
 	}
 
 	public List<User> getCorrectors() {
 		return assessmentManager.getCorrectors();
 	}
 
-	public List<Assessment> getAssignmentWithOutCorrectorsAssessments(int assignmentId) {
-		return assessmentManager.getAssignmentWithOutCorrectorsAssessments(assignmentId);
+	public List<Assessment> getAssignmentWithOutCorrectorsAssessments(
+			int assignmentId) {
+		return assessmentManager.getAssignmentWithoutCorrectors(assignmentId);
 	}
 
-	public List<Assessment> getAssignmentWithCorrectorsAssessments(int assignmentId, int correctorId) {
-		return assessmentManager.getAssignmentWithCorrectorsAssessments(assignmentId, correctorId);
+	public List<Assessment> getAssignmentWithCorrectorsAssessments(
+			int assignmentId, int correctorId) {
+		return assessmentManager.getAssignmentWithCorrectors(assignmentId,
+				correctorId);
 	}
-	
-	public Assessment saveAssessment(Assessment assessment) throws EasyCorrectionException{
+
+	public Assessment saveAssessment(Assessment assessment)
+			throws EasyCorrectionException {
 		return assessmentManager.saveAssessment(assessment);
 	}
-	
-	public void deleteAssessment(Assessment assessment) throws EasyCorrectionException{
+
+	public void deleteAssessment(Assessment assessment)
+			throws EasyCorrectionException {
 		assessmentManager.deleteAssessment(assessment);
 	}
-	
-	public List<Assessment> getAssessmentBySubmission(int submissionId){
+
+	public List<Assessment> getAssessmentBySubmission(int submissionId) {
 		return assessmentManager.getAssessmentBySubmission(submissionId);
 	}
 
-	public Assessment allocateCorrector(Assessment assessement) throws EasyCorrectionException {
+	public Assessment allocateCorrector(Assessment assessement)
+			throws EasyCorrectionException {
 		return assessmentManager.updateAssessment(assessement);
 	}
 
 	public List<Assessment> getAssessmentsByAssignment(Assignment assignment) {
 		List<Assessment> completeList = new ArrayList<Assessment>();
-		List<Assessment> lista = assessmentManager.getAssessmentByAssignment(assignment);
+		List<Assessment> lista = assessmentManager
+				.getAssessmentByAssignment(assignment);
 		for (Assessment assessment : lista) {
-			Team te = assessment.getSubmission().getTeamHasUserHasAssignment().getTeam();
-			List<TeamHasUserHasAssignment> listaTUA = getTeamHasUserHasAssignmentByTeamAndAssignment(te.getId(), assignment.getId());
+			Team te = assessment.getSubmission().getTeamHasUserHasAssignment()
+					.getTeam();
+			List<TeamHasUserHasAssignment> listaTUA = getTeamHasUserHasAssignmentByTeamAndAssignment(
+					te.getId(), assignment.getId());
 			for (TeamHasUserHasAssignment tua : listaTUA) {
-				Submission sub = new Submission(assessment.getSubmission().getId(), 
-						assessment.getSubmission().getSubmissionDate(), 
-						tua, 
-						assessment.getSubmission().getStatus(), 
-						assessment.getTestsExecutionResult());
-				Assessment assessAux = new Assessment(assessment.getId(),
-												sub,
-												assessment.getAutomaticGrade(),
-												assessment.getCorrectionGrade(),
-												assessment.getTestsExecutionResult(),
-												assessment.getPenalty(),
-												assessment.getAssessmentDate(),
-												assessment.getCorrector());
+				Submission sub = new Submission(assessment.getSubmission()
+						.getId(), assessment.getSubmission()
+						.getSubmissionDate(), tua, assessment.getSubmission()
+						.getStatus(), assessment.getTestsExecutionResult());
+				Assessment assessAux = new Assessment(assessment.getId(), sub,
+						assessment.getAutomaticGrade(), assessment
+								.getCorrectionGrade(), assessment
+								.getTestsExecutionResult(), assessment
+								.getPenalty(), assessment.getAssessmentDate(),
+						assessment.getCorrector());
 				completeList.add(assessAux);
 			}
 		}
@@ -415,7 +446,8 @@ public class System {
 
 	public List<Assessment> getAssessmentByTeamAndAssignment(Integer team,
 			Integer assignment) {
-		return assessmentManager.getAssessmentByTeamAndAssignment(team, assignment);
+		return assessmentManager.getAssessmentByTeamAndAssignment(team,
+				assignment);
 	}
 
 }

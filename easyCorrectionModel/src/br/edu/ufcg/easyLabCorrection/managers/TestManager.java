@@ -118,6 +118,10 @@ public class TestManager extends Manager {
 		return report;
 	}
 	
+	/* TODO: to System
+	 * 
+	 * The idea is to reuse the other saveAssessment there is on the AssessmentManager
+	 */
 	public Assessment saveAssessment(Submission submission, double automaticTestsGrade, String automaticTestsResult){
 		try{
 			Assessment assess = assessmentManager.getAssessmentByAssignmentAndTeam(submission.getTeamHasUserHasAssignment().getAssignment().getId(), 
@@ -128,6 +132,7 @@ public class TestManager extends Manager {
 			assess.setTestsExecutionResult(automaticTestsResult);
 			return assessmentManager.updateAssessment(assess);
 		}
+		// TODO: What kind of exception?
 		catch (Exception e) {
 			
 			Assessment assess = new Assessment(0, 

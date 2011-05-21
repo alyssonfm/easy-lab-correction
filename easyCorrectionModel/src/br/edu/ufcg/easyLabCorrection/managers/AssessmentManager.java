@@ -1,7 +1,6 @@
 package br.edu.ufcg.easyLabCorrection.managers;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
@@ -9,57 +8,15 @@ import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.Team;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
-import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 public class AssessmentManager extends Manager {
 	
 	public AssessmentManager() {
 		super();
-	}
-
-	/**
-	 * Esse metodo retorna a lista de equipes (por roteiro) que nao tem
-	 * corretores ainda
-	 * 
-	 * @param assignmentId
-	 * @return
-	 */
-	public List<TeamHasUserHasAssignment> getTemHasUserHasAssignmentByAssignment(
-			Integer assignmentId) {
-		return DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO()
-				.findByAssignmentGroupByTeam(assignmentId);
-	}
-
-	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignmentGroupByTeam(
-			Integer assignmentId) {
-		return DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO()
-				.findByAssignmentGroupByTeam(assignmentId);
-	}
-
-	/**
-	 * Esse metodo retorna a lista de equipes (por roteiro) que jah possuem
-	 * corretores
-	 * 
-	 * @param assignmentId
-	 * @param correctorId
-	 * @return
-	 */
-	public List<Team> getTeamHasUserHasAssignmentByCorrectorAssignment(
-			Integer assignmentId, Integer correctorId) {
-		return null;
-		// TODO
-	}
-
-	public List<Assignment> getClosedAssignments() {
-		Date currentDate = easyCorrectionUtil.getRealTime();
-		return DAOFactory.DEFAULT.buildAssignmentDAO().findByClosedAssignments(
-				currentDate);
 	}
 
 	public List<User> getCorrectors() {
@@ -75,11 +32,11 @@ public class AssessmentManager extends Manager {
 		return correctorsUsers;
 	}
 
-	public List<Assessment> getAssignmentWithOutCorrectorsAssessments(int assignmentId) {
-		return this.getAssignmentWithCorrectorsAssessments(assignmentId, 0);
+	public List<Assessment> getAssignmentWithoutCorrectors(int assignmentId) {
+		return this.getAssignmentWithCorrectors(assignmentId, 0);
 	}
 
-	public List<Assessment> getAssignmentWithCorrectorsAssessments(int assignmentId,
+	public List<Assessment> getAssignmentWithCorrectors(int assignmentId,
 			int correctorId) {
 
 		if (correctorId <= 0) {
