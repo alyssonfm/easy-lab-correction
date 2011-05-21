@@ -5,7 +5,7 @@ package br.edu.ufcg.easyLabCorrection.exceptions;
  * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
  * @version 1.0 14 of May of 2011.<br>
  */
-public class AttributeNotExistingException extends RuntimeException {
+public class NonexistantAttributeException extends RuntimeException {
 
 	/**
 	 * 
@@ -15,14 +15,14 @@ public class AttributeNotExistingException extends RuntimeException {
 	/**
 	 * Default constructor of Class.<br>
 	 */
-	public AttributeNotExistingException() {
+	public NonexistantAttributeException() {
 		super();
 	}
 /**
  * Constructor that receives a message as parameter, a string - the message of the error occurred.<br>
  * @param msg - the string of the error occurred.<br>
  */
-	public AttributeNotExistingException(String msg) {
+	public NonexistantAttributeException(String msg) {
 		super(msg);
 	}
 

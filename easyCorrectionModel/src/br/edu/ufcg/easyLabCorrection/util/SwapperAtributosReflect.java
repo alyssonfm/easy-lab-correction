@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import br.edu.ufcg.easyLabCorrection.exceptions.AttributeNotExistingException;
+import br.edu.ufcg.easyLabCorrection.exceptions.NonexistantAttributeException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 
 public class SwapperAtributosReflect {
@@ -108,11 +108,11 @@ public class SwapperAtributosReflect {
 	 * @param atributo
 	 *            O atributo desejado do objeto.
 	 * @return O valor do atributo especificado do objeto.
-	 * @throws AttributeNotExistingException
+	 * @throws NonexistantAttributeException
 	 *             Caso o atributo especificado n�o exista.
 	 */
 	public static Object getAtributo(Object objeto, String atributo,
-			boolean isBoolean) throws AttributeNotExistingException {
+			boolean isBoolean) throws NonexistantAttributeException {
 		try {
 			Method m = null;
 			if (isBoolean) {
@@ -125,13 +125,13 @@ public class SwapperAtributosReflect {
 			Object valor = m.invoke(objeto);
 			return valor;
 		} catch (Exception e) {
-			throw new AttributeNotExistingException(MsgErros.ATRIBUTO_INVALIDO
+			throw new NonexistantAttributeException(MsgErros.ATRIBUTO_INVALIDO
 					.msg(atributo));
 		}
 	}
 
 	public static Object getAtributo(Object objeto, String atributo,
-			Class<?> type) throws AttributeNotExistingException {
+			Class<?> type) throws NonexistantAttributeException {
 		if (type.getName().equalsIgnoreCase("boolean")) {
 			return getAtributo(objeto, atributo, true);
 		} else {
@@ -160,7 +160,7 @@ public class SwapperAtributosReflect {
 		} catch (InvocationTargetException e) {
 			throw new EasyCorrectionException(e.getCause().getMessage());
 		} catch (Exception e) {
-			throw new AttributeNotExistingException(MsgErros.ATRIBUTO_INVALIDO
+			throw new NonexistantAttributeException(MsgErros.ATRIBUTO_INVALIDO
 					.msg(metodo.getName()));
 		}
 	}
@@ -191,7 +191,7 @@ public class SwapperAtributosReflect {
 		} catch (InvocationTargetException e) {
 			throw new EasyCorrectionException(e.getCause().getMessage());
 		} catch (Exception e) {
-			throw new AttributeNotExistingException(MsgErros.ATRIBUTO_INVALIDO
+			throw new NonexistantAttributeException(MsgErros.ATRIBUTO_INVALIDO
 					.msg(atributo));
 		}
 	}

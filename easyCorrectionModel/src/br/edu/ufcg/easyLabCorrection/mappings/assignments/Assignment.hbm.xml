@@ -16,13 +16,13 @@
 		<property name="deliveryDate" column="data_final_entrega"/>
 		<property name="discussionDate" column="data_final_discussao"/>
 		<property name="sendMaxNumber" column="numero_maximo_envios"/>
-		<property name="penaltyLateDays" column="penalidade_dias_atraso"/>
+		<property name="penaltyPerDaysLate" column="penalidade_dias_atraso"/>
 		<property name="automaticTestsPercentage" column="porcentagem_testes_automaticos"/>
 		<property name="testTimeLimit" column="tempo_limite_testes"/>
 		<property name="interfaceDirectory" column="diretorio_interface"/>
 		<property name="testsDirectory" column="diretorio_testes"/>
 		<property name="participantsMaxNumber" column="numero_maximo_participantes"/>
-		<many-to-one name="period" class="br.edu.ufcg.easyLabCorrection.pojo.system.Period" column="periodo_id"/>
+		<many-to-one name="stage" class="br.edu.ufcg.easyLabCorrection.pojo.system.Period" column="periodo_id"/>
 		
 	</class>
 </hibernate-mapping>

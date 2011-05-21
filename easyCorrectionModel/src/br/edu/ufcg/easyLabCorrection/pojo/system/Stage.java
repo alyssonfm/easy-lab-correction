@@ -1,15 +1,15 @@
 package br.edu.ufcg.easyLabCorrection.pojo.system;
 
-public class Period {
+public class Stage {
 	
 	private Integer id;
 	private String semester;
 	
-	public Period() {
+	public Stage() {
 		super();
 	}
 	
-	public Period(Integer id, String semester) {
+	public Stage(Integer id, String semester) {
 		super();
 		this.id = id;
 		this.semester = semester;
@@ -49,7 +49,7 @@ public class Period {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Period other = (Period) obj;
+		Stage other = (Stage) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

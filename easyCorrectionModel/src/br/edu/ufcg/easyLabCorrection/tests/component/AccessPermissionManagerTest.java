@@ -47,7 +47,7 @@ public class AccessPermissionManagerTest {
 	}
 	
 	@Test
-	public void menuTest() {
+	public void menuCRUDBadParametersTest() {
 		
 		/*
 		 * RETRIEVE 
@@ -187,7 +187,7 @@ public class AccessPermissionManagerTest {
 	}
 
 	@Test
-	public void functionTest() {
+	public void functionCRUDBadParametersTest() {
 	
 		Function fNULL1 = access.getFunction(1); // NULL
 		List<Function> list1 = access.listFunctions(); // EMPTY
@@ -347,7 +347,7 @@ public class AccessPermissionManagerTest {
 	}
 
 	@Test
-	public void groupTest() {
+	public void groupCRUDBadParametersTest() {
 
 		Group gNULL1 = access.getGroup(1); // NULL
 		Group gNULL2 = access.getGroupByName("Group");  // NULL
@@ -448,10 +448,8 @@ public class AccessPermissionManagerTest {
 	}
 
 	@Test
-	public void permissionTest() {
+	public void permissionCRUDBadParametersTest() {
 
-		
-		
 		Permission pNULL = access.getPermission(1); // NULL
 		List<Permission> list1 = access.consultPermissionsByGroup(1);// EMPTY
 		

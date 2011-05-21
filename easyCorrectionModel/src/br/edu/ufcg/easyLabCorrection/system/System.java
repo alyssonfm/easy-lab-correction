@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import br.edu.ufcg.easyLabCorrection.exceptions.CreateAssignmentException;
+import br.edu.ufcg.easyLabCorrection.exceptions.AssignmentException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
-import br.edu.ufcg.easyLabCorrection.exceptions.EditingAssignmentException;
-import br.edu.ufcg.easyLabCorrection.exceptions.ExclusionAssignmentException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
-import br.edu.ufcg.easyLabCorrection.exceptions.ReleasesAssignmentException;
 import br.edu.ufcg.easyLabCorrection.managers.AccessPermissionManager;
 import br.edu.ufcg.easyLabCorrection.managers.AccessUserManager;
 import br.edu.ufcg.easyLabCorrection.managers.AssessmentManager;
@@ -23,7 +20,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.permission.Function;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
-import br.edu.ufcg.easyLabCorrection.pojo.system.Period;
+import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
@@ -216,11 +213,11 @@ public class System {
 	}
 
 	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
-	public Period getPeriod(int periodId) {
+	public Stage getPeriod(int periodId) {
 		return assignmentManager.getPeriod(periodId);
 	}
 
-	public List<Period> getCurrentPeriod() {
+	public List<Stage> getCurrentPeriod() {
 		return assignmentManager.getCurrentPeriod();
 	}
 
@@ -239,13 +236,12 @@ public class System {
 	}
 
 	public Assignment updateAssignment(Assignment tempAssignment)
-			throws EditingAssignmentException, CreateAssignmentException,
-			ReleasesAssignmentException {
+			throws AssignmentException {
 		return assignmentManager.updateAssignment(tempAssignment);
 	}
 
 	public void deleteAssignment(Assignment assignment)
-			throws ExclusionAssignmentException {
+			throws AssignmentException {
 		assignmentManager.deleteAssignment(assignment);
 	}
 
