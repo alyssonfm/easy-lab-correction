@@ -9,7 +9,7 @@ import junit.framework.TestFailure;
 import junit.framework.TestResult;
 import junit.textui.TestRunner;
 import org.junit.runner.JUnitCore;
-import br.edu.ufcg.easyLabCorrection.exceptions.ExecutionTestsException;
+import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
@@ -30,7 +30,7 @@ public class TestManager extends Manager {
 	public TestResult executeTests(String testsDirectory,
 			String testFile, String interfaceDirectory,
 			String interfaceFile, String sourceDirectory,
-			String sourceFile) throws ExecutionTestsException {
+			String sourceFile) throws TestExecutionException {
 
 		String libDirectory = (ServletUpload.local + "/").replace("/",
 				File.separator);
@@ -61,12 +61,12 @@ public class TestManager extends Manager {
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-			throw new ExecutionTestsException(e.getMessage());
+			throw new TestExecutionException(e.getMessage());
 		}
 
 		if (compilationManager.isCompilationError()) {
 			compilationManager.setCompilationError(false);
-			throw new ExecutionTestsException(deleteDirectory(compilationManager.getErrorResult(), testsDirectory, sourceDirectory, interfaceDirectory));
+			throw new TestExecutionException(deleteDirectory(compilationManager.getErrorResult(), testsDirectory, sourceDirectory, interfaceDirectory));
 		}
 		
 		return result;

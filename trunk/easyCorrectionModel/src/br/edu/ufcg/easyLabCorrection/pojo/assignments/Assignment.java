@@ -1,12 +1,12 @@
 package br.edu.ufcg.easyLabCorrection.pojo.assignments;
 
 import java.util.Date;
-import br.edu.ufcg.easyLabCorrection.pojo.system.Period;
+import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
 
 public class Assignment {
 	
 	private Integer id;
-	private Period period;
+	private Stage stage;
 	private String name;
 	private String description;
 	private Date releaseDate;
@@ -14,7 +14,7 @@ public class Assignment {
 	private Date discussionDate;
 	private Integer participantsMaxNumber;
 	private Integer sendMaxNumber;
-	private double penaltyLateDays;
+	private double penaltyPerDaysLate;
 	private double automaticTestsPercentage;
 	private Integer testTimeLimit;
 	private String interfaceDirectory;
@@ -24,15 +24,15 @@ public class Assignment {
 		super();
 	}
 
-	public Assignment(Integer id, Period period, String name,
+	public Assignment(Integer id, Stage stage, String name,
 			String description, Date releaseDate, Date deliveryDate,
 			Date discussionDate, Integer participantsMaxNumber,
-			Integer sendMaxNumber, double penaltyLateDays,
+			Integer sendMaxNumber, double penaltyPerDaysLate,
 			double automaticTestsPercentage, Integer testTimeLimit,
 			String interfaceDirectory, String testsDirectory) {
 		super();
 		this.id = id;
-		this.period = period;
+		this.stage = stage;
 		this.name = name;
 		this.description = description;
 		this.releaseDate = releaseDate;
@@ -40,7 +40,7 @@ public class Assignment {
 		this.discussionDate = discussionDate;
 		this.participantsMaxNumber = participantsMaxNumber;
 		this.sendMaxNumber = sendMaxNumber;
-		this.penaltyLateDays = penaltyLateDays;
+		this.penaltyPerDaysLate = penaltyPerDaysLate;
 		this.automaticTestsPercentage = automaticTestsPercentage;
 		this.testTimeLimit = testTimeLimit;
 		this.interfaceDirectory = interfaceDirectory;
@@ -55,12 +55,12 @@ public class Assignment {
 		this.id = id;
 	}
 	
-	public Period getPeriod() {
-		return period;
+	public Stage getStage() {
+		return stage;
 	}
 	
-	public void setPeriod(Period period) {
-		this.period = period;
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 	
 	public String getName() {
@@ -119,12 +119,12 @@ public class Assignment {
 		this.sendMaxNumber = sendMaxNumber;
 	}
 	
-	public double getPenaltyLateDays() {
-		return penaltyLateDays;
+	public double getPenaltyPerDaysLate() {
+		return penaltyPerDaysLate;
 	}
 	
-	public void setPenaltyLateDays(double penaltyLateDays) {
-		this.penaltyLateDays = penaltyLateDays;
+	public void setPenaltyPerDaysLate(double penaltyPerDaysLate) {
+		this.penaltyPerDaysLate = penaltyPerDaysLate;
 	}
 	
 	public double getAutomaticTestsPercentage() {
@@ -182,9 +182,9 @@ public class Assignment {
 				* result
 				+ ((participantsMaxNumber == null) ? 0 : participantsMaxNumber
 						.hashCode());
-		temp = Double.doubleToLongBits(penaltyLateDays);
+		temp = Double.doubleToLongBits(penaltyPerDaysLate);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((period == null) ? 0 : period.hashCode());
+		result = prime * result + ((stage == null) ? 0 : stage.hashCode());
 		result = prime * result
 				+ ((releaseDate == null) ? 0 : releaseDate.hashCode());
 		result = prime * result
@@ -243,13 +243,13 @@ public class Assignment {
 				return false;
 		} else if (!participantsMaxNumber.equals(other.participantsMaxNumber))
 			return false;
-		if (Double.doubleToLongBits(penaltyLateDays) != Double
-				.doubleToLongBits(other.penaltyLateDays))
+		if (Double.doubleToLongBits(penaltyPerDaysLate) != Double
+				.doubleToLongBits(other.penaltyPerDaysLate))
 			return false;
-		if (period == null) {
-			if (other.period != null)
+		if (stage == null) {
+			if (other.stage != null)
 				return false;
-		} else if (!period.equals(other.period))
+		} else if (!stage.equals(other.stage))
 			return false;
 		if (releaseDate == null) {
 			if (other.releaseDate != null)
@@ -276,13 +276,13 @@ public class Assignment {
 
 	@Override
 	public String toString() {
-		return "Assignment [id=" + id + ", period=" + period + ", name=" + name
+		return "Assignment [id=" + id + ", period=" + stage + ", name=" + name
 				+ ", description=" + description + ", releaseDate="
 				+ releaseDate + ", deliveryDate=" + deliveryDate
 				+ ", discussionDate=" + discussionDate
 				+ ", participantsMaxNumber=" + participantsMaxNumber
 				+ ", sendMaxNumber=" + sendMaxNumber + ", penaltyLateDays="
-				+ penaltyLateDays + ", automaticTestsPercentage="
+				+ penaltyPerDaysLate + ", automaticTestsPercentage="
 				+ automaticTestsPercentage + ", testTimeLimit=" + testTimeLimit
 				+ ", interfaceDirectory=" + interfaceDirectory
 				+ ", testsDirectory=" + testsDirectory + "]";

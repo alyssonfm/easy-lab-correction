@@ -26,7 +26,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 			boolean bloqueado) throws Throwable {
 
 		Assignment roteiroTemp = new Assignment();
-		roteiroTemp.setPeriod(facadeSistema.getPeriodo(periodoId));
+		roteiroTemp.setStage(facadeSistema.getPeriodo(periodoId));
 		roteiroTemp.setId(0);
 		roteiroTemp.setName(nome);
 		roteiroTemp.setDescription(descricao);
@@ -37,7 +37,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 //		roteiroTemp.setBloqueado(bloqueado);
 
 		// doubleOnes
-		roteiroTemp.setPenaltyLateDays(penalidadeDiasAtraso);
+		roteiroTemp.setPenaltyPerDaysLate(penalidadeDiasAtraso);
 		roteiroTemp
 				.setAutomaticTestsPercentage(porcentagemTestesAutomaticos);
 
@@ -79,7 +79,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 
 		Assignment roteiroTemp = facadeSistema.getRoteiro(roteiroId);
 		roteiroTemp.setId(roteiroId);
-		roteiroTemp.setPeriod(facadeSistema.getPeriodo(periodoId));
+		roteiroTemp.setStage(facadeSistema.getPeriodo(periodoId));
 		roteiroTemp.setName(nome);
 		roteiroTemp.setDescription(descricao);
 		roteiroTemp.setReleaseDate(translateData(dataLiberacao));
@@ -93,7 +93,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 //		roteiroTemp.setBloqueado(isBloqueado);
 
 		// doubleOnes
-		roteiroTemp.setPenaltyLateDays(penalidadeDiasAtraso);
+		roteiroTemp.setPenaltyPerDaysLate(penalidadeDiasAtraso);
 		roteiroTemp
 				.setAutomaticTestsPercentage(porcentagemTestesAutomaticos);
 
@@ -156,7 +156,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 			throws Throwable {
 		Assignment objRoteiro = getRoteiro(id);
 		if (nomeAtributo.equals("periodo")) {
-			return easyCorrectionUtil.getAttribute(objRoteiro.getPeriod(),
+			return easyCorrectionUtil.getAttribute(objRoteiro.getStage(),
 					nomeAtributo, false);
 		} else {
 			return easyCorrectionUtil.getAttribute(objRoteiro, nomeAtributo,
@@ -217,22 +217,22 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 		if (dirCodificado == null) {
 			return null;
 		} else if (dirCodificado.equals("TESTES_DIFF_DEFAULT")) {
-			result = "/periodo" + rot.getPeriod().toString()
+			result = "/periodo" + rot.getStage().toString()
 					+ "/testes/roteiroID/" + rot.getId() + "/";
 		} else if (dirCodificado.equals("TESTES_DEFAULT_OK")) {
-			result = "/periodo" + rot.getPeriod().toString() + "/testes/"
+			result = "/periodo" + rot.getStage().toString() + "/testes/"
 					+ rot.getName() + "/";
 		} else if (dirCodificado.equals("NOVO_TESTES_DEFAULT_OK")) {
-			result = "/periodo" + rot.getPeriod().toString() + "/testes/"
+			result = "/periodo" + rot.getStage().toString() + "/testes/"
 					+ rot.getId() + "/";
 		} else if (dirCodificado.equals("INTERFACE_DIFF_DEFAULT")) {
-			result = "/periodo" + rot.getPeriod().toString()
+			result = "/periodo" + rot.getStage().toString()
 					+ "/INTERFACE/roteiroID_" + rot.getId() + "/";
 		} else if (dirCodificado.equals("INTERFACE_DEFAULT_OK")) {
-			result = "/periodo" + rot.getPeriod().toString() + "/interface/"
+			result = "/periodo" + rot.getStage().toString() + "/interface/"
 					+ rot.getName() + "/";
 		} else if (dirCodificado.equals("NOVA_INTERFACE_DEFAULT_OK")) {
-			result = "/periodo" + rot.getPeriod().toString() + "/interface/"
+			result = "/periodo" + rot.getStage().toString() + "/interface/"
 					+ rot.getId() + "/";
 		} else {
 			result = "";

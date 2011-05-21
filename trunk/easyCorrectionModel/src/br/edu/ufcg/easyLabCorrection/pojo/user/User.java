@@ -2,7 +2,7 @@ package br.edu.ufcg.easyLabCorrection.pojo.user;
 
 import java.io.Serializable;
 
-import br.edu.ufcg.easyLabCorrection.pojo.system.Period;
+import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
 
 /**
  * <p>Pojo mapping TABLE agenda</p>
@@ -28,7 +28,7 @@ public class User implements Serializable {
 	
 	private String email;
 	
-	private Period period;
+	private Stage period;
 	
 	/**
 	 * 
@@ -89,11 +89,11 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public Period getPeriod() {
+	public Stage getPeriod() {
 		return period;
 	}
 
-	public void setPeriod(Period period) {
+	public void setPeriod(Stage period) {
 		this.period = period;
 	}
 

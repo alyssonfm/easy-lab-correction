@@ -10,7 +10,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.permission.Function;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
-import br.edu.ufcg.easyLabCorrection.pojo.system.Period;
+import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
@@ -377,7 +377,7 @@ public class Facade {
 	 * **********************************************************************
 	 */
 
-	public Period getPeriodo(int periodId) throws Throwable {
+	public Stage getPeriodo(int periodId) throws Throwable {
 		try {
 			return system.getPeriod(periodId);
 		} catch (Throwable e) {
@@ -386,7 +386,7 @@ public class Facade {
 		}
 	}
 
-	public List<Period> getPeriodoAtual() throws Throwable {
+	public List<Stage> getPeriodoAtual() throws Throwable {
 		try {
 			return system.getCurrentPeriod();
 		} catch (Throwable e) {

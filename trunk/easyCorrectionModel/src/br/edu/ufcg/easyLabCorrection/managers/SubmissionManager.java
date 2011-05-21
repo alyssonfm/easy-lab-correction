@@ -1,14 +1,14 @@
 package br.edu.ufcg.easyLabCorrection.managers;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.List;
+
 import junit.framework.TestResult;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
-import br.edu.ufcg.easyLabCorrection.exceptions.ExclusionAssignmentException;
-import br.edu.ufcg.easyLabCorrection.exceptions.ExecutionTestsException;
+import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
+import br.edu.ufcg.easyLabCorrection.exceptions.SubmissionException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
@@ -185,7 +185,7 @@ public class SubmissionManager {
 				testResult = testManager.executeTests(testsDirectory, testFile,
 						interfaceDirectory, interfaceFile, sourceDirectory,
 						sourceFile);
-			} catch (ExecutionTestsException e) {
+			} catch (TestExecutionException e) {
 				deleteSubmission(submission);
 				return e.getMessage();
 			}
@@ -204,7 +204,7 @@ public class SubmissionManager {
 
 	public void deleteSubmission(Submission sub) throws EasyCorrectionException {
 		if (sub == null) {
-			throw new ExclusionAssignmentException("Submissão inexistente!");
+			throw new SubmissionException("Submissão inexistente!");
 		}
 		Submission submission = getSubmission(sub.getId());
 		submission = (Submission) SwapperAtributosReflect.swapObject(

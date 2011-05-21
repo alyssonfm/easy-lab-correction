@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import br.edu.ufcg.easyLabCorrection.exceptions.AttributeNotExistingException;
+import br.edu.ufcg.easyLabCorrection.exceptions.NonexistantAttributeException;
 
 public class easyCorrectionUtil {
 
@@ -99,7 +99,7 @@ public class easyCorrectionUtil {
 	 *             Caso o atributo especificado nao exista.
 	 */
 	public static Object getAttribute(Object objectTemp, String attribute,
-			boolean isBoolean) throws AttributeNotExistingException {
+			boolean isBoolean) throws NonexistantAttributeException {
 		try {
 			Method m = null;
 			if (isBoolean) {
@@ -112,7 +112,7 @@ public class easyCorrectionUtil {
 			Object valor = m.invoke(objectTemp);
 			return valor;
 		} catch (Exception e) {
-			throw new AttributeNotExistingException(MsgErros.ATRIBUTO_INVALIDO
+			throw new NonexistantAttributeException(MsgErros.ATRIBUTO_INVALIDO
 					.msg(attribute));
 		}
 	}

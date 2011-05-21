@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
-import br.edu.ufcg.easyLabCorrection.exceptions.DuplicateValueException;
+import br.edu.ufcg.easyLabCorrection.exceptions.DuplicatedValueException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Function;
@@ -56,7 +56,7 @@ public class AccessPermissionManager extends Manager {
 					menu.setMenuId(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(m)) {
-					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
 							.msg("nome ou rotulo"));
 				}
 				// Se o id eh diferente de null
@@ -72,7 +72,7 @@ public class AccessPermissionManager extends Manager {
 							Menu.class);
 					DAOFactory.DEFAULT.buildMenuDAO().update(men);
 				} else {
-					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
 							.msg("nome ou rotulo"));
 				}
 			}
@@ -115,7 +115,7 @@ public class AccessPermissionManager extends Manager {
 					function.setFunctionId(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(f)) {
-					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
 							.msg("nome ou rotulo"));
 				}
 				// Se o id é diferente de null
@@ -132,7 +132,7 @@ public class AccessPermissionManager extends Manager {
 							function, Function.class);
 					DAOFactory.DEFAULT.buildFunctionDAO().update(fun);
 				} else {
-					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
 							.msg("nome ou rotulo"));
 				}
 			}
@@ -203,7 +203,7 @@ public class AccessPermissionManager extends Manager {
 					group.setGroupId(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(g)) {
-					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
 							.msg("nome"));
 				}
 				// Se o id é diferente de null
@@ -219,7 +219,7 @@ public class AccessPermissionManager extends Manager {
 							Group.class);
 					DAOFactory.DEFAULT.buildGroupDAO().update(gr);
 				} else {
-					throw new DuplicateValueException(MsgErros.VALOR_DUPLICADO
+					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
 							.msg("nome"));
 				}
 			}
