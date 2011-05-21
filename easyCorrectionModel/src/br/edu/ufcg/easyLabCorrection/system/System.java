@@ -19,13 +19,13 @@ import br.edu.ufcg.easyLabCorrection.managers.TeamManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.Team;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Function;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
 import br.edu.ufcg.easyLabCorrection.pojo.system.Period;
+import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
+import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.MD5Generator;
@@ -250,7 +250,7 @@ public class System {
 	}
 
 	public List<Assignment> listAssignments() {
-		return assignmentManager.listAssignments();
+		return assignmentManager.getAssignments();
 	}
 
 	public List<Assignment> getReleasedAssignments() {

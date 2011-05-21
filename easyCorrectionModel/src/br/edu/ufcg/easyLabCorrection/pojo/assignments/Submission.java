@@ -2,6 +2,8 @@ package br.edu.ufcg.easyLabCorrection.pojo.assignments;
 
 import java.util.Date;
 
+import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
+
 public class Submission {
 
 	private Integer id;

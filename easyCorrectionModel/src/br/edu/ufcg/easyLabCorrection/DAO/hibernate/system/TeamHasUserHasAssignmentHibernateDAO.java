@@ -10,7 +10,7 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.UserHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.exceptions.ConstraintViolationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EmptyFieldException;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.TeamHasUserHasAssignment;
+import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.util.MyPersistenceLayer;
 
 /**

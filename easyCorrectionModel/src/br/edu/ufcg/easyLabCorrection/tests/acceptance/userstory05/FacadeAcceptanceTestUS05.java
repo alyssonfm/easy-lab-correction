@@ -5,8 +5,8 @@ import java.util.Calendar;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.Team;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.TeamHasUserHasAssignment;
+import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
+import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.tests.acceptance.userstory04.FacadeAcceptanceTestUS04;
 

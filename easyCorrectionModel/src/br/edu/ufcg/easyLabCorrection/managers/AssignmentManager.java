@@ -62,7 +62,7 @@ public class AssignmentManager extends Manager {
 		return DAOFactory.DEFAULT.buildAssignmentDAO().getById(assignmentId);
 	}
 
-	public List<Assignment> listAssignments() {
+	public List<Assignment> getAssignments() {
 		return DAOFactory.DEFAULT.buildAssignmentDAO().findAll();
 	}
 

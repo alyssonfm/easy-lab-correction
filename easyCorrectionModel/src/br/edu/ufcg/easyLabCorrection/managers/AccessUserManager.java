@@ -7,8 +7,8 @@ import br.edu.ufcg.easyLabCorrection.exceptions.AuthenticationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.Team;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.TeamHasUserHasAssignment;
+import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
+import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.MD5Generator;
@@ -150,7 +150,7 @@ public class AccessUserManager extends Manager{
 	// TODO: MOVE TO System
 	private void allocateUserToTeam(User us, Team te)
 			throws EasyCorrectionException {
-		List<Assignment> assigns = assignmentManager.listAssignments();
+		List<Assignment> assigns = assignmentManager.getAssignments();
 		for (Assignment roteiro : assigns) {
 			TeamHasUserHasAssignment tua = new TeamHasUserHasAssignment();
 			tua.setTeam(te);
@@ -162,7 +162,7 @@ public class AccessUserManager extends Manager{
 
 	// TODO: MOVE TO System
 	private void allocateUserToTeam(User us) throws EasyCorrectionException {
-		List<Assignment> assigns = assignmentManager.listAssignments();
+		List<Assignment> assigns = assignmentManager.getAssignments();
 		for (Assignment assignment : assigns) {
 			List<TeamHasUserHasAssignment> eurs = teamManager
 					.getTeamHasUserHasAssignmentByAssignment(assignment.getId());
@@ -292,7 +292,7 @@ public class AccessUserManager extends Manager{
 
 	public void deleteUser(UserGroup userGroup) throws EasyCorrectionException {
 
-		List<Assignment> assigns = assignmentManager.listAssignments();
+		List<Assignment> assigns = assignmentManager.getAssignments();
 		if (userGroup.getGroup().getName().equals("Aluno")
 				&& assigns.size() > 0) {
 			throw new EasyCorrectionException(MsgErros.USUARIO_ALOCADO

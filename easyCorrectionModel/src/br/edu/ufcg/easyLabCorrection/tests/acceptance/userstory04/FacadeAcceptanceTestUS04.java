@@ -3,8 +3,8 @@ package br.edu.ufcg.easyLabCorrection.tests.acceptance.userstory04;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.Team;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.TeamHasUserHasAssignment;
+import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
+import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.tests.acceptance.userstory03.FacadeTestUS3Acceptance;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 
