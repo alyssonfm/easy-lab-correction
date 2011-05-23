@@ -669,7 +669,7 @@ public class Facade {
 	public List<TeamHasUserHasAssignment> getEquipeHasUsuarioHasRoteiroPorRoteiro(
 			Integer assignmentId, Integer correctorId) throws Throwable {
 		try {
-			return system.getTemHasUserHasAssignmentByAssignment(assignmentId);
+			return system.getTeamHasUserHasAssignmentByAssignment(assignmentId);
 		} catch (Throwable e) {
 			log.error("getTemHasUserHasAssignmentByAssignment()", e);
 			throw e;

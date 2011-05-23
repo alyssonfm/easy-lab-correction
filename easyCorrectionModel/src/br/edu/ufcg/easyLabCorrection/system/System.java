@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.AssignmentException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
@@ -320,7 +321,7 @@ public class System {
 					.msg(""));
 		}
 		Assignment assignment = assignmentManager.getAssignment(assignmentId);
-		return teamManager.getAllocatedTeams(assignment);
+		return teamManager.getNumberOfAllocatedTeams(assignment);
 	}
 
 	public TeamHasUserHasAssignment changeTeam(TeamHasUserHasAssignment tua)
@@ -364,11 +365,10 @@ public class System {
 	public String getSourceFileName(Submission submission) {
 		return submissionManager.getSourceFileName(submission);
 	}
-
-	public List<TeamHasUserHasAssignment> getTemHasUserHasAssignmentByAssignment(
-			Integer assignmentId) {
-		return teamManager.getTemHasUserHasAssignmentByAssignment(assignmentId);
-	}
+	
+	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignment(Integer assignmentId) {
+		return teamManager.getTeamHasUserHasAssignmentByAssignment(assignmentId);
+	}			
 
 	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignmentGroupByTeam(
 			Integer assignmentId) {
