@@ -22,7 +22,7 @@ public class AccessUserManagerTest {
 
 	private Facade facade;
 	private AccessUserManager access;
-	
+
 	private User us;
 	private UserGroup usgr;
 	private Group gr;
@@ -30,12 +30,12 @@ public class AccessUserManagerTest {
 	public AccessUserManagerTest() {
 		facade = new Facade();
 		access = new AccessUserManager();
-		
+
 		us = new User("userTestOk", "UserTest", "123123", "usertest@test.com");
 		gr = new Group(1, "GroupTest");
 		usgr = new UserGroup(1, gr, us);
 	}
-	
+
 	@BeforeClass
 	public void restartDatabase() {
 		facade.reinicializaBancoDeDados();
@@ -44,17 +44,17 @@ public class AccessUserManagerTest {
 	@Test
 	public void userGroupCRUDTest() {
 		/*
-		* CREATE
-		*/
+		 * CREATE
+		 */
 		UserGroup usgrError = new UserGroup(1, null, us);
 		UserGroup usgr1 = new UserGroup(-1, gr, us);
 		UserGroup usgr2 = new UserGroup(1, gr, null);
-		
+
 		try {
 			access.saveUserGroup(usgrError);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
-		}		
+		}
 		try {
 			access.saveUserGroup(usgr1);
 			Assert.assertTrue(false);
@@ -64,34 +64,35 @@ public class AccessUserManagerTest {
 			access.saveUserGroup(usgr2);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
-		}	
-		
+		}
+
 		/*
 		 * User Group OK.
 		 */
-		
+
 		try {
 			access.saveUserGroup(usgr);
 		} catch (EasyCorrectionException e) {
 			e.printStackTrace();
 			Assert.assertTrue(false);
 		}
-		
+
 		/*
-		 * RETRIEVE 
-		 */		
+		 * RETRIEVE
+		 */
 		UserGroup usgr3 = access.getUserGroup(-1); // null
 		UserGroup usgr4 = access.getUserGroup(0); // null
 		UserGroup usgr5 = access.getUserGroup(1); // UserGroup OK.
 		List<UserGroup> listusgr = access.listUserGroups(); // Not Empty
-		List<UserGroup> listusgr2 = access.listUserGroupsByGroup("GroupTest"); // Not Empty
-		
+		List<UserGroup> listusgr2 = access.listUserGroupsByGroup("GroupTest"); // Not
+																				// Empty
+
 		Assert.assertNull(usgr3);
 		Assert.assertNull(usgr4);
 		Assert.assertNull(usgr5);
 		Assert.assertNotSame(listusgr.size(), 0);
 		Assert.assertNotSame(listusgr2.size(), 0);
-		
+
 		/*
 		 * UPDATE
 		 */
@@ -99,7 +100,7 @@ public class AccessUserManagerTest {
 		UserGroup usgr7 = new UserGroup(0, gr, us);
 		UserGroup usgr8 = new UserGroup(1, null, us);
 		UserGroup usgr9 = new UserGroup(1, gr, null);
-		
+
 		try {
 			access.saveUserGroup(usgr6);
 			Assert.assertTrue(false);
@@ -120,7 +121,7 @@ public class AccessUserManagerTest {
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
-		
+
 		// UserGroup OK
 		try {
 			access.saveUserGroup(usgr);
@@ -128,7 +129,7 @@ public class AccessUserManagerTest {
 			e.printStackTrace();
 			Assert.assertTrue(false);
 		}
-				
+
 		/*
 		 * DELETE
 		 */
@@ -152,7 +153,7 @@ public class AccessUserManagerTest {
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
-		
+
 		// UserGroup OK
 		try {
 			access.deleteUser(usgr);
@@ -166,7 +167,7 @@ public class AccessUserManagerTest {
 	public void userCRUDTest() {
 		/*
 		 * CREATE
-		 */		
+		 */
 		User usError = new User("", "ELCTest", "123123", "elctest@test,com");
 		User us1 = new User("loginTest", "", "123123", "elctest@test1,com");
 		User us2 = new User("lTest", "Test", "", "elctest@test1,com");
@@ -175,7 +176,7 @@ public class AccessUserManagerTest {
 		User us5 = new User("ELCTest", null, "123123", "elctest@test1,com");
 		User us6 = new User("ELCTest", "TestName", null, "elctest@test1,com");
 		User us7 = new User("ELCTest", "TestName", "elctest", null);
-		
+
 		try {
 			usgr.setUser(usError);
 			access.saveUser(usgr);
@@ -224,7 +225,7 @@ public class AccessUserManagerTest {
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
-		
+
 		/*
 		 * User OK.
 		 */
@@ -235,18 +236,18 @@ public class AccessUserManagerTest {
 			e.printStackTrace();
 			Assert.assertTrue(false);
 		}
-		
+
 		/*
 		 * RETRIEVE
-		 */		
-		User us8 = access.getUser(-1); //null
-		User us9 = access.getUser(0); //null
+		 */
+		User us8 = access.getUser(-1); // null
+		User us9 = access.getUser(0); // null
 		User us10 = access.getUser(1); // User OK
 		User us11 = access.getUserByLogin(null); // null
-		User us12 = access.getUserByLogin(""); //null
+		User us12 = access.getUserByLogin(""); // null
 		User us13 = access.getUserByLogin("userTestOk"); // User OK
 		List<User> list1 = access.listUsers(); // Not Empty
-		
+
 		Assert.assertNull(us8);
 		Assert.assertNull(us9);
 		Assert.assertNull(us11);
@@ -254,7 +255,7 @@ public class AccessUserManagerTest {
 		Assert.assertNotNull(us10);
 		Assert.assertNotNull(us13);
 		Assert.assertNotSame(list1.size(), 0);
-		
+
 		/*
 		 * UPDATE
 		 */
@@ -266,7 +267,7 @@ public class AccessUserManagerTest {
 		User us19 = new User("test14", "", "123456", "test19@test.com");
 		User us20 = new User("test14", "123456", "", "test20@test.com");
 		User us21 = new User("test14", "123456", "test21", "");
-		
+
 		try {
 			usgr.setUser(us14);
 			access.saveUser(usgr);
@@ -315,7 +316,7 @@ public class AccessUserManagerTest {
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
-		
+
 		/*
 		 * User OK.
 		 */
@@ -326,7 +327,7 @@ public class AccessUserManagerTest {
 			e.printStackTrace();
 			Assert.assertTrue(false);
 		}
-		
+
 		/*
 		 * DELETE
 		 */
@@ -378,7 +379,7 @@ public class AccessUserManagerTest {
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
-		
+
 		// User OK
 		try {
 			usgr.setUser(us);
@@ -389,30 +390,37 @@ public class AccessUserManagerTest {
 		}
 	}
 
+	/*
+	 * Alysson this test will not pass. Because of the
+	 * Assert.Assert.assertTrue(false); The method changePassword should throws
+	 * an exception, not a runtimeException
+	 */
+
 	@Test
 	public void userAuthenticationTest() {
-		
+
 		// Changes on passwords.
 		access.changePassword(us, null);
 		Assert.assertTrue(false);
-		
-		access.changePassword(us, "12345"); // The passwords can not be less than six characters.
+
+		access.changePassword(us, "12345"); // The passwords can not be less
+											// than six characters.
 		Assert.assertTrue(false);
-		
+
 		access.changePassword(us, "123456");
 		Assert.assertTrue(true);
-		
+
 		// Consultations
 		User us22 = access.consultUserByLogin("userTestOk");
 		Assert.assertTrue(true);
-		
+
 		Assert.assertEquals(us22.getName(), us.getName());
 		Assert.assertEquals(us22.getLogin(), us.getLogin());
 		Assert.assertEquals(us22.getEmail(), us.getEmail());
-		
+
 		access.consultUserByGroup(-1);
 		Assert.assertTrue(false);
-		
+
 		access.consultUserByGroup(gr.getGroupId());
 		Assert.assertTrue(true);
 	}
