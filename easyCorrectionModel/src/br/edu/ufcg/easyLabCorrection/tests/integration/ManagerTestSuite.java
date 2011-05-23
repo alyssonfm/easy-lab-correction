@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.tests.component;
+package br.edu.ufcg.easyLabCorrection.tests.integration;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.tests.component;
+package br.edu.ufcg.easyLabCorrection.tests.integration;
 
 import java.util.Calendar;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
+import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.managers.TeamManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
@@ -32,16 +33,16 @@ public class TeamManagerTest {
 	private User userOK;
 	private Assignment assignOK;
 	private TeamHasUserHasAssignment tuaOK;
-	
+
 	public TeamManagerTest() {
 		team = new TeamManager();
-		
+
 		idOK = 1;
 		nameOK = "nameOK";
-		teamOK = new Team(1, nameOK);
-		
-		userOK = new User("1", "User OK", "123456", "user@gmail.com");
-		
+		teamOK = new Team(idOK, nameOK);
+
+		userOK = new User("login", "User OK", "123456", "user@gmail.com");
+
 		assignOK = new Assignment();
 		assignOK.setId(1);
 		assignOK.setStage(new Stage(1, "2011.1"));
@@ -61,7 +62,7 @@ public class TeamManagerTest {
 		assignOK.setTestTimeLimit(10000);
 		assignOK.setInterfaceDirectory("OK");
 		assignOK.setTestsDirectory("OK");
-				
+
 		tuaOK = new TeamHasUserHasAssignment(1, teamOK, assignOK, userOK);
 	}
 
@@ -71,24 +72,29 @@ public class TeamManagerTest {
 	}
 
 	@Test
-	public void testTeamBadParameters(){
+	public void testTeamBadParameters() {
+
+		try {
+			team.getTeam(1); // EXCEPTION
+		} catch (ObjectNotFoundException e) {
+		}
+		try {
+			team.getTeamByName("TeamOK"); // EXCEPTION
+		} catch (ObjectNotFoundException e) {
+		}
 		
-		Team tNULL = team.getTeam(-1); // EXCEPTION
-		Team tNULL2 = team.getTeam(0); // EXCEPTION
-		Team tNULL3 = team.getTeamByName("TeamOK"); // EXCEPTION 
 		List<Team> list = team.getTeams(); // EMPTY
-		
-		
+		Assert.assertEquals(list.size(), 0);
 		
 		/*
 		 * CREATE
 		 */
-		
+
 		Team t1 = new Team(-1, nameOK);
 		Team t2 = new Team(idOK, "");
 		Team t3 = new Team(idOK, null);
 		Team tOK = new Team(-1, nameOK);
-		
+
 		try {
 			team.saveTeam(t1);
 			Assert.assertTrue(false);
@@ -104,31 +110,63 @@ public class TeamManagerTest {
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
-		
-		
-		
+
 		try {
 			team.saveTeam(tOK);
 		} catch (EasyCorrectionException e) {
 			Assert.assertTrue(false);
 		}
-		
+
 		/*
 		 * RETRIEVE
 		 */
-		
-		
+		try {
+			team.getTeam(-1); // EXCEPTION
+			Assert.assertTrue(false);
+		} catch (ObjectNotFoundException e) {
+		}
+		try {
+			team.getTeam(0); // EXCEPTION
+		} catch (ObjectNotFoundException e) {
+		}
+		try {
+			team.getTeamByName(""); // EXCEPTION
+		} catch (ObjectNotFoundException e) {
+		}
+		try {
+			team.getTeamByName(null); // EXCEPTION
+		} catch (ObjectNotFoundException e) {
+		}
+
+		List<Team> list2 = team.getTeams(); // EMPTY
+		Assert.assertNotSame(list2.size(), 0);
 		
 		/*
 		 * UPDATE
 		 */
 		
-		
+		Team t4 = new Team(idOK, null);
+		Team t5 = new Team(idOK, "");		
+
+		try {
+			team.saveTeam(t4);
+			Assert.assertTrue(false);
+		} catch (EasyCorrectionException e) {
+		}
+
+		try {
+			team.saveTeam(t5);
+			Assert.assertTrue(false);
+		} catch (EasyCorrectionException e) {
+		}
 		
 		/*
-		 * DELETE
+		 * DELETE - Teams are never deleted
 		 */
 		
 	}
 	
+	
+
 }
+

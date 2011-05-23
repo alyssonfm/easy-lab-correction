@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.tests.component;
+package br.edu.ufcg.easyLabCorrection.tests.integration;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -81,97 +81,110 @@ public class AssignmentManagerTest {
 		 * CREATE
 		 */
 		Assignment aNULL = null;
-		Assignment a1 = new Assignment(-1, stageOK, nameOK, descriptionOK,
+		Assignment a0 = new Assignment(-1, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a2 = new Assignment(idOK, new Stage(-1, "2011.1"), nameOK,
+		Assignment a1 = new Assignment(idOK, new Stage(-1, "2011.1"), nameOK,
 				descriptionOK, releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a3 = new Assignment(idOK, new Stage(idOK, "xxxx.xxxxxxx"),
+		Assignment a2 = new Assignment(idOK, new Stage(idOK, "xxxx.xxxxxxx"),
 				nameOK, descriptionOK, releaseDateOK, deliveryDateOK,
 				discussionDateOK, participantsMaxNumberOK, sendMaxNumberOK,
 				penaltyPerDaysLateOK, automaticTestsPercentageOK,
 				testTimeLimitOK, interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a4 = new Assignment(idOK, stageOK, null, descriptionOK,
+		Assignment a3 = new Assignment(idOK, stageOK, null, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a5 = new Assignment(idOK, stageOK, "", descriptionOK,
-				releaseDateOK, deliveryDateOK, discussionDateOK,
-				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
+		Assignment a4 = new Assignment(idOK, stageOK, "", descriptionOK, null,
+				deliveryDateOK, discussionDateOK, participantsMaxNumberOK,
+				sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
-		// WE DECIDED NOT TO TEST THE DATES, BECAUSE OF A POSSIBLE CHANGE ON
-		// THE REQUIREMENTS
+		Assignment a5 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+				releaseDateOK, null, discussionDateOK, participantsMaxNumberOK,
+				sendMaxNumberOK, penaltyPerDaysLateOK,
+				automaticTestsPercentageOK, testTimeLimitOK,
+				interfaceDirectoryOK, testsDirectoryOK);
 		Assignment a6 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
-				releaseDateOK, deliveryDateOK, discussionDateOK, -1,
+				releaseDateOK, deliveryDateOK, null, participantsMaxNumberOK,
 				sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
 		Assignment a7 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+				releaseDateOK, deliveryDateOK, discussionDateOK,
+				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
+				automaticTestsPercentageOK, testTimeLimitOK,
+				interfaceDirectoryOK, testsDirectoryOK);
+		Assignment a8 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+				releaseDateOK, deliveryDateOK, discussionDateOK, -1,
+				sendMaxNumberOK, penaltyPerDaysLateOK,
+				automaticTestsPercentageOK, testTimeLimitOK,
+				interfaceDirectoryOK, testsDirectoryOK);
+		Assignment a9 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK, 0,
 				sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a8 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a10 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, -1, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a9 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a11 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, 0, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a10 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a12 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, -1,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a11 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a13 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, 1.1,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a12 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a14 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				-1, testTimeLimitOK, interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a13 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a15 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				1.1, testTimeLimitOK, interfaceDirectoryOK, testsDirectoryOK);
-		Assignment a14 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a16 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, -1, interfaceDirectoryOK,
 				testsDirectoryOK);
-		Assignment a15 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a17 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, 0, interfaceDirectoryOK,
 				testsDirectoryOK);
-		Assignment a16 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a18 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK, null,
 				testsDirectoryOK);
-		Assignment a17 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a19 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK, "",
 				testsDirectoryOK);
-		Assignment a18 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a20 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, null);
-		Assignment a19 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
+		Assignment a21 = new Assignment(idOK, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
@@ -182,8 +195,9 @@ public class AssignmentManagerTest {
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
 				interfaceDirectoryOK, testsDirectoryOK);
-		
+
 		saveBadAssignment(aNULL);
+		saveBadAssignment(a0);
 		saveBadAssignment(a1);
 		saveBadAssignment(a2);
 		saveBadAssignment(a3);
@@ -203,7 +217,9 @@ public class AssignmentManagerTest {
 		saveBadAssignment(a17);
 		saveBadAssignment(a18);
 		saveBadAssignment(a19);
-
+		saveBadAssignment(a20);
+		saveBadAssignment(a21);
+		
 		try {
 			assignment.saveAssignment(aOK);
 		} catch (AssignmentException e) {
@@ -228,6 +244,8 @@ public class AssignmentManagerTest {
 		 */
 
 		saveBadAssignment(aNULL);
+		//saveBadAssignment(a0); -- has an id different from aOK 
+		saveBadAssignment(a1);
 		saveBadAssignment(a2);
 		saveBadAssignment(a3);
 		saveBadAssignment(a4);
@@ -246,7 +264,9 @@ public class AssignmentManagerTest {
 		saveBadAssignment(a17);
 		saveBadAssignment(a18);
 		saveBadAssignment(a19);
-
+		saveBadAssignment(a20);
+		saveBadAssignment(a21);
+		
 		/*
 		 * DELETE
 		 */
