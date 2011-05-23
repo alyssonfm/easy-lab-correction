@@ -28,7 +28,9 @@ import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 
 /**
- * Servlet implementation class UploadServlet
+ * Class responsible for realization of uploads in the system Easy Lab Correction. <br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
  */
 public class ServletUpload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -37,31 +39,41 @@ public class ServletUpload extends HttpServlet {
 	//public static final String local = "/home/elc" + File.separator + "LEDA" + File.separator + "Roteiros"; //url do upload local
 	public static final String local = System.getProperty("catalina.base") + File.separator + "webapps" + File.separator + "LEDA" + File.separator + "Roteiros"; //url do upload local
 	
+	/**
+	 * Method that realizes upload, for way of a action doGet.
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Method that realizes upload, for way of a action doPost.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (request.getRequestURI().endsWith("downloadArquivo")){
-			downloadArquivo(request, response);
+			downloadArchive(request, response);
 		}
 		else{
-			fazUpload(request, response);
+			makesUpload(request, response);
 		}
 	}
 	
-	public static boolean checaArquivo(String pastaDestino, String nomeArquivo)  throws IOException{
+	/**
+	 * Method that verify the validity of the file.<br>
+	 * @param destinationFolder - the destination folder of the file<br> 
+	 * @param fileName - the name of file.<br>
+	 * @return a boolean value indicating if the file is OK or no.<br>
+	 * @throws IOException - exception that can be caused in an attempt to check the file.<br>
+	 */
+	public static boolean checkFile(String destinationFolder, String fileName)  throws IOException{
    	 	try{
    	 		
-            String destinationname = pastaDestino;
+            String destinationname = destinationFolder;
             byte[] buf = new byte[1024];
             ZipInputStream zipinputstream = null;
             ZipEntry zipentry;
             zipinputstream = new ZipInputStream(
-                new FileInputStream(pastaDestino + nomeArquivo));
+                new FileInputStream(destinationFolder + fileName));
             zipentry = zipinputstream.getNextEntry();
             while (zipentry != null){
                 String entryName = zipentry.getName();
@@ -80,15 +92,21 @@ public class ServletUpload extends HttpServlet {
         }
    }
 	
-    public static void unZip(String pastaDestino, String nomeArquivo)  throws IOException{
+	/**
+	 * Method that decompresses the file received as parameter in the destination folder chosen.<br>
+	 * @param destinationFolder - the destination folder of files uncompressed.<br>
+	 * @param fileName - the file name.<br>
+	 * @throws IOException - exception that can be caused in an attempt to decompress the file.<br>
+	 */
+    public static void unZip(String destinationFolder, String fileName)  throws IOException{
     	 try
          {
-             String destinationname = pastaDestino;
+             String destinationname = destinationFolder;
              byte[] buf = new byte[1024];
              ZipInputStream zipinputstream = null;
              ZipEntry zipentry;
              zipinputstream = new ZipInputStream(
-                 new FileInputStream(pastaDestino + nomeArquivo));
+                 new FileInputStream(destinationFolder + fileName));
              zipentry = zipinputstream.getNextEntry();
              while (zipentry != null) 
              { 
@@ -125,8 +143,14 @@ public class ServletUpload extends HttpServlet {
          }
     }
 	
-	
-	protected void downloadArquivo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/**
+	 * Method used to download files in system ELC.<br> 
+	 * @param request - the request used to download files.<br>
+	 * @param response - the response of the request.<br>
+	 * @throws ServletException - exceptions caused in the use of the servlet.<br>
+	 * @throws IOException - exceptions caused for problems of the input and/or output.<br> 
+	 */
+	protected void downloadArchive(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String nomeArquivo = request.getParameter("nomeArquivo");
 		
@@ -152,8 +176,11 @@ public class ServletUpload extends HttpServlet {
 		unZip(out);
 	}*/
 	
+	/**
+	 * Method used to creates uploads in the system ELC.<br>
+	 */
 	@SuppressWarnings("unchecked")
-	protected void fazUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void makesUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//String uploadDir = this.getServletContext().getRealPath(local);
 		String url = request.getParameter("url").replace("/", File.separator);
 		String uploadDir = local + url;
@@ -187,11 +214,11 @@ public class ServletUpload extends HttpServlet {
 			request.getRequestDispatcher("/erro.jsp").forward(request, response);
 		}
 		if(nomeArquivo.substring(nomeArquivo.length() - 3, nomeArquivo.length()).equals("zip")){
-			if (checaArquivo(uploadDir, nomeArquivo)){
+			if (checkFile(uploadDir, nomeArquivo)){
 				unZip(uploadDir, nomeArquivo);
 			}
 			else{
-				request.setAttribute("errorMessage", "Erro no envio! O pacote zip submetido possui arquivos que não são do tipo JAVA.");
+				request.setAttribute("errorMessage", "Erro no envio! O pacote zip submetido possui arquivos que nï¿½o sï¿½o do tipo JAVA.");
 				request.getRequestDispatcher("/erro.jsp").forward(request, response);
 			}
 		}
