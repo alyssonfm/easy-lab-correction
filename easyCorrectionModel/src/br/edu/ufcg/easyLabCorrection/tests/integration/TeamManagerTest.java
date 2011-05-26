@@ -68,7 +68,7 @@ public class TeamManagerTest {
 
 		tuaOK = new TeamHasUserHasAssignment(idOK, teamOK, assignOK, userOK);
 	}
-
+	
 	@BeforeClass
 	public void restartDatabase() {
 		facade.reinicializaBancoDeDados();
