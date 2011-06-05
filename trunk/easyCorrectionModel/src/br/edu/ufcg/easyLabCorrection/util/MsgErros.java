@@ -1,9 +1,14 @@
 package br.edu.ufcg.easyLabCorrection.util;
 
+/**
+ * Enumeration of error messages.<br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ */
 public enum MsgErros {
 
-	/*
-	 * MENSAGENS DE ERROS REFERENTES A CAMPOS VAZIOS E/OU NULOS
+	/**
+	 * ERROR MESSAGES RELATING TO EMPTY FIELDS AND / OR NULL
 	 */
 	CAMPOVAZIO {
 		public String msg(String... args) {
@@ -67,7 +72,7 @@ public enum MsgErros {
 	},
 	USUARIO_ALOCADO{
 		public String msg(String... args){
-			return "Exclusão não realizada. Este Usuário já está alocado a uma das equipe.";
+			return "Exclusï¿½o nï¿½o realizada. Este Usuï¿½rio jï¿½ estï¿½ alocado a uma das equipe.";
 		}
 
 	},
@@ -89,87 +94,87 @@ public enum MsgErros {
 	},
 	NUMERO_MAXIMO_PARTICIPANTES{
 		public String msg(String... args) {
-			return "Está equipe já contém o número máximo de participantes. Por favor cadastre-se em outra equipe.";
+			return "Estï¿½ equipe jï¿½ contï¿½m o nï¿½mero mï¿½ximo de participantes. Por favor cadastre-se em outra equipe.";
 		}
 	},
 	TEMPO_MAXIMO_SUBMISSOES_EXCEDIDO{
 		public String msg(String... args) {
-			return "Erro no envio! Submissão fora do horário de liberação para submissões do " + args[0];
+			return "Erro no envio! Submissï¿½o fora do horï¿½rio de liberaï¿½ï¿½o para submissï¿½es do " + args[0];
 		}
 	},
 	NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO{
 		public String msg(String... args) {
-			return "Erro no envio! A sua equipe já alcançou o limite de submissões do " + args[0];
+			return "Erro no envio! A sua equipe jï¿½ alcanï¿½ou o limite de submissï¿½es do " + args[0];
 		}
 	},
 	ERRO_COMPILACAO_SEM_CLASSE{
 		public String msg(String... args) {
-			return "ERRO DE COMPILAÇÃO! Sua solução não possui tem a classe que implementa a interface na raiz do .zip";
+			return "ERRO DE COMPILAï¿½ï¿½O! Sua soluï¿½ï¿½o nï¿½o possui tem a classe que implementa a interface na raiz do .zip";
 		}
 	},
 	ERRO_COMPILACAO_SINTAXE{
 		public String msg(String... args) {
-			return "ERRO DE COMPILAÇÃO! Sua solução possui algum erro sintático.";
+			return "ERRO DE COMPILAï¿½ï¿½O! Sua soluï¿½ï¿½o possui algum erro sintï¿½tico.";
 		}
 	},
 	TEMPO_LIMITE_EXCEDIDO{
 		public String msg(String... args) {
-			return "TEMPO LIMITE EXCEDIDO! Sua solução não obedeceu ao limite de tempo de execução.";
+			return "TEMPO LIMITE EXCEDIDO! Sua soluï¿½ï¿½o nï¿½o obedeceu ao limite de tempo de execuï¿½ï¿½o.";
 		}
 	},	
 	ROTEIRO_INEXISTENTE{
 		public String msg(String... args) {
-			return "Não há equipes alocadas pois o roteiro ainda não foi criado!";
+			return "Nï¿½o hï¿½ equipes alocadas pois o roteiro ainda nï¿½o foi criado!";
 		}
 	},
 	ID_ROTEIRO_INEXISTENTE{
 		public String msg(String... args) {
-			return "Não foi possível terminar a consulta! Roteiro inexistente.";
+			return "Nï¿½o foi possï¿½vel terminar a consulta! Roteiro inexistente.";
 		}
 	},
 	ROTEIRO_NAO_LIBERADO{
 		public String msg(String... args) {
-			return "Não há equipes alocadas pois o Roteiro " +args[0]+ " ainda não foi liberado!";
+			return "Nï¿½o hï¿½ equipes alocadas pois o Roteiro " +args[0]+ " ainda nï¿½o foi liberado!";
 		}
 	},
 	ROTEIRO_INDIVIDUAL{
 		public String msg(String... args) {
-			return "Nenhuma equipe pode ser modificada. O Roteiro é individual!";
+			return "Nenhuma equipe pode ser modificada. O Roteiro ï¿½ individual!";
 		}
 	},
 	EQUIPE_HAS_ROTEIRO_COMPLETA{
 		public String msg(String... args) {
-			return "Não foi possível mudar de equipe! Limite de integrantes da " + args[0] + " já alcançado (máximo de " + args[1] + " integrante(s) por equipe).";
+			return "Nï¿½o foi possï¿½vel mudar de equipe! Limite de integrantes da " + args[0] + " jï¿½ alcanï¿½ado (mï¿½ximo de " + args[1] + " integrante(s) por equipe).";
 		}
 	},
 	ARQUIVO_MAL_FORMADO{
 		public String msg(String... args) {
-			return "Erro no envio! O pacote zip submetido possui arquivos que não são do tipo JAVA.";
+			return "Erro no envio! O pacote zip submetido possui arquivos que nï¿½o sï¿½o do tipo JAVA.";
 		}
 	},
 	ALUNO_INEXISTENTE{
 		public String msg(String... args) {
-			return "Mudança de equipe não realizada! Aluno inexistente.";
+			return "Mudanï¿½a de equipe nï¿½o realizada! Aluno inexistente.";
 		}
 	},
 	EQUIPE_INEXISTENTE{
 		public String msg(String... args) {
-			return "Mudança não realizada! Equipe inexistente.";
+			return "Mudanï¿½a nï¿½o realizada! Equipe inexistente.";
 		}
 	},
 	EMAIL{
 		public String msg(String... args) {
-			return "Não é possível cadastrar o usuário, este e-mail já existe.";
+			return "Nï¿½o ï¿½ possï¿½vel cadastrar o usuï¿½rio, este e-mail jï¿½ existe.";
 		}
 	},
 	LOGIN{
 		public String msg(String... args) {
-			return "Não é possível cadastrar o usuário, este login já existe.";
+			return "Nï¿½o ï¿½ possï¿½vel cadastrar o usuï¿½rio, este login jï¿½ existe.";
 		}
 	},
 	AVALIACAO{
 		public String msg(String... args) {
-			return "Não é possível salvar a avaliação.";
+			return "Nï¿½o ï¿½ possï¿½vel salvar a avaliaï¿½ï¿½o.";
 		}
 	};
 	

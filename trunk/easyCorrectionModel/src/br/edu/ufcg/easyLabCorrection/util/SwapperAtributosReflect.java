@@ -11,19 +11,24 @@ import java.util.List;
 import br.edu.ufcg.easyLabCorrection.exceptions.NonexistantAttributeException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 
+/**
+ * Class responsible for the reflection and exchange of attributes.<br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ */
 public class SwapperAtributosReflect {
 
 	/**
-	 * Copia os atributos de um objeto (objAtributosACopiar) para um outro
-	 * (objetoOriginal), exceto o Id do Objeto que � formado por
-	 * idNomedaClasse e o serialVersionUID . A copia dos atributos � realizada
-	 * tamb�m com os atributos da superclasse
+	 * Function which copies the attributes of an object (objAtributosACopiar) to 
+	 * another (objetoOriginal), except that Object Id is formed by 
+	 * idNomedaClasse and serialVersionUID. A copy of the attributes 
+	 * is performed also with attributes of the superclass.<br>
 	 * 
-	 * @param objetoOriginal
-	 * @param objAtributosACopiar
-	 * @param classe
-	 * @return
-	 * @throws EasyCorrectionException
+	 * @param objetoOriginal The original object.<br>
+	 * @param objAtributosACopiar The atrributes to be copied.<br>
+	 * @param classe The class for which you want to copy the attributes.<br>
+	 * @return The object with the new attributes.<br>
+	 * @throws EasyCorrectionException An exception which to be launched during the swap.<br>
 	 */
 	@SuppressWarnings("unchecked")
 	public static Object swapObject(Object objetoOriginal,
@@ -33,15 +38,16 @@ public class SwapperAtributosReflect {
 	}
 
 	/**
-	 * Permite tb Verifica ou desconsiderar os metodos da classe os metodos da
-	 * classe pai
+	 * Function which it also allows to verify or dismiss the methods of the 
+	 * class or the methods of the parent class.<br>
 	 * 
-	 * @param objetoOriginal
-	 * @param objAtributosACopiar
-	 * @param classePai
-	 * @param classe
-	 * @return
-	 * @throws EasyCorrectionException
+	 * @param objetoOriginal The original object.<br>
+	 * @param objAtributosACopiar The atrributes to be copied.<br>
+	 * @param classePai The boolean indicating whether it is 
+	 * part of the parent class.<br>
+	 * @param classe The class child.<br>
+	 * @return The object exchanged.<br>
+	 * @throws EasyCorrectionException An exception which to be launched during the swap.<br>
 	 */
 	@SuppressWarnings("unchecked")
 	public static Object swapObject(Object objetoOriginal,
@@ -81,12 +87,12 @@ public class SwapperAtributosReflect {
 	}
 
 	/**
-	 * retorna um metodo contido em um array de metodos cujo nome �
-	 * "set"+nomeAtributo
+	 * Function that returns a method contained in an array of methods 
+	 * whose name is "set" + attributeName
 	 * 
-	 * @param nomeAtributo
-	 * @param declaredMetodos
-	 * @return
+	 * @param nomeAtributo The attribute name desired.<br>
+	 * @param declaredMetodos The methods declarated.<br>
+	 * @return The method desired.<br>
 	 */
 	public static Method getMetodoSetDoAtributo(String nomeAtributo,
 			ArrayList<Method> declaredMetodos) {
@@ -100,16 +106,16 @@ public class SwapperAtributosReflect {
 	}
 
 	/**
-	 * Retorna um atributo do objeto passado, desde de que ele implemente o
-	 * m�todo get segundo a conven��o para o atributo desejado.
+	 * Returns an attribute of the object passed, provided that it 
+	 * implements the method according to the convention to get the 
+	 * desired attribute.<br>
 	 * 
-	 * @param objeto
-	 *            O objeto sob o qual se invocar� o get.
-	 * @param atributo
-	 *            O atributo desejado do objeto.
-	 * @return O valor do atributo especificado do objeto.
-	 * @throws NonexistantAttributeException
-	 *             Caso o atributo especificado n�o exista.
+	 * @param objeto The object under which it invoked the get.<br>
+	 * @param atributo The desired attribute of the object.<br>            
+	 * @return The value of the specified attribute of the object.<br>
+	 * @throws NonexistantAttributeException If the specified 
+	 * attribute does not exist.<br>
+	 * 
 	 */
 	public static Object getAtributo(Object objeto, String atributo,
 			boolean isBoolean) throws NonexistantAttributeException {
@@ -130,6 +136,14 @@ public class SwapperAtributosReflect {
 		}
 	}
 
+	/**
+	 * Function that returns a attribute, receives an object, a string and a type.<br>
+	 * @param objeto The object passed as parameter.<br>
+	 * @param atributo The attribute passed as parameter.<br>
+	 * @param type The type passed as parameter.<br>
+	 * @return The attribute.<br>
+	 * @throws NonexistantAttributeException If the attribute does not exist.<br>
+	 */
 	public static Object getAtributo(Object objeto, String atributo,
 			Class<?> type) throws NonexistantAttributeException {
 		if (type.getName().equalsIgnoreCase("boolean")) {
@@ -140,12 +154,12 @@ public class SwapperAtributosReflect {
 	}
 
 	/**
-	 * Torna a primeira letra de uma palavra em mai�scula.
+	 * Makes the first letter of a word in upper case.<br>
 	 * 
-	 * @param atributo
-	 *            A string que deve ser modificada.
-	 * @return Uma nova String equivalente a primeira, mas com a primeira letra
-	 *         mi�scula.
+	 * @param atributo The string should be modified.<br>
+	 *            
+	 * @return A new String equivalent to the first, but 
+	 * with the first letter miuscula.<br>
 	 */
 	public static String corrigeStringAtributo(String atributo) {
 		String primeiraLetra = String.valueOf(atributo.charAt(0));
@@ -153,6 +167,15 @@ public class SwapperAtributosReflect {
 				.replaceFirst(primeiraLetra, primeiraLetra.toUpperCase());
 	}
 
+	/**
+	 * Procedure used to set an attributte, receives an object, 
+	 * a method and a value as parameter.<br>
+	 * @param objeto The object passed as parameter.<br>
+	 * @param metodo The method passed as parameter.<br>
+	 * @param value The value passed as parameter.<br>
+	 * @throws EasyCorrectionException If it is not possible 
+	 * to set the requested attribute.<br>
+	 */
 	public static void setAtributo(Object objeto, Method metodo, Object value)
 			throws EasyCorrectionException {
 		try {
@@ -166,17 +189,13 @@ public class SwapperAtributosReflect {
 	}
 
 	/**
-	 * Altera um atributo do objeto passado, desde de que ele implemente o
-	 * m�todo set segundo a conven��o para o atributo desejado.
+	 * Changes an attribute of the object passed, provided that it implements 
+	 * the set method according to the convention for the desired attribute.<br>
 	 * 
-	 * @param objeto
-	 *            O objeto sob o qual se invocar� o get.
-	 * @param atributo
-	 *            O atributo que se deseja alterar do objeto passado.
-	 * @param value
-	 *            O novo valor do Atributo especificado.
-	 * @throws JatoException
-	 *             Caso n�o seja poss�vel setar o atributo pedido.
+	 * @param objeto The object under which it will invoke the get.<br>
+	 * @param atributo The attribute you wish to alter the object passed.<br>
+	 * @param value The new value of specified attribute.<br>
+	 * @throws EasyCorrectionException If it is not possible to set the requested attribute.<br>
 	 */
 	@SuppressWarnings("unchecked")
 	public static void setAtributo(Object objeto, String atributo,
@@ -195,15 +214,5 @@ public class SwapperAtributosReflect {
 					.msg(atributo));
 		}
 	}
-	/*
-	 * public static void main(String[] args) { try { //swapObject(new
-	 * Professor(), new Professor(), Professor.class); //swapObject(new
-	 * Bolsista(), new Bolsista(), Bolsista.class); swapObject(new
-	 * ComiteExterno(), new ComiteExterno(), ComiteExterno.class); } catch
-	 * (EPibicException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); }
-	 * 
-	 * }
-	 */
-
+	
 }

@@ -37,8 +37,10 @@ Documentacao:
 1 - Exceptions:
  	* Checar se tah sendo usada -> Finished
 2 - Servlet	-> Finished
-3 - Util 
+3 - Util -> Finished
 	* S� m�todos por enquanto
-4 - Gerenciadores
+4 - Gerenciadores -> In Progress...
  	* S� m�todos por enquanto
  	* Usar o padr�o CRUD no ingl�s: Create, Retrive, Update and Delete nos metodos
+ 	* No gerenciador de Acesso e Permissão as funções: getGroupByName(String name) e consultGroupByName(String name) fazem exatamente a mesma coisa, recuperam um grupo por meio de um nome passado como parâmetro.
+ 	 	

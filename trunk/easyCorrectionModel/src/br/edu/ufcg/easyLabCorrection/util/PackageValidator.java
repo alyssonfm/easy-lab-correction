@@ -7,15 +7,28 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+/**
+ * Class responsible for performing validation of packets in the system ELC.<br>
+ * 
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ * 
+ */
 public class PackageValidator {
 	
 	private ArrayList<String> forbiddenWords;
 	
+	/**
+	 * Constructor default of class.<br>
+	 */
 	public PackageValidator(){
 		forbiddenWords = new ArrayList<String>();
 		buildFWList();
 	}
 	
+	/**
+	 * Procedure that constructs the list of forbidden words used in the system.<br>
+	 */
 	private void buildFWList(){
 		StringTokenizer st = new StringTokenizer(Constants.notAllowedWords, ",");
 		while (st.hasMoreTokens()){
@@ -23,6 +36,11 @@ public class PackageValidator {
 		}
 	}
 	
+	/**
+	 * Function that search forbidden words in files of the system.<br> 
+	 * @param sc The scanner used in search.<br>
+	 * @return The forbidden word if already, empty otherwise.<br>
+	 */
 	private String findFW(Scanner sc){
 		for(int i = 0; i < forbiddenWords.size(); i++){
 			if (sc.findInLine(forbiddenWords.get(i)) != null){
@@ -32,6 +50,13 @@ public class PackageValidator {
 		return "";
 	}
 	
+	/**
+	 * Function that verify a file passed as parameter.<br>
+	 * @param file The file to be verified.<br>
+	 * @return A forbidden word was found in the file.<br>
+	 * @throws FileNotFoundException Exception launched if 
+	 * the file does not exist in the system.<br>
+	 */
 	private String verify(File file) throws FileNotFoundException{
 		Scanner sc = new Scanner(file);
 		while(sc.hasNextLine()){
@@ -42,6 +67,10 @@ public class PackageValidator {
 		return "OK!";
 	}
 	
+	/**
+	 * Procedure used to scan all directories and all files.<br>
+	 * @param dir The directy which will be verified.<br>
+	 */
 	public void visitAllDirsAndFiles(File dir) {
 	    process(dir);
 	    if (dir.isDirectory()) {
@@ -52,6 +81,10 @@ public class PackageValidator {
 	    }
 	}
 
+	/**
+	 * Procedure used to process a directory in system.<br>
+	 * @param dir The directory to be processed.<br>
+	 */
 	private void process(File dir){
 		String[] children = dir.list();
 		
@@ -79,9 +112,12 @@ public class PackageValidator {
 		}
 	}
 
+	/**
+	 * Procedure main of class.<br>
+	 */
 	public static void main(String[] args) throws FileNotFoundException{
 		PackageValidator pv = new PackageValidator();
-		pv.visitAllDirsAndFiles(new File("D:/Gradua��o/"));
+		pv.visitAllDirsAndFiles(new File("D:/Graduação/"));
 	}
 	
 }

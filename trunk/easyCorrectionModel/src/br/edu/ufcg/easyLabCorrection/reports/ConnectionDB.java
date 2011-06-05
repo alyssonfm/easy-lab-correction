@@ -5,43 +5,43 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * @author Alysson, Augusto e Demetrio.
- *
+ * Class which realizes the connection with database of system Easy Lab Correction.<br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
  */
 public class ConnectionDB {
 	/**
-	 * O nome do host
+	 * The host name.<br>
 	 */
 	private String host;
 	
 	/**
-	 * O schema do banco de dados
+	 * The database schema.<br>
 	 */
 	private String database;
 	
 	/**
-	 * O nome do usuario
+	 * The user's name.<br>
 	 */
 	private String username;
 	
 	/**
-	 * A senha do usuário
+	 * The user's password.<br>
 	 */
 	private String password;
 	
 	/**
-	 * A classe de conexão
+	 * The connection class.<br>
 	 */
 	private Connection connection;
 	
 	
 	/**
-	 * Constrói uma conexão a partir das informações necessárias: host, database, username, password
-	 * 
-	 * @param host
-	 * @param database
-	 * @param username
-	 * @param password
+	 * Constructs a connection from the information necessary: host, database, username, password.<br>
+	 * @param host The host used.<br>
+	 * @param database The database which will be used to connect.<br>
+	 * @param username The name of user of database.<br>
+	 * @param password The password of database user.<br> 
 	 */
 	public ConnectionDB(String host, String database, String username, String password) {
 		this.host = host;
@@ -64,14 +64,15 @@ public class ConnectionDB {
 	}
 
 	/**
-	 * @return A conexão gerada
+	 * Function which returns the connection generated.<br>
+	 * @return The connection generated.<br>
 	 */
 	public Connection getConnection() {
 		return this.connection;
 	}
 
 	/**
-	 * Fecha a conexão
+	 * Procedure which close the connection.<br>
 	 */
 	public void close() {
 		try {

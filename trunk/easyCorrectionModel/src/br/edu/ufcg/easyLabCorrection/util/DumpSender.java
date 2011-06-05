@@ -20,6 +20,12 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+/**
+ * Class used to send the email with the backup of the database system ELC.<br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ *
+ */
 public class DumpSender implements Job {
 	
 	private static String subject = "[ELC] Backup Bando de Dados ELC";
@@ -27,7 +33,9 @@ public class DumpSender implements Job {
 	private static String mainMessage = "Segue BD do ELC.";
 	private static String emailInst = "leda@dsc.ufcg.edu.br";
 
-	@Override
+	/**
+	 * Procedure used to send the email with the backup of the database system.<br>
+	 */
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		
 		Properties props = new Properties();
