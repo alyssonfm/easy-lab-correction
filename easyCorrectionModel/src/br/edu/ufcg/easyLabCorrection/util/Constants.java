@@ -1,6 +1,10 @@
 package br.edu.ufcg.easyLabCorrection.util;
 
-
+/**
+ * Class used for the main constants in the system ELC.<br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.
+ */
 public class Constants {
 	
 	// Demetrio's directory

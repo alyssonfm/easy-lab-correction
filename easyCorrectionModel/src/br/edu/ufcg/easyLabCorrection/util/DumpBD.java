@@ -6,8 +6,16 @@ import org.quartz.JobExecutionException;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Class responsible for creating the backup of the database system ELC.<br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ */
 public class DumpBD implements Job {
 	
+	/**
+	 * The procedure used for creating the backup of the database system.<br> 
+	 */
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		
 		File directory = new File(Constants.bdBackupDirectory);  

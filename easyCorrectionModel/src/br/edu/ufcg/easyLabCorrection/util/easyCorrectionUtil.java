@@ -9,14 +9,19 @@ import java.util.Date;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.NonexistantAttributeException;
 
+/**
+ * Class that contains some functions that are used by several classes of system ELC.<br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ */
 public class easyCorrectionUtil {
 
 	/**
-	 * Verifica se uma string é composta apenas por espacos em branco ou vazia.
-	 * Por exemplor para as string "    " ou "" o metodo retornaira true.
+	 * Checks if a string consists only of blank spaces or empty.<br>
+	 * By exemplor for string "or" Return therefore the true method.<br>
 	 * 
-	 * @param value
-	 * @return
+	 * @param value The string to be verified if it is empty.<br>
+	 * @return A boolean: true - if the string is empty; false - otherwise.<br>
 	 */
 	public static boolean isEmpty(String value) {
 		value = value.trim();
@@ -24,38 +29,36 @@ public class easyCorrectionUtil {
 	}
 
 	/**
-	 * Verifica se um valor � null ou vazio, incluindo os car
+	 * Checks if a value is null or empty.<br>
 	 * 
-	 * @param value
-	 * @return
+	 * @param value The value to be checked.<br>
+	 * @return A boolean: true - if value is null or empty; false - otherwise.<br>
 	 */
 	public static boolean isNullOrEmpty(String value) {
 		return isNull(value) || isEmpty(value);
 	}
 
 	/**
-	 * Verifica se um objeto � null
+	 * Checks if a object is null.<br>
 	 * 
-	 * @param value
-	 * @return
+	 * @param value The value to be checked.<br>
+	 * @return A boolean: true - if object is null; false - otherwise.<br>
 	 */
 	public static boolean isNull(Object value) {
 		return value == null;
 	}
 
 	/**
-	 * Recupera a data Atual
-	 * 
-	 * @return
+	 * Function which retrieves the current date.<br>
+	 * @return The current date.<br>
 	 */
 	public static Date getDataNow() {
 		return getDataNowTimeZero(new Date());
 	}
 	
 	/**
-	 * Recupera a data Atual, mas com o tempo zerado (as zero horas de hoje) 
-	 * 
-	 * @return
+	 * Function which retrieves the current date, but with time zero (the zero hour today).<br>
+	 * @return The current date with time zero (the zero hour today).<br>
 	 */
 	public static Date getDataNowTimeZero(Date data) {
 		Calendar c = Calendar.getInstance();
@@ -68,11 +71,21 @@ public class easyCorrectionUtil {
 		return c.getTime();
 	}
 	
+	/**
+	 * Function which retrieves the date of real time.<br>
+	 * @return The date of real time.<br>
+	 */
 	public static Date getRealTime() {
 		Calendar c = Calendar.getInstance();
 		return c.getTime();
 	}
 
+	/**
+	 * Function which returns the date in the format "dd/mm/yyyy".<br>
+	 * @param dateTemp The date temporary before to be formated.<br>
+	 * @return The formated date.<br>
+	 * @throws Exception The exception which can to be launched.<br>
+	 */
 	public static Date formatData(String dateTemp) throws Exception {
 		if (dateTemp == null || dateTemp.equals(""))
 			return null;
@@ -87,16 +100,14 @@ public class easyCorrectionUtil {
 	}
 
 	/**
-	 * Retorna um atributo do objeto passado, desde de que ele implemente o
-	 * metodo get segundo a convencao para o atributo desejado.
+	 * Function that Returns an attribute of the object passed, 
+	 * provided that it implements the method according to the 
+	 * convention to get the desired attribute.<br>
 	 * 
-	 * @param objectTemp
-	 *            O objeto sob o qual se invocara o get.
-	 * @param attribute
-	 *            O atributo desejado do objeto.
-	 * @return O valor do atributo especificado do objeto.
-	 * @throws AtributoNaoExisteExeption
-	 *             Caso o atributo especificado nao exista.
+	 * @param objectTemp The object under which it invoked the get.<br>
+	 * @param attribute The desired attribute of the object.<br>
+	 * @return The attribute value of object specified.<br>
+	 * @throws AtributoNaoExisteExeption If the specified attribute does not exist.<br>
 	 */
 	public static Object getAttribute(Object objectTemp, String attribute,
 			boolean isBoolean) throws NonexistantAttributeException {
@@ -117,6 +128,13 @@ public class easyCorrectionUtil {
 		}
 	}
 
+	/**
+	 * Function that returns an attribute with the first 
+	 * letter in upper case, given a received attribute as 
+	 * a parameter.<br> 
+	 * @param attribute The attribute that will put the first letter in upper case.<br>
+	 * @return The attribute with the first letter in upper case.<br>
+	 */
 	private static String correctsAttributeString(String attribute) {
 		String firstLetter = String.valueOf(attribute.charAt(0));
 		return attribute.replaceFirst(firstLetter, firstLetter.toUpperCase());

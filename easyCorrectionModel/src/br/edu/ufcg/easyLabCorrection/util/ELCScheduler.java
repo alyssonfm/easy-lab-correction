@@ -9,12 +9,22 @@ import org.quartz.Trigger;
 import org.quartz.TriggerUtils;
 import org.quartz.impl.StdSchedulerFactory;
 
-
+/**
+ *  Class responsible for scheduling activities in the system.<br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ */
 public class ELCScheduler {
 	
 	Timer timer;
 	public static boolean start = false;
 	
+	/**
+	 * Constructor of class that schedule activities on the system.<br>
+	 * @param day The day of scheduling.<br>
+	 * @param hour The hour of scheduling.<br>
+	 * @param minute The minute of scheduling.<br>
+	 */
 	public ELCScheduler(int day, int hour, int minute) {
 		
 		int weekDay = 0;
