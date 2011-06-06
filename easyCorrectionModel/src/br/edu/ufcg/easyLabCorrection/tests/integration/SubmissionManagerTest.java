@@ -1,6 +1,5 @@
 package br.edu.ufcg.easyLabCorrection.tests.integration;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.BeforeClass;

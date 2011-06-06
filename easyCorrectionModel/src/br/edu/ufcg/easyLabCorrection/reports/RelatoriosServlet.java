@@ -127,23 +127,23 @@ public class RelatoriosServlet extends HttpServlet implements Servlet {
 	 *            O stream de saída para o relatório
 	 * @throws JRException
 	 */
-	private void geraRelatorio(Map<String, Object> parametros,
-			String pathRelatorio, OutputStream out) throws Throwable {
-
-		try {
-			JasperDesign design = JRXmlLoader.load(pathRelatorio);
-			if (conexao.isClosed()) {
-				throw new JRException("A conexao esta fechada!!!");
-			}
-			JasperReport report = JasperCompileManager.compileReport(design);
-			JasperPrint printer = JasperFillManager.fillReport(report,
-					parametros, conexao);
-			JasperExportManager.exportReportToPdfStream(printer, out);
-		} catch (Throwable e) {
-			log.error("geraRelatorioProduto()", e);
-			throw e;
-		}
-	}
+	// private void geraRelatorio(Map<String, Object> parametros,
+	// String pathRelatorio, OutputStream out) throws Throwable {
+	//
+	// try {
+	// JasperDesign design = JRXmlLoader.load(pathRelatorio);
+	// if (conexao.isClosed()) {
+	// throw new JRException("A conexao esta fechada!!!");
+	// }
+	// JasperReport report = JasperCompileManager.compileReport(design);
+	// JasperPrint printer = JasperFillManager.fillReport(report,
+	// parametros, conexao);
+	// JasperExportManager.exportReportToPdfStream(printer, out);
+	// } catch (Throwable e) {
+	// log.error("geraRelatorioProduto()", e);
+	// throw e;
+	// }
+	// }
 
 	public static void geraRelatorioJASPER(Map<String, Object> parametros, 
 			String pathRelatorio, OutputStream out, Connection conexao) throws Throwable {

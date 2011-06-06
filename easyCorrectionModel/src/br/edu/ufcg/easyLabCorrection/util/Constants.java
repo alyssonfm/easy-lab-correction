@@ -16,7 +16,7 @@ public class Constants {
 	//public static final String caminhoComandoDump = "mysqldump -uelc -p123 -r";
 	public static final String dumpCommandPath = "C:/xampp/mysql/bin/mysqldump.exe -uelc -p123 -r";
 	//public static final String diretorioBackupBancoDeDados = "/home/elc/";
-	public static final String bdBackupDirectory = "D:/Gradua��o/";
+	public static final String bdBackupDirectory = "D:/Graduação/";
 	public static final String bdBackupFile = "backupEasyLabCorrection0000.sql";
 	
 	public static final String notAllowedWords = "System.exit";

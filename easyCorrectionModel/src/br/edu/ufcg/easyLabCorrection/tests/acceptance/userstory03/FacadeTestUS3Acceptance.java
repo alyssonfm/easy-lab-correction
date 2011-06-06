@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
-import br.edu.ufcg.easyLabCorrection.system.Facade;
 import br.edu.ufcg.easyLabCorrection.tests.acceptance.userstory02.FacadeAcceptanceTestUS02;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 

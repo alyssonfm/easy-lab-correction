@@ -1,17 +1,10 @@
 package br.edu.ufcg.easyLabCorrection.servlet;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import javax.servlet.ServletException;
@@ -23,9 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
-import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 
 /**
  * Class responsible for realization of uploads in the system Easy Lab Correction. <br>
@@ -67,9 +57,8 @@ public class ServletUpload extends HttpServlet {
 	 */
 	public static boolean checkFile(String destinationFolder, String fileName)  throws IOException{
    	 	try{
-   	 		
-            String destinationname = destinationFolder;
-            byte[] buf = new byte[1024];
+			// String destinationname = destinationFolder;
+			// byte[] buf = new byte[1024];
             ZipInputStream zipinputstream = null;
             ZipEntry zipentry;
             zipinputstream = new ZipInputStream(

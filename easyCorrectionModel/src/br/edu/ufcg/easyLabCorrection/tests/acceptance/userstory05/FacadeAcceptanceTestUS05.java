@@ -2,7 +2,6 @@ package br.edu.ufcg.easyLabCorrection.tests.acceptance.userstory05;
 
 import java.util.Calendar;
 
-import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;

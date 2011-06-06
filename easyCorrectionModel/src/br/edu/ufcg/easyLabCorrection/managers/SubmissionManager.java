@@ -1,14 +1,13 @@
 package br.edu.ufcg.easyLabCorrection.managers;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestResult;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
-import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.SubmissionException;
+import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
@@ -113,43 +112,43 @@ public class SubmissionManager {
 	}
 
 	// TODO: It is not being used!
-	private String[] compilerParameters(String libDirectory,
-			String sourceDirectory, String interfaceDirectory,
-			String testsDirectory, String[] sourceFileList,
-			String[] interfaceFileList, String[] testsFileList) {
-
-		List<String> params = new ArrayList<String>();
-		params.add("-sourcepath");
-		params.add(sourceDirectory + ";" + interfaceDirectory + ";"
-				+ testsDirectory);
-		params.add("-classpath");
-		params.add(libDirectory + "junit.jar");
-		String fileName = "";
-		for (int i = 0; i < sourceFileList.length; i++) {
-			fileName = sourceFileList[i];
-			if (fileName.substring(fileName.length() - 4, fileName.length())
-					.equals("java")) {
-				params.add(sourceDirectory + fileName);
-			}
-		}
-		for (int i = 0; i < interfaceFileList.length; i++) {
-			fileName = interfaceFileList[i];
-			if (fileName.substring(fileName.length() - 4, fileName.length())
-					.equals("java")) {
-				params.add(interfaceDirectory + fileName);
-			}
-		}
-		for (int i = 0; i < testsFileList.length; i++) {
-			fileName = testsFileList[i];
-			if (fileName.substring(fileName.length() - 4, fileName.length())
-					.equals("java")) {
-				params.add(testsDirectory + fileName);
-			}
-		}
-		params.add("-d");
-		params.add(sourceDirectory);
-		return params.toArray(new String[params.size()]);
-	}
+	// private String[] compilerParameters(String libDirectory,
+	// String sourceDirectory, String interfaceDirectory,
+	// String testsDirectory, String[] sourceFileList,
+	// String[] interfaceFileList, String[] testsFileList) {
+	//
+	// List<String> params = new ArrayList<String>();
+	// params.add("-sourcepath");
+	// params.add(sourceDirectory + ";" + interfaceDirectory + ";"
+	// + testsDirectory);
+	// params.add("-classpath");
+	// params.add(libDirectory + "junit.jar");
+	// String fileName = "";
+	// for (int i = 0; i < sourceFileList.length; i++) {
+	// fileName = sourceFileList[i];
+	// if (fileName.substring(fileName.length() - 4, fileName.length())
+	// .equals("java")) {
+	// params.add(sourceDirectory + fileName);
+	// }
+	// }
+	// for (int i = 0; i < interfaceFileList.length; i++) {
+	// fileName = interfaceFileList[i];
+	// if (fileName.substring(fileName.length() - 4, fileName.length())
+	// .equals("java")) {
+	// params.add(interfaceDirectory + fileName);
+	// }
+	// }
+	// for (int i = 0; i < testsFileList.length; i++) {
+	// fileName = testsFileList[i];
+	// if (fileName.substring(fileName.length() - 4, fileName.length())
+	// .equals("java")) {
+	// params.add(testsDirectory + fileName);
+	// }
+	// }
+	// params.add("-d");
+	// params.add(sourceDirectory);
+	// return params.toArray(new String[params.size()]);
+	// }
 
 	/*
 	 * TODO: Move to System
@@ -190,7 +189,7 @@ public class SubmissionManager {
 				return e.getMessage();
 			}
 
-			return testManager.getTestsExecutionOut(testResult, submission);
+			return testManager.getTestsExecutionOutput(testResult, submission);
 		} else {
 			String result = "Este roteiro não possui testes automáticos.";
 			testManager.saveAssessment(submission, 0, result);
