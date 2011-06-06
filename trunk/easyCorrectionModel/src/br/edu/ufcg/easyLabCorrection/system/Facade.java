@@ -141,7 +141,7 @@ public class Facade {
 	public List<Permission> cadastrarPermissao(List<Permission> permissions)
 			throws Throwable {
 		try {
-			return system.savePermission(permissions);
+			return system.savePermissions(permissions);
 		} catch (Throwable e) {
 			log.error("savePermission()", e);
 			throw e;

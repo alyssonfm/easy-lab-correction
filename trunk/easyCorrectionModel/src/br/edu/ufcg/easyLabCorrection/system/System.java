@@ -117,14 +117,32 @@ public class System {
 		return accessPermissionManager.saveMenu(menu);
 	}
 
-	public List<Permission> savePermission(List<Permission> permissions)
+	public List<Permission> savePermissions(List<Permission> permissions)
 			throws EasyCorrectionException {
-		return accessPermissionManager.savePermission(permissions);
+		return accessPermissionManager.savePermissions(permissions);
 	}
 
 	public UserGroup saveUser(UserGroup userGroup)
 			throws EasyCorrectionException {
 		return accessUserManager.saveUser(userGroup);
+	}
+
+	public Group updateGroup(Group group) throws EasyCorrectionException {
+		return accessPermissionManager.updateGroup(group);
+	}
+
+	public Function updateFunction(Function function)
+			throws EasyCorrectionException {
+		return accessPermissionManager.updateFunction(function);
+	}
+
+	public Menu updateMenu(Menu menu) throws EasyCorrectionException {
+		return accessPermissionManager.updateMenu(menu);
+	}
+
+	public List<Permission> updatePermissions(List<Permission> permissions)
+			throws EasyCorrectionException {
+		return accessPermissionManager.updatePermissions(permissions);
 	}
 
 	public List<User> listUsers() {
@@ -365,10 +383,12 @@ public class System {
 	public String getSourceFileName(Submission submission) {
 		return submissionManager.getSourceFileName(submission);
 	}
-	
-	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignment(Integer assignmentId) {
-		return teamManager.getTeamHasUserHasAssignmentByAssignment(assignmentId);
-	}			
+
+	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignment(
+			Integer assignmentId) {
+		return teamManager
+				.getTeamHasUserHasAssignmentByAssignment(assignmentId);
+	}
 
 	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignmentGroupByTeam(
 			Integer assignmentId) {
@@ -444,6 +464,71 @@ public class System {
 			Integer assignment) {
 		return assessmentManager.getAssessmentByTeamAndAssignment(team,
 				assignment);
+	}
+
+	/*
+	 * ADDED AFTER THE REFACTORING PHASE
+	 */
+
+	// It came from AccessUserPermission
+	public void createTeamForIncomingAluno(UserGroup userGroup)
+			throws EasyCorrectionException {
+		Team team = new Team();
+		if (userGroup.getGroup().getName().equalsIgnoreCase("Aluno")) {
+			List<UserGroup> gu = DAOFactory.DEFAULT.buildUserGroupDAO()
+					.findByGroup("Aluno");
+			List<Team> teams = teamManager.getTeams();
+			int userNumber = gu.size() + 1;
+			if (userNumber > teams.size()) {
+				for (int i = 0; i < 5; i++) {
+					teams = teamManager.getTeams();
+					if (teams.isEmpty()) {
+						team.setName("Team 1");
+					} else {
+						int index = teams.get(teams.size() - 1).getId() + 1;
+						team.setName("Team " + index);
+					}
+					Team t = teamManager.saveTeam(team);
+					if (i == 0) {
+						allocateUserToTeam(userGroup.getUser(), t);
+					}
+				}
+			} else {
+				allocateUserToTeam(userGroup.getUser());
+			}
+		}
+	}
+
+	// It came from AccessUserPermission
+	private void allocateUserToTeam(User us, Team te)
+			throws EasyCorrectionException {
+		List<Assignment> assigns = assignmentManager.getAssignments();
+		for (Assignment roteiro : assigns) {
+			TeamHasUserHasAssignment tua = new TeamHasUserHasAssignment();
+			tua.setTeam(te);
+			tua.setUser(us);
+			tua.setAssignment(roteiro);
+			teamManager.saveTeamHasUserHasAssignment(tua);
+		}
+	}
+
+	// It came from AccessUserPermission
+	private void allocateUserToTeam(User us) throws EasyCorrectionException {
+		List<Assignment> assigns = assignmentManager.getAssignments();
+		for (Assignment assignment : assigns) {
+			List<TeamHasUserHasAssignment> eurs = teamManager
+					.getTeamHasUserHasAssignmentByAssignment(assignment.getId());
+			Team eq = teamManager.getTeams().get(0);
+			if (eurs.size() > 0) {
+				int novoId = eurs.get(eurs.size() - 1).getTeam().getId() + 1;
+				eq = teamManager.getTeam(novoId);
+			}
+			TeamHasUserHasAssignment eur = new TeamHasUserHasAssignment();
+			eur.setTeam(eq);
+			eur.setUser(us);
+			eur.setAssignment(assignment);
+			teamManager.saveTeamHasUserHasAssignment(eur);
+		}
 	}
 
 }

@@ -17,7 +17,9 @@ import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 /**
- * Class responsible for managing access and setting permissions on the system Easy Lab Correction.<br>
+ * Class responsible for managing access and setting permissions on the system
+ * Easy Lab Correction.<br>
+ * 
  * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
  * @version 1.0 14 of May of 2011.<br>
  */
@@ -29,7 +31,9 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Function used to search through a menu system via a identifier.<br>
-	 * @param id The identifier used for search a menu in the system.<br>
+	 * 
+	 * @param id
+	 *            The identifier used for search a menu in the system.<br>
 	 * @return The menu with the identifier passed as parameter.<br>
 	 */
 	public Menu getMenu(Integer id) {
@@ -43,9 +47,13 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Function used to search through a menu system via a label and a name.<br>
-	 * @param rotulo The label of menu to be researched in the system.<br>
-	 * @param nome The name of menu to be researched in the system.<br>
-	 * @return A menu if any one menu system that has the same label and name passed as parameter, null otherwise.<br> 
+	 * 
+	 * @param rotulo
+	 *            The label of menu to be researched in the system.<br>
+	 * @param nome
+	 *            The name of menu to be researched in the system.<br>
+	 * @return A menu if any one menu system that has the same label and name
+	 *         passed as parameter, null otherwise.<br>
 	 */
 	private Menu consultMenuByLabelAndName(String rotulo, String nome) {
 		List<Menu> lista = DAOFactory.DEFAULT.buildMenuDAO()
@@ -57,14 +65,13 @@ public class AccessPermissionManager extends Manager {
 		}
 	}
 
-	// TODO: Split it into create and update
 	/**
 	 * Function used to stored a new menu in the system ELC.<br>
-	 * @return menu The new menu stored in the system.<br> 
+	 * 
+	 * @return menu The new menu stored in the system.<br>
 	 */
 	public Menu saveMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = new Menu();
-		Menu men = new Menu();
 		if (!easyCorrectionUtil.isNull(menu)) {
 			if (easyCorrectionUtil.isNull(menu.getMenuId())
 					|| menu.getMenuId().equals(new Integer(0))) {
@@ -80,7 +87,16 @@ public class AccessPermissionManager extends Manager {
 							.msg("nome ou rotulo"));
 				}
 				// Se o id eh diferente de null
-			} else {
+			}
+		}
+		return menu;
+	}
+
+	public Menu updateMenu(Menu menu) throws EasyCorrectionException {
+		Menu men = new Menu();
+		if (!easyCorrectionUtil.isNull(menu)) {
+			if (!(easyCorrectionUtil.isNull(menu.getMenuId()) || menu
+					.getMenuId().equals(new Integer(0)))) {
 				men = consultMenuByLabelAndName(menu.getName(), menu.getLabel());
 				if (easyCorrectionUtil.isNull(men)) {
 					men = getMenu(menu.getMenuId());
@@ -102,8 +118,11 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Procedure used to remove a menu of the system Easy Lab Correction.<br>
-	 * @param menu The menu to be removed.<br>
-	 * @throws EasyCorrectionException The exception that can launched in the removal.<br> 
+	 * 
+	 * @param menu
+	 *            The menu to be removed.<br>
+	 * @throws EasyCorrectionException
+	 *             The exception that can launched in the removal.<br>
 	 */
 	public void deleteMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = getMenu(menu.getMenuId());
@@ -113,6 +132,7 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Function used to list all menus of the system ELC orderly way.<br>
+	 * 
 	 * @return All menus of the system orderly.<br>
 	 */
 	public List<Menu> listOrderedMenus() {
@@ -121,6 +141,7 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Function used to list all menus of the system ELC.<br>
+	 * 
 	 * @return All menus of the system.<br>
 	 */
 	public List<Menu> listMenus() {
@@ -130,21 +151,19 @@ public class AccessPermissionManager extends Manager {
 	/*
 	 * FUNCTION
 	 */
-	// TODO: Split it into create and update
 	/**
 	 * Function used to stored a new function in the system ELC.<br>
-	 * @return menu The new function stored in the system.<br> 
+	 * 
+	 * @return menu The new function stored in the system.<br>
 	 */
 	public Function saveFunction(Function function)
 			throws EasyCorrectionException {
-		Function f = new Function();
-		Function fun = new Function();
 		if (!easyCorrectionUtil.isNull(function)) {
 			if (easyCorrectionUtil.isNull(function.getFunctionId())
 					|| function.getFunctionId().equals(new Integer(0))) {
 				// Verifica se o rótulo ou o nome já existe
-				f = consultFunctionByNameAndLabel(function.getName(), function
-						.getLabel());
+				Function f = consultFunctionByNameAndLabel(function.getName(),
+						function.getLabel());
 				// Se o rótulo/nome não existe e e o id é null
 				if (easyCorrectionUtil.isNull(f)) {
 					Integer id = DAOFactory.DEFAULT.buildFunctionDAO().save(
@@ -156,9 +175,19 @@ public class AccessPermissionManager extends Manager {
 							.msg("nome ou rotulo"));
 				}
 				// Se o id é diferente de null
-			} else {
-				fun = consultFunctionByNameAndLabel(function.getName(),
-						function.getLabel());
+			}
+		}
+		return function;
+	}
+
+	public Function updateFunction(Function function)
+			throws EasyCorrectionException {
+
+		if (!easyCorrectionUtil.isNull(function)) {
+			if (!(easyCorrectionUtil.isNull(function.getFunctionId()) || function
+					.getFunctionId().equals(new Integer(0)))) {
+				Function fun = consultFunctionByNameAndLabel(
+						function.getName(), function.getLabel());
 				if (easyCorrectionUtil.isNull(fun)) {
 					fun = getFunction(function.getFunctionId());
 					fun = (Function) SwapperAtributosReflect.swapObject(fun,
@@ -179,7 +208,9 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Function used to search through a function system via a identifier.<br>
-	 * @param id The identifier used for search a function in the system.<br>
+	 * 
+	 * @param id
+	 *            The identifier used for search a function in the system.<br>
 	 * @return The function with the identifier passed as parameter.<br>
 	 */
 	public Function getFunction(Integer id) {
@@ -194,9 +225,13 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Function used to search through a function system via a label and a name.<br>
-	 * @param rotulo The label of function to be researched in the system.<br>
-	 * @param nome The name of function to be researched in the system.<br>
-	 * @return A menu if any one function system that has the same label and name passed as parameter, null otherwise.<br> 
+	 * 
+	 * @param rotulo
+	 *            The label of function to be researched in the system.<br>
+	 * @param nome
+	 *            The name of function to be researched in the system.<br>
+	 * @return A menu if any one function system that has the same label and
+	 *         name passed as parameter, null otherwise.<br>
 	 */
 	private Function consultFunctionByNameAndLabel(String name, String label) {
 		List<Function> list = DAOFactory.DEFAULT.buildFunctionDAO()
@@ -210,8 +245,11 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Function used to verify the existence of function a list of permissions.<br>
-	 * @param list The list of permissions used in search.<br>
-	 * @param function The function it is verifying the existence.<br> 
+	 * 
+	 * @param list
+	 *            The list of permissions used in search.<br>
+	 * @param function
+	 *            The function it is verifying the existence.<br>
 	 * @return A boolean value: true - if exist; false - otherwise.<br>
 	 */
 	private boolean containsFunction(List<Permission> list, Function function) {
@@ -226,6 +264,7 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Function used to list all functions of the system ELC.<br>
+	 * 
 	 * @return All functions of the system.<br>
 	 */
 	public List<Function> listFunctions() {
@@ -234,7 +273,9 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Procedure used to remove a function of the system Easy Lab Correction.<br>
-	 * @param function The function to be removed.<br> 
+	 * 
+	 * @param function
+	 *            The function to be removed.<br>
 	 */
 	public void deleteFunction(Function function)
 			throws EasyCorrectionException {
@@ -245,8 +286,12 @@ public class AccessPermissionManager extends Manager {
 	}
 
 	/**
-	 * Function used to search through a list of function system via a identifier of menu.<br>
-	 * @param menuId The identifier used for search a list of function in the system.<br>
+	 * Function used to search through a list of function system via a
+	 * identifier of menu.<br>
+	 * 
+	 * @param menuId
+	 *            The identifier used for search a list of function in the
+	 *            system.<br>
 	 * @return The function list with the identifier passed as parameter.<br>
 	 */
 	public List<Function> consultFunctionsByMenu(Integer menuId) {
@@ -258,50 +303,55 @@ public class AccessPermissionManager extends Manager {
 	 */
 	/**
 	 * Function used to store a new group in the system Easy Lab Correction.<br>
-	 * @param group The new group to be stored.<br>
+	 * 
+	 * @param group
+	 *            The new group to be stored.<br>
 	 * @return The new group stored in the system.<br>
 	 */
 	public Group saveGroup(Group group) throws EasyCorrectionException {
-		Group g = new Group();
-		Group gr = new Group();
-		if (!easyCorrectionUtil.isNull(group)) {
-			if (easyCorrectionUtil.isNull(group.getGroupId())
-					|| group.getGroupId().equals(new Integer(0))) {
-				// Verifica se o nome já existe
-				g = consultGroupByName(group.getName());
-				// Se o nome não existe e e o id é null
-				if (easyCorrectionUtil.isNull(g)) {
-					Integer id = DAOFactory.DEFAULT.buildGroupDAO().save(group);
-					group.setGroupId(id);
-					// Se o rótulo existe
-				} else if (!easyCorrectionUtil.isNull(g)) {
-					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
-							.msg("nome"));
-				}
-				// Se o id é diferente de null
+
+		if (easyCorrectionUtil.isNull(group.getGroupId())
+				|| group.getGroupId().equals(new Integer(0))) {
+
+			if (!containsGroupByName(group.getName())) {
+				Integer id = DAOFactory.DEFAULT.buildGroupDAO().save(group);
+				group.setGroupId(id);
 			} else {
-				gr = consultGroupByName(group.getName());
-				if (easyCorrectionUtil.isNull(gr)) {
-					gr = getGroup(group.getGroupId());
-					gr = (Group) SwapperAtributosReflect.swapObject(gr, group,
-							Group.class);
-					DAOFactory.DEFAULT.buildGroupDAO().update(gr);
-				} else if (group.getGroupId().equals(gr.getGroupId())) {
-					gr = (Group) SwapperAtributosReflect.swapObject(gr, group,
-							Group.class);
-					DAOFactory.DEFAULT.buildGroupDAO().update(gr);
-				} else {
-					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
-							.msg("nome"));
-				}
+				throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
+						.msg("nome"));
+			}
+		}
+		return group;
+	}
+
+	public Group updateGroup(Group group) throws EasyCorrectionException {
+		Group gr;
+		if (!containsGroupByName(group.getName())) {
+			gr = getGroup(group.getGroupId());
+			gr = (Group) SwapperAtributosReflect.swapObject(gr, group,
+					Group.class);
+			DAOFactory.DEFAULT.buildGroupDAO().update(gr);
+
+		} else {
+			gr = getGroupByName(group.getName());
+			if (group.getGroupId().equals(gr.getGroupId())) {
+				gr = (Group) SwapperAtributosReflect.swapObject(gr, group,
+						Group.class);
+				DAOFactory.DEFAULT.buildGroupDAO().update(gr);
+			} else {
+				throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
+						.msg("nome"));
 			}
 		}
 		return group;
 	}
 
 	/**
-	 * Function used to retrieve a group of system via a identifier received as parameter.<br>
-	 * @param id The identifier used to retrieve a group of system.<br>
+	 * Function used to retrieve a group of system via a identifier received as
+	 * parameter.<br>
+	 * 
+	 * @param id
+	 *            The identifier used to retrieve a group of system.<br>
 	 * @return The group with the identifier passed as parameter.<br>
 	 */
 	public Group getGroup(Integer id) {
@@ -315,6 +365,7 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Function used to retrieve all groups of system.<br>
+	 * 
 	 * @return The group list of system.<br>
 	 */
 	public List<Group> listGroups() {
@@ -323,8 +374,11 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Procedure used to delete a group of system.<br>
-	 * @param group The group to be deleted.<br>
-	 * @throws EasyCorrectionException The exception to be launched in the removal of group.<br>
+	 * 
+	 * @param group
+	 *            The group to be deleted.<br>
+	 * @throws EasyCorrectionException
+	 *             The exception to be launched in the removal of group.<br>
 	 */
 	public void deleteGroup(Group group) throws EasyCorrectionException {
 		Group g = getGroup(group.getGroupId());
@@ -333,21 +387,11 @@ public class AccessPermissionManager extends Manager {
 	}
 
 	/**
-	 * Function used to consult a group in the system, that receive a name as parameter.<br>
-	 * @param name The name of group to be consulted.<br>
-	 * @return The group with the name passed as parameter.<br>
-	 */
-	private Group consultGroupByName(String name) {
-		List<Group> list = DAOFactory.DEFAULT.buildGroupDAO().findByName(name);
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-		return null;
-	}
-
-	/**
-	 * Function used to retrieve a group in the system, that receive a name as parameter.<br>
-	 * @param name The name of group to be consulted.<br>
+	 * Function used to retrieve a group in the system, that receive a name as
+	 * parameter.<br>
+	 * 
+	 * @param name
+	 *            The name of group to be consulted.<br>
 	 * @return The group with the name passed as parameter.<br>
 	 */
 	public Group getGroupByName(String name) {
@@ -359,16 +403,29 @@ public class AccessPermissionManager extends Manager {
 		return list.get(0);
 	}
 
+	/**
+	 * It checks if there is a group with the given name
+	 * 
+	 * @param name
+	 * @return true, if there is, or false, otherwise
+	 */
+	private boolean containsGroupByName(String name) {
+		return (DAOFactory.DEFAULT.buildGroupDAO().findByName(name).isEmpty());
+	}
+
 	/*
 	 * PERMISSION
 	 */
 
 	/**
-	 * Function used to save a permission list in the system Easy Lab Correction. <br>
-	 * @param permissions The permission list which will be saved.<br>
-	 * @return The permission list save in the system.<br> 
+	 * Function used to save a permission list in the system Easy Lab
+	 * Correction. <br>
+	 * 
+	 * @param permissions
+	 *            The permission list which will be saved.<br>
+	 * @return The permission list save in the system.<br>
 	 */
-	public List<Permission> savePermission(List<Permission> permissions)
+	public List<Permission> savePermissions(List<Permission> permissions)
 			throws EasyCorrectionException {
 		Permission p = new Permission();
 		List<Permission> list = new LinkedList<Permission>();
@@ -398,10 +455,38 @@ public class AccessPermissionManager extends Manager {
 		return list;
 	}
 
+	public List<Permission> updatePermissions(List<Permission> permissions)
+			throws EasyCorrectionException {
+		Permission p = new Permission();
+		List<Permission> list = new LinkedList<Permission>();
+		for (Permission permission : permissions) {
+			if (!easyCorrectionUtil.isNull(permission)
+					&& !easyCorrectionUtil.isNull(permission.getPermissionId())) {
+				try {
+					p = getPermission(permission.getPermissionId());
+					p = (Permission) SwapperAtributosReflect.swapObject(p,
+							permission, Permission.class);
+					DAOFactory.DEFAULT.buildPermissionDAO().update(p);
+					list.add(p);
+
+				} catch (ObjectNotFoundException e) {
+					Integer id = DAOFactory.DEFAULT.buildPermissionDAO().save(
+							permission);
+					permission.setPermissionId(id);
+					list.add(permission);
+				}
+			}
+		}
+		return list;
+	}
+
 	/**
 	 * Function that saves a list of permissions for a group.<br>
-	 * @param g The group that saved the list of permissions.<br>
-	 * @param list The list of permissions that saved.<br>
+	 * 
+	 * @param g
+	 *            The group that saved the list of permissions.<br>
+	 * @param list
+	 *            The list of permissions that saved.<br>
 	 * @return The list of permissions save for a group.<br>
 	 */
 	public List<Permission> saveGroupPermission(Group g, List<Function> list) {
@@ -442,9 +527,12 @@ public class AccessPermissionManager extends Manager {
 	}
 
 	/**
-	 * Function that retrieves a permission via a identifier passed as parameter.<br>
-	 * @param id The identifier used to retrieves the permission.<br>
-	 * @return The permission with a identifier passed as parameter.<br> 
+	 * Function that retrieves a permission via a identifier passed as
+	 * parameter.<br>
+	 * 
+	 * @param id
+	 *            The identifier used to retrieves the permission.<br>
+	 * @return The permission with a identifier passed as parameter.<br>
 	 */
 	public Permission getPermission(Integer id) {
 		List<Permission> permissions = DAOFactory.DEFAULT.buildPermissionDAO()
@@ -457,9 +545,13 @@ public class AccessPermissionManager extends Manager {
 	}
 
 	/**
-	 * Function used to verify the permissions of user whose identifier is passed as parameter.<br>
-	 * @param userId The user identifier.<br>
-	 * @return The list of permissions of user whose identifier is passed as parameter.<br>
+	 * Function used to verify the permissions of user whose identifier is
+	 * passed as parameter.<br>
+	 * 
+	 * @param userId
+	 *            The user identifier.<br>
+	 * @return The list of permissions of user whose identifier is passed as
+	 *         parameter.<br>
 	 */
 	public List<Function> verifyPermissions(Integer userId) {
 		List<Function> functionsList = new LinkedList<Function>();
@@ -483,9 +575,13 @@ public class AccessPermissionManager extends Manager {
 	}
 
 	/**
-	 * Function used to consult the permissions of group whose identifier is passed as parameter.<br>
-	 * @param idGrupo The group identifier which the permissions will be consulted.<br>
-	 * @return The list of permissions of group whose identifier was passed as parameter.<br>
+	 * Function used to consult the permissions of group whose identifier is
+	 * passed as parameter.<br>
+	 * 
+	 * @param idGrupo
+	 *            The group identifier which the permissions will be consulted.<br>
+	 * @return The list of permissions of group whose identifier was passed as
+	 *         parameter.<br>
 	 */
 	public List<Permission> consultPermissionsByGroup(Integer idGrupo) {
 		return DAOFactory.DEFAULT.buildPermissionDAO().findByGroupId(idGrupo);
@@ -493,8 +589,12 @@ public class AccessPermissionManager extends Manager {
 
 	/**
 	 * Function which verifies if a function exists in the system.<br>
-	 * @param list The list of functions of system.<br>
-	 * @param function The function to be verified if they already exist in the system.<br>
+	 * 
+	 * @param list
+	 *            The list of functions of system.<br>
+	 * @param function
+	 *            The function to be verified if they already exist in the
+	 *            system.<br>
 	 * @return A boolean: true - if already, false - otherwise.<br>
 	 */
 	private boolean isFunctionRepeated(List<Function> list, Function function) {

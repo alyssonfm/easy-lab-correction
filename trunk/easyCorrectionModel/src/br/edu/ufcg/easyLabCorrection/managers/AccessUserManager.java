@@ -2,31 +2,31 @@ package br.edu.ufcg.easyLabCorrection.managers;
 
 import java.util.List;
 
+
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.AuthenticationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
-import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
-import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
+import br.edu.ufcg.easyLabCorrection.system.System;
 import br.edu.ufcg.easyLabCorrection.util.MD5Generator;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
-public class AccessUserManager extends Manager{
+public class AccessUserManager extends Manager {
 
 	private AssignmentManager assignmentManager;
-	private TeamManager teamManager;
-	
+	private System system; 
+
 	public AccessUserManager() {
 		super();
 		assignmentManager = new AssignmentManager();
-		teamManager = new TeamManager();
+		system = new System();
 	}
-	
+
 	/*
 	 * USER GROUP
 	 */
@@ -118,67 +118,8 @@ public class AccessUserManager extends Manager{
 		return null;
 	}
 
-	// TODO: Move to System or to TeamManager
-	private void isUsersNumberGreaterThenTeamsNumber(UserGroup userGroup)
-			throws EasyCorrectionException {
-		Team team = new Team();
-		if (userGroup.getGroup().getName().equalsIgnoreCase("Aluno")) {
-			List<UserGroup> gu = DAOFactory.DEFAULT.buildUserGroupDAO()
-					.findByGroup("Aluno");
-			List<Team> teams = teamManager.getTeams();
-			int userNumber = gu.size() + 1;
-			if (userNumber > teams.size()) {
-				for (int i = 0; i < 5; i++) {
-					teams = teamManager.getTeams();
-					if (teams.isEmpty()) {
-						team.setName("Team 1");
-					} else {
-						int index = teams.get(teams.size() - 1).getId() + 1;
-						team.setName("Team " + index);
-					}
-					Team t = teamManager.saveTeam(team);
-					if (i == 0) {
-						allocateUserToTeam(userGroup.getUser(), t);
-					}
-				}
-			} else {
-				allocateUserToTeam(userGroup.getUser());
-			}
-		}
-	}
-
-	// TODO: MOVE TO System
-	private void allocateUserToTeam(User us, Team te)
-			throws EasyCorrectionException {
-		List<Assignment> assigns = assignmentManager.getAssignments();
-		for (Assignment roteiro : assigns) {
-			TeamHasUserHasAssignment tua = new TeamHasUserHasAssignment();
-			tua.setTeam(te);
-			tua.setUser(us);
-			tua.setAssignment(roteiro);
-			teamManager.saveTeamHasUserHasAssignment(tua);
-		}
-	}
-
-	// TODO: MOVE TO System
-	private void allocateUserToTeam(User us) throws EasyCorrectionException {
-		List<Assignment> assigns = assignmentManager.getAssignments();
-		for (Assignment assignment : assigns) {
-			List<TeamHasUserHasAssignment> eurs = teamManager
-					.getTeamHasUserHasAssignmentByAssignment(assignment.getId());
-			Team eq = teamManager.getTeams().get(0);
-			if (eurs.size() > 0) {
-				int novoId = eurs.get(eurs.size() - 1).getTeam().getId() + 1;
-				eq = teamManager.getTeam(novoId);
-			}
-			TeamHasUserHasAssignment eur = new TeamHasUserHasAssignment();
-			eur.setTeam(eq);
-			eur.setUser(us);
-			eur.setAssignment(assignment);
-			teamManager.saveTeamHasUserHasAssignment(eur);
-		}
-	}
-
+	// TODO Refatorar. Dividir em update e passar parte das responsabilidade
+	// para System
 	public UserGroup saveUser(UserGroup userGroup)
 			throws EasyCorrectionException {
 		User u = new User();
@@ -233,7 +174,7 @@ public class AccessUserManager extends Manager{
 					Integer id = DAOFactory.DEFAULT.buildUserDAO().save(
 							userGroup.getUser());
 					userGroup.getUser().setUserId(id);
-					isUsersNumberGreaterThenTeamsNumber(userGroup);
+					system.createTeamForIncomingAluno(userGroup);
 				}
 			} else {
 				try {
@@ -330,7 +271,7 @@ public class AccessUserManager extends Manager{
 		return list.get(0);
 
 	}
-	
+
 	public List<UserGroup> consultUserByGroup(Integer groupId) {
 		return DAOFactory.DEFAULT.buildUserGroupDAO().findByGroup(groupId);
 	}
@@ -350,5 +291,4 @@ public class AccessUserManager extends Manager{
 		return bdUser;
 	}
 
-	
 }

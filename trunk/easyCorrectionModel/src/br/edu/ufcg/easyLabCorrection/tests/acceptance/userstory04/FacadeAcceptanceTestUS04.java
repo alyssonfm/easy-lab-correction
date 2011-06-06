@@ -1,6 +1,5 @@
 package br.edu.ufcg.easyLabCorrection.tests.acceptance.userstory04;
 
-import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;

@@ -35,7 +35,6 @@ public class TestManager extends Manager {
 		String libDirectory = (ServletUpload.local + "/").replace("/",
 				File.separator);
 
-
 		JUnit4TestAdapter testAdapter;
 		TestResult result;
 		URLClassLoader cl;
@@ -53,8 +52,8 @@ public class TestManager extends Manager {
 
 			cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
 					.toURI().toURL() }, JUnitCore.class.getClassLoader());
-			testClass = cl.loadClass(testFile.substring(0, testFile
-					.length() - 5));
+			
+			testClass = cl.loadClass(testFile.substring(0, testFile.length() - 5));
 
 			testAdapter = new JUnit4TestAdapter(testClass);
 			result = TestRunner.run(testAdapter);
@@ -79,7 +78,7 @@ public class TestManager extends Manager {
 		return result;
 	}
 
-	public String getTestsExecutionOut(TestResult result,
+	public String getTestsExecutionOutput(TestResult result,
 			Submission submission) {
 		
 		TeamHasUserHasAssignment tua = submission.getTeamHasUserHasAssignment();

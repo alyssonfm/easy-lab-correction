@@ -203,9 +203,6 @@ public class TeamManagerTest {
 		TeamHasUserHasAssignment tua5 = new TeamHasUserHasAssignment(idOK,
 				teamOK, assignOK, null);
 
-		TeamHasUserHasAssignment tuaOK = new TeamHasUserHasAssignment(idOK,
-				teamOK, assignOK, userOK);
-
 		try {
 			team.saveTeamHasUserHasAssignment(tua1);
 			Assert.assertTrue(false);
