@@ -19,6 +19,7 @@ public class Assignment {
 	private Integer testTimeLimit;
 	private String interfaceDirectory;
 	private String testsDirectory;
+	private AssignmentType assignmentType;
 	
 	public Assignment() {
 		super();
@@ -29,7 +30,8 @@ public class Assignment {
 			Date discussionDate, Integer participantsMaxNumber,
 			Integer sendMaxNumber, double penaltyPerDaysLate,
 			double automaticTestsPercentage, Integer testTimeLimit,
-			String interfaceDirectory, String testsDirectory) {
+			String interfaceDirectory, String testsDirectory,
+			AssignmentType assignmentType) {
 		super();
 		this.id = id;
 		this.stage = stage;
@@ -45,6 +47,15 @@ public class Assignment {
 		this.testTimeLimit = testTimeLimit;
 		this.interfaceDirectory = interfaceDirectory;
 		this.testsDirectory = testsDirectory;
+		this.assignmentType = assignmentType;
+	}
+
+	public AssignmentType getAssignmentType() {
+		return assignmentType;
+	}
+
+	public void setAssignmentType(AssignmentType assignmentType) {
+		this.assignmentType = assignmentType;
 	}
 
 	public Integer getId() {
