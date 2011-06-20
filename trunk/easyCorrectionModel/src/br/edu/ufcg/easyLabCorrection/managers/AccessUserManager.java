@@ -24,7 +24,7 @@ public class AccessUserManager extends Manager {
 	public AccessUserManager() {
 		super();
 		assignmentManager = new AssignmentManager();
-		system = new System();
+		//system = new System();
 	}
 
 	/*
