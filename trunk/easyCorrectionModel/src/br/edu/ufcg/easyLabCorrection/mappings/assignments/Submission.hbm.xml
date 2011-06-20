@@ -13,7 +13,7 @@
 		<property name="url" column="url"/>
 		<property name="status" column="estado"/>
 		<property name="submissionDate" column="data_submissao"/>
-		<many-to-one name="teamHasUserHasAssignment" class="br.edu.ufcg.easyLabCorrection.pojo.assignments.TeamHasUserHasAssignment" column="equipe_has_usuario_has_roteiro_id"/>
+		<many-to-one name="teamHasUserHasAssignment" class="br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment" column="equipe_has_usuario_has_roteiro_id"/>
 		
 		
 	</class>
