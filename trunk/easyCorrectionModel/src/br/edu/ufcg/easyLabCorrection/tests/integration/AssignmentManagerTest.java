@@ -69,7 +69,7 @@ public class AssignmentManagerTest {
 	}
 
 	@Test
-	public void AssignmentCRUDBadParametersTest() {
+	/*public void AssignmentCRUDBadParametersTest() {
 
 		Assert.assertNull(assignment.getAssignment(1)); // NULL
 		Assert.assertEquals(assignment.getAssignments().size(), 0); // EMPTY
@@ -80,7 +80,7 @@ public class AssignmentManagerTest {
 		/*
 		 * CREATE
 		 */
-		Assignment aNULL = null;
+	/*	Assignment aNULL = null;
 		Assignment a0 = new Assignment(-1, stageOK, nameOK, descriptionOK,
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
@@ -194,9 +194,9 @@ public class AssignmentManagerTest {
 				releaseDateOK, deliveryDateOK, discussionDateOK,
 				participantsMaxNumberOK, sendMaxNumberOK, penaltyPerDaysLateOK,
 				automaticTestsPercentageOK, testTimeLimitOK,
-				interfaceDirectoryOK, testsDirectoryOK);
+				interfaceDirectoryOK, testsDirectoryOK);*/
 
-		saveBadAssignment(aNULL);
+		/*saveBadAssignment(aNULL);
 		saveBadAssignment(a0);
 		saveBadAssignment(a1);
 		saveBadAssignment(a2);
@@ -224,26 +224,26 @@ public class AssignmentManagerTest {
 			assignment.saveAssignment(aOK);
 		} catch (AssignmentException e) {
 			Assert.assertTrue(false);
-		}
+		}*/
 
 		/*
 		 * RETRIEVE
 		 */
 
-		Assert.assertNull(assignment.getAssignment(-1)); // NULL
+		/*Assert.assertNull(assignment.getAssignment(-1)); // NULL
 		Assert.assertNull(assignment.getAssignment(0)); // NULL
 		Assert.assertNotSame(assignment.getAssignments().size(), 0); // NOT_EMPTY
 		Assert.assertNull(assignment.getReleasedAssignment(-1)); // NULL
 		Assert.assertNull(assignment.getReleasedAssignment(0)); // NULL
 		Assert.assertEquals(assignment.getReleasedAssignments().size(), 0); // EMPTY
-		Assert.assertEquals(assignment.getClosedAssignments().size(), 0); // EMPTY
+		Assert.assertEquals(assignment.getClosedAssignments().size(), 0); // EMPTY*/
 
 		/*
 		 * UPDATE (call save for assignment objects with the same id as aOK, but
 		 * with bad parameters)
 		 */
 
-		saveBadAssignment(aNULL);
+		/*saveBadAssignment(aNULL);
 		//saveBadAssignment(a0); -- has an id different from aOK 
 		saveBadAssignment(a1);
 		saveBadAssignment(a2);
@@ -265,13 +265,13 @@ public class AssignmentManagerTest {
 		saveBadAssignment(a18);
 		saveBadAssignment(a19);
 		saveBadAssignment(a20);
-		saveBadAssignment(a21);
+		saveBadAssignment(a21);*/
 		
 		/*
 		 * DELETE
 		 */
 
-		try {
+	/*	try {
 			assignment.deleteAssignment(null);
 			Assert.assertTrue(false);
 		} catch (AssignmentException e) {
@@ -282,7 +282,7 @@ public class AssignmentManagerTest {
 		} catch (AssignmentException e) {
 		}
 
-	}
+	}*/
 
 	private void saveBadAssignment(Assignment a) {
 		try {
