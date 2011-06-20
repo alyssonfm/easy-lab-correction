@@ -21,16 +21,23 @@
 		<property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
 
 <!-- Mapeamentos do Controle de Acesso easyCorrection  -->
-		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/access/Menu.hbm.xml" />
+		<!--  <mapping resource="br/edu/ufcg/easyLabCorrection/mappings/access/Menu.hbm.xml" />
 		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/access/Function.hbm.xml" />
 		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/access/Permission.hbm.xml" />
 		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/access/UserGroup.hbm.xml" />
 		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/access/User.hbm.xml" />
-		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/access/Group.hbm.xml" />
-		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/system/Period.hbm.xml" />
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/access/Group.hbm.xml" />-->
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/permission/Menu.hbm.xml" />
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/permission/Function.hbm.xml" />
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/permission/Permission.hbm.xml" />
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/user/UserGroup.hbm.xml" />
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/user/User.hbm.xml" />
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/permission/Group.hbm.xml" />
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/system/Stage.hbm.xml" />
 		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/assignments/Assignment.hbm.xml" />
-		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/assignments/Team.hbm.xml" />
-		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/assignments/TeamHasUserHasAssignment.hbm.xml" />
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/assignments/AssignmentType.hbm.xml" />
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/team/Team.hbm.xml" />
+		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/team/TeamHasUserHasAssignment.hbm.xml" />
 		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/assignments/Submission.hbm.xml" />
 		<mapping resource="br/edu/ufcg/easyLabCorrection/mappings/assessments/Assessment.hbm.xml" />
         <!-- <mapping resource="br/edu/ufcg/easyLabCorrection/mappings/assessments/Chat.hbm.xml" /> -->	 	 	 
