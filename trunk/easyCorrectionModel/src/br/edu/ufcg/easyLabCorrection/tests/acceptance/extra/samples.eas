@@ -1,0 +1,39 @@
+#--------------------------------------------------------------------------------------------
+# Teste de Aceitaçãoo do sistema easyLabCorrection
+# Equipe de Desenvolvimento:
+# ----- Alysson Filgueira
+# ----- Augusto Macedo
+# ----- Demetrio Mestre
+#--------------------------------------------------------------------------------------------
+
+#####################################################################################
+# Caso de Uso 2: Controle de Acesso: 
+# Funcionalidade que permite o GRUD de menus, funções, grupos e usuários no sistema.
+#####################################################################################
+
+#####################################################################################
+# testes de setup: temos um controle de acesso adequado? menus, funções, grupos e 
+# usuários.
+#####################################################################################
+
+# ------- Setup de Menus -----------
+
+#gravar e ler
+idMenu=cadastrarMenu nome="MenuTeste1" rotulo="menuTeste1"
+expect "MenuTeste1" getAtributoMenu id=${idMenu} atributo=nome
+expect "menuTeste1" getAtributoMenu id=${idMenu} atributo=rotulo
+expectError "menu nao foi encontrado(a)." getMenu id=999
+
+idMenu2=cadastrarMenu nome="MenuTeste2" rotulo="avaliacao"
+expectDifferent ${idMenu} echo ${iMenu2}
+
+idMenu3=cadastrarMenu nome="MenuTeste3" rotulo="menu3"
+idMenu4=cadastrarMenu nome="qualquer" rotulo="null"
+expectDifferent ${idMenu3} echo ${iMenu4}
+idMenu5=cadastrarMenu nome="qualquer2" rotulo="qualquer"
+expect ${idMenu5} editarMenu id = ${idMenu5} nome="nomeAlterado5" rotulo="rotuloAlterado5"
+
+excluirMenu idMenu=${idMenu}
+excluirMenu idMenu=${idMenu2}
+excluirMenu idMenu=${idMenu3}
+excluirMenu idMenu=${idMenu4}
