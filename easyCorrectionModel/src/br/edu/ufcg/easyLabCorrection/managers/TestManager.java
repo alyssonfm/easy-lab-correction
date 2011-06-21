@@ -91,7 +91,7 @@ public class TestManager extends Manager {
 		double automaticTestsGrade = (itemsPercent * tua.getAssignment()
 				.getAutomaticTestsPercentage()) / 1000;
 		
-		report = "Relat√≥rio de Avalia√ß√£o: \n\n"
+		report = "RelatÛrio de AvaliaÁ„o: \n\n"
 				+ "Total de Testes: "
 				+ testsRunnedNumber
 				+ "\n"
@@ -101,7 +101,7 @@ public class TestManager extends Manager {
 				+ "Porcentagem de Acertos: "
 				+ itemsPercent
 				+ " %\n"
-				+ "Nota dos Testes Autom√°ticos: "
+				+ "Nota dos Testes Autom·ticos: "
 				+ automaticTestsGrade
 				+ "\n\nConsole:\n";
 

@@ -45,7 +45,7 @@ public class CompilationManager extends Manager{
 					"-classpath", libDirectory + "junit.jar",
 					interfaceDirectory + interfaceFile, sourceDirectory
 							+ sourceFile, testsDirectory + testFile,
-					"-d", sourceDirectory); // diretÃ³rio de saÃ­da dos .class
+					"-d", sourceDirectory); // diretório de saída dos .class
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
