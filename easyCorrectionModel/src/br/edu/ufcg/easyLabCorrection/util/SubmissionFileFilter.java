@@ -17,12 +17,20 @@ import java.util.StringTokenizer;
 public class SubmissionFileFilter {
 
 	private ArrayList<String> forbiddenWords;
+	private ArrayList<String> sourcePaths;
+	private ArrayList<String> libPaths;
+	private String forbiddenWordFound;
+	private String forbiddenWordFoundClass;
 
 	/**
 	 * Constructor default of class.<br>
 	 */
 	public SubmissionFileFilter() {
 		forbiddenWords = new ArrayList<String>();
+		sourcePaths = new ArrayList<String>();
+		libPaths = new ArrayList<String>();
+		forbiddenWordFound = "";
+		forbiddenWordFoundClass = "";
 		buildFWList();
 	}
 
@@ -79,13 +87,23 @@ public class SubmissionFileFilter {
 	 * @param dir
 	 *            The directy which will be verified.<br>
 	 */
-	private void visitAllDirsAndFiles(File dir) {
+	public ArrayList<String> visitAllDirsAndFiles(File dir) {
 		processDirectory(dir);
 		if (dir.isDirectory()) {
 			String[] children = dir.list();
 			for (int i = 0; i < children.length; i++) {
 				visitAllDirsAndFiles(new File(dir, children[i]));
 			}
+		}
+		if(!forbiddenWordFound.equals("")){
+			ArrayList<String> forbs = new ArrayList<String>();
+			forbs.add("forbidden");
+			forbs.add(forbiddenWordFound);
+			forbs.add(forbiddenWordFoundClass);
+			return forbs;
+		}
+		else{
+			return sourcePaths;
 		}
 	}
 
@@ -115,7 +133,50 @@ public class SubmissionFileFilter {
 			for (int i = 0; i < children.length; i++) {
 				String filePath = dir.getPath() + File.separator + children[i];
 				File f = new File(filePath);
-				System.out.println(filePath + "-->" + verify(f));
+				String verifiedClass = verify(f);
+				if(verifiedClass.equals("OK!")){
+					sourcePaths.add(filePath);
+				}
+				else{
+					forbiddenWordFound = verifiedClass;
+					forbiddenWordFoundClass = filePath;
+				}
+			}
+		} catch (Exception e) {
+		}
+	}
+	
+	/**
+	 * Procedure used to scan all directories and all files.<br>
+	 * 
+	 * @param dir
+	 *            The directy which will be verified.<br>
+	 */
+	public ArrayList<String> visitAllDirsAndFilesFindingJars(File dir) {
+		processDirectoryFindingJars(dir);
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			for (int i = 0; i < children.length; i++) {
+				visitAllDirsAndFilesFindingJars(new File(dir, children[i]));
+			}
+		}
+		return libPaths;
+	}
+	
+	private void processDirectoryFindingJars(File dir) {
+		String[] children = dir.list();
+
+		FilenameFilter filter = new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".jar");
+			}
+		};
+
+		children = dir.list(filter);
+		try {
+			for (int i = 0; i < children.length; i++) {
+				String filePath = dir.getPath() + File.separator + children[i];
+				libPaths.add(filePath);
 			}
 		} catch (Exception e) {
 		}
@@ -126,7 +187,7 @@ public class SubmissionFileFilter {
 	 */
 	// public static void main(String[] args) throws FileNotFoundException{
 	// SubmissionFileFilter pv = new SubmissionFileFilter();
-	// pv.visitAllDirsAndFiles(new File("D:/GraduaÃ§Ã£o/"));
+	// pv.visitAllDirsAndFiles(new File("D:/Graduação/"));
 	// }
 
 }
