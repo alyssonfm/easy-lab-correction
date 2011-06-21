@@ -16,6 +16,7 @@ import javax.tools.ToolProvider;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
 import br.edu.ufcg.easyLabCorrection.managers.CompilationManager;
+import br.edu.ufcg.easyLabCorrection.managers.TestManager;
 import br.edu.ufcg.easyLabCorrection.util.SubmissionFileFilter;
 
 public class Teste {
@@ -23,7 +24,9 @@ public class Teste {
 	public static void main(String[] args) throws Throwable {
 	    
 		CompilationManager cm = new CompilationManager();
-		cm.runJavaCompiler2("D:/TEMP/codigo/", "D:/TEMP/testes/", "D:/TEMP/lib/");
+		TestManager tm = new TestManager();
+		tm.executeTests2("D:/TEMP/codigo/", "D:/TEMP/testes/");
+		//cm.runJavaCompiler2(, , "D:/TEMP/lib/");
 	    
 	    /*
 		Facade facade = new Facade();
