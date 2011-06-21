@@ -14,6 +14,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
+import br.edu.ufcg.easyLabCorrection.util.Constants;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 public class TestManager extends Manager {
@@ -66,6 +67,46 @@ public class TestManager extends Manager {
 		if (compilationManager.isCompilationError()) {
 			compilationManager.setCompilationError(false);
 			throw new TestExecutionException(deleteDirectory(compilationManager.getErrorResult(), testsDirectory, sourceDirectory, interfaceDirectory));
+		}
+		
+		return result;
+	}
+	
+	public TestResult executeTests2(String sourceDirectory,
+			String testsDirectory) throws TestExecutionException {
+
+		String libDirectory = "D:/TEMP/lib/";
+		
+		//String libDirectory = (ServletUpload.local + "/").replace("/",
+				//File.separator);
+
+		JUnit4TestAdapter testAdapter;
+		TestResult result;
+		URLClassLoader cl;
+		Class<?> testClass;
+
+		try {
+			
+			compilationManager.runJavaCompiler2(sourceDirectory,
+					testsDirectory, 
+					libDirectory);
+
+			cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
+					.toURI().toURL() }, JUnitCore.class.getClassLoader());
+			
+			testClass = cl.loadClass(Constants.mainTeste);
+
+			testAdapter = new JUnit4TestAdapter(testClass);
+			result = TestRunner.run(testAdapter);
+
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw new TestExecutionException(e.getMessage());
+		}
+
+		if (compilationManager.isCompilationError()) {
+			compilationManager.setCompilationError(false);
+			throw new TestExecutionException(deleteDirectory(compilationManager.getErrorResult(), testsDirectory, sourceDirectory, libDirectory));
 		}
 		
 		return result;
