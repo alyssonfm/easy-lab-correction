@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
-						xmlns:les="modulos.sistema.*" 
+						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="1020" height="766" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="fechaJanela()" layout="absolute">
+	width="1020" height="766" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
 				import mx.collections.ArrayCollection;
 				import mx.utils.ArrayUtil;
-				import eventos.UserEvent;
-				import bean.acesso.*;
-				import eventos.EventLogResponse;
-				import eventos.ClosePopupEvent;
+				import events.UserEvent;
+				import bean.permission.*;
+				import bean.team.*;
+				import events.EventLogResponse;
+				import events.ClosePopupEvent;
 				import mx.utils.Base64Decoder;
 				import mx.controls.Image;
 				import com.adobe.serialization.json.JSON;
@@ -29,32 +30,32 @@
 				private var fileRef:FileReference;
 				private const local:String = "../exemplos/";
 			
-	            private function falha(event:FaultEvent):void {
-					var mensagem:String;
+	            private function failure(event:FaultEvent):void {
+					var message:String;
 					try{
 						if (event.fault.rootCause.message == null) {
-							mensagem = event.fault.faultString;
+							message = event.fault.faultString;
 						} else {
-							mensagem = event.fault.rootCause.message;
+							message = event.fault.rootCause.message;
 						}
 					}
 					catch(e:Error){
-						mensagem = "Serviço indisponível, reinicie a operação.";
+						message = "Serviço indisponível, reinicie a operação.";
 					}
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+					ModulesController.createModule("modules/System/MensagemStatus.swf", this, new Array(true, message));
 				}
 				
-				private function escolheArquivo(): void{
+				private function selectFile(): void{
 					fileRef = new FileReference();
-			   	 	fileRef.addEventListener(Event.SELECT, arquivoSelecionado);
+			   	 	fileRef.addEventListener(Event.SELECT, selectedFile);
 			    	fileRef.browse(new Array(new FileFilter("Testes","*.java;")));
 				}
 				
-				public function arquivoSelecionado(evt:Event):void {
+				public function selectedFile(evt:Event):void {
 			       	readFile(fileRef.name);
 				}
 				
-				private function fechaJanela():void {
+				private function closeWindow():void {
 					dispatchEvent(new ClosePopupEvent(this));
 				}
 				
@@ -62,7 +63,7 @@
 				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
 				 *	então devemos mostra uma mensagem de erro
 				 */
-				private function lancaEvento(event:FaultEvent):void {
+				private function launchesEvent(event:FaultEvent):void {
 					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
 						event.fault, event.token, event.message);
 					dispatchEvent(e);
@@ -71,14 +72,14 @@
 				private function init():void {
 					
 					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
-					var estado: String = String(ModulesController.getParam());
+					var status: String = String(ModulesController.getParam());
 				}
 				
-				private function chamaTelaCadastraRoteiro():void{
-					ModulesController.createModule("modulos/Views/CadastrarRoteiro.swf", this, null);
+				private function callsScreenSaveAssignment():void{
+					ModulesController.createModule("modules/Views/SaveAssignment.swf", this, null);
 				}
 				
-				private function salvarAgendamento():void{
+				private function saveScheduli():void{
 					dispatchEvent(new ClosePopupEvent(this));
 				}
 				
@@ -101,31 +102,31 @@
 			
 		</mx:RemoteObject>
 		<mx:Label text="Roteiro: 6" fontWeight="bold"
-			textAlign="left" width="72" x="10" y="10" id="labelRoteiro"/>
+			textAlign="left" width="72" x="10" y="10" id="labelAssignment"/>
 		<mx:Label text="Selecione o arquivo:" fontWeight="bold"
-			textAlign="left" width="140" x="10" y="49" id="labelRoteiro0"/>
+			textAlign="left" width="140" x="10" y="49"/>
 		<mx:Label text="Grupo: A" fontWeight="bold"
-			textAlign="left" width="72" x="122" y="10" id="labelGrupos"/>
+			textAlign="left" width="72" x="122" y="10" id="labelGroup"/>
 		<mx:Label text="Observações:" fontWeight="bold"
-			textAlign="left" width="114" x="10" y="502" id="labelTitulo3"/>
+			textAlign="left" width="114" x="10" y="502"/>
 		<mx:Label text="Nota:" fontWeight="bold"
-			textAlign="left" width="43" x="808.95" y="497" id="labelNota"/>
+			textAlign="left" width="43" x="808.95" y="497" id="labelGrade"/>
 		<mx:Label text="Peso: 60%" fontWeight="bold"
-			textAlign="left" width="80" x="910" y="497" id="labelPeso"/>
+			textAlign="left" width="80" x="910" y="497" id="labelWeight"/>
 		<mx:Label text="Integrantes: Augusto Queiros, Alysson Filgueira, Demetrio Mestre" fontWeight="bold"
-			textAlign="left" width="543.05" x="226.95" y="10" id="labelIntegrantes"/>
+			textAlign="left" width="543.05" x="226.95" y="10" id="labelMembers"/>
 		<mx:HRule x="10" y="670" width="980" height="3"/>
 		
 		<mx:TextArea id="txtArea" 
 			fontFamily="Tahoma" fontSize="11" fontWeight="bold" width="980" height="398" 
 			paddingLeft="10" x="10" y="77"/>
-		<mx:LinkButton x="158" y="45" label="   Selecionar Arquivo" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivo()"/>
+		<mx:LinkButton x="158" y="45" label="   Selecionar Arquivo" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="selectFile()"/>
 		
 		<mx:HRule x="10" y="483" width="980" height="3"/>
 		<mx:HRule x="10" y="38" width="980" height="3"/>
-		<mx:Button x="408.05" y="684" click="salvarAgendamento()" label="   Salvar" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSalvar"/>
-		<mx:TextInput x="853" y="495" width="49" id="inputNota"/>
-		<mx:TextArea x="10" y="527" width="980" height="135" id="inputObservacoes"/>
+		<mx:Button x="408.05" y="684" click="saveScheduli()" label="   Salvar" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="buttonSave"/>
+		<mx:TextInput x="853" y="495" width="49" id="inputGrade"/>
+		<mx:TextArea x="10" y="527" width="980" height="135" id="inputObservations"/>
 		
 		
 </les:ModuleTitleWindow>
