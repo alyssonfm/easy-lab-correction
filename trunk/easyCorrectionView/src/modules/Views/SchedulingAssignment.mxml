@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Componente para a tela de login do sistema
+-->
+
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	width="800" height="538" creationComplete="init()" title="Agendamento de Roteiros" showCloseButton="true" close="closeWindow()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import events.ObjectEvent;
+				import events.ObjetoEvent;
+				import mx.managers.SystemManager;
+				import bean.Utility.Util;
+				import mx.collections.ArrayCollection;
+				import events.UserEvent;
+				import bean.permission.*;
+				import events.EventLogResponse;
+				import events.ClosePopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ModulesController;
+				import mx.binding.utils.BindingUtils;
+				//import eventos.RespostaLoginEvent;
+				//import eventos.FechaPopupEvent;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+	            
+	            private function failure(event:FaultEvent):void {
+					var msg:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							msg = event.fault.faultString;
+						} else {
+							msg = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						msg = "Serviço indisponível, reinicie a operação.";
+					}
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, msg));
+				}
+				
+				private function closeWindow():void {
+					dispatchEvent(new ObjectEvent(null));
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function eventLaunches(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					var state: String = String(ModulesController.getParam());
+					systemManager.addEventListener(ObjectEvent.ObjetoEventConst, updatesList);
+					listAssignments();
+					
+				}
+				
+				private function updatesList(event:ObjectEvent):void{
+					listAssignments();
+				}
+				
+				private function saveScheduling():void{
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				private function listAssignments():void{
+					facade.getOperation("listAssignments").send();
+				}
+				
+				private function listAssignments_result(event:ResultEvent):void{
+					dg_agenda.dataProvider = new ArrayCollection();
+					dg_agenda.dataProvider = event.result;
+					var paramMenssage: Array = new Array();
+					if(SaveAssignment.edited){
+						paramMenssage = new Array(false, "Roteiro Atualizado com sucesso.");
+						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramMenssage);
+						SaveAssignment.edited = false;
+					}
+					else if(SaveAssignment.save){
+						paramMenssage = new Array(false, "Roteiro Cadastrado com sucesso.");
+						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramMenssage);
+						SaveAssignment.save = false;	
+					}
+				}
+				
+				private function labelGrid(item:*, column:DataGridColumn):String {
+					var sLabel:String = "";
+					var sHeaderText:String = column.headerText;
+					switch (sHeaderText)  {
+						case "Roteiro":
+							sLabel = item.name;
+							break;
+						case "Data da Liberação":
+							sLabel = Util.formatsDate(item.releaseDate);
+							break;
+						case "Hor. da Liberação":
+							sLabel = Util.unitOrganizesTime(String(item.releaseDate.getHours())) + ":" + 
+								Util.unitOrganizesTime(String(item.releaseDate.getMinutes()));
+							break;
+						case "Data da Entrega":
+							sLabel = Util.formatsDate(item.deliveryDate);
+							break;
+						case "Hor. da Entrega":
+							sLabel = Util.unitOrganizesTime(String(item.deliveryDate.getHours())) + ":" + 
+							Util.unitOrganizesTime(String(item.deliveryDate.getMinutes()));
+							break;
+						case "Status":
+							
+							break;
+						case "Submissões":
+							break;
+					}
+					return sLabel;
+				}
+				
+				private function editAssignmentCalls():void{
+					if(dg_agenda.selectedItem != null){
+						var param:* = dg_agenda.selectedItem;
+						ModulesController.createModule("modulos/Views/CadastrarRoteiro.swf", this, param);
+					}else{
+						ModulesController.createModule("modulos/Views/CadastrarRoteiro.swf", this, null);
+					}
+				}
+				
+				private function createsAssignment():void{
+					ModulesController.createModule("modulos/Views/CadastrarRoteiro.swf", this, null);
+				}
+
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			<mx:method name="listAssignments" result="listAssignments_result(event)" fault="failure(event)"/>
+		</mx:RemoteObject>
+		<mx:Button x="298.05" y="10" click="createsAssignment()" label="   Novo Roteiro" width="183.9" icon="@Embed(source='../../image/novo.png')" height="28" id="buttonNewAssignment" cornerRadius="20"/>
+		<mx:DataGrid x="10" y="46" width="760" height="438" id="dg_agenda" labelFunction="labelGrid" itemClick="editAssignmentCalls()">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Roteiro" width="80"/>
+				<mx:DataGridColumn headerText="Data da Liberação" width="50"/>
+				<mx:DataGridColumn headerText="Hor. da Liberação" width="50"/>
+				<mx:DataGridColumn headerText="Data da Entrega" width="50"/>
+				<mx:DataGridColumn headerText="Hor. da Entrega" width="50"/>
+				<mx:DataGridColumn headerText="Status" width="50"/>
+				<mx:DataGridColumn headerText="Submissões" width="50"/>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		
+</les:ModuleTitleWindow>

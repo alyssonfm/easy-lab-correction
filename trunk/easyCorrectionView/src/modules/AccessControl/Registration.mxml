@@ -1,0 +1,1176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modules.System.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	layout="absolute" width="644" height="446" title="Cadastros" creationComplete="init()" showCloseButton="true" close="closeWindow()">
+	<les:states>
+		<mx:State name="teacherState">
+			<mx:RemoveChild target="{tabNav}"/>
+			<mx:AddChild position="lastChild">
+				<mx:ComboBox prompt="selecione..." x="66" y="10" width="548" labelField="nome" id="cbUserGroupState" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="65" y="41" width="548" id="inputUserNameState" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="65" y="70.5" width="348" id="inputUserLoginState" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="479" y="70.5" width="134" id="inputUserPasswordState" displayAsPassword="true"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="244.5" y="132.5" label="   Salvar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButtonState" height="28" enabled="false"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="101.5" y="132.5" label="   Novo" width="135" height="28" id="newUserButtonState" click="mudaCadastrar()" icon="@Embed(source='../../image/novo.png')"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="387.5" y="132.5" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButtonState" height="28"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="244.5" y="132.5" label="   Atualizar" click="verificaUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButtonState" height="28"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="12" y="11.5" text="Grupo:" id="labelUserGroupState"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="11" y="43" text="Nome:" id="labelUserNameState"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="13" y="72.5" text="Login:" id="labelUserLoginState"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="65" y="100.5" width="548" id="inputUserEmailState" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="13" y="102.5" text="Email:" id="labelUserEmailState"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="421" y="72.5" text="Senha:" id="labelUserPasswordState"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:DataGrid x="11" y="168.5" width="602" height="223.5" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
+						 labelFunction="labelGridUsuarios" id="dgUsersState">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Login" dataField="id" width="200"/>
+						<mx:DataGridColumn headerText="Usuário"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:AddChild>
+		</mx:State>
+	</les:states>
+	
+	<mx:Script>
+		<![CDATA[
+			import bean.Utility.CastEntities;
+			import mx.utils.ObjectUtil;
+			import mx.utils.StringUtil;
+			import mx.events.ValidationResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import mx.validators.EmailValidator;
+			import Scripts.ModulesController;
+			
+			[Bindable]
+			private var toolTipMenuName:String = 
+				"(Obrigatório) Informe o nome do menu.";
+			
+			[Bindable]
+			private var toolTipLabelMenu:String = 
+				"(Obrigatório) Informe um rótulo para o menu.";
+				
+			[Bindable]
+			private var toolTipMenuFunction:String = 
+				"(Obrigatório) Informe o menu da função.";
+			
+			[Bindable]
+			private var toolTipNameFunction:String = 
+				"(Obrigatório) Informe o nome para a função.";
+				
+			[Bindable]
+			private var toolTipLabelFunction:String = 
+				"(Obrigatório) Informe uma rótulo para a função.";
+				
+			[Bindable]
+			private var toolTipGroupName:String = 
+				"(Obrigatório) Informe um nome para Grupo.";
+				
+			[Bindable]
+			private var toolTipUserName:String = 
+				"(Obrigatório) Informe um nome para o Usuário.";
+			
+			[Bindable]
+			private var toolTipUserLogin:String = 
+				"(Obrigatório) Informe um login para o Usuário.";
+				
+			[Bindable]
+			private var toolTipUserPassword:String = 
+				"(Obrigatório) Informe uma senha para o Usuário.";
+			
+			[Bindable]
+			private var toolTipUserEmail:String = 
+				"(Obrigatório) Informe um email para o Usuário.";
+				
+				
+			[Bindable]
+			private var toolTipUserGroup:String = 
+				"(Obrigatório) Informe um grupo para o Usuário.";
+			
+			
+			private var menus: ArrayCollection = new ArrayCollection();
+			private var groups: ArrayCollection = new ArrayCollection();
+			
+			private var menu: Menu = new Menu();
+			private var func: Function = new Function();
+			private var group: Group = new Group();
+			private var user: Usuario = new Usuario();
+			private var userGroup: UserGroup = new UserGroup();
+			private var loggedUser: *;
+			private var validEmail: Boolean;
+			private var firstEntry: Boolean = false;
+			private var loggedAssistant: Boolean = false;
+			private var passwordSaved: String = "";
+			private var generatedPassword: String = "";
+			
+			private var emailChanged: Boolean = false;
+			
+			[Bindable]
+			private var message:String;
+			
+			[Bindable]
+			private var contact:String;
+			
+			[Bindable]
+			private var userName:String;
+			
+			[Bindable]
+			private var subject: String = "[ELC] Cadastro no Easy Lab Correction";			
+			
+			
+			
+			private function init():void {
+				facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+				loggedUser = ModulesController.getParam();
+				getUserGroup();
+			}
+			
+			private function getUserGroup(): void{
+				facade.getOperation("getGrupoUsuarioPorUsuario").send(loggedUser.userId);
+			}
+			
+			private function getUserGroupByUser_result(event:ResultEvent):void {
+				var userGroupList: * = event.result as ArrayCollection;
+				if (userGroupList.getItemAt(0).group.name.toUpperCase() == "PROFESSOR"
+					|| userGroupList.getItemAt(0).group.name.toUpperCase() == "MONITOR"){
+					if(userGroupList.getItemAt(0).group.name.toUpperCase() == "MONITOR") loggedAssistant = true;
+					currentState = "teacherState";
+					tabNav.visible = true;
+					emailValidator.source = inputUserEmailState;
+					emailValidator.trigger = inputUserEmailState;
+					groupList();
+				}
+				else{
+					tabNav.visible = true;
+					selectTab();
+				}
+			}
+			
+			
+			private function closeWindow(): void{
+				dispatchEvent(new ClosePopupEvent(this));
+			}
+			
+			private function selectTab():void {
+				clearFieldsByTab();
+				if (tabNav.selectedIndex == 1){
+					groupList();
+				} 
+				else 
+					if (tabNav.selectedIndex == 0) {
+						groupList();
+					}
+					else menuList();	
+			}
+			
+			private function failure(event:FaultEvent):void {
+				var message:String;
+				try{
+					if (event.fault.rootCause.message == null) {
+						message = event.fault.faultString;
+					} else {
+						message = event.fault.rootCause.message;
+					}
+				}
+				catch(e:Error){
+					message = "Serviço indisponível, reinicie a operação.";
+				}
+				ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
+			}
+			
+			private function menuFailure(event:FaultEvent):void {
+				var message:String = "Não é possível realizar a exclusão. Pois existem funções cadastradas nesse Menu.";
+				lancaExcessao(new Array(true, message));
+			}
+			
+			private function groupFailure(event:FaultEvent):void {
+				var message:String = "Não é possível realizar a operação. Pois existem usuários cadastrados nesse Grupo.";
+				lancaExcessao(new Array(true, message));
+			}
+			
+			private function lancaExcessao(params: Array): void{
+				ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, params);
+			}
+			
+			private function menuList(): void{
+				facade.getOperation("listarMenus").send();				
+			}
+			
+			private function menuList_result(event:ResultEvent):void {
+				menus = event.result as ArrayCollection;
+				if (tabNav.selectedIndex == 2){
+					if (menus == null) {
+						menus = new ArrayCollection();
+						menus.addItem(event.result);
+					}
+					dgMenus.dataProvider = menus;
+				}
+				if (tabNav.selectedIndex == 3){
+					cbMenu.dataProvider = menus;
+					cbMenu.selectedIndex = -1;
+					functionsList();
+				}
+			}
+			
+			private function functionsList():void{
+				facade.getOperation("listarFuncoes").send()
+			}
+			
+			private function functionsList_result(event:ResultEvent):void{
+				dgFunctions.dataProvider = event.result; 
+			}
+			
+			private function groupList():void{
+				facade.getOperation("listarGrupos").send()
+			}
+			
+			private function groupList_result(event:ResultEvent):void{
+				groups = event.result as ArrayCollection;
+				var auxGroup: ArrayCollection = new ArrayCollection();
+				if (currentState == "teacherState"){
+					for(var i: int = 0; i < groups.length; i++){
+						if(groups.getItemAt(i).name.toUpperCase() != "PROFESSOR" && groups.getItemAt(i).name.toUpperCase() != "ADMINISTRADOR"){
+							if(!loggedAssistant){
+								auxGroup.addItem(groups.getItemAt(i));	 
+							}
+							else{
+								if(groups.getItemAt(i).name.toUpperCase() != "MONITOR"){
+									auxGroup.addItem(groups.getItemAt(i));
+								}
+							}
+						}
+					}
+					cbUserGroupState.dataProvider = auxGroup;
+					if (groups.length != 0){
+						cbUserGroupState.selectedIndex = 0;
+						filtrateUserByGroup();
+					}
+					else{
+						cbUserGroupState.selectedIndex = -1;
+					}
+				}
+				else{
+					if (tabNav.selectedIndex == 1){
+						if (groups == null) {
+							groups = new ArrayCollection();
+							groups.addItem(event.result);
+						}
+						dgGrupos.dataProvider = groups;
+					}
+					if (tabNav.selectedIndex == 0){
+						cbUserGroup.dataProvider = groups;
+						if (groups.length != 0){
+							cbUserGroup.selectedIndex = 0;
+							filtrateUserByGroup();
+						}
+						else{
+							cbUserGroup.selectedIndex = -1;
+						}
+					}
+				}
+			}
+			
+			private function labelGridMenus(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Nome":
+						sLabel = item.name;
+						break;
+					case "Rótulo":
+						sLabel = item.label;
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function labelGridFunctions(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Rótulo":
+						sLabel = item.label;
+						break;
+					case "Nome":
+						sLabel = item.name;
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function labelGridGroups(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Grupo":
+						sLabel = item.name;
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function labelGridUsers(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Login":
+						sLabel = item.user.login;
+						break;
+					case "Usuário":
+						sLabel = item.user.name;
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function saveMenu(): void{
+				menu = new Menu();
+				updateMenu();
+			}
+			
+			private function updateMenu():void {
+				menu.name = StringUtil.trim(inputMenuName.text);
+				menu.label = StringUtil.trim(inputMenuLabel.text);
+				facade.getOperation("cadastrarMenu").send(menu);
+			}
+			
+			private function removeMenu():void {
+				facade.getOperation("excluirMenu").send(menu);
+			}
+			
+			private function removeMenu_result(): void{
+				menuList();
+				clearFieldsByTab();
+			}
+			
+			private function saveMenu_result(event:ResultEvent): void{
+				var menuP: Menu = CastEntities.castMenu(event.result);
+				if (menuP != null && menuP.menuId != 0){
+					menuList();	
+					inputMenuName.text = "";
+					inputMenuLabel.text = "";
+				}
+				else{
+					var paramError:Array = new Array(true, "Falha ao cadastrar este Menu.");
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramError);
+				} 	
+			}
+			
+			private function selectMenu(): void{
+				if (dgMenus.selectedItem != null) {
+					menu.menuId = dgMenus.selectedItem.menuId;
+					menu.name = dgMenus.selectedItem.name;
+					menu.label = dgMenus.selectedItem.label;
+					inputMenuName.text = menu.name;
+					inputMenuLabel.text = menu.label;
+					createMenuButton.visible = false;
+					updateMenuButton.visible = true;
+					removeMenuButton.visible = true;
+				}
+			}
+			
+			//Parei Aqui!
+			private function cadastrarFuncao(): void{
+				func = new Function();
+				editarFuncao();
+			}
+			
+			private function editarFuncao():void {
+				func.name = StringUtil.trim(inputNomeFuncao.text);
+				func.label = StringUtil.trim(inputRotuloFuncao.text);
+				func.menu = CastDeEntidades.castMenu(cbMenu.selectedItem);
+				facade.getOperation("cadastrarFuncao").send(func);
+			}
+			
+			private function excluirFuncao():void {
+				facade.getOperation("excluirFuncao").send(func);
+			}
+			
+			private function excluirFuncao_result(): void{
+				functionsList();
+				clearFieldsByTab();
+			}
+			
+			private function filtrarFuncoesPorMenu():void {
+				try{
+					handleValidaFuncao(null);
+					var menuAux : * = cbMenu.selectedItem;
+					facade.getOperation("consultarFuncaoPorMenu").send(menuAux.idMenu);
+				} catch(e: Error){}
+				
+			}
+			
+			private function consultarFuncaoPorMenu_result(event:ResultEvent): void{
+				dgFunctions.dataProvider = new ArrayCollection();
+				dgFunctions.dataProvider = event.result as ArrayCollection;
+			}
+			
+			private function cadastrarFuncao_result(event:ResultEvent): void{
+				var funcaoP: Function = CastDeEntidades.castFuncao(event.result);
+				if (funcaoP != null && funcaoP.functionId != 0){
+					functionsList();	
+					inputNomeFuncao.text = "";
+					inputRotuloFuncao.text = "";
+				}
+				else{
+					var paramErro:Array = new Array(true, "Falha ao cadastrar esta Função.");
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramErro);
+				} 	
+			}
+			
+			private function selecionarFuncao(): void{
+				if (dgFunctions.selectedItem != null) {
+					func.functionId = dgFunctions.selectedItem.idFuncao;
+					func.name = dgFunctions.selectedItem.nome;
+					func.label = dgFunctions.selectedItem.rotulo;
+					func.menu = CastDeEntidades.castMenu(dgFunctions.selectedItem.menu);
+					inputNomeFuncao.text = func.name;
+					inputRotuloFuncao.text = func.label;
+					cbMenu.selectedIndex = Util.pegaPosObjeto("idMenu", ArrayCollection(cbMenu.dataProvider), func.menu);
+					botaoCadastrarFuncao.visible = false;
+					botaoAtualizarFuncao.visible = true;
+					botaoRemoverFuncao.visible = true;
+					botaoRemoverFuncao.enabled = true;
+					botaoAtualizarFuncao.enabled = true;
+				}
+			}
+			
+			private function cadastrarGrupo(): void{
+				group = new Group();
+				editarGrupo();
+			}
+			
+			private function editarGrupo():void {
+				group.name = StringUtil.trim(inputGrupo.text);
+				facade.getOperation("cadastrarGrupo").send(group);
+			}
+			
+			private function excluirGrupo():void {
+				facade.getOperation("excluirGrupo").send(group);
+			}
+			
+			private function excluirGrupo_result(): void{
+				groupList();
+				clearFieldsByTab();
+			}
+			
+			private function cadastrarGrupo_result(event:ResultEvent): void{
+				var grupoP: Group = CastDeEntidades.castGrupo(event.result);
+				if (grupoP != null && grupoP.groupId != 0){
+					groupList();	
+					inputGrupo.text = "";
+				}
+				else{
+					var paramErro:Array = new Array(true, "Falha ao cadastrar este Grupo.");
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramErro);
+				} 	
+			}
+			
+			private function selecionarGrupo(): void{
+				if (dgGrupos.selectedItem != null) {
+					group.groupId = dgGrupos.selectedItem.idGrupo;
+					group.name = dgGrupos.selectedItem.nome;
+					inputGrupo.text = group.name;
+					botaoCadastrarGrupo.visible = false;
+					botaoAtualizarGrupo.visible = true;
+					botaoRemoverGrupo.visible = true;
+				}
+			}
+			
+			private function cadastrarGrupoUsuario(): void{
+				firstEntry = true;
+				user = new Usuario();
+				userGroup = new UserGroup();
+				verificaUsuario();
+			}
+			
+			private function getUsuarioPorLogin_result(event:ResultEvent): void{
+				var mens:Array = new Array(true, "Login já existente, alteração não realizada.");
+				lancaExcessao(mens);
+			}
+			
+			private function falhaUsuarioExistente(event:FaultEvent):void {
+				if(firstEntry){
+					if (currentState != "teacherState"){
+						if(inputSenhaUsuario.text.length == 0){
+							facade.getOperation("gerarSenha").send(6,"");		
+						}
+						else{
+							editarUsuario();
+						}
+					}else{
+						if(inputUserPasswordState.text.length == 0){
+							facade.getOperation("gerarSenha").send(6,"");
+						}
+						else{
+							editarUsuario();
+						}
+					}
+				}
+				else{
+					editarUsuario();		
+				}
+			}
+			
+			private function gerarSenha_result(event:ResultEvent): void{
+				generatedPassword = event.result as String;
+				editarUsuario();
+			}
+			
+			private function verificaUsuario(): void{
+				try{
+					if (currentState != "teacherState"){
+						if(firstEntry){
+							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));
+						}
+						else{
+							if(dgUsuarios.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
+								facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));	
+							}
+							else{
+								editarUsuario();		
+							}
+						}
+					}
+					else{
+						if(firstEntry){
+							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputUserLoginState.text));
+						}
+						else{
+							if(dgUsersState.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
+								facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputUserLoginState.text));	
+							}
+							else{
+								editarUsuario();		
+							}	
+						}
+					}
+				}catch(e: Error){
+					editarUsuario();
+				}
+			}
+			
+			private function editarUsuario(): void{
+				var mens:Array;
+				if (currentState != "teacherState"){
+					if(inputSenhaUsuario.text.length != 0 && inputSenhaUsuario.text.length < 6){
+						mens = new Array(true, "Senha muito pequena, cadastro não realizado.");
+						lancaExcessao(mens);
+					}
+					else{
+						if(dgUsuarios.selectedItem != null){
+							if(!firstEntry) user.idUsuario = dgUsuarios.selectedItem.usuario.idUsuario;
+							if(StringUtil.trim(inputSenhaUsuario.text) != ""){
+								user.senha = StringUtil.trim(inputSenhaUsuario.text);
+							}else{
+								if(firstEntry) user.senha = generatedPassword;
+								else user.senha = dgUsuarios.selectedItem.usuario.senha;
+							}	
+						}else{
+							if(firstEntry && inputSenhaUsuario.text.length == 0){
+								user.senha = generatedPassword;
+							}
+							else{
+								user.senha = StringUtil.trim(inputSenhaUsuario.text);
+							}	
+						}
+						user.login = StringUtil.trim(inputLoginUsuario.text);
+						user.nome = StringUtil.trim(inputNomeUsuario.text);
+						user.email = StringUtil.trim(inputEmailUsuario.text);
+						if(!firstEntry && userGroup.user.email != user.email){
+							emailChanged = true;
+						}
+						userGroup.group = CastDeEntidades.castGrupo(cbUserGroup.selectedItem);
+						userGroup.user = user;
+						facade.getOperation("cadastrarUsuario").send(userGroup);
+					}
+				}
+				else{
+					if(inputUserPasswordState.text.length != 0 && inputUserPasswordState.text.length < 6){
+						mens = new Array(true, "Senha muito pequena, cadastro não realizado.");
+						lancaExcessao(mens);
+					}
+					else{
+						if(dgUsersState.selectedItem != null){
+							if(!firstEntry) user.idUsuario = dgUsersState.selectedItem.usuario.idUsuario;
+							if(StringUtil.trim(inputUserPasswordState.text) != ""){
+								user.senha = StringUtil.trim(inputUserPasswordState.text);
+							}else{
+								if(firstEntry) user.senha = generatedPassword;
+								else user.senha = dgUsersState.selectedItem.usuario.senha;
+							}	
+						}else{
+							if(firstEntry && inputUserPasswordState.text.length == 0){
+								user.senha = generatedPassword;
+							}
+							else{
+								user.senha = StringUtil.trim(inputUserPasswordState.text);
+							}	
+						}
+						user.login = StringUtil.trim(inputUserLoginState.text);
+						user.nome = StringUtil.trim(inputUserNameState.text);
+						user.email = StringUtil.trim(inputUserEmailState.text);
+						if(!firstEntry && userGroup.user.email != user.email){
+							emailChanged = true;
+						}
+						userGroup.group = CastDeEntidades.castGrupo(cbUserGroupState.selectedItem);
+						userGroup.user = user;
+						facade.getOperation("cadastrarUsuario").send(userGroup);
+					}
+				}
+			}
+			
+			private function excluirUsuario():void {
+				facade.getOperation("excluirUsuario").send(userGroup);
+			}
+			
+			private function excluirGrupoUsuario_result(): void{
+				filtrateUserByGroup();
+				clearFieldsByTab();
+				var mens: Array = new Array(false, "Usuário removido com sucesso!");
+				lancaExcessao(mens);
+			}
+			
+			private function cadastrarUsuario_result(event:ResultEvent): void{
+				var grupoUsuarioP: UserGroup = CastDeEntidades.castGrupoUsuario(event.result);
+				if (grupoUsuarioP != null && grupoUsuarioP.userGroupId != 0){
+					filtrateUserByGroup();
+					if (currentState != "teacherState"){
+						inputLoginUsuario.text = "";
+						inputNomeUsuario.text = "";
+						passwordSaved = inputSenhaUsuario.text;
+						inputSenhaUsuario.text = "";
+						inputEmailUsuario.text = "";
+					}
+					else{	
+						inputUserLoginState.text = "";
+						inputUserNameState.text = "";
+						passwordSaved = inputUserPasswordState.text;
+						inputUserPasswordState.text = "";
+						inputUserEmailState.text = "";
+					}
+				}
+				var mens:Array;
+				if (firstEntry){
+					envioEmails(grupoUsuarioP);
+					firstEntry = false;
+					filtrateUserByGroup();
+				}
+				else{
+					if(emailChanged){
+						envioEmails(userGroup);
+						emailChanged = false;
+					} else{
+						mens = new Array(false, "Dados atualizados com sucesso!");
+						lancaExcessao(mens);
+					}
+				}
+			}
+			
+			private function envioEmails(grupoUsuarioP: UserGroup):void {
+				if(passwordSaved == ""){
+					passwordSaved = generatedPassword;
+				}
+				message = "<BR>Parabéns, você foi cadastrado no sistema Easy Lab Correction da disciplina Laboratório de Estrutura de Dados.</BR>" +
+						"<BR></BR>" +				
+						"<BR>Informamos que o envio de roteiros será realizado através do sistema mediante os seguintes dados de acesso:</BR>" +
+						"<BR></BR>" +
+						"Login:<BR>" + grupoUsuarioP.user.login + "</BR>" + 
+						"<BR>Senha:</BR><BR>"+ passwordSaved +"</br><p>Obs.:\nLembre-se! Sua senha é pessoal e intransferível, " +
+						"sugerimos sua alteração imediata.</p>" + 
+						"<BR>Clique <a href=http://les.dsc.ufcg.edu.br:8080/EasyLabCorrection/>aqui</a> para acessar o sistema.</BR>" +
+						"<BR></BR>" +
+						"<BR>Atenciosamente,</BR>" +
+						"<BR>Easy Lab Correction</BR>";
+				
+				message = Util.geraCodigosHTML(message);
+				contact = grupoUsuarioP.user.email;
+				userName = grupoUsuarioP.user.nome;
+				servicoEnviarEmail.send();
+				
+			}
+			
+			private function selecionarUsuario(): void{
+				if (currentState != "teacherState"){
+					if (dgUsuarios.selectedItem != null) {
+						userGroup.userGroupId = dgUsuarios.selectedItem.idGrupoUsuario;
+						userGroup.user = CastDeEntidades.castUsuario(dgUsuarios.selectedItem.usuario);
+						userGroup.group = dgUsuarios.selectedItem.grupo;
+						cbUserGroup.selectedIndex = Util.pegaPosObjeto("idGrupo", ArrayCollection(cbUserGroup.dataProvider), userGroup.group);
+						inputNomeUsuario.text = userGroup.user.nome;
+						inputLoginUsuario.text = userGroup.user.login;
+						inputEmailUsuario.text = userGroup.user.email;
+						botaoCadastrarUsuario.visible = false;
+						botaoAtualizarUsuario.visible = true;
+						botaoNovoUsuario.visible = true;
+						botaoRemoverUsuario.visible = true;
+					}
+				}
+				else{
+					if (dgUsersState.selectedItem != null) {
+						userGroup.userGroupId = dgUsersState.selectedItem.idGrupoUsuario;
+						userGroup.user = CastDeEntidades.castUsuario(dgUsersState.selectedItem.usuario);
+						userGroup.group = dgUsersState.selectedItem.grupo;
+						cbUserGroupState.selectedIndex = Util.pegaPosObjeto("idGrupo", ArrayCollection(cbUserGroupState.dataProvider), userGroup.group);
+						inputUserNameState.text = userGroup.user.nome;
+						inputUserLoginState.text = userGroup.user.login;
+						inputUserEmailState.text = userGroup.user.email;
+						saveUserButtonState.visible = false;
+						updateUserButtonState.visible = true;
+						newUserButtonState.visible = true;
+						removeUserButtonState.visible = true;
+					}
+				}
+			}
+			
+			private function mudaCadastrar(): void {
+				clearFieldsByTab();
+				
+			}
+			
+			private function clearFieldsByTab():void {
+				if (currentState != "teacherState"){
+					if (tabNav.selectedIndex == 2){
+						limpaCamposMenu();
+						createMenuButton.visible = true;
+						updateMenuButton.visible = false;
+						removeMenuButton.visible = false;
+					}
+					if (tabNav.selectedIndex == 3){
+						limpaCamposFuncao();
+						botaoCadastrarFuncao.visible = true;
+						botaoAtualizarFuncao.visible = false;
+						botaoRemoverFuncao.visible = false;
+					}
+					if (tabNav.selectedIndex == 1){
+						limpaCamposGrupo();
+						botaoCadastrarGrupo.visible = true;
+						botaoAtualizarGrupo.visible = false;
+						botaoRemoverGrupo.visible = false;
+					}
+					if (tabNav.selectedIndex == 0){
+						limpaCamposUsuario();
+						botaoCadastrarUsuario.visible = true;
+						botaoAtualizarUsuario.visible = false;
+						botaoNovoUsuario.visible = false;
+						botaoRemoverUsuario.visible = false;
+					}
+				}
+				else{
+					limpaCamposUsuario();
+					saveUserButtonState.visible = true;
+					updateUserButtonState.visible = false;
+					newUserButtonState.visible = false;
+					removeUserButtonState.visible = false;
+				}
+			}
+			
+			private function limpaCamposMenu(): void{
+				inputMenuName.text = "";
+				inputMenuLabel.text = "";	
+			}
+			
+			private function limpaCamposFuncao(): void{
+				inputNomeFuncao.text = "";
+				inputRotuloFuncao.text = "";
+				cbMenu.selectedIndex = -1;	
+			}
+			
+			private function limpaCamposGrupo(): void{
+				inputGrupo.text = "";	
+			}
+			
+			private function limpaCamposUsuario(): void{
+				if (currentState != "teacherState"){
+					inputLoginUsuario.text = "";
+					inputNomeUsuario.text = "";
+					inputSenhaUsuario.text = "";
+					inputEmailUsuario.text = "";
+					//cbGrupoUsuario.selectedIndex = -1;
+					//dgUsuarios.dataProvider = new ArrayCollection;
+				}
+				else{
+					inputUserLoginState.text = "";
+					inputUserNameState.text = "";
+					inputUserPasswordState.text = "";
+					inputUserEmailState.text = "";
+					//scbGrupoUsuarioAlt.selectedIndex = -1;
+					//dgUsuariosAlt.dataProvider = new ArrayCollection;
+				}
+			}
+			
+			private function filtrateUserByGroup(): void{
+				try{
+					handleValidaUsuario(null);
+					var grupoUsuarioAux : *;
+					if (currentState != "teacherState"){
+						grupoUsuarioAux = cbUserGroup.selectedItem;	
+					}
+					else{
+						grupoUsuarioAux = cbUserGroupState.selectedItem;
+					}
+					facade.getOperation("consultarUsuarioPorGrupo").send(grupoUsuarioAux.idGrupo);
+				} catch(e: Error){}
+			}
+			
+			private function consultarUsuarioPorGrupo_result(event:ResultEvent): void{
+				if (currentState != "teacherState"){
+					dgUsuarios.dataProvider = new ArrayCollection();
+					dgUsuarios.dataProvider = event.result as ArrayCollection;
+					if(dgUsuarios.dataProvider.length > 0){
+						dgUsuarios.selectedIndex = 0;
+						selecionarUsuario();
+					}
+					else{
+						mudaCadastrar();
+					}
+				}
+				else{
+					dgUsersState.dataProvider = new ArrayCollection();
+					dgUsersState.dataProvider = event.result as ArrayCollection;
+					if(dgUsersState.dataProvider.length > 0){
+						dgUsersState.selectedIndex = 0;
+						selecionarUsuario();
+					}
+					else{
+						mudaCadastrar();
+					}
+				}
+			}
+						
+			private function handleValidaMenu(eventObj:ValidationResultEvent):void {
+				if (StringUtil.trim(inputMenuName.text) != "" && StringUtil.trim(inputMenuLabel.text) != ""){     
+               		createMenuButton.enabled = true;
+            		updateMenuButton.enabled = true;
+            	    removeMenuButton.enabled = true;
+        		}
+        		else{        
+               		createMenuButton.enabled = false;
+            		updateMenuButton.enabled = false;
+            	    removeMenuButton.enabled = false;
+        		}
+            }
+            
+            private function handleValidaFuncao(eventObj:ValidationResultEvent):void {
+            	if (StringUtil.trim(inputNomeFuncao.text) != "" && 
+                	StringUtil.trim(inputRotuloFuncao.text) != "" &&
+                	cbMenu.selectedIndex != -1){
+                 	botaoCadastrarFuncao.enabled = true;
+                	botaoAtualizarFuncao.enabled = true;
+                	botaoRemoverFuncao.enabled = true;
+             	}
+             	else{             		
+                   	botaoCadastrarFuncao.enabled = false;
+                	botaoAtualizarFuncao.enabled = false;
+                	botaoRemoverFuncao.enabled = false;	
+             	}
+            }
+            
+            private function handleValidaGrupo(eventObj:ValidationResultEvent):void {
+                if (StringUtil.trim(inputGrupo.text) != ""){                
+                    botaoCadastrarGrupo.enabled = true;
+                 	botaoAtualizarGrupo.enabled = true;
+                 	botaoRemoverGrupo.enabled = true;                 	
+            	}                    
+                else{                
+                    botaoCadastrarGrupo.enabled = false;
+                 	botaoAtualizarGrupo.enabled = false;
+                 	botaoRemoverGrupo.enabled = false;	
+                }   
+            }
+            
+            private function handleValidaUsuario(eventObj:ValidationResultEvent):void {
+            	if (currentState != "teacherState"){
+	                if (StringUtil.trim(inputNomeUsuario.text) != "" && 
+	                	StringUtil.trim(inputLoginUsuario.text) != "" &&
+	                	validEmail &&
+	                	cbUserGroup.selectedIndex != -1){
+	                	botaoCadastrarUsuario.enabled = true;
+	                	botaoAtualizarUsuario.enabled = true;
+	                	botaoNovoUsuario.enabled = true;
+	                	botaoRemoverUsuario.enabled = true;                	
+	                }
+	                else{
+	                	botaoCadastrarUsuario.enabled = false;               	
+	                }
+            	}
+            	else{
+            		 if (StringUtil.trim(inputUserNameState.text) != "" && 
+	                	StringUtil.trim(inputUserLoginState.text) != "" &&
+	                	validEmail &&
+	                	cbUserGroupState.selectedIndex != -1){
+	                	saveUserButtonState.enabled = true;
+	                	updateUserButtonState.enabled = true;
+	                	newUserButtonState.enabled = true;
+	                	removeUserButtonState.enabled = true;                	
+	                }
+	                else{
+	                	saveUserButtonState.enabled = false;              	
+	                }
+            	}
+            }
+            
+            private function lancaEvento(event:FaultEvent):void {
+				var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+					event.fault, event.token, event.message);
+				dispatchEvent(e);
+			}
+			
+			private function handleEmail(event:ResultEvent):void {
+				var tipo: String = "";
+				if (currentState != "teacherState"){
+					tipo = cbUserGroup.selectedItem.nome;
+				}else{
+					tipo = cbUserGroupState.selectedItem.nome;
+				}
+				ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this,
+					[false, tipo + " cadastrado com sucesso! Email já enviado."]);
+			}
+            
+            private function falhaRemove(event:FaultEvent):void{
+				var mens:Array = new Array(true, "Não é possível realizar a operação.");
+				lancaExcessao(mens);
+			}
+			
+			private function invalidaEmail(event:ValidationResultEvent):void {
+				validEmail = false;
+				if (currentState != "teacherState"){
+                	botaoCadastrarUsuario.enabled = false;
+                	botaoAtualizarUsuario.enabled = false;
+                	botaoNovoUsuario.enabled = false;
+                	botaoRemoverUsuario.enabled = false;
+            	}
+            	else{
+	                saveUserButtonState.enabled = false;
+	                updateUserButtonState.enabled = false;
+	                newUserButtonState.enabled = false;
+	                removeUserButtonState.enabled = false;	                
+            	}
+			}
+			
+			private function validaEmail(event:ValidationResultEvent):void {
+				validEmail = true;
+				handleValidaUsuario(event);
+			}
+			
+			private function compareNome(itemA:Object, itemB:Object):int {  
+				return ObjectUtil.stringCompare(
+					itemA.usuario.nome,  
+					itemB.usuario.nome,   
+					true
+				);
+			}
+			
+			private function compareLogin(itemA:Object, itemB:Object):int {  
+				return ObjectUtil.stringCompare(
+					itemA.usuario.login,  
+					itemB.usuario.login,   
+					true
+				);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+		
+		<mx:method name="listarMenus" result="menuList_result(event)" fault="failure(event)"/>
+		<mx:method name="listarFuncoes" result="functionsList_result(event)" fault="failure(event)"/>
+		<mx:method name="listarGrupos" result="groupList_result(event)" fault="failure(event)"/>
+		<mx:method name="cadastrarMenu" result="saveMenu_result(event)" fault="failure(event)"/>
+		<mx:method name="cadastrarFuncao" result="cadastrarFuncao_result(event)" fault="failure(event)"/>
+		<mx:method name="consultarFuncaoPorMenu" result="consultarFuncaoPorMenu_result(event)" fault="failure(event)"/>
+		<mx:method name="cadastrarGrupo" result="cadastrarGrupo_result(event)" fault="failure(event)"/>
+		<mx:method name="cadastrarUsuario" result="cadastrarUsuario_result(event)" fault="failure(event)"/>
+		<mx:method name="consultarUsuarioPorGrupo" result="consultarUsuarioPorGrupo_result(event)" fault="failure(event)"/>
+		<mx:method name="getGrupoUsuarioPorUsuario" result="getUserGroupByUser_result(event)" fault="failure(event)"/>
+		<mx:method name="getUsuarioPorLogin" result="getUsuarioPorLogin_result(event)" fault="falhaUsuarioExistente(event)"/>
+		<mx:method name="excluirMenu" result="removeMenu_result()" fault="menuFailure(event)"/>
+		<mx:method name="excluirFuncao" result="excluirFuncao_result()" fault="failure(event)"/>
+		<mx:method name="excluirGrupo" result="excluirGrupo_result()" fault="groupFailure(event)"/>
+		<mx:method name="excluirUsuario" result="excluirGrupoUsuario_result()" fault="falhaRemove(event)"/>
+		<mx:method name="gerarSenha" result="gerarSenha_result(event)" fault="failure(event)"/>
+		
+	</mx:RemoteObject>
+	
+	<mx:HTTPService id="servicoEnviarEmail" method="POST" 
+    	url="{ExternalInterface.call('getUrlSendMail')}"
+    	useProxy="false"
+    	resultFormat="text"
+    	result="handleEmail(event)"
+    	fault="lancaEvento(event)"
+    	showBusyCursor="true">
+	    <mx:request>
+	        <assunto>{subject}</assunto>
+	        <contato>{contact}</contato>
+	        <mensagem>{message}</mensagem>
+	        <nomeUsuario>{userName}</nomeUsuario>
+	    </mx:request>
+	</mx:HTTPService>
+	
+	<mx:Validator required="true" id="validatorNomeMenu" source="{inputMenuName}"
+    	property="text" valid="handleValidaMenu(event)" invalid="handleValidaMenu(event)"
+    	requiredFieldError="Informe o nome do menu."/>
+    	
+    <mx:Validator required="true" id="validatorRotuloMenu" source="{inputMenuLabel}"
+    	property="text" valid="handleValidaMenu(event)" invalid="handleValidaMenu(event)"
+    	requiredFieldError="Informe o rótulo do menu."/>
+    	
+    <mx:Validator required="true" id="validatorNomeFuncao" source="{inputNomeFuncao}"
+    	property="text" valid="handleValidaFuncao(event)" invalid="handleValidaFuncao(event)"
+    	requiredFieldError="Informe o nome da função."/>
+    	
+    <mx:Validator required="true" id="validatorRotuloFuncao" source="{inputRotuloFuncao}"
+    	property="text" valid="handleValidaFuncao(event)" invalid="handleValidaFuncao(event)"
+    	requiredFieldError="Informe o rótulo da função."/>
+    	
+    <mx:Validator required="true" id="validatorMenuFuncao" source="{cbMenu}"
+    	property="text" valid="handleValidaFuncao(event)" invalid="handleValidaFuncao(event)"
+    	requiredFieldError="Informe o menu da função."/>
+    	
+    <mx:Validator required="true" id="validatorGrupo" source="{inputGrupo}"
+    	property="text" valid="handleValidaGrupo(event)" invalid="handleValidaGrupo(event)"
+    	requiredFieldError="Informe o nome de grupo."/>
+    	
+    <mx:Validator required="true" id="validatorLoginUsuario" source="{inputLoginUsuario}"
+    	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
+    	requiredFieldError="Informe o login do usuário."/>
+    	
+    <mx:Validator required="true" id="validatorNomeUsuario" source="{inputNomeUsuario}"
+    	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
+    	requiredFieldError="Informe o nome do usuário."/>
+    	
+    <mx:Validator required="true" id="validatorEmailUsuario" source="{inputEmailUsuario}"
+    	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
+    	requiredFieldError="Informe o email do usuário."/>
+    	
+    <mx:Validator required="true" id="validatorGrupoUsuario" source="{cbUserGroup}"
+    	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
+    	requiredFieldError="Informe o grupo do usuário."/>
+    
+    <mx:EmailValidator id="emailValidator" invalid="invalidaEmail(event)" valid="validaEmail(event)"
+		source="{inputEmailUsuario}" property="text" trigger="{inputEmailUsuario}" 
+		triggerEvent="change"
+		invalidCharError="Seu endereço de email contém caracteres inválidos."
+	    invalidDomainError= "O dominio de seu endereço de email está formatado incorretamente." 
+	    invalidIPDomainError="The endereço IP do dominio de seu email está formatado incorretamente." 
+	    invalidPeriodsInDomainError="O domínio do seu endereço de email possui pontos consecutivos." 
+	    missingAtSignError="Um caracter @ está faltando no seu endereço de email."
+	    missingPeriodInDomainError="Está faltando um ponto (.) no seu endereço de email." 
+	    missingUsernameError="O nome de usuário está faltando no seu endereço de email." 
+	    tooManyAtSignsError="Seu endereço de email contém muitos caracteres @."
+	/>
+	
+	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="false">	
+		
+		<mx:Canvas label="Usuário" width="100%" height="100%" id="canvas4">
+			<mx:ComboBox prompt="selecione..." x="64" y="10" width="548" labelField="nome" id="cbUserGroup" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
+			<mx:TextInput x="64" y="41" width="548" id="inputNomeUsuario" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="64" y="70.5" width="348" id="inputLoginUsuario" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="478" y="70.5" width="134" id="inputSenhaUsuario" displayAsPassword="true"/>
+			<mx:TextInput x="64" y="100.5" width="548" id="inputEmailUsuario" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
+			<mx:Button x="243.5" y="132.5" label="   Salvar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuario" height="28" enabled="false"/>
+			<mx:Button x="100.5" y="132.5" label="   Novo" width="135" height="28" id="botaoNovoUsuario" click="mudaCadastrar()" icon="@Embed(source='../../image/novo.png')"/>
+			<mx:Button x="386.5" y="132.5" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuario" height="28"/>
+			<mx:Button x="243.5" y="132.5" label="   Atualizar" click="verificaUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuario" height="28"/>
+			<mx:Label x="10" y="11.5" text="Grupo:" id="labelGrupoUsuario"/>
+			<mx:Label x="10" y="43" text="Nome:" id="labelNomeUsuario"/>
+			<mx:Label x="12" y="72.5" text="Login:" id="labelLoginUsuario"/>
+			<mx:Label x="12" y="102.5" text="Email:" id="labelEmailUsuario"/>
+			<mx:Label x="420" y="72.5" text="Senha:" id="labelSenhaUsuario"/>
+			<mx:DataGrid x="10" y="168.5" width="602" height="188.5" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
+					 labelFunction="labelGridUsuarios" id="dgUsuarios">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Login" width="200" sortCompareFunction="compareLogin"/>
+					<mx:DataGridColumn headerText="Usuário" sortCompareFunction="compareNome"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
+		
+		<mx:Canvas label="Grupo" width="100%" height="100%" id="canvas3">
+			<mx:TextInput x="74" y="45" width="538" id="inputGrupo" toolTip="{toolTipGroupName}" change="handleValidaGrupo(null)"/>
+			<mx:Label x="18" y="45.5" text="Grupo:" id="labelGrupo"/>
+			<mx:Button x="243.5" y="90" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" click="cadastrarGrupo()" id="botaoCadastrarGrupo" height="28" enabled="false"/>
+			<mx:Button x="548" y="23" label="Novo" width="63" id="botaoNovoGrupo" height="23" click="mudaCadastrar()"/>
+			<mx:Button x="315" y="90" label="   Remover" click="excluirGrupo()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverGrupo" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="90" label="   Atualizar" click="editarGrupo()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarGrupo" height="28" visible="false" enabled="false"/>
+			<mx:DataGrid x="10" y="141" width="602" height="216" change="selecionarGrupo()" itemClick="selecionarGrupo()"
+					draggableColumns="false" labelFunction="labelGridGrupos" id="dgGrupos">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Grupo"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
+		
+		<mx:Canvas label="Menu" width="100%" height="100%" id="canvas1">		
+			<mx:TextInput x="64" y="45" width="548" id="inputMenuName" toolTip="{toolTipMenuName}" change="handleValidaMenu(null)"/>
+			<mx:TextInput x="64" y="73" width="548" id="inputMenuLabel" toolTip="{toolTipLabelMenu}" change="handleValidaMenu(null)"/>
+			<mx:Button x="243.5" y="111" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" click="saveMenu()" width="135" id="createMenuButton" height="28" enabled="false"/>
+			<mx:Button x="548" y="23" label="Novo" width="63" click="mudaCadastrar()" id="botaoNovoMenu" height="23"/>
+			<mx:Label x="10" y="47" text="Nome:" id="labelNomeMenu"/>
+			<mx:Label x="10" y="75" text="Rótulo:" id="labelRotuloMenu"/>
+			<mx:Button x="315" y="111" label="   Remover" click="removeMenu()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeMenuButton" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="111" label="   Atualizar" click="updateMenu()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateMenuButton" height="28" enabled="false" visible="false"/>
+			<mx:DataGrid x="10" y="155" width="602" change="selectMenu()" itemClick="selectMenu()" 
+					height="204" labelFunction="labelGridMenus" draggableColumns="false" id="dgMenus">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Rótulo" width="100"/>
+					<mx:DataGridColumn headerText="Nome"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
+		
+		<mx:Canvas label="Função" width="100%" height="100%" id="canvas2">
+			<comp:ComboBoxAC labelField="nome" x="62" y="15.5" width="550" id="cbMenu" toolTip="{toolTipMenuFunction}" change="filtrarFuncoesPorMenu()"/>
+			<mx:TextInput x="62" y="76" width="550" id="inputNomeFuncao" toolTip="{toolTipNameFunction}" change="handleValidaFuncao(null)"/>
+			<mx:TextInput x="62" y="104" width="550" id="inputRotuloFuncao" toolTip="{toolTipNameFunction}" change="handleValidaFuncao(null)"/>
+			<mx:Button x="243.5" y="144" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" 
+				id="botaoCadastrarFuncao" click="cadastrarFuncao()" height="28" enabled="false"/>
+			<mx:Button x="548" y="54" label="Novo" width="63" id="botaoNovaFuncao" height="23" click="mudaCadastrar()"/>
+			<mx:Button x="315" y="143" label="   Remover" click="excluirFuncao()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverFuncao" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="143" label="   Atualizar" click="editarFuncao()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarFuncao" height="28" visible="false" enabled="false"/>
+			<mx:Label x="10" y="16.5" text="Menu:" id="labelCbMenu"/>
+			<mx:Label x="10" y="78" text="Nome:" id="labelNomeFuncao"/>
+			<mx:Label x="10" y="106" text="Rótulo:" id="labelRotuloFuncao"/>
+			<mx:DataGrid x="10" y="189" width="602" height="168" change="selecionarFuncao()" itemClick="selecionarFuncao()"
+					draggableColumns="false" labelFunction="labelGridFuncoes" id="dgFunctions">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Rótulo" width="100"/>
+					<mx:DataGridColumn headerText="Nome"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
+		
+	</mx:TabNavigator>
+</les:ModuleTitleWindow>
