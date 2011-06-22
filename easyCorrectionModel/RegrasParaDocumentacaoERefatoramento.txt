@@ -1,0 +1,44 @@
+Regras para Documentação e Refatoramento:
+
+Name Mapping:
+gerenciadores -> managers:
+	Gerenciador -> Manager
+	GerenciadorAcesso -> AccessPermissionManager
+	GerenciadorAvaliacoes -> AssessmentManager
+	GerenciadorRoteiros -> AssignmentManager 
+	GerenciadorSubmissoes -> SubmissionManager
+	GerenciadorTestes -> TestManager
+	Divisão de Gerenciador de Testes -> CompilationManager
+	Divisão de Gerenciador de Submissões -> AccessUserManager
+	Dividir de Gerenciador de Submissões -> TeamManager
+	Divisão de Gerenciador de Submissões -> TeamUserAssignmentManager	
+
+pojo -> pojo:
+	acesso -> permission:
+		Funcao -> Function
+		Menu -> Menu
+		Grupo -> Group
+		Permissao -> Permission
+	NADA -> user:
+		GrupoUsuario -> UserGroup
+		Usuario -> User
+	avaliacoes -> assessment:
+		Avaliacao -> Assessment
+		Chat -> Chat
+	roteiros -> Assignment:
+		Equipe -> Team
+		EquipeHasUsuarioHasRoteiro -> TeamHasUserHasAssignement
+		Roteiro -> Assignment
+		Submissao -> Submission
+	sistema -> system:
+		Periodo -> Stage
+		
+Documentacao:
+1 - Exceptions:		Finished
+ 	* Checar se tah sendo usada
+2 - Servlet			Finished
+3 - Util 			Finished
+	* Só métodos por enquanto
+4 - Gerenciadores	Finished
+ 	* Só métodos por enquanto
+ 	* Usar o padrão CRUD no inglês: Create, Retrive, Update and Delete nos metodos

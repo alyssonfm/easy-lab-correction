@@ -17,17 +17,45 @@ import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
 import br.edu.ufcg.easyLabCorrection.util.Constants;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
+/**
+ * Class responsible for managing of tests in the system 
+ * Easy Lab Correction.<br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ *
+ */
 public class TestManager extends Manager {
 	
+	/*
+	 * Attributes private of class.<br>
+	 */
 	private AssessmentManager assessmentManager;
 	private CompilationManager compilationManager;
 
+	/**
+	 * Constructor default of class, creates a new object TestManager.<br>
+	 */
 	public TestManager() {
 		super();
 		assessmentManager = new AssessmentManager();
 		compilationManager = new CompilationManager();
 	}
 
+	/**
+	 * Function used to execute the tests of system, receives as parameter
+	 * the path of the tests directory, of the interface directory, 
+	 * of the source code directory, of the test file, of the interface 
+	 * file and of the source code file.<br>
+	 * @param testsDirectory The path of tests directory.<br>
+	 * @param testFile The path of test file.<br>
+	 * @param interfaceDirectory The path of interface directory.<br>
+	 * @param interfaceFile The path of interface file.<br>
+	 * @param sourceDirectory The path of source code directory.<br>
+	 * @param sourceFile The path of source code file.<br>
+	 * @return The test result of execution.<br>
+	 * @throws TestExecutionException Exception can be thrown during 
+	 * the execution of tests.<br>
+	 */
 	public TestResult executeTests(String testsDirectory,
 			String testFile, String interfaceDirectory,
 			String interfaceFile, String sourceDirectory,
@@ -72,6 +100,15 @@ public class TestManager extends Manager {
 		return result;
 	}
 	
+	/**
+	 * Function used to execute the tests of system, receives as parameter
+	 * the path of the tests directory, and of the source code directory.<br>
+	 * @param sourceDirectory The path of source code directory.<br>
+	 * @param testsDirectory The path of tests directory.<br>
+	 * @return The test result of execution.<br>
+	 * @throws TestExecutionException Exception can be thrown during 
+	 * the execution of tests.<br>
+	 */
 	public TestResult executeTests2(String sourceDirectory,
 			String testsDirectory) throws TestExecutionException {
 
@@ -119,6 +156,15 @@ public class TestManager extends Manager {
 		return result;
 	}
 
+	/**
+	 * Function used to retrieve the output of tests execution, receives a test 
+	 * result and a submission as parameter.<br>
+	 * @param result The test result of execution of submission who want to 
+	 * retrieve the output.<br>  
+	 * @param submission The submission who want to retrieve the output.<br>  
+	 * @return The string corresponding at the tests execution of the submission
+	 * received as parameter.<br>
+	 */
 	public String getTestsExecutionOutput(TestResult result,
 			Submission submission) {
 		
@@ -161,6 +207,13 @@ public class TestManager extends Manager {
 	/* TODO: to System
 	 * 
 	 * The idea is to reuse the other saveAssessment there is on the AssessmentManager
+	 */
+	/**
+	 * Function used to save an assessment in the database of the system.<br>
+	 * @param submission The submission who want to save the assessment.<br>
+	 * @param automaticTestsGrade The value of automatic tests.<br> 
+	 * @param automaticTestsResult The result of automatic tests.<br> 
+	 * @return The assessment save in the system.<br>
 	 */
 	public Assessment saveAssessment(Submission submission, double automaticTestsGrade, String automaticTestsResult){
 		try{

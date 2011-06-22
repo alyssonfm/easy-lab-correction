@@ -11,8 +11,18 @@ import javax.tools.ToolProvider;
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
 import br.edu.ufcg.easyLabCorrection.util.SubmissionFileFilter;
 
+/**
+ * Class responsible for managing of compilation in the system Easy 
+ * Lab Correction.<br>
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ *
+ */
 public class CompilationManager extends Manager{
 
+	/*
+	 * Attributes private of class.<br>
+	 */
 	private String errorResult;
 	private boolean compilationError;
 	private ArrayList<String> pathList;
@@ -21,6 +31,9 @@ public class CompilationManager extends Manager{
 	private ArrayList<String> sourceTestFileList;
 	private ArrayList<String> libFileList;
 
+	/**
+	 * Constructor default of class, creates a new object CompilationManager.<br>
+	 */
 	public CompilationManager() {
 		super();
 		pathList = new ArrayList<String>();
@@ -30,6 +43,21 @@ public class CompilationManager extends Manager{
 		libFileList = new ArrayList<String>();
 	}
 	
+	/**
+	 * Procedure used to run the Java compiler, receiving as parameter
+	 * the path of source code directory, of interface directory, of tests 
+	 * directory, of library directory, of interface file, of source 
+	 * code file and of test file that will be used in the compilation.<br>
+	 * @param sourceDirectory The path of source code directory.<br>
+	 * @param interfaceDirectory The path of interface directory.<br>
+	 * @param testsDirectory The path of tests directory.<br>
+	 * @param libDirectory The path of library directory.<br>
+	 * @param interfaceFile The path of interface file.<br>
+	 * @param sourceFile The path of source code file.<br>
+	 * @param testFile The path of test file.<br>
+	 * @throws CompilationException Exception can be thrown 
+	 * during the compilation of files.<br>
+	 */
 	public void runJavaCompiler(String sourceDirectory, 
 			String interfaceDirectory, 
 			String testsDirectory,
@@ -70,6 +98,16 @@ public class CompilationManager extends Manager{
 		}
 	}
 	
+	/**
+	 * Procedure used to run the Java compiler, receiving as parameter
+	 * the path of source code directory, of tests directory and of 
+	 * library directory that will be used in the compilation.<br>
+	 * @param sourceDirectory The path of source code directory.<br>
+	 * @param testsDirectory The path of tests directory.<br>
+	 * @param libDirectory The path of library directory.<br>
+	 * @throws CompilationException Exception can be thrown 
+	 * during the compilation.<br>
+	 */
 	public void runJavaCompiler2(String sourceDirectory, String testDirectory, String libDirectory) throws CompilationException{
 		
 		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
@@ -119,18 +157,36 @@ public class CompilationManager extends Manager{
 		}
 	}
 	
+	/**
+	 * Procedure used set the occurrence of an error of compilation.<br> 
+	 * @param compilationError The boolean parameter that indicates 
+	 * the occurrence of compilation error.<br>
+	 */
 	public void setCompilationError(boolean compilationError) {
 		this.compilationError = compilationError;
 	}
 
+	/**
+	 * Function used to retrieve the error result of compilation.<br>
+	 * @return The error result of compilation.<br>
+	 */
 	public String getErrorResult() {
 		return errorResult;
 	}
 
+	/**
+	 * Function used to verify if the error occurred is 
+	 * a compilation error.<br>
+	 * @return A boolean value indicating the presence 
+	 * or absence of a compilation error.<br>
+	 */
 	public boolean isCompilationError() {
 		return compilationError;
 	}
 	
+	/*
+	 * PRIVATE METHODS.
+	 */
 	private void mountSourceDirectories(ArrayList<String> listSource){
 		for (String sourcePath: listSource){
 			String path = sourcePath.substring(0, sourcePath.lastIndexOf("\\") + 1);

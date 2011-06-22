@@ -17,15 +17,32 @@ import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
+/**
+ * Class responsible for managing of submissions in the system Easy 
+ * Lab Correction.<br> 
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ *
+ */
 public class SubmissionManager {
 
 	private TestManager testManager;
 
+	/**
+	 * Constructor default of class.<br>
+	 */
 	public SubmissionManager() {
 		super();
 		testManager = new TestManager();
 	}
 
+	/**
+	 * Function used to retrieve the number of submission that is 
+	 * being held for a certain time, receives a submission as 
+	 * parameter.<br>
+	 * @param submission The submission that is being held.<br>
+	 * @return An integer, the number of submission.<br>
+	 */
 	public Integer getSubmissionNumber(Submission submission) {
 		List<Submission> list = DAOFactory.DEFAULT.buildSubmissionDAO()
 				.findByTeamAndAssignment(
@@ -36,6 +53,14 @@ public class SubmissionManager {
 		return list.size();
 	}
 
+	/**
+	 * Function used to retrieve all submissions performed in a specific assignment 
+	 * for a  certain time, receiving as parameters the team and the assignment.<br>
+	 * @param assign The assignment used in the recovery of submissions.<br>
+	 * @param team The team used in the recovery of submissions.<br>
+	 * @return All submissions whose assignment and team corresponds at the 
+	 * assignment and team passed as parameter.<br>
+	 */
 	public List<Submission> getSubmissionsByAssignmentAndTeam(
 			Assignment assign, Team team) {
 		List<Submission> list = DAOFactory.DEFAULT.buildSubmissionDAO()
@@ -43,11 +68,29 @@ public class SubmissionManager {
 		return list;
 	}
 
+	/**
+	 * Function used to retrieve the number of submission by a 
+	 * TeamHasUserHasAssignment.<br>
+	 * @param tua The TeamHasUserHasAssignment used to recovery a number 
+	 * of submission.<br>
+	 * @return The number of submission whose TeamHasUserHasAssignment corresponds 
+	 * at the TeamHasUserHasAssignment passed as parameter.<br>
+	 */
 	public Integer getSubmissionNumberByTUA(TeamHasUserHasAssignment tua) {
 		return getSubmissionsByAssignmentAndTeam(tua.getAssignment(),
 				tua.getTeam()).size();
 	}
 
+	/**
+	 * Function used to performs a submission in an assignment.<br>
+	 * @param submission The submission to be performed in the assignment 
+	 * passed as parameter.<br>
+	 * @param assignment The assignment in which the submission 
+	 * will be held.<br>
+	 * @return The submission performed.<br>
+	 * @throws EasyCorrectionException An exception may be thrown in making 
+	 * the submission.<br>
+	 */
 	public Submission submitAssignment(Submission submission,
 			Assignment assignment) throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(submission)) {
@@ -79,6 +122,9 @@ public class SubmissionManager {
 		return submission;
 	}
 
+	/*
+	 * BEGIN OF PRIVATE METHODS
+	 */
 	private String firstOccurrence(String[] fileList) {
 		try {
 			String fileName = "";
@@ -110,7 +156,10 @@ public class SubmissionManager {
 		}
 		return null;
 	}
-
+	/*
+	 * END OF PRIVATE METHODS 
+	 */
+	
 	// TODO: It is not being used!
 	// private String[] compilerParameters(String libDirectory,
 	// String sourceDirectory, String interfaceDirectory,
@@ -156,6 +205,14 @@ public class SubmissionManager {
 	 * Idea: The compiler filenames will be build on the System and the
 	 * TestManager will receive the filename completely build
 	 */
+	
+	/**
+	 * Function used to run automatic tests in the submission performed.<br>
+	 * @param submission The submission which will run in automatic testing.<br>
+	 * @return A string containing the result of running the tests.<br> 
+	 * @throws EasyCorrectionException Exception can be thrown in the execution 
+	 * of automated tests.<br>
+	 */
 	public String runAutomaticTests(Submission submission)
 			throws EasyCorrectionException {
 
@@ -197,10 +254,25 @@ public class SubmissionManager {
 		}
 	}
 
+	/**
+	 * Funtion used to retrieve a submission by a submission identifier 
+	 * received as parameter.<br>
+	 * @param submissionId The identifier of submission who want to 
+	 * retrieve.<br>
+	 * @return The submission whose identifier corresponds at the 
+	 * identifier passed as parameter.<br>
+	 */
 	public Submission getSubmission(int submissionId) {
 		return DAOFactory.DEFAULT.buildSubmissionDAO().getById(submissionId);
 	}
 
+	/**
+	 * Procedure used to delete a submission of the system, receives a 
+	 * submission as parameter.<br>
+	 * @param sub The submission who want to delete.<br>
+	 * @throws EasyCorrectionException Exception that can be launched in an 
+	 * attempt to delete a submission system.<br>
+	 */
 	public void deleteSubmission(Submission sub) throws EasyCorrectionException {
 		if (sub == null) {
 			throw new SubmissionException("Submissão inexistente!");
@@ -211,6 +283,14 @@ public class SubmissionManager {
 		DAOFactory.DEFAULT.buildSubmissionDAO().delete(submission);
 	}
 
+	/**
+	 * Function used to retrieve the filename of interface of the assignment 
+	 * received as parameter.<br>
+	 * @param assignment The assignment who want to retrieve the interface 
+	 * filename.<br>
+	 * @return The string corresponding at the filename of interface of 
+	 * assignment passed as parameter.<br>
+	 */
 	public String getInterfaceFileName(Assignment assignment) {
 		String interfaceDirectory = ServletUpload.local
 				+ assignment.getInterfaceDirectory().replace("/",
@@ -219,6 +299,14 @@ public class SubmissionManager {
 		return firstOccurrence(interfaceDir.list());
 	}
 
+	/**
+	 * Function used to retrieve the filename of tests of the assignment 
+	 * received as parameter.<br>
+	 * @param assignment The assignment who want to retrieve the tests 
+	 * filename.<br>
+	 * @return The string corresponding at the filename of tests of 
+	 * assignment passed as parameter.<br>
+	 */
 	public String getTestsFileName(Assignment assignment) {
 		String testsDirectory = ServletUpload.local
 				+ assignment.getTestsDirectory().replace("/", File.separator);
@@ -226,6 +314,14 @@ public class SubmissionManager {
 		return zipFirstOccurrence(testsDir.list());
 	}
 
+	/**
+	 * Function used to retrieve the filename of source code of the assignment 
+	 * received as parameter.<br>
+	 * @param assignment The assignment who want to retrieve the source code 
+	 * filename.<br>
+	 * @return The string corresponding at the filename of source code of 
+	 * assignment passed as parameter.<br>
+	 */
 	public String getSourceFileName(Submission submission) {
 		String sourceDirectory = ServletUpload.local
 				+ submission.getUrl().replace("/", File.separator);

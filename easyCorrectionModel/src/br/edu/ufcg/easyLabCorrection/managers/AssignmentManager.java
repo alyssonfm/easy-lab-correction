@@ -12,34 +12,41 @@ import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
+/**
+ * Class responsible for managing assignments in the system Easy Lab Correction.<br>
+ * 
+ * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
+ * @version 1.0 14 of May of 2011.<br>
+ *
+ */
 public class AssignmentManager extends Manager {
 
 	/*
-	 * Computacao dos estados de um assignment
+	 * Computation of the states of an assignment.
 	 */
 	private final int STATE_INEXIST = -1;
 
 	/*
-	 * Estado prévio a criacao do assignment
+	 * State prior to the creation assignment.
 	 */
 	private final int ASSIGNMENT_IN_CREATION = 0;
 	/*
-	 * Estado posterior a criacao do assignment, mas anterior a data de liberacao
-	 * deste
+	 * State after the creation of the assignment, but before the date 
+	 * of this release.
 	 */
 	private final int ASSIGNMENT_CREATED = 1;
 	/*
-	 * Estado posterior a data de liberacao do assignment, mas anterior a data de
-	 * fechamento (entrega) deste
+	 * State after the release date of the assignment, but before the 
+	 * closing date (delivery) of this.
 	 */
 	private final int ASSIGNMENT_RELEASED = 2;
 	/*
-	 * Estado posterior a data de entrega do assignment
+	 * State after the date of delivery of the assignment.
 	 */
 	private final int ASSIGNMENT_CLOSED = 3;
 
 	/*
-	 * Estado posterior a data final para correcao
+	 * State after the final date for correction.
 	 */
 	private final int ASSIGNMENT_CORRECTED = 4;
 
@@ -47,7 +54,7 @@ public class AssignmentManager extends Manager {
 	private final double AUTOMATIC_TESTS_PERCENTAGE_DEFAULT = -1;
 
 	/*
-	 * String a qual receberah o nome do metodo chamado: - Se foi
+	 * String a qual receber� o nome do metodo chamado: - Se foi
 	 * cadastraassignment, recebe "criado" - Se foi editaassignment, recebe
 	 * "atualizado"
 	 * 
@@ -55,14 +62,32 @@ public class AssignmentManager extends Manager {
 	 */
 	private String criacaoOuAtualizacaoMsg = "NULL";
 
+	/**
+	 * Function used to retrieve an assignment by an identifier of 
+	 * assignment passed as parameter.<br>
+	 * @param assignmentId The identifier of assignment used in the recovery.<br>
+	 * @return The assignment whose identifier corresponds at the identifier 
+	 * passed as parameter.<br>
+	 */
 	public Assignment getAssignment(int assignmentId) {
 		return DAOFactory.DEFAULT.buildAssignmentDAO().getById(assignmentId);
 	}
 
+	/**
+	 * Function used to retrieve all assignments of system.<br>
+	 * @return A list of all assignments of the system.<br>
+	 */
 	public List<Assignment> getAssignments() {
 		return DAOFactory.DEFAULT.buildAssignmentDAO().findAll();
 	}
 
+	/**
+	 * Function used to retrieve an assignment released in the system, receives as 
+	 * parameter an assignment identifier.<br>
+	 * @param id The assignment identifier used to retrieve a released assignment.<br>
+	 * @return The assignment released whose identifier corresponds at the identifier 
+	 * passed as parameter.<br>
+	 */
 	public Assignment getReleasedAssignment(Integer id) {
 		Date currentDate = easyCorrectionUtil.getRealTime();
 		List<Assignment> list = DAOFactory.DEFAULT.buildAssignmentDAO()
@@ -74,6 +99,10 @@ public class AssignmentManager extends Manager {
 		}
 	}
 	
+	/**
+	 * Function used to retrieve all assignments released of system.<br>
+	 * @return A list of all assignments released of the system.<br>
+	 */
 	public List<Assignment> getReleasedAssignments() {
 		Date currentDate = easyCorrectionUtil.getRealTime();
 		List<Assignment> releasedAssignments = DAOFactory.DEFAULT.buildAssignmentDAO()
@@ -81,13 +110,23 @@ public class AssignmentManager extends Manager {
 		return releasedAssignments;
 	}
 
-	
+	/**
+	 * Function used to retrieve all assignments closed of system.<br>
+	 * @return A list of all assignments closed of the system.<br>
+	 */
 	public List<Assignment> getClosedAssignments() {
 		Date currentDate = easyCorrectionUtil.getRealTime();
 		return DAOFactory.DEFAULT.buildAssignmentDAO().findByClosedAssignments(
 				currentDate);
 	}
 
+	/**
+	 * Function used to save a new assignment in database of system.<br>
+	 * @param assignmentTemp The assignment to be saved in the system.<br>
+	 * @return The assignment save in the system.<br>
+	 * @throws AssignmentException The exception that can be launched in an attempt 
+	 * to save the assignment system.<br>
+	 */
 	public Assignment saveAssignment(Assignment assignmentTemp)
 			throws AssignmentException {
 
@@ -108,10 +147,17 @@ public class AssignmentManager extends Manager {
 					+ " foi criado com sucesso!");
 			return DAOFactory.DEFAULT.buildAssignmentDAO().getById(aux);
 		} else {
-			throw new AssignmentException("roteiro não pode ser criado.");
+			throw new AssignmentException("roteiro nao pode ser criado.");
 		}
 	}
 
+	/**
+	 * Function used to update an assignment in the system.<br>
+	 * @param assignmentTemp The assignment to be updated.<br>
+	 * @return The assignment updated.<br>
+	 * @throws AssignmentException The exception that can be launched in an attempt 
+	 * to update the assignment system.<br>
+	 */
 	public Assignment updateAssignment(Assignment assignmentTemp)
 			throws AssignmentException{
 
@@ -126,7 +172,7 @@ public class AssignmentManager extends Manager {
 		switch (currentAssignmentState) {
 		case (ASSIGNMENT_IN_CREATION):
 			// Esse caso nunca deve ocorrer, pois nesse estado deve haver o
-			// cadastro de assignments e não a edição
+			// cadastro de assignments e nao a edição
 			validateAssignmentInCreation(assignmentTemp);
 			break;
 
@@ -148,7 +194,7 @@ public class AssignmentManager extends Manager {
 
 		default:
 			throw new AssignmentException(MsgErros.VALORINVALIDO
-					.msg("A edição do roteiro não pode ser realizada!"));
+					.msg("A edicao do roteiro nao pode ser realizada!"));
 		}
 
 		// OK, passou pelos casos de excecao, pode seguir em frente! =)
@@ -169,6 +215,12 @@ public class AssignmentManager extends Manager {
 
 	/*
 	 * Nao estah sendo usado ainda... E nao estah em nossos planos usa-lo...
+	 */
+	/**
+	 * Procedure used to delete an assignment of system.<br>
+	 * @param assignment The assignment to be deleted.<br>
+	 * @throws AssignmentException The exception that can be launched in an attempt 
+	 * to delete the assignment system.<br>
 	 */
 	public void deleteAssignment(Assignment assignment) throws AssignmentException {
 
@@ -216,21 +268,21 @@ public class AssignmentManager extends Manager {
 					|| newAssignment.getReleaseDate().before(currentDate)) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data de Liberação inválida. O roteiro não pode ser "
+								.msg("Data de Liberação inválida. O roteiro nao pode ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (newAssignment.getDeliveryDate() != null
 					&& newAssignment.getDeliveryDate().before(currentDate)) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data Limite para Entrega inválida. O roteiro não pode ser "
+								.msg("Data Limite para Entrega inválida. O roteiro nao pode ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (newAssignment.getDiscussionDate() != null
 					&& newAssignment.getDiscussionDate().before(currentDate)) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data Limite para Discussão inválida. O roteiro não pode ser "
+								.msg("Data Limite para Discussão inválida. O roteiro nao pode ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			}
@@ -249,21 +301,21 @@ public class AssignmentManager extends Manager {
 									oldAssignment.getReleaseDate())))) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data de Liberação inválida. O roteiro não pode ser "
+								.msg("Data de Liberação inválida. O roteiro nao pode ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (newAssignment.getDeliveryDate() != null
 					&& newAssignment.getDeliveryDate().before(currentDate)) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data Limite para Entrega inválida. O roteiro não pode ser "
+								.msg("Data Limite para Entrega inválida. O roteiro nao pode ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (newAssignment.getDiscussionDate() != null
 					&& newAssignment.getDiscussionDate().before(currentDate)) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data Limite para Discussão inválida. O roteiro não pode ser "
+								.msg("Data Limite para Discussão inválida. O roteiro nao pode ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			}
@@ -282,7 +334,7 @@ public class AssignmentManager extends Manager {
 									oldAssignment.getReleaseDate())))) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data de Liberação inválida. O roteiro não pode ser ser "
+								.msg("Data de Liberação inválida. O roteiro nao pode ser ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (newAssignment.getDeliveryDate() == null
@@ -291,14 +343,14 @@ public class AssignmentManager extends Manager {
 									oldAssignment.getDeliveryDate())))) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data Limite para Entrega inválida. O roteiro não pode ser "
+								.msg("Data Limite para Entrega inválida. O roteiro nao pode ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (newAssignment.getDiscussionDate() != null
 					&& newAssignment.getDiscussionDate().before(currentDate)) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data Limite para Discussão inválida. O roteiro não pode ser "
+								.msg("Data Limite para Discussão inválida. O roteiro nao pode ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			}
@@ -315,7 +367,7 @@ public class AssignmentManager extends Manager {
 									oldAssignment.getReleaseDate())))) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data de Liberação inválida. O roteiro não pode ser ser "
+								.msg("Data de Liberação inválida. O roteiro nao pode ser ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (newAssignment.getDeliveryDate() == null
@@ -324,7 +376,7 @@ public class AssignmentManager extends Manager {
 									oldAssignment.getDeliveryDate())))) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data Limite para Entrega inválida. O roteiro não pode ser "
+								.msg("Data Limite para Entrega inválida. O roteiro nao pode ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			} else if (newAssignment.getDiscussionDate() == null
@@ -333,7 +385,7 @@ public class AssignmentManager extends Manager {
 									oldAssignment.getDiscussionDate())))) {
 				throw new AssignmentException(
 						MsgErros.VALORINVALIDO
-								.msg("Data Limite para Discussão inv�lida. O roteiro não pode ser "
+								.msg("Data Limite para Discussão inv�lida. O roteiro nao pode ser "
 										+ criacaoOuAtualizacaoMsg + "!"));
 
 			}
@@ -352,7 +404,7 @@ public class AssignmentManager extends Manager {
 								newAssignment.getReleaseDate()))) {
 			throw new AssignmentException(
 					MsgErros.VALORINVALIDO
-							.msg("Data Limite para Entrega anterior/igual a Data de Liberação. O roteiro não pode ser "
+							.msg("Data Limite para Entrega anterior/igual a Data de Liberação. O roteiro nao pode ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (newAssignment.getDiscussionDate() != null
@@ -363,7 +415,7 @@ public class AssignmentManager extends Manager {
 								newAssignment.getDeliveryDate()))) {
 			throw new AssignmentException(
 					MsgErros.VALORINVALIDO
-							.msg("Data Limite para Discuss�o anterior/igual a Data Limite para Entrega. O roteiro não pode ser "
+							.msg("Data Limite para Discuss�o anterior/igual a Data Limite para Entrega. O roteiro nao pode ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		}
@@ -417,13 +469,13 @@ public class AssignmentManager extends Manager {
 				.getTestsDirectory().equals(""))
 				&& !assignment.getTestsDirectory().endsWith(defaultDirTests)) {
 			throw new AssignmentException(
-					"Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/<assignment_id>/'. O roteiro não pode ser atualizado!");
+					"Hierarquia de Diretórios de Testes Automáticos diferente do default: '/periodo<periodo>/testes/<assignment_id>/'. O roteiro nao pode ser atualizado!");
 		} else if ((assignment.getInterfaceDirectory() != null && !assignment
 				.getInterfaceDirectory().equals(""))
 				&& !assignment.getInterfaceDirectory().endsWith(
 						interfaceDirDefault)) {
 			throw new AssignmentException(
-					"Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/<assignment_id>/'. O roteiro não pode ser atualizado!");
+					"Hierarquia de Diretórios da Interface diferente do default: '/periodo<periodo>/interface/<assignment_id>/'. O roteiro nao pode ser atualizado!");
 		}
 
 		return true;
@@ -445,7 +497,7 @@ public class AssignmentManager extends Manager {
 			throw new AssignmentException(
 					"O roteiro "
 							+ assignment.getName()
-							+ " não pode ser liberado devido a falhas em sua especificação!");
+							+ " nao pode ser liberado devido a falhas em sua especificação!");
 		}
 		return true;
 	}
@@ -469,21 +521,21 @@ public class AssignmentManager extends Manager {
 
 		if (assignment.getName() == null || assignment.getName().equals("")) {
 			throw new AssignmentException(MsgErros.NOMEVAZIO
-					.msg("Nome da atividade inválido. O roteiro não pode ser "
+					.msg("Nome da atividade inválido. O roteiro nao pode ser "
 							+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (assignment.getParticipantsMaxNumber() != null
 				&& assignment.getParticipantsMaxNumber() <= 0) {
 			throw new AssignmentException(
 					MsgErros.VALORINVALIDO
-							.msg("O número máximo de integrantes deve ser sempre maior ou igual a 1 integrante. O roteiro não pode ser "
+							.msg("O número máximo de integrantes deve ser sempre maior ou igual a 1 integrante. O roteiro nao pode ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (assignment.getSendMaxNumber() != null
 				&& assignment.getSendMaxNumber() <= 0) {
 			throw new AssignmentException(
 					MsgErros.VALORINVALIDO
-							.msg("O número máximo de envios deve ser sempre maior ou igual a 1. O roteiro não pode ser "
+							.msg("O número máximo de envios deve ser sempre maior ou igual a 1. O roteiro nao pode ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (assignment.getPenaltyPerDaysLate() != PENALTY_DAY_LATE_DEFAULT
@@ -491,7 +543,7 @@ public class AssignmentManager extends Manager {
 				|| assignment.getPenaltyPerDaysLate() > 10.0) {
 			throw new AssignmentException(
 					MsgErros.VALORINVALIDO
-							.msg("A Penalidade por dia de atraso deve ser sempre maior ou igual a 0,0 e menor ou igual a 10,0. O roteiro não pode ser "
+							.msg("A Penalidade por dia de atraso deve ser sempre maior ou igual a 0,0 e menor ou igual a 10,0. O roteiro nao pode ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if (assignment.getAutomaticTestsPercentage() != AUTOMATIC_TESTS_PERCENTAGE_DEFAULT
@@ -499,7 +551,7 @@ public class AssignmentManager extends Manager {
 						.getAutomaticTestsPercentage() > 100)) {
 			throw new AssignmentException(
 					MsgErros.VALORINVALIDO
-							.msg("A Porcentagem autom�tica da avaliação deve ser sempre >= 0 e <= 100. O roteiro não pode ser "
+							.msg("A Porcentagem autom�tica da avaliação deve ser sempre >= 0 e <= 100. O roteiro nao pode ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if ((assignment.getTestTimeLimit() != null && assignment
@@ -509,7 +561,7 @@ public class AssignmentManager extends Manager {
 						.getTestTimeLimit() <= 0)) {
 			throw new AssignmentException(
 					MsgErros.VALORINVALIDO
-							.msg("Time-limit de execução dos testes por método inválido, deve ser sempre > 0 quando a Porcentagem Automática de Avaliação for > 0 e <= 100. O roteiro não pode ser "
+							.msg("Time-limit de execucao dos testes por metodo invalido, deve ser sempre > 0 quando a Porcentagem Automatica de Avaliação for > 0 e <= 100. O roteiro nao pode ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 
 		} else if ((assignment.getAutomaticTestsPercentage() != AUTOMATIC_TESTS_PERCENTAGE_DEFAULT && assignment
@@ -518,7 +570,7 @@ public class AssignmentManager extends Manager {
 						.getTestTimeLimit() != 0)) {
 			throw new AssignmentException(
 					MsgErros.VALORINVALIDO
-							.msg("Se a Porcentagem Automática da Avaliação é 0, o Time-limit dos testes por método deve ser também 0. O roteiro não pode ser "
+							.msg("Se a Porcentagem Automatica da Avaliacao eh 0, o Time-limit dos testes por metodo deve ser tambem 0. O roteiro nao pode ser "
 									+ criacaoOuAtualizacaoMsg + "!"));
 		} else {
 			return true;
