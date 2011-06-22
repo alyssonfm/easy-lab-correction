@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	width="800" height="646" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="closeWindow()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import mx.collections.ArrayCollection;
+				import mx.utils.ArrayUtil;
+				import events.UserEvent;
+				import bean.permission.*;
+				import events.EventLogResponse;
+				import events.ClosePopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ModulesController;
+				import mx.binding.utils.BindingUtils;
+				//import eventos.RespostaLoginEvent;
+				//import eventos.FechaPopupEvent;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+	            
+	            private function failure(event:FaultEvent):void {
+					var message:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							message = event.fault.faultString;
+						} else {
+							message = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						message = "Serviço indisponível, reinicie a operação.";
+					}
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+				}
+				
+				private function closeWindow():void {
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function eventLaunches(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					var state: String = String(ModulesController.getParam());
+					var assignment: ArrayCollection = new ArrayCollection();
+					assignment.addItem("Roteiro 1");
+					assignment.addItem("Roteiro 2");
+					assignment.addItem("Roteiro 3");
+					assignment.addItem("Roteiro 4");
+					var groups: ArrayCollection = new ArrayCollection();
+					groups.addItem("Grupo A");
+					groups.addItem("Grupo B");
+					groups.addItem("Grupo C");
+					groups.addItem("Grupo D");
+					var classes: ArrayCollection = new ArrayCollection();
+					classes.addItem("Heap.java");
+					classes.addItem("Lista.java");
+					classes.addItem("gerenciaHeap.java");
+					classes.addItem("HeapSort.java");
+					comboAssignment.dataProvider = assignment;
+					listGroups.dataProvider = groups;
+				}
+				
+				private function selectAssignment():void {
+					if(comboAssignment.selectedIndex == 3){
+						labelDiscussStatus.text = "Data final da discussao: 12/09/2010.";
+						inputMessage.enabled = true;
+					}
+					else{
+						labelDiscussStatus.text = "Discussão Expirada!";
+						inputMessage.enabled = false;
+					}
+				}
+				
+				private function sendMessage():void {
+					inputConversation.text += "Demas diz: " + inputMessage.text + "\n\n";
+				}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			
+		</mx:RemoteObject>
+		<mx:Label text="Roteiro:" fontWeight="bold"
+			textAlign="left" width="64" x="10" y="22" id="labelAssignment"/>
+		<mx:Label text="Grupos:" fontWeight="bold"
+			textAlign="left" width="72" x="10" y="90" id="labelGroups"/>
+		<mx:Label fontWeight="bold" text = "Discussão Expirada!"
+			textAlign="left" width="698" x="72" y="52" id="labelDiscussStatus" color="#FF0202"/>
+		<mx:Label text="Integrantes: Augusto Queiros, Alysson Filgueira, Demetrio Mestre" fontWeight="bold"
+			textAlign="left" width="504.05" x="265.95" y="90" id="labelMembers"/>
+		<mx:Label fontWeight="bold"
+			textAlign="left" width="81" x="265.95" y="407" id="labelMembers0" text="Demas diz:"/>
+		<comp:ComboBoxAC labelField="periodoCota" x="72" y="21" width="698" id="comboAssignment" change="selectAssignment()"/>
+		<mx:HRule x="10" y="80" width="760" height="2"/>
+		<mx:HRule x="250.95" y="388" width="519.05" height="11"/>
+		<mx:List id="listGroups" x="10" y="118" width="226" height="470"/>
+		<mx:VRule x="244" y="80" height="508" width="13.95"/>
+		<mx:TextArea x="265" y="118" width="505" height="262" editable="false" id="inputConversation"/>
+		<mx:TextArea x="265" y="434" width="505" height="123" id="inputMessage" enabled="false"/>
+		<mx:Button x="465" y="569" label="Enviar" width="103" id="buttonSend" click="sendMessage()"/>
+		
+		
+</les:ModuleTitleWindow>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modules.System.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	layout="absolute" width="644" height="446" title="Definir Permissões"
+	creationComplete="init()" showCloseButton="true" close="closeWindow()">
+	
+	<mx:Script>
+		<![CDATA[
+			import bean.Utility.CastEntities;
+			import bean.user.*;
+			import bean.Utility.Util;
+			import mx.utils.StringUtil;
+			import mx.events.ValidationResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import events.ClosePopupEvent;
+			import Scripts.ModulesController;
+	
+	
+			private var functions: ArrayCollection = new ArrayCollection();
+			private var groups: ArrayCollection = new ArrayCollection();
+			private var permissions: ArrayCollection = new ArrayCollection();
+			private var group: * = new Object();
+			private var func: * = new Object();
+			private var permission: * = new Object();
+			
+			
+			private function init():void {
+				facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+				var state: String = String(ModulesController.getParam());
+				listGroups();
+			}
+			
+			private function closeWindow(): void{
+				dispatchEvent(new ClosePopupEvent(this));
+			}
+			
+			private function listGroups():void{
+				facade.getOperation("listGroups").send();
+			}
+			
+			private function listGroups_result(event:ResultEvent):void{
+				groups = event.result as ArrayCollection;
+				if (groups == null) {
+					groups = new ArrayCollection();
+					groups.addItem(event.result);
+				}
+				cbGroup.dataProvider = groups;
+				cbGroup.selectedIndex = -1;
+				listFunctions();
+			}
+			
+			private function listFunctions():void{
+				facade.getOperation("listFunctions").send()
+			}
+			
+			private function listFunctions_result(event:ResultEvent):void{
+				functions = event.result as ArrayCollection;
+				if (functions == null) {
+					functions = new ArrayCollection();
+					functions.addItem(event.result);
+				}
+				dgFunctions.dataProvider = functions; 
+			}
+			
+			private function getPermissionsByGroup():void{
+				try{
+					group = CastEntities.castGroup(cbGroup.selectedItem);
+					consultPermissionsByGroup(group.groupId);
+				}catch(e:Error){}
+			}
+			
+			
+			private function consultPermissionsByGroup(groupId: int):void{
+				facade.getOperation("consultPermissionsByGroup").send(groupId);
+			}
+			
+			private function cleanCheck(): void{
+				for(var i:int = 0; i < dgFunctions.dataProvider.length; i++){
+					dgFunctions.dataProvider.getItemAt(i).selected = false;
+				}
+			} 
+			
+			private function consultPermissionsByGroup_result(event:ResultEvent):void{
+				permissions = event.result as ArrayCollection;
+				cleanCheck();
+				for(var i:int = 0; i < permissions.length; i++){
+					permission = CastEntities.castPermission(permissions.getItemAt(i));
+					dgFunctions.selectedIndex = Util.objectTakesPost("functionId", ArrayCollection(dgFunctions.dataProvider), permission.func);
+					dgFunctions.selectedItem.selected = true;
+				}
+				dgFunctions.headerHeight = dgFunctions.headerHeight;
+			}
+			
+			private function savePermission():void{
+				permissions = new ArrayCollection();
+				for(var i:int = 0; i < dgFunctions.dataProvider.length; i++){
+					group = CastEntities.castGroup(cbGroup.selectedItem);
+					func = CastEntities.castFunction(dgFunctions.dataProvider.getItemAt(i)); 
+					if(func.selected){
+						permissions.addItem(func);
+					}
+				}
+				facade.getOperation("saveGroupPermission").send(group, permissions);
+			}
+			
+			private function saveGroupPermission_result(event:ResultEvent):void{
+				permissions = event.result as ArrayCollection;
+				var param:Array = new Array(false, "Permissões Modificadas com Sucesso.");
+				ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
+			}
+	
+			private function failure(event:FaultEvent):void {
+				var message:String;
+				try{
+					if (event.fault.rootCause.message == null) {
+						message = event.fault.faultString;
+					} else {
+						message = event.fault.rootCause.message;
+					}
+				}
+				catch(e:Error){
+					message = "Serviço indisponível, reinicie a operação.";
+				}
+				ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+			}
+			
+			private function labelGridFunctions(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Rótulo":
+						sLabel = item.label;
+						break;
+					case "Nome":
+						sLabel = item.name;
+						break;
+				}
+				return sLabel;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">		
+		<mx:method name="listGroups" result="listGroups_result(event)" fault="failure(event)"/>
+		<mx:method name="listFunctions" result="listFunctions_result(event)" fault="failure(event)"/>
+		<mx:method name="consultPermissionsByGroup" result="consultPermissionsByGroup_result(event)" fault="failure(event)"/>
+		<mx:method name="saveGroupPermission" result="saveGroupPermission_result(event)" fault="failure(event)"/>
+	</mx:RemoteObject>
+	
+	<mx:Label x="10" y="21" text="Selecione o Grupo:" id="labelGroup"/>
+	<mx:Label x="10" y="70" text="Funções:" id="labelGroup0"/>
+	<comp:ComboBoxAC labelField="nome" x="142" y="20" width="472" change="getPermissionsByGroup()" id="cbGroup" enter="getPermissionsByGroup()"/>
+	<mx:DataGrid x="10" y="98" width="604" height="249" id="dgFunctions" labelFunction="labelGridFunctions">
+		<mx:columns>
+			<mx:DataGridColumn headerText="P" width="30">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Canvas width="100%" height="100%">
+							<mx:CheckBox creationComplete="inicializeChecks(event)" change="getSelected(event)" selected="{data.selecionado}" id="check" x="18">
+						 		<mx:Script>
+	                            	<![CDATA[
+	                            
+	                            		import mx.events.ItemClickEvent;
+		                            	import mx.controls.*;
+		                                
+		                                private function getSelected(event:Event):void {
+	                                		if(check.selected){
+	                                    		data.selected = true;
+	                                  		}else{
+	                                  			data.selected= false;
+	                                  		} 	                                 	
+		                                }
+		                                
+		                                private function inicializeChecks(event:Event):void{
+		                                	check.selected = false;
+		                                }
+	                              
+		                            ]]>
+		                        </mx:Script>
+							</mx:CheckBox>
+						</mx:Canvas>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="Nome" width="150"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:Button x="252.5" y="360" click="savePermission()" label="   Salvar" icon="@Embed(source='../../image/disquete.png')" width="119" id="savePermissionsButton" height="28"/>
+	
+</les:ModuleTitleWindow>

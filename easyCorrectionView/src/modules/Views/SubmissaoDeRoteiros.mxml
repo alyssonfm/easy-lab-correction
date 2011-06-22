@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+-->
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	width="718" height="418" creationComplete="init()" title="Submissão de Roteiro" showCloseButton="true" close="fechaJanela()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import bean.Utilitarios.Constantes;
+				import bean.roteiros.Roteiro;
+				import net.digitalprimates.fluint.utils.ResultDisplayUtils;
+				import bean.roteiros.EquipeHasUsuarioHasRoteiro;
+				import bean.roteiros.Equipe;
+				import bean.Utilitarios.CastDeEntidades;
+				import bean.roteiros.Submissao;
+				import eventos.UserEvent;
+				import bean.acesso.*;
+				import eventos.EventLogResponse;
+				import eventos.ClosePopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ModulesController;
+				import mx.binding.utils.BindingUtils;
+				//import eventos.RespostaLoginEvent;
+				//import eventos.FechaPopupEvent;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+				
+				private var fileRef:FileReference;
+				private var request: URLRequest;
+				private const FILE_UPLOAD_URL:String = Constantes.urlUploadDonwload;
+	            private var submissao:Submissao = new Submissao();
+	            private var eur:EquipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
+	            
+	            private function falha(event:FaultEvent):void {
+					var mensagem:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							mensagem = event.fault.faultString;
+						} else {
+							mensagem = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						mensagem = "Serviço indisponível, reinicie a operação.";
+					}
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+				}
+				
+				private function fechaJanela():void {
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function lancaEvento(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					var estado: String = String(ModulesController.getParam());
+					getRoteirosLiberados();
+				}
+				
+				private function escolheArquivo(): void{
+					fileRef = new FileReference();
+			   	 	fileRef.addEventListener(Event.SELECT, arquivoSelecionado);
+			   	 	fileRef.addEventListener(Event.COMPLETE, envioCompleto);
+			   	 	fileRef.addEventListener(IOErrorEvent.IO_ERROR, erroEnvio);
+			    	fileRef.browse(new Array(new FileFilter("Roteiro (*.zip)","*.zip;")));
+				}
+				
+				public function erroEnvio(evt:Event):void {
+					if(submissao != null){
+						facade.getOperation("excluirSubmissao").send(submissao);
+					}
+				}
+				
+				public function excluirSubmissao_result(event:ResultEvent):void{
+					var param:Array = new Array(true, "Erro no envio! O pacote zip submetido possui arquivos que não são tipo JAVA.");
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);	
+				}
+				
+				public function arquivoSelecionado(evt:Event):void {
+			       	request = new URLRequest(FILE_UPLOAD_URL);
+			       	caminho.text = fileRef.name;
+				}
+				
+				public function envioCompleto(evt:Event):void {
+					request = new URLRequest(FILE_UPLOAD_URL);
+					var sub: Submissao = CastDeEntidades.castSubmissao(submissao);
+					facade.getOperation("rodarTestesAutomaticos").send(sub);
+				}
+				
+				public function rodarTestesAutomaticos_result(event:ResultEvent):void{
+					var result: String = event.result as String;
+					inputDescricao.text = result;
+					inputDescricao.editable = false;
+					var param:Array = new Array(false, "Roteiro submetido com sucesso. Esperando resposta...");
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+					facade.getOperation("getNumeroSubmissoes").send(CastDeEntidades.castSubmissao(submissao));
+				}
+				
+				public function getNumeroSubmissoes_result(event:ResultEvent){
+					try{
+						numeroSubmissoes.text = String(event.result);
+						numeroSubmissoesMaximo.text = comboRoteiro.selectedItem.numeroMaximoEnvios;
+					}catch(e: Error){} 
+				}
+				
+				public function getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro():void{
+					var param:Array;
+					try{
+						if(comboRoteiro.selectedItem != null){
+							var id:int = int(SharedObject.getLocal("sistema", "/").data.idUsuario);
+							facade.getOperation("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro").send(id, CastDeEntidades.castRoteiro(comboRoteiro.selectedItem).id);
+						}
+					}
+					catch(e: Error){
+						param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+					}
+				}
+				
+				public function getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event:ResultEvent):void{
+					var param:Array;
+					try{
+						var result: String = event.result as String;
+						eur = new EquipeHasUsuarioHasRoteiro();
+						eur = CastDeEntidades.castEquipeHasUsuarioHasRoteiro(event.result);
+						nomeDaEquipe.text = eur.equipe.nome;
+						facade.getOperation("getNumeroSubmissoesPorEUR").send(eur);
+					}
+					catch(e: Error){
+						param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+					
+					}
+				}
+				
+				public function submeteRoteiro(): void{
+					try{
+						var param:Array;
+						if (comboRoteiro.selectedItem == null){
+							param = new Array(true, "Para submeter um roteiro você tem que escolher um roteiro.");
+							ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+						}
+						else if (fileRef == null){
+							param = new Array(true, "Para submeter um roteiro você tem que escolher um arquivo zip contendo o código.");
+							ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+						}
+						else if(fileRef != null && eur.id != 0){
+							submissao = new Submissao();
+							submissao.equipeHasUsuarioHasRoteiro = new EquipeHasUsuarioHasRoteiro();
+							submissao.equipeHasUsuarioHasRoteiro = eur; 
+							submissao.url = "/periodo" + eur.roteiro.periodo.semestre + "/submissoes/roteiro_" + eur.roteiro.id + "/" + eur.equipe.nome + "/";
+							facade.getOperation("submeteRoteiro").send(CastDeEntidades.castSubmissao(submissao));
+						}else{
+							param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+							ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+						}
+					}catch(e: Error){
+						var param:Array = new Array(true, "Falha técnica. Tente mais tarde...");
+						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+					}
+				}
+				
+				public function submeteRoteiro_result(event:ResultEvent):void{
+					submissao = new Submissao();
+					if(event.result != null){
+						submissao = CastDeEntidades.castSubmissao(event.result);
+						if(fileRef != null || request != null){
+							var variables:URLVariables = new URLVariables();
+							variables.url = submissao.url;
+							variables.nomeArquivo = "codigo.zip";
+							request.data = variables;
+							fileRef.upload(request);
+						}
+					}
+				}
+				
+				
+				public function getRoteirosLiberados():void{
+					facade.getOperation("getRoteirosLiberados").send()
+				}
+				
+				public function getRoteirosLiberados_result(event:ResultEvent):void{
+					comboRoteiro.dataProvider = event.result;
+					comboRoteiro.selectedIndex = -1;
+				}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			<mx:method name="getRoteirosLiberados" result="getRoteirosLiberados_result(event)" fault="falha(event)"/>
+			<mx:method name="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro" result="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="submeteRoteiro" result="submeteRoteiro_result(event)" fault="falha(event)"/>
+			<mx:method name="excluirSubmissao" result="excluirSubmissao_result(event)" fault="falha(event)"/>
+			<mx:method name="rodarTestesAutomaticos" result="rodarTestesAutomaticos_result(event)" fault="falha(event)"/>
+			<mx:method name="getNumeroSubmissoes" result="getNumeroSubmissoes_result(event)" fault="falha(event)"/>
+			<mx:method name="getNumeroSubmissoesPorEUR" result="getNumeroSubmissoes_result(event)" fault="falha(event)"/>
+		</mx:RemoteObject>
+		
+		<mx:Label text="Resultados:" fontWeight="bold"
+			textAlign="left" width="121" x="21" y="209" id="labelDescricao"/>
+		<mx:Label text="Submissões (Efetuadas/Máximo):" fontWeight="bold"
+			textAlign="left" width="236.15" x="387.85" y="214" id="labelDescricao0"/>
+		<mx:Label text="/" fontWeight="bold"
+			textAlign="left" width="20.149994" x="644" y="214" id="labelDescricao1"/>
+		<mx:Label text="0" fontWeight="bold"
+			textAlign="right" width="31" x="612" y="214" id="numeroSubmissoes" color="#048E14"/>
+		<mx:Label text="0" fontWeight="bold"
+			textAlign="right" width="31" x="646" y="214" id="numeroSubmissoesMaximo" color="#048E14"/>
+		<mx:TextArea x="21" y="237" width="656" height="127" id="inputDescricao"/>
+		<mx:LinkButton x="222.55" y="88" label="   Anexar Solução" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivo()"/>
+		<mx:Label x="21" y="126" width="656" id="caminho" textAlign="center"/>
+		<mx:Label x="16" y="10" width="69" id="caminho0" textAlign="left" text="Roteiro:" fontWeight="bold"/>
+		<mx:Label x="18" y="38" width="69" id="caminho1" textAlign="left" text="Equipe:" fontWeight="bold"/>
+		<mx:Label x="89" y="38" width="237" id="nomeDaEquipe" textAlign="left" text="..." fontWeight="bold" color="#048E2B"/>
+		<mx:Button x="257" y="156" label="   Submeter Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="botaoSubmeterRoteiro" click="submeteRoteiro()"/>
+		<mx:HRule x="21" y="192" width="656" height="9"/>
+		<mx:HRule x="21" y="70" width="656" height="10"/>
+		<mx:ComboBox x="89" y="8" width="590" id="comboRoteiro" change="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" enter="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro()" labelField="nome"></mx:ComboBox>
+		
+		
+</les:ModuleTitleWindow>

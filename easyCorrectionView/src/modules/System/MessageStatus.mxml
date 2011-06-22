@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Esse componente é utilizado para exibir mensagems de erro ou de sucesso, ao invés de usarmos Alert -->
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:les="modules.System.*"
+	layout="absolute" showCloseButton="true" fontSize="16" creationComplete="init()"
+	close="closeWindow()" >
+	
+	<mx:Script>
+		<![CDATA[
+			import Scripts.ModulesController;
+			import events.ClosePopupEvent;
+			import mx.managers.PopUpManager;
+			import mx.controls.Image;
+			
+			/* Mensagem que será exibida neste componente de mensagem */
+			[Bindable]
+			private var message:String;
+			
+			/* 
+			 *	campo boolean para indicar se a mensagem desta tela será uma mensagem
+			 *	de erro ou mensagem de sucesso, caso FALSE será mensagem de sucesso,
+			 *	caso TRUE será mensagem de erro
+			 */
+			[Bindable]
+			private var error:Boolean;
+			
+			/*
+			 *	método executado ao iniciar a tela, ele inicia o componente
+			 */
+			private function init():void {
+				this.visible = true;
+				button_ok.setFocus();
+				var params:Array = (ModulesController.getParam() as Array);
+				message = (params.pop() as String);
+				error = (params.pop() as Boolean);
+				
+				messageStatus.text = message;
+				
+				//Se a mensagem é de erro então exibe uma imagem do X vermelho
+				if (error) {
+					imageError.visible = true;
+					this.title = "Erro";
+				//Se a mensagem é de sucesso então exibe uma imagem do V verde
+				}else{
+					successfulImage.visible = true;
+					this.title = "Sucesso";
+				}
+			}
+			
+			/*
+			 *	Método responsável por fechar a tela
+			 */
+			private function closeWindow():void {
+				dispatchEvent(new ClosePopupEvent(this));
+			}
+			
+			private function enterCloseWindow(event:KeyboardEvent):void {
+				if (event.keyCode == Keyboard.ENTER) {
+					closeWindow();
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Text x="35" y="12" id="messageStatus" width="250" textAlign="center"/>
+	<mx:Button x="{(this.width - button_ok.width) / 2}" 
+		y="{messageStatus.y + messageStatus.height + 15}" 
+		label="OK" id="button_ok" click="closeWindow()" keyDown="enterCloseWindow(event)"/>
+	<mx:Image x="5" y="10" id= "successfulImage" source="@Embed(source='../../image/sucesso.png')" scaleContent="true" autoLoad="true" visible = "false"/>
+	<mx:Image x="5" y="10" id= "imageError" source="@Embed(source='../../image/erro.png')" scaleContent="true" autoLoad="true" visible = "false"/>
+
+</les:ModuleTitleWindow>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	width="800" height="538" creationComplete="init()" title="Notas" showCloseButton="true" close="closeWindow()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import mx.utils.ObjectUtil;
+				import bean.assessments.Assessment;
+				import bean.Utility.CastEntities;
+				import bean.assignments.Assignment;
+				import mx.collections.ArrayCollection;
+				import events.UserEvent;
+				import bean.permission.*;
+				import bean.user.*;
+				import events.EventLogResponse;
+				import events.ClosePopupEvent;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ModulesController;
+				import mx.binding.utils.BindingUtils;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+				
+				private function init():void {
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					var states: String = String(ModulesController.getParam());
+					listAssignments();
+				}
+				
+				private function listAssignments():void{
+					facade.getOperation("listAssignments").send();
+				}
+				
+				private function listAssignments_result(event:ResultEvent):void{
+					comboAssignment.dataProvider = new ArrayCollection();
+					comboAssignment.selectedIndex = -1;
+					comboAssignment.dataProvider = event.result;
+				}
+				
+				private function getAssessmentsByAssignment():void{
+					var rot: Assignment = CastEntities.castAssignment(comboAssignment.selectedItem);
+					facade.getOperation("getAssessmentsByAssignment").send(rot);
+				}
+				
+				private function getAssessmentsByAssignment_result(event:ResultEvent):void{
+					dgNotes.dataProvider = new ArrayCollection();
+					dgNotes.dataProvider = event.result as ArrayCollection;
+				}
+	            
+	            private function failure(event:FaultEvent):void {
+					var message:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							message = event.fault.faultString;
+						} else {
+							message = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						message = "Serviço indisponível, reinicie a operação.";
+					}
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+				}
+				
+				private function closeWindow():void {
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				private function labelGrid(item:*, column:DataGridColumn):String {
+					var sLabel:String = "";
+					var sHeaderText:String = column.headerText;
+					switch (sHeaderText)  {
+						case "Matrícula":
+							sLabel = item.submission.teamHasUserHasAssignment.user.login;
+							break;
+						case "Nome do aluno":
+							sLabel = item.submission.teamHasUserHasAssignment.user.name;
+							break;
+						case "Porcentagem (Testes Automáticos)":
+							sLabel = item.submission.teamHasUserHasAssignment.assignment.automaticTestsPercentage;
+							break;
+						case "Nota1 (Testes Automáticos)":
+							sLabel = item.automaticGrade;
+							break;
+						case "Nota2 (Corretor)":
+							sLabel = item.correctionGrade;
+							break;
+						case "Nota":
+							sLabel = (item.automaticGrade + item.correctionGrade); 
+							break;
+					}
+					return sLabel;
+				}
+				
+				private function compareName(itemA:Object, itemB:Object):int {  
+					return ObjectUtil.stringCompare(
+						itemA.submission.teamHasUserHasAssignment.user.name,  
+						itemB.submission.teamHasUserHasAssignment.user.name,   
+						true
+					);
+				}
+				
+				private function compareLogin(itemA:Object, itemB:Object):int {  
+					return ObjectUtil.stringCompare(
+						itemA.submission.teamHasUserHasAssignment.user.login,  
+						itemB.submission.teamHasUserHasAssignment.user.login,   
+						true
+					);
+				}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			<mx:method name="listAssignments" result="listAssignments_result(event)" fault="failure(event)"/>
+			<mx:method name="getAssessmentsByAssignment" result="getAssessmentsByAssignment_result(event)" fault="failure(event)"/>
+		</mx:RemoteObject>
+		
+		<mx:ComboBox x="73" y="10" width="697" id="comboAssignment" change="getAssessmentsByAssignment()" enter="getAssessmentsByAssignment()" labelField="nome"></mx:ComboBox>
+		<mx:HRule x="10" y="40" width="760" height="10"/>
+		<mx:DataGrid x="10" y="58" width="760" height="426" wordWrap="true" id="dgNotes" labelFunction="labelGrid">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Matrícula" width="50" sortCompareFunction="compareLogin"/>
+				<mx:DataGridColumn headerText="Nome do aluno"  width="150" sortable="true" sortCompareFunction="compareNome"/>
+				<mx:DataGridColumn headerText="Porcentagem (Testes Automáticos)" width="50"/>
+				<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
+				<mx:DataGridColumn headerText="Nota2 (Corretor)" width="50"/>
+				<mx:DataGridColumn headerText="Nota" width="50"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:Label x="10" y="11.5" width="65" textAlign="left" text="Roteiro:" fontWeight="bold"/>
+					
+</les:ModuleTitleWindow>

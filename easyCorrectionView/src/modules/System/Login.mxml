@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Componente para a tela de login do sistema
+-->
+
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:les="modules.System.*"
+	width="556" height="446" creationComplete="init()" title="Easy Lab Correction" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import mx.validators.EmailValidator;
+				import events.UserEvent;
+				import bean.user.*;
+				import bean.permission.*;
+				import events.EventLogResponse;
+				import events.ClosePopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ModulesController;
+				//import eventos.RespostaLoginEvent;
+				//import eventos.FechaPopupEvent;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+				
+				//Mensagems tooltip for information about the empty fields
+				[Bindable]
+				private var tooltipLogin:String = 
+					"Informe seu nome de usuário neste campo";
+					
+				[Bindable]
+				private var tooltipPassword:String = 
+					"Informe sua senha neste campo";
+					
+				private var func:*;
+					
+		        /*
+		         *	Method responsable for receiving an answer after a call
+		         *	ao serviço de efetuar login
+		         */
+		        private function loginHandleResponse(event:ResultEvent):void {
+					/*var mensagem:String = event.result.toString();
+					if (mensagem.indexOf("Fatal") != -1) {
+						mensagem = mensagem.substr(mensagem.indexOf("Fatal"));
+						mensagem = mensagem.substr(0, mensagem.indexOf("Stack"));
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this,
+							[true, mensagem]);
+						return;
+					}
+					var menus:Object = JSON.decode(mensagem);
+					if (menus.Erro != undefined) {
+						ControladorDeModulos.criaModulo("modulos/sistema/MensagemStatus.swf", this,
+							[true, menus.Erro]);
+					} else {
+						dispatchEvent(new RespostaLoginEvent(String(event.result)));
+						fechaJanela();
+					}*/
+	            }
+	            
+	            private function fail(event:FaultEvent):void {
+					var msg:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							msg = event.fault.faultString;
+						} else {
+							msg = event.fault.rootCause.message;
+						} 
+					}
+					catch(e:Error){
+						msg = "Serviço indisponível, reinicie a operação.";
+					}
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, msg));
+				}
+	
+		        /*
+		         *	Método responsável por limpar os campos da tela de login
+		         */
+		        private function clearFields():void {
+					input_login.text = "";
+					input_password.text = "";
+				} 
+				
+				/*
+				 *	Método responsável por chamar o serviço de login, chamado
+				 *	quando o usuário clica no botão enviar
+				 */
+				private function loginToSend():void {
+					var user: User = new User();
+					user.login = input_login.text;
+					user.password = input_password.text;
+					facade.getOperation("validateUser").send(user); 		
+				}
+				
+				private function getUser():void{
+					facade.getOperation("getUserByLogin").send(input_login.text);
+				}
+				
+				private function getUser_result(event:ResultEvent):void{
+					dispatchEvent(new UserEvent(event.result));
+					dispatchEvent(new EventLogResponse(func));
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				private function validateUser_result(event:ResultEvent): void{
+					func = event.result;
+					getUser();
+				}
+				
+				private function closeWindow(event:ClosePopupEvent):void {
+					ModulesController.unloadModule(event.popUp);
+					this.visible = true;
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function EventLaunches(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function validatesFields():void {
+					if (StringUtil.trim(input_login.text) !== "" &&
+						StringUtil.trim(input_password.text) !== "") {
+						
+						button_login.enabled = true;
+					} else {
+						button_login.enabled = false;
+					}
+				}
+				
+				private function init():void {
+					
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					var state: String = String(ModulesController.getParam());
+				
+					var img:Image = new Image();
+					img.source = "Logo projeto LES.jpg";
+					img.x = 210;
+					img.y = 20;
+	                img.width = 140;
+					img.height = 140;
+					this.addChild(img);
+					
+					stage.focus = input_login;
+					//ControladorDeModulos.getParam();
+					validatesFields();
+					input_login.setFocus();
+				}
+				
+				private function saveUser(): void{
+					ModulesController.createModule("modulos/ValidaOrientador.swf", this, null);
+					//ControladorDeModulos.criaModulo("modulos/ConfirmacaoMembroCE.swf", this, null);
+				}
+				
+				private function changePassword():void {
+					clearFields();
+					ModulesController.createModule("modulos/sistema/ChangePassword.swf", this, null);
+				}
+				
+				private function resendPassword():void {
+					clearFields();
+					ModulesController.createModule("modulos/sistema/RecuperacaoSenha.swf", this, null);
+				}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:Label text="Informe seu login e senha para acessar o sistema" fontWeight="bold"
+			textAlign="center" width="379" x="78.5" y="205"/>
+		<mx:Label fontWeight="bold"
+			textAlign="center" width="379" x="78.5" y="173" text="Easy Lab Correction" fontSize="16" height="29" fontStyle="normal"/>
+			
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+		
+			<mx:method name="validateUser" result="validateUser_result(event)" fault="fail(event)"/>
+			<mx:method name="getUserByLogin" result="getUser_result(event)" fault="fail(event)"/>
+			
+			
+		</mx:RemoteObject>
+	
+		<mx:Form width="439" y="223" x="48.5">
+			<mx:FormItem label="Login:" width="100%" required="true">
+				<mx:TextInput id="input_login" maxChars="100" width="100%" enter="if (button_login.enabled) loginToSend();"
+					toolTip="{tooltipLogin}" change="validatesFields()"/>
+			</mx:FormItem>
+			<mx:FormItem label="Senha:" width="100%" required="true">
+				<mx:TextInput id="input_password" maxChars="50" width="100%" displayAsPassword="true"
+					enter="if (button_login.enabled) loginToSend();"
+					toolTip="{tooltipPassword}" change="validatesFields()"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:LinkButton id="changePasswordButton" label="Alterar Senha" x="212.5" y="311" click="changePassword()"/>
+		<mx:HBox width="100%" horizontalAlign="center" verticalAlign="middle" horizontalGap="20" y="359">
+			<mx:Button label="Entrar" id="button_login" click="loginToSend()" 
+				icon="@Embed(source='../../image/login.png')"/>
+			<mx:Button label="Limpar" id="button_clean" click="clearFields()"
+				icon="@Embed(source='../../image/limpar.png')"/>
+		</mx:HBox>
+		
+</les:ModuleTitleWindow>

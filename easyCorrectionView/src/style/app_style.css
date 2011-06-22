@@ -1,0 +1,153 @@
+/* CSS file */
+Panel {
+	title-style-name: "titulo";
+	theme-color: #DBA628;
+	borderAlpha: 1;
+	dropShadowEnabled: true;
+	rounded-bottom-corners: true;
+}
+
+ModuleTitleWindow{
+	background-color: #ffffff;
+	border-alpha: 0.8;
+	border-color: #e3e6eb;	
+}
+
+MenuBar {
+	font-size: 14pt;
+	font-weight: bold;
+	button-style-name: "estiloBotaoMenu";
+	theme-color: #DBA628;
+}
+
+.estiloBotaoMenu {
+	color: #042E8E;
+}
+
+.titulo {
+	font-size: 13pt;
+	color: #042E8E;
+	font-weight: bold;
+}
+
+Alert {
+    roundedBottomCorners: true;
+    dropShadowEnabled: false;
+    cornerRadius: 10;
+    font-size: 15pt;
+    button-style-name: "myButton";
+    title-style-name : "alertTitle";
+}
+
+ButtonBar {
+   buttonStyleName: "mybuttonBarButtonStyle";
+   firstButtonStyleName: "mybuttonBarButtonStyle";
+   lastButtonStyleName: "mybuttonBarButtonStyle";
+   color: #042E8E;
+   font-size: 16pt;
+   theme-color: #DBA628;
+}
+
+.mybuttonBarButtonStyle {
+   highlightAlphas: 0, 0;
+   fillAlphas: 0, 0, 0, 0;
+   fillColors: #ffffff, #ffffff, #ffffff, #ffffff;
+   borderColor: #ffffff;
+}
+
+.myButton {
+	font-size: 12pt;
+}
+
+.alertTitle {
+	font-family: Verdana;
+	font-size: 12pt;
+	font-weight: bold;
+	text-align: left;
+}
+
+List {
+	font-size: 12pt;
+	color: #042E8E;
+}
+
+Button {
+	theme-color: #DBA628;
+	color: #042E8E;
+	font-size: 11pt;
+	label-placement: center;
+	font-weight: bold; 
+}
+
+Label {
+	font-size: 12pt;
+	color: #042E8E; 
+}
+
+DateField {
+	font-size: 12pt;
+	color: #042E8E;
+	theme-color: #DBA628;
+}
+
+ComboBox {
+	theme-color: #DBA628;
+	font-size: 11pt;
+	color: #042E8E;
+	font-weight: bold;
+}
+
+TextInput {
+	color: #042E8E;
+	theme-color:#DBA628;
+	fontSize: 12pt; 
+}
+
+TextArea {
+	color: #042E8E;
+	theme-color: #DBA628;
+	font-size: 12pt;
+}
+
+DataGrid {
+	font-size: 12pt;
+	text-align: center;
+	/*border-thickness: 1;*/
+	theme-color: #DBA628;
+	color: #042E8E;
+	headerStyleName: "mydataGridHeaderStyle"; 
+}
+
+.mydataGridHeaderStyle {
+   fontWeight: bold;
+   fontSize: 10;
+   fontStyle: normal;
+}
+
+.consultaVazia {
+	color: #FF0000;
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.valorLabel {
+	color: #1B7A0F; 
+	fontWeight: bold;
+}
+
+.lista {
+	font-size: 10pt;
+	color: #042E8E;
+}
+
+.linkColor {
+	corner-radius: 5;
+	textRollOverColor: #FFFFFF;
+}
+
+ProgressBar {
+	barColor: haloOrange;
+	trackColors: #FFFFFF, #CCCCCC;
+	trackHeight: 15;
+	verticalGap: 1;
+}

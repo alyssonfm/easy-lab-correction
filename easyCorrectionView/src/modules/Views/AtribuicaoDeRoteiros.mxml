@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Componente para a tela de login do sistema
+-->
+
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	width="800" height="590" creationComplete="init()" title="Atribuição de Corretores" showCloseButton="true" close="fechaJanela()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import bean.roteiros.EquipeHasUsuarioHasRoteiro;
+				import bean.avaliacoes.Avaliacao;
+				import bean.Utilitarios.CastDeEntidades;
+				import bean.roteiros.Roteiro;
+				import mx.effects.Rotate;
+				import mx.collections.ArrayCollection;
+				import mx.utils.ArrayUtil;
+				import eventos.UserEvent;
+				import bean.acesso.*;
+				import eventos.EventLogResponse;
+				import eventos.ClosePopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ModulesController;
+				import mx.binding.utils.BindingUtils;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+	            
+	            
+//	            private var listaDinamicaDeEquipesCorretor:ArrayCollection = new ArrayCollection();
+//	            private var listaDinamicaDeEquipesDoCorretor:ArrayCollection = new ArrayCollection();
+	            
+	            private var roteiro:Roteiro = new Roteiro();
+	            private var corretor:Usuario = new Usuario();
+	            
+	            private function falha(event:FaultEvent):void {
+					var mensagem:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							mensagem = event.fault.faultString;
+						} else {
+							mensagem = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						mensagem = "Serviço indisponível, reinicie a operação.";
+					}
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, mensagem));
+				}
+				
+				private function fechaJanela():void {
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function lancaEvento(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					var estado: String = String(ModulesController.getParam());
+					listaEquipesPorRoteiroSemCorretor.dataProvider = new ArrayCollection();
+					listaEquipesPorRoteiroDoCorretor.dataProvider = new ArrayCollection();					
+					getRoteirosFechados();
+				}
+				
+				public function getRoteirosFechados():void{
+					facade.getOperation("getRoteirosFechados").send();
+				}
+				
+				public function getRoteirosFechados_result(event:ResultEvent):void{
+					comboRoteiros.dataProvider = event.result;
+					comboRoteiros.selectedIndex = -1;
+					getCorretores();
+				}
+				
+				public function getCorretores():void{
+					facade.getOperation("getCorretores").send();
+				}
+				
+				public function getCorretores_result(event:ResultEvent):void{
+					comboCorretores.dataProvider = event.result;
+					comboCorretores.selectedIndex = -1;
+				}
+				
+				private function getListaEquipesSemCorretor():void{
+					comboCorretores.enabled = true;
+					roteiro = new Roteiro();
+					roteiro = CastDeEntidades.castRoteiro(comboRoteiros.selectedItem);
+					facade.getOperation("getAvaliacoesDoRoteiroSemCorretor").send(roteiro.id);
+				}
+								
+				private function getListaEquipesSemCorretor_result(event:ResultEvent):void{
+					listaEquipesPorRoteiroSemCorretor.dataProvider = event.result;
+				}
+				
+				private function getListaEquipesComCorretor(): void {
+					var param:Array = new Array();
+					if(comboRoteiros.selectedIndex != -1){
+						if (comboCorretores.selectedItem != -1){
+							corretor = new Usuario();
+							roteiro = new Roteiro();
+							corretor = CastDeEntidades.castUsuario(comboCorretores.selectedItem);
+							roteiro = CastDeEntidades.castRoteiro(comboRoteiros.selectedItem);
+							facade.getOperation("getAvaliacoesDoRoteiroComCorretor").send(roteiro.id, corretor.idUsuario);
+						}
+						else{
+							param = new Array(true, "Selecione também o Corretor.");
+							ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+						}
+					}
+					else{
+						param = new Array(true, "Selecione também o roteiro.");
+						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+					}
+					
+				}
+				
+				public function getListaEquipesComCorretor_result(event:ResultEvent):void{
+					listaEquipesPorRoteiroDoCorretor.dataProvider = event.result;
+				}
+								
+				private function expoeEquipeDaAvaliacao(item: *): String{
+                	return item.submissao.equipeHasUsuarioHasRoteiro.equipe.nome;
+                }
+
+				private function alocaEquipeAoCorretor():void{
+					var param:Array = new Array();
+					if (listaEquipesPorRoteiroSemCorretor.selectedIndex != -1){
+						var aval: Avaliacao = CastDeEntidades.castAvaliacao(listaEquipesPorRoteiroSemCorretor.selectedItem);
+						if(comboCorretores.selectedIndex != -1){
+							aval.corretor = CastDeEntidades.castUsuario(comboCorretores.selectedItem);
+							facade.getOperation("alocaCorretor").send(aval);		
+						}
+						else{
+							exibeMensagem("Selecione também o corretor.");
+						}
+					}
+					else{
+						exibeMensagem("Selecione uma equipe.");
+					}
+				}
+				
+				private function desalocaEquipeAoCorretor():void{
+					var param:Array = new Array();
+					if (listaEquipesPorRoteiroDoCorretor.selectedIndex != -1){
+						var aval: Avaliacao = CastDeEntidades.castAvaliacao(listaEquipesPorRoteiroDoCorretor.selectedItem);
+						if(comboCorretores.selectedIndex != -1){
+							aval.corretor = null;
+							facade.getOperation("alocaCorretor").send(aval);		
+						}
+						else{
+							exibeMensagem("Selecione também o corretor.");
+						}
+					}
+					else{
+						exibeMensagem("Selecione uma equipe para desalocar.");
+					}
+				}
+				
+				private function atualizaEstado_result(event:ResultEvent):void{
+					getListaEquipesSemCorretor();
+					getListaEquipesComCorretor();
+				}
+				
+				private function selecionaEquipeAlocada(): void{
+					var avaliacao: Avaliacao = CastDeEntidades.castAvaliacao(listaEquipesPorRoteiroDoCorretor.selectedItem);
+					selecionaEquipe(avaliacao);
+				}
+				
+				private function selecionaEquipeDesalocada(): void{
+					var avaliacao: Avaliacao = CastDeEntidades.castAvaliacao(listaEquipesPorRoteiroSemCorretor.selectedItem);
+					selecionaEquipe(avaliacao);
+				}
+				
+				private function selecionaEquipe(avaliacao: Avaliacao):void{
+					var eur: EquipeHasUsuarioHasRoteiro = avaliacao.submissao.equipeHasUsuarioHasRoteiro;
+					facade.getOperation("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro").send(eur.equipe.id, eur.roteiro.id);
+				}
+				
+				private function getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event:ResultEvent):void{
+					listaIntegrantes.dataProvider = new ArrayCollection(); 
+					listaIntegrantes.dataProvider = event.result;
+				}
+				
+				private function selecaoLabelIntegrantes(item: *): String{
+					return item.usuario.nome;
+				}
+				
+				private function exibeMensagem(mensagem: String): void{
+					var param:Array = new Array(true, mensagem);
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+				}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+		
+			<mx:method name="getRoteirosFechados" result="getRoteirosFechados_result(event)" fault="falha(event)"/>
+			<mx:method name="getCorretores" result="getCorretores_result(event)" fault="falha(event)"/>
+			<mx:method name="getAvaliacoesDoRoteiroSemCorretor" result="getListaEquipesSemCorretor_result(event)" fault="falha(event)"/>
+			<mx:method name="getAvaliacoesDoRoteiroComCorretor" result="getListaEquipesComCorretor_result(event)" fault="falha(event)"/>
+			<mx:method name="alocaCorretor" result="atualizaEstado_result(event)" fault="falha(event)"/>
+			<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro_result(event)" fault="falha(event)"/>
+			
+		</mx:RemoteObject>
+		
+		<mx:Label text="Corretor:" fontWeight="bold"
+			textAlign="left" width="74" x="394" y="22" id="labelTitulo"/>
+		<mx:Label text="Roteiro:" fontWeight="bold"
+			textAlign="left" width="64" x="10" y="22" id="labelTitulo0"/>
+		<mx:Label text="Equipes:" fontWeight="bold"
+			textAlign="left" width="63" x="10" y="72" id="labelTitulo1"/>
+		<comp:ComboBoxAC labelField="nome" x="73" y="21" width="304" change="getListaEquipesSemCorretor()" id="comboRoteiros"/>
+		<comp:ComboBoxAC labelField="nome" x="476" y="21" width="294" change="getListaEquipesComCorretor()" id="comboCorretores" enabled="false"/>
+		<mx:HRule x="10" y="61" width="760" height="3"/>
+		<mx:List id="listaEquipesPorRoteiroSemCorretor" x="10" y="100" width="352" height="295" labelFunction="expoeEquipeDaAvaliacao" itemClick="selecionaEquipeDesalocada()"/>
+		<mx:Label text="Equipes Selecionadas:" fontWeight="bold" textAlign="left" width="155" x="418" y="72" id="labelTitulo2"/>
+		<mx:List id="listaEquipesPorRoteiroDoCorretor" x="418" y="100" width="352" height="295" labelFunction="expoeEquipeDaAvaliacao" itemClick="selecionaEquipeAlocada()"></mx:List>
+		<mx:Button x="370" y="201" width="40" click="alocaEquipeAoCorretor()" height="40" icon="@Embed(source='../../image/right.png')" fontStyle="normal" fontWeight="bold" fillAlphas="[0.0, 0.0, 0.0, 0.0]" fillColors="[#FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF]" borderColor="#FFFFFF" cornerRadius="20" themeColor="#37612B" id="button2"/>
+		<mx:Button x="370" y="249" width="40" click="desalocaEquipeAoCorretor()" height="40" icon="@Embed(source='../../image/left.png')" fontStyle="normal" fontWeight="bold" fillAlphas="[0.0, 0.0, 0.0, 0.0]" fillColors="[#FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF]" borderColor="#FFFFFF" cornerRadius="20" themeColor="#37612B" id="button1"/>
+		<mx:Label text="Total de Equipes sem Avaliador:" fontWeight="bold"
+			textAlign="left" width="219" x="10" y="516" id="labelTitulo3"/>
+		<mx:Label text="Total de Equipes alocadas por corretor:" fontWeight="bold"
+			textAlign="left" width="266" x="418" y="516" id="labelTitulo5"/>
+		<mx:Label text="{listaEquipesPorRoteiroDoCorretor.dataProvider.length}" fontWeight="bold"
+			textAlign="left" width="78" x="692" y="516" id="labelTitulo6"/>
+		<mx:Label text="{listaEquipesPorRoteiroSemCorretor.dataProvider.length}" fontWeight="bold"
+			textAlign="left" width="63" x="237" y="516" id="labelTitulo4"/>
+		<mx:Label text="Integrantes: " fontWeight="bold"
+			textAlign="left" width="93.04999" x="10" y="403" id="labelIntegrantes" height="20"/>
+		<mx:List id="listaIntegrantes" x="10" y="424" width="760" height="84" labelFunction="selecaoLabelIntegrantes"/>
+		
+		
+</les:ModuleTitleWindow>

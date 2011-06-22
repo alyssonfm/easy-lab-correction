@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+-->
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modulos.sistema.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+	width="696" height="418" creationComplete="init()" title="Gerenciamento de Equipes" showCloseButton="true" close="closeWindow()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import bean.user.User;
+				import mx.charts.CategoryAxis;
+				import mx.collections.ArrayCollection;
+				import net.digitalprimates.fluint.utils.ResultDisplayUtils;
+				import bean.team.TeamHasUserHasAssignment;
+				import bean.team.Team;
+				import bean.Utility.CastEntities;
+				import bean.assignments.Submission;
+				import events.UserEvent;
+				import bean.permission.*;
+				import events.EventLogResponse;
+				import events.ClosePopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ModulesController;
+				import mx.binding.utils.BindingUtils;
+				//import eventos.RespostaLoginEvent;
+				//import eventos.FechaPopupEvent;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+				
+	            private var submission:Submission = new Submission();
+	            private var listEur:ArrayCollection = new ArrayCollection();
+	            private var eur:TeamHasUserHasAssignment = new TeamHasUserHasAssignment();
+	            private var user:User = new User();
+	            
+	            private function failure(event:FaultEvent):void {
+					var message:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							message = event.fault.faultString;
+						} else {
+							message = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						message = "Serviço indisponível, reinicie a operação.";
+					}
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+				}
+				
+				private function closeWindow():void {
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function eventLaunches(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					ModulesController.getParam();
+					button.enabled = false;
+					getReleasedAssignments();					
+				}
+				
+				public function getReleasedAssignments():void{
+					facade.getOperation("getReleasedAssignments").send()
+				}
+				
+				public function getReleasedAssignments_result(event:ResultEvent):void{
+					comboAssignment.dataProvider = event.result;
+					comboAssignment.selectedIndex = -1;
+					getTeams();
+				}
+				
+				public function getTeams():void{
+					facade.getOperation("getTeams").send();
+				}
+				
+				public function getTeams_result(event:ResultEvent):void{
+					comboTeam.dataProvider = event.result;
+					comboTeam.selectedIndex = -1;
+					getTeamHasUserHasAssignments();
+				}
+				
+				public function teamSelects():void{
+					comboTeam.enabled = true;
+				}
+				
+				public function getTeamHasUserHasAssignmentByTeamAndAssignment():void{
+					if(comboAssignment.selectedItem != null && comboTeam.selectedItem != null){
+						button.enabled = true;
+						facade.getOperation("getTeamHasUserHasAssignmentByTeamAndAssignment").send(
+							comboTeam.selectedItem.id, comboAssignment.selectedItem.id)
+					}else{
+						var param:Array = new Array(false, "Selecione o roteiro e a equipe.");
+						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+					}
+				}
+				
+				private function getTeamHasUserHasAssignmentByTeamAndAssignment_result(event:ResultEvent):void{
+					dg_user_has_team_has_assignment.dataProvider = event.result;
+				}
+				
+				private function labelGrid(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Login":
+						sLabel = item.user.login;
+						break;
+					case "Nome":
+						sLabel = item.user.name;
+						break;
+					case "Email":
+						sLabel = item.user.email;
+						break;
+				}
+				return sLabel;
+			}
+			
+			private function getTeamHasUserHasAssignments():void{
+				facade.getOperation("getTeamHasUserHasAssignments").send();
+				
+			}
+			
+			private function getTeamHasUserHasAssignments_result(event:ResultEvent):void{
+				listEur = event.result as ArrayCollection;
+				getUser();
+			}
+			
+			private function getUser():void{
+				var idUsuario:int = SharedObject.getLocal("sistema", "/").data.idUsuario;
+				facade.getOperation("getUser").send(idUsuario);
+			}
+			
+			private function getUser_result(event:ResultEvent):void{
+				user = new Usuario();
+				user = CastEntities.castUser(event.result);
+			}
+			
+			public function saveTeamHasAssignmentHasUser():void{
+				eur = new TeamHasUserHasAssignment();
+				if (comboTeam.selectedItem == null || comboAssignment.selectedItem == null){
+					button.enabled = false;
+				}
+				if(comboTeam.selectedItem != null && comboAssignment.selectedItem != null){
+					eur.team = CastEntities.castTeam(comboTeam.selectedItem);
+					eur.assignment = CastEntities.castAssignment(comboAssignment.selectedItem);
+					eur.user = CastEntities.castUser(user);
+				}
+				facade.getOperation("changeTeam").send(eur);
+			}
+			
+			private function  changeTeam_result(event:ResultEvent):void{
+				if(event.result != null){
+					var param:Array = new Array(false, "Usuario cadastrado com sucesso.");
+						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+				}
+				getTeamHasUserHasAssignmentByTeamAndAssignment();
+				
+			}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+		
+			<mx:method name="getReleasedAssignments" result="getReleasedAssignments_result(event)" fault="falha(event)"/>
+			<mx:method name="getTeams" result="getTeams_result(event)" fault="falha(event)"/>
+			<mx:method name="getTeamHasUserHasAssignmentByTeamAndAssignment" result="getTeamHasUserHasAssignmentByTeamAndAssignment_result(event)" fault="falha(event)"/>
+			<mx:method name="getTeamHasUserHasAssignments" result="getTeamHasUserHasAssignments_result(event)" fault="falha(event)"/>
+			<mx:method name="changeTeam" result=" changeTeam_result(event)" fault="falha(event)"/>
+			<mx:method name="getUser" result="getUser_result(event)" fault="falha(event)"/>
+			
+		</mx:RemoteObject>
+		
+		<mx:Label x="10" y="10" width="69" textAlign="left" text="Roteiros:" fontWeight="bold"/>
+		<mx:ComboBox x="76" y="8" width="590" id="comboAssignment" labelField="nome" change="teamSelects()" enter="teamSelects()"></mx:ComboBox>
+		<mx:Label x="10" y="40" width="69" textAlign="left" text="Equipe:" fontWeight="bold"/>
+		<mx:ComboBox x="76" y="38" width="590" id="comboTeam" labelField="nome" change="getTeamHasUserHasAssignmentByTeamAndAssignment()" enter="getTeamHasUserHasAssignmentByTeamAndAssignment()" enabled="false"></mx:ComboBox>
+		<mx:DataGrid x="10" y="105" width="656" height="259" id="dg_user_has_team_has_assignment" labelFunction="labelGrid">
+				<mx:columns>
+						<mx:DataGridColumn headerText="Login" dataField="col1" width="100"/>
+						<mx:DataGridColumn headerText="Nome" dataField="col2"/>
+						<mx:DataGridColumn headerText="Email" dataField="col3" width="200"/>
+				</mx:columns>
+		</mx:DataGrid>
+		<mx:Button x="269" y="69" label="Entrar" width="137.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="button" enabled="true" click="saveTeamHasAssignmentHasUser()"/>
+		
+</les:ModuleTitleWindow>
