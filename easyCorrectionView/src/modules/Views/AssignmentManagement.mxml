@@ -155,7 +155,7 @@
 					requestTests = new URLRequest(FILE_UPLOAD_URL);
 					var variables:URLVariables = new URLVariables();
 					variables.url = urlInterface;
-					variables.nomeArquivo = pathInterface.text;
+					variables.fileName = pathInterface.text;
 					requestInterface.data = variables;
 					fileRefInterface.upload(requestInterface);
 				}
@@ -271,7 +271,7 @@
 						try{
 							var variables:URLVariables = new URLVariables();
 							variables.url = urlTests;
-							variables.nameFile = "testes.zip";
+							variables.fileName = "testes.zip";
 							requestTests.data = variables;
 							fileRefTests.upload(requestTests);
 						}catch(e: Error){}
