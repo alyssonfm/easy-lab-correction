@@ -256,7 +256,7 @@
 		<mx:TextArea x="331" y="124" width="587" height="279" backgroundAlpha="0.0" id="resumeText" editable="false" alpha="0.5" cornerRadius="10"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
-		<mx:List x="10" y="44" scroll="true" width="264" height="399" id="assignmentList" labelField="nome" itemClick="updateAssignmentData()" fontSize="14"/>
+		<mx:List x="10" y="44" scroll="true" width="264" height="399" id="assignmentList" labelField="name" itemClick="updateAssignmentData()" fontSize="14"/>
 		<mx:List x="10" y="489" width="267" height="85" labelFunction="labelTeamAssignmentMembers" id="teamAssignmentMembers"></mx:List>
 		<mx:Label x="386" y="70" width="532" id="inputAssignmentTitle" color="#1B7A0F" text="..."/>
 		<mx:Label x="870" y="38" width="48" id="inputCorrectionGrade" color="#1B7A0F" text="0,0"/>
