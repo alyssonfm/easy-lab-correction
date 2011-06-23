@@ -31,18 +31,18 @@
 			private function init():void {
 				facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 				var state: String = String(ModulesController.getParam());
-				listGroups();
+				groupList();
 			}
 			
 			private function closeWindow(): void{
 				dispatchEvent(new ClosePopupEvent(this));
 			}
 			
-			private function listGroups():void{
-				facade.getOperation("listGroups").send();
+			private function groupList():void{
+				facade.getOperation("groupList").send();
 			}
 			
-			private function listGroups_result(event:ResultEvent):void{
+			private function groupList_result(event:ResultEvent):void{
 				groups = event.result as ArrayCollection;
 				if (groups == null) {
 					groups = new ArrayCollection();
@@ -50,14 +50,14 @@
 				}
 				cbGroup.dataProvider = groups;
 				cbGroup.selectedIndex = -1;
-				listFunctions();
+				functionList();
 			}
 			
-			private function listFunctions():void{
-				facade.getOperation("listFunctions").send()
+			private function functionList():void{
+				facade.getOperation("functionList").send()
 			}
 			
-			private function listFunctions_result(event:ResultEvent):void{
+			private function functionList_result(event:ResultEvent):void{
 				functions = event.result as ArrayCollection;
 				if (functions == null) {
 					functions = new ArrayCollection();
@@ -69,13 +69,13 @@
 			private function getPermissionsByGroup():void{
 				try{
 					group = CastEntities.castGroup(cbGroup.selectedItem);
-					consultPermissionsByGroup(group.groupId);
+					retrievePermissionsByGroup(group.groupId);
 				}catch(e:Error){}
 			}
 			
 			
-			private function consultPermissionsByGroup(groupId: int):void{
-				facade.getOperation("consultPermissionsByGroup").send(groupId);
+			private function retrievePermissionsByGroup(groupId: int):void{
+				facade.getOperation("retrievePermissionsByGroup").send(groupId);
 			}
 			
 			private function cleanCheck(): void{
@@ -84,7 +84,7 @@
 				}
 			} 
 			
-			private function consultPermissionsByGroup_result(event:ResultEvent):void{
+			private function retrievePermissionsByGroup_result(event:ResultEvent):void{
 				permissions = event.result as ArrayCollection;
 				cleanCheck();
 				for(var i:int = 0; i < permissions.length; i++){
@@ -146,9 +146,9 @@
 	</mx:Script>
 	
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">		
-		<mx:method name="listGroups" result="listGroups_result(event)" fault="failure(event)"/>
-		<mx:method name="listFunctions" result="listFunctions_result(event)" fault="failure(event)"/>
-		<mx:method name="consultPermissionsByGroup" result="consultPermissionsByGroup_result(event)" fault="failure(event)"/>
+		<mx:method name="groupList" result="groupList_result(event)" fault="failure(event)"/>
+		<mx:method name="functionList" result="functionList_result(event)" fault="failure(event)"/>
+		<mx:method name="retrievePermissionsByGroup" result="retrievePermissionsByGroup_result(event)" fault="failure(event)"/>
 		<mx:method name="saveGroupPermission" result="saveGroupPermission_result(event)" fault="failure(event)"/>
 	</mx:RemoteObject>
 	

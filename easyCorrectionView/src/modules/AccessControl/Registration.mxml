@@ -164,7 +164,7 @@
 			}
 			
 			private function getUserGroup(): void{
-				facade.getOperation("getGrupoUsuarioPorUsuario").send(loggedUser.userId);
+				facade.getOperation("getUserGroupByUser").send(loggedUser.userId);
 			}
 			
 			private function getUserGroupByUser_result(event:ResultEvent):void {
@@ -231,7 +231,7 @@
 			}
 			
 			private function menuList(): void{
-				facade.getOperation("listarMenus").send();				
+				facade.getOperation("menuList").send();				
 			}
 			
 			private function menuList_result(event:ResultEvent):void {
@@ -251,7 +251,7 @@
 			}
 			
 			private function functionList():void{
-				facade.getOperation("listarFuncoes").send()
+				facade.getOperation("functionList").send()
 			}
 			
 			private function functionList_result(event:ResultEvent):void{
@@ -259,7 +259,7 @@
 			}
 			
 			private function groupList():void{
-				facade.getOperation("listarGrupos").send()
+				facade.getOperation("groupList").send()
 			}
 			
 			private function groupList_result(event:ResultEvent):void{
@@ -369,11 +369,11 @@
 			private function updateMenu():void {
 				menu.name = StringUtil.trim(inputMenuName.text);
 				menu.label = StringUtil.trim(inputMenuLabel.text);
-				facade.getOperation("cadastrarMenu").send(menu);
+				facade.getOperation("saveMenu").send(menu);
 			}
 			
 			private function removeMenu():void {
-				facade.getOperation("excluirMenu").send(menu);
+				facade.getOperation("removeMenu").send(menu);
 			}
 			
 			private function removeMenu_result(): void{
@@ -416,11 +416,11 @@
 				func.name = StringUtil.trim(inputFunctionName.text);
 				func.label = StringUtil.trim(inputFunctionLabel.text);
 				func.menu = CastEntities.castMenu(cbMenu.selectedItem);
-				facade.getOperation("cadastrarFuncao").send(func);
+				facade.getOperation("saveFunction").send(func);
 			}
 			
 			private function removeFunction():void {
-				facade.getOperation("excluirFuncao").send(func);
+				facade.getOperation("removeFunction").send(func);
 			}
 			
 			private function removeFunction_result(): void{
@@ -432,7 +432,7 @@
 				try{
 					handleValidateFunction(null);
 					var menuAux : * = cbMenu.selectedItem;
-					facade.getOperation("consultarFuncaoPorMenu").send(menuAux.menuId);
+					facade.getOperation("getFunctionByMenu").send(menuAux.menuId);
 				} catch(e: Error){}
 				
 			}
@@ -479,11 +479,11 @@
 			
 			private function updateGroup():void {
 				group.name = StringUtil.trim(inputGroup.text);
-				facade.getOperation("cadastrarGrupo").send(group);
+				facade.getOperation("saveGroup").send(group);
 			}
 			
 			private function removeGroup():void {
-				facade.getOperation("excluirGrupo").send(group);
+				facade.getOperation("removeGroup").send(group);
 			}
 			
 			private function removeGroup_result(): void{
@@ -530,14 +530,14 @@
 				if(firstEntry){
 					if (currentState != "teacherState"){
 						if(inputUserPassword.text.length == 0){
-							facade.getOperation("gerarSenha").send(6,"");		
+							facade.getOperation("generatePassword").send(6,"");		
 						}
 						else{
 							UpdateUser();
 						}
 					}else{
 						if(inputUserPasswordState.text.length == 0){
-							facade.getOperation("gerarSenha").send(6,"");
+							facade.getOperation("generatePassword").send(6,"");
 						}
 						else{
 							UpdateUser();
@@ -558,11 +558,11 @@
 				try{
 					if (currentState != "teacherState"){
 						if(firstEntry){
-							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputUserLogin.text));
+							facade.getOperation("getUserByLogin").send(StringUtil.trim(inputUserLogin.text));
 						}
 						else{
 							if(dgUsers.selectedItem.user.login != StringUtil.trim(inputUserLogin.text)){
-								facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputUserLogin.text));	
+								facade.getOperation("getUserByLogin").send(StringUtil.trim(inputUserLogin.text));	
 							}
 							else{
 								UpdateUser();		
@@ -571,11 +571,11 @@
 					}
 					else{
 						if(firstEntry){
-							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputUserLoginState.text));
+							facade.getOperation("getUserByLogin").send(StringUtil.trim(inputUserLoginState.text));
 						}
 						else{
 							if(dgUsersState.selectedItem.user.login != StringUtil.trim(inputUserLogin.text)){
-								facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputUserLoginState.text));	
+								facade.getOperation("getUserByLogin").send(StringUtil.trim(inputUserLoginState.text));	
 							}
 							else{
 								UpdateUser();		
@@ -619,7 +619,7 @@
 						}
 						userGroup.group = CastEntities.castGroup(cbUserGroup.selectedItem);
 						userGroup.user = user;
-						facade.getOperation("cadastrarUsuario").send(userGroup);
+						facade.getOperation("saveUser").send(userGroup);
 					}
 				}
 				else{
@@ -652,13 +652,13 @@
 						}
 						userGroup.group = CastEntities.castGroup(cbUserGroupState.selectedItem);
 						userGroup.user = user;
-						facade.getOperation("cadastrarUsuario").send(userGroup);
+						facade.getOperation("saveUser").send(userGroup);
 					}
 				}
 			}
 			
 			private function removeUser():void {
-				facade.getOperation("excluirUsuario").send(userGroup);
+				facade.getOperation("removeUserGroup").send(userGroup);
 			}
 			
 			private function removeUserGroup_result(): void{
@@ -846,7 +846,7 @@
 					else{
 						auxUserGroup = cbUserGroupState.selectedItem;
 					}
-					facade.getOperation("consultarUsuarioPorGrupo").send(auxUserGroup.groupId);
+					facade.getOperation("getUserByGroup").send(auxUserGroup.groupId);
 				} catch(e: Error){}
 			}
 			
@@ -1011,22 +1011,22 @@
 	
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 		
-		<mx:method name="listarMenus" result="menuList_result(event)" fault="failure(event)"/>
-		<mx:method name="listarFuncoes" result="functionList_result(event)" fault="failure(event)"/>
-		<mx:method name="listarGrupos" result="groupList_result(event)" fault="failure(event)"/>
-		<mx:method name="cadastrarMenu" result="saveMenu_result(event)" fault="failure(event)"/>
-		<mx:method name="cadastrarFuncao" result="saveFunction_result(event)" fault="failure(event)"/>
-		<mx:method name="consultarFuncaoPorMenu" result="getFunctionByMenu_result(event)" fault="failure(event)"/>
-		<mx:method name="cadastrarGrupo" result="saveGroup_result(event)" fault="failure(event)"/>
-		<mx:method name="cadastrarUsuario" result="saveUser_result(event)" fault="failure(event)"/>
-		<mx:method name="consultarUsuarioPorGrupo" result="getUserByGroup_result(event)" fault="failure(event)"/>
-		<mx:method name="getGrupoUsuarioPorUsuario" result="getUserGroupByUser_result(event)" fault="failure(event)"/>
-		<mx:method name="getUsuarioPorLogin" result="getUserByLogin_result(event)" fault="ExistingUserFailure(event)"/>
-		<mx:method name="excluirMenu" result="removeMenu_result()" fault="menuFailure(event)"/>
-		<mx:method name="excluirFuncao" result="removeFunction_result()" fault="failure(event)"/>
-		<mx:method name="excluirGrupo" result="removeGroup_result()" fault="groupFailure(event)"/>
-		<mx:method name="excluirUsuario" result="removeUserGroup_result()" fault="removeFail(event)"/>
-		<mx:method name="gerarSenha" result="generatePassword_result(event)" fault="failure(event)"/>
+		<mx:method name="menuList" result="menuList_result(event)" fault="failure(event)"/>
+		<mx:method name="functionList" result="functionList_result(event)" fault="failure(event)"/>
+		<mx:method name="groupList" result="groupList_result(event)" fault="failure(event)"/>
+		<mx:method name="saveMenu" result="saveMenu_result(event)" fault="failure(event)"/>
+		<mx:method name="saveFunction" result="saveFunction_result(event)" fault="failure(event)"/>
+		<mx:method name="getFunctionByMenu" result="getFunctionByMenu_result(event)" fault="failure(event)"/>
+		<mx:method name="saveGroup" result="saveGroup_result(event)" fault="failure(event)"/>
+		<mx:method name="saveUser" result="saveUser_result(event)" fault="failure(event)"/>
+		<mx:method name="getUserByGroup" result="getUserByGroup_result(event)" fault="failure(event)"/>
+		<mx:method name="getUserGroupByUser" result="getUserGroupByUser_result(event)" fault="failure(event)"/>
+		<mx:method name="getUserByLogin" result="getUserByLogin_result(event)" fault="ExistingUserFailure(event)"/>
+		<mx:method name="removeMenu" result="removeMenu_result()" fault="menuFailure(event)"/>
+		<mx:method name="removeFunction" result="removeFunction_result()" fault="failure(event)"/>
+		<mx:method name="removeGroup" result="removeGroup_result()" fault="groupFailure(event)"/>
+		<mx:method name="removeUserGroup" result="removeUserGroup_result()" fault="removeFail(event)"/>
+		<mx:method name="generatePassword" result="generatePassword_result(event)" fault="failure(event)"/>
 		
 	</mx:RemoteObject>
 	
