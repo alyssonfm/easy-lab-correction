@@ -16,6 +16,7 @@ import br.edu.ufcg.easyLabCorrection.managers.SubmissionManager;
 import br.edu.ufcg.easyLabCorrection.managers.TeamManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
+import br.edu.ufcg.easyLabCorrection.pojo.assignments.AssignmentType;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
@@ -530,6 +531,12 @@ public class System {
 			eur.setAssignment(assignment);
 			teamManager.saveTeamHasUserHasAssignment(eur);
 		}
+	}
+	
+	public List<AssignmentType> listAssignmentType(){
+		
+		return assignmentManager.listAssignmentType();
+		
 	}
 
 }
