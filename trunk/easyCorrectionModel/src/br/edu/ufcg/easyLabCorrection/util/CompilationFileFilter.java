@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
  * @version 1.0 14 of May of 2011.<br>
  * 
  */
-public class SubmissionFileFilter {
+public class CompilationFileFilter {
 
 	private ArrayList<String> forbiddenWords;
 	private ArrayList<String> sourcePaths;
@@ -25,7 +25,7 @@ public class SubmissionFileFilter {
 	/**
 	 * Constructor default of class.<br>
 	 */
-	public SubmissionFileFilter() {
+	public CompilationFileFilter() {
 		forbiddenWords = new ArrayList<String>();
 		sourcePaths = new ArrayList<String>();
 		libPaths = new ArrayList<String>();
@@ -116,12 +116,6 @@ public class SubmissionFileFilter {
 	private void processDirectory(File dir) {
 		String[] children = dir.list();
 
-//		if (children != null) {
-//			for (int i = 0; i < children.length; i++) {
-//				String filename = children[i];
-//			}
-//		}
-
 		FilenameFilter filter = new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".java");
@@ -181,13 +175,5 @@ public class SubmissionFileFilter {
 		} catch (Exception e) {
 		}
 	}
-
-	/**
-	 * Procedure main of class.<br>
-	 */
-	// public static void main(String[] args) throws FileNotFoundException{
-	// SubmissionFileFilter pv = new SubmissionFileFilter();
-	// pv.visitAllDirsAndFiles(new File("D:/Graduação/"));
-	// }
-
+	
 }
