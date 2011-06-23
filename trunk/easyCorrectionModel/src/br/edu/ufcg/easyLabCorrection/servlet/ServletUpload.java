@@ -23,10 +23,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * @version 1.0 14 of May of 2011.<br>
  */
 public class ServletUpload extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-	//private static final String local = "upload_projetos_epibic"; //url do upload servidor
-	//private static final String local = "/home/demetriogm/"; //url do upload local
-	//public static final String local = "/home/elc" + File.separator + "LEDA" + File.separator + "Roteiros"; //url do upload local
 	public static final String local = System.getProperty("catalina.base") + File.separator + "webapps" + File.separator + "LEDA" + File.separator + "Roteiros"; //url do upload local
 	
 	/**
@@ -141,10 +139,10 @@ public class ServletUpload extends HttpServlet {
 	 */
 	protected void downloadArchive(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String nomeArquivo = request.getParameter("nomeArquivo");
+		String fileName = request.getParameter("fileName");
 		
 		try{
-			String url = nomeArquivo.replace("/", File.separator);
+			String url = fileName.replace("/", File.separator);
 			String arq = local + url;
 			System.out.println(arq);
 			FileInputStream fis = new FileInputStream(new File(arq));
@@ -173,7 +171,7 @@ public class ServletUpload extends HttpServlet {
 		//String uploadDir = this.getServletContext().getRealPath(local);
 		String url = request.getParameter("url").replace("/", File.separator);
 		String uploadDir = local + url;
-		String nomeArquivo = request.getParameter("nomeArquivo");
+		String fileName = request.getParameter("fileName");
 
 		DiskFileItemFactory factory = new DiskFileItemFactory();
         // Máximo tamanho que irá ser guardado em memória
@@ -195,16 +193,16 @@ public class ServletUpload extends HttpServlet {
 					//filename no cliente
 					//String fileName = fileItem.getName();
 					//Escreve o arquivo
-					fileItem.write(new File(uploadDir, nomeArquivo));
+					fileItem.write(new File(uploadDir, fileName));
 				}
 			}
 		} catch (Exception e) {
 			request.setAttribute("errorMessage", e.getMessage());
 			request.getRequestDispatcher("/erro.jsp").forward(request, response);
 		}
-		if(nomeArquivo.substring(nomeArquivo.length() - 3, nomeArquivo.length()).equals("zip")){
-			if (checkFile(uploadDir, nomeArquivo)){
-				unZip(uploadDir, nomeArquivo);
+		if(fileName.substring(fileName.length() - 3, fileName.length()).equals("zip")){
+			if (checkFile(uploadDir, fileName)){
+				unZip(uploadDir, fileName);
 			}
 			else{
 				request.setAttribute("errorMessage", "Erro no envio! O pacote zip submetido possui arquivos que n�o s�o do tipo JAVA.");
