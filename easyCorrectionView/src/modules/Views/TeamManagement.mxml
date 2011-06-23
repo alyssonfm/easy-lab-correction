@@ -188,9 +188,9 @@
 		</mx:RemoteObject>
 		
 		<mx:Label x="10" y="10" width="69" textAlign="left" text="Roteiros:" fontWeight="bold"/>
-		<mx:ComboBox x="76" y="8" width="590" id="comboAssignment" labelField="nome" change="teamSelects()" enter="teamSelects()"></mx:ComboBox>
+		<mx:ComboBox x="76" y="8" width="590" id="comboAssignment" labelField="name" change="teamSelects()" enter="teamSelects()"></mx:ComboBox>
 		<mx:Label x="10" y="40" width="69" textAlign="left" text="Equipe:" fontWeight="bold"/>
-		<mx:ComboBox x="76" y="38" width="590" id="comboTeam" labelField="nome" change="getTeamHasUserHasAssignmentByTeamAndAssignment()" enter="getTeamHasUserHasAssignmentByTeamAndAssignment()" enabled="false"></mx:ComboBox>
+		<mx:ComboBox x="76" y="38" width="590" id="comboTeam" labelField="name" change="getTeamHasUserHasAssignmentByTeamAndAssignment()" enter="getTeamHasUserHasAssignmentByTeamAndAssignment()" enabled="false"></mx:ComboBox>
 		<mx:DataGrid x="10" y="105" width="656" height="259" id="dg_user_has_team_has_assignment" labelFunction="labelGrid">
 				<mx:columns>
 						<mx:DataGridColumn headerText="Login" dataField="col1" width="100"/>

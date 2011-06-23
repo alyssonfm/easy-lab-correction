@@ -188,10 +188,10 @@
 				}
 				
 				private function getCurrentStage():void{
-					facade.getOperation("getCurrentPeriod").send();
+					facade.getOperation("getCurrentStage").send();
 				}
 				
-				private function getCurrentPeriod_result(event:ResultEvent):void{
+				private function getCurrentStage_result(event:ResultEvent):void{
 					stg = new SystemStage();
 					stg = CastEntities.castStage(ArrayCollection(event.result).getItemAt(0));
 				}
@@ -298,7 +298,7 @@
 		</mx:Script>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
-			<mx:method name="getCurrentPeriod" result="getCurrentPeriod_result(event)" fault="failure(event)"/>
+			<mx:method name="getCurrentStage" result="getCurrentStage_result(event)" fault="failure(event)"/>
 			<mx:method name="saveAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="updateAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>

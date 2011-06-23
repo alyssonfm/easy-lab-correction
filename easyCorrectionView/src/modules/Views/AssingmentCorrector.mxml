@@ -201,7 +201,7 @@
 			textAlign="left" width="72" x="10" y="72" id="labelGroups"/>
 		<mx:Label text="Integrantes: " fontWeight="bold"
 			textAlign="left" width="93.04999" x="265.95" y="72" id="labelMembers" height="20"/>
-		<comp:ComboBoxAC labelField="nome" x="72" y="21" width="698" id="comboAssignment" change="getAssingmentTeamByAssingment()"/>
+		<comp:ComboBoxAC labelField="name" x="72" y="21" width="698" id="comboAssignment" change="getAssingmentTeamByAssingment()"/>
 		<mx:HRule x="10" y="62" width="760" height="2"/>
 		<mx:HRule x="251" y="234" width="518" height="2"/>
 		<mx:List id="teamList" x="10" y="94" width="226" height="302" labelFunction="labelSelectionTeams" itemClick="selectTeam()" iconFunction="defIcone" fontSize="12" color="#042E8E"/>
