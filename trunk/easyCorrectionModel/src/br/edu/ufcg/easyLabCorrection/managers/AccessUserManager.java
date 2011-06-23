@@ -214,7 +214,7 @@ public class AccessUserManager extends Manager {
 		User u = new User();
 		User us = new User();
 		User use = new User();
-
+		
 		if (easyCorrectionUtil.isNull(userGroup)) {
 			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
 					.msg("O GrupoUsuario"));
@@ -263,6 +263,7 @@ public class AccessUserManager extends Manager {
 					Integer id = DAOFactory.DEFAULT.buildUserDAO().save(
 							userGroup.getUser());
 					userGroup.getUser().setUserId(id);
+					system = new System();
 					system.createTeamForIncomingAluno(userGroup);
 				}
 			} else {

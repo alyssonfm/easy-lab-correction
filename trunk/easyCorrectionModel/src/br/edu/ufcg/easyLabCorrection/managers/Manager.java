@@ -25,7 +25,7 @@ public abstract class Manager {
 	 * @return The stage corresponding at the identifier received as parameter.<br>
 	 */
 	public SystemStage getPeriod(int periodId) {
-		return DAOFactory.DEFAULT.buildPeriodDAO().getById(periodId);
+		return DAOFactory.DEFAULT.buildSystemStage().getById(periodId);
 	}
 
 	/**
@@ -33,7 +33,7 @@ public abstract class Manager {
 	 * @return The stage current.<br>
 	 */
 	public List<SystemStage> getCurrentPeriod() {
-		return DAOFactory.DEFAULT.buildPeriodDAO().findAll();
+		return DAOFactory.DEFAULT.buildSystemStage().findAll();
 	}
 
 	/**
