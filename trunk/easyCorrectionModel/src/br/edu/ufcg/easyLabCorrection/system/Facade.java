@@ -28,7 +28,7 @@ public class Facade {
 
 	}
 
-	public void backupEasyCorrection() {
+	public void reinicializaBancoDeDados() {
 		system.rebootsDataBase("backupEasyCorrection");
 	}
 
@@ -92,7 +92,7 @@ public class Facade {
 		}
 	}
 
-	public User getUsuarioPorLogin(String login) throws Throwable {
+	public User getUserByLogin(String login) throws Throwable {
 		try {
 			return system.getUserByLogin(login);
 		} catch (Throwable e) {
@@ -101,7 +101,7 @@ public class Facade {
 		}
 	}
 
-	public Function cadastrarFuncao(Function function) throws Throwable {
+	public Function saveFunction(Function function) throws Throwable {
 		try {
 			return system.saveFunction(function);
 		} catch (Throwable e) {
@@ -110,7 +110,7 @@ public class Facade {
 		}
 	}
 
-	public Group cadastrarGrupo(Group group) throws Throwable {
+	public Group saveGroup(Group group) throws Throwable {
 		try {
 			return system.saveGroup(group);
 		} catch (Throwable e) {
@@ -129,7 +129,7 @@ public class Facade {
 		}
 	}
 
-	public Menu cadastrarMenu(Menu menu) throws Throwable {
+	public Menu saveMenu(Menu menu) throws Throwable {
 		try {
 			return system.saveMenu(menu);
 		} catch (Throwable e) {
@@ -148,7 +148,7 @@ public class Facade {
 		}
 	}
 
-	public UserGroup cadastrarUsuario(UserGroup userGroup)
+	public UserGroup saveUser(UserGroup userGroup)
 			throws Throwable {
 		try {
 			return system.saveUser(userGroup);
@@ -158,7 +158,7 @@ public class Facade {
 		}
 	}
 
-	public List<Function> validaUsuario(User user) throws Throwable {
+	public List<Function> validateUser(User user) throws Throwable {
 		try {
 			return system.validateUser(user);
 		} catch (Throwable e) {
@@ -176,16 +176,16 @@ public class Facade {
 		}
 	}
 
-	public List<Group> listarGrupos() throws Throwable {
+	public List<Group> groupList() throws Throwable {
 		try {
-			return system.listGroups();
+			return system.groupList();
 		} catch (Throwable e) {
-			log.error("listGroups()", e);
+			log.error("groupList()", e);
 			throw e;
 		}
 	}
 
-	public List<Function> listarFuncoes() throws Throwable {
+	public List<Function> functionList() throws Throwable {
 		try {
 			return system.listFunctions();
 		} catch (Throwable e) {
@@ -194,7 +194,7 @@ public class Facade {
 		}
 	}
 
-	public List<Menu> listarMenus() throws Throwable {
+	public List<Menu> menuList() throws Throwable {
 		try {
 			return system.listMenus();
 		} catch (Throwable e) {
@@ -203,7 +203,7 @@ public class Facade {
 		}
 	}
 
-	public void excluirMenu(Menu menu) throws Throwable {
+	public void removeMenu(Menu menu) throws Throwable {
 		try {
 			system.deleteMenu(menu);
 		} catch (Throwable e) {
@@ -212,7 +212,7 @@ public class Facade {
 		}
 	}
 
-	public void excluirFuncao(Function function) throws Throwable {
+	public void removeFunction(Function function) throws Throwable {
 		try {
 			system.deleteFunction(function);
 		} catch (Throwable e) {
@@ -221,7 +221,7 @@ public class Facade {
 		}
 	}
 
-	public void excluirGrupo(Group group) throws Throwable {
+	public void removeGroup(Group group) throws Throwable {
 		try {
 			system.deleteGroup(group);
 		} catch (Throwable e) {
@@ -230,7 +230,7 @@ public class Facade {
 		}
 	}
 
-	public void excluirUsuario(UserGroup userGroup) throws Throwable {
+	public void removeUserGroup(UserGroup userGroup) throws Throwable {
 		try {
 			system.deleteUser(userGroup);
 		} catch (Throwable e) {
@@ -258,17 +258,17 @@ public class Facade {
 		}
 	}
 
-	public List<Permission> consultarPermissoesPorGrupo(Integer groupId)
+	public List<Permission> retrievePermissionsByGroup(Integer groupId)
 			throws Throwable {
 		try {
-			return system.consultPermissionsByGroup(groupId);
+			return system.retrievePermissionsByGroup(groupId);
 		} catch (Throwable e) {
-			log.error("consultPermissionsByGroup()", e);
+			log.error("retrievePermissionsByGroup()", e);
 			throw e;
 		}
 	}
 
-	public List<Permission> cadastraPermissaoGrupo(Group g, List<Function> list)
+	public List<Permission> saveGroupPermission(Group g, List<Function> list)
 			throws Throwable {
 		try {
 			return system.saveGroupPermission(g, list);
@@ -287,7 +287,7 @@ public class Facade {
 		}
 	}
 
-	public List<Function> consultarFuncaoPorMenu(Integer menuId) throws Throwable {
+	public List<Function> getFunctionByMenu(Integer menuId) throws Throwable {
 		try {
 			return system.consultFunctionByMenu(menuId);
 		} catch (Throwable e) {
@@ -323,17 +323,17 @@ public class Facade {
 		}
 	}
 
-	public List<UserGroup> consultarUsuarioPorGrupo(Integer groupId)
+	public List<UserGroup> getUserByGroup(Integer groupId)
 			throws Throwable {
 		try {
-			return system.consultUserByGroup(groupId);
+			return system.getUserByGroup(groupId);
 		} catch (Throwable e) {
 			log.error("consultUserByGroup()", e);
 			throw e;
 		}
 	}
 
-	public List<UserGroup> getGrupoUsuarioPorUsuario(Integer userId)
+	public List<UserGroup> getUserGroupByUser(Integer userId)
 			throws Throwable {
 		try {
 			return system.getUserGroupByUser(userId);
@@ -352,7 +352,7 @@ public class Facade {
 		}
 	}
 
-	public String gerarSenha(int digitsNumber, String userName)
+	public String generatePassword(int digitsNumber, String userName)
 			throws Throwable {
 		try {
 			return PasswordGenerator.generatePassword(digitsNumber, userName);
@@ -362,7 +362,7 @@ public class Facade {
 		}
 	}
 
-	public User alterarSenha(User user, String newPassword)
+	public User changePassword(User user, String newPassword)
 			throws Throwable {
 		try {
 			return system.changePassword(user, newPassword);
@@ -386,7 +386,7 @@ public class Facade {
 		}
 	}
 
-	public List<Stage> getCurrentPeriod() throws Throwable {
+	public List<Stage> getPeriodoAtual() throws Throwable {
 		try {
 			return system.getCurrentPeriod();
 		} catch (Throwable e) {
@@ -400,7 +400,7 @@ public class Facade {
 	 * **********************************************************************
 	 */
 
-	public Assignment saveAssignment(Assignment assignment) throws Throwable {
+	public Assignment cadastrarRoteiro(Assignment assignment) throws Throwable {
 		try {
 			return system.saveAssignment(assignment);
 		} catch (Throwable e) {
@@ -409,7 +409,7 @@ public class Facade {
 		}
 	}
 
-	public Assignment updateAssignment(Assignment assignment) throws Throwable {
+	public Assignment editarRoteiro(Assignment assignment) throws Throwable {
 		try {
 			return system.updateAssignment(assignment);
 		} catch (Throwable e) {
@@ -427,7 +427,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assignment> listAssignments() throws Throwable {
+	public List<Assignment> listarRoteiros() throws Throwable {
 		try {
 			return system.listAssignments();
 		} catch (Throwable e) {
@@ -445,7 +445,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assignment> getRoteirosLiberados() throws Throwable {
+	public List<Assignment> getReleasedAssignments() throws Throwable {
 		try {
 			return system.getReleasedAssignments();
 		} catch (Throwable e) {
@@ -459,7 +459,7 @@ public class Facade {
 	 * **********************************************************************
 	 */
 
-	public TeamHasUserHasAssignment getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro(
+	public TeamHasUserHasAssignment getTeamHasUserHasAssignmentByUserAndAssignment(
 			Integer userId, Integer assignmentId) throws Throwable {
 		try {
 			return system.getTeamHasUserHasAssignmentByUserAndAssignment(
@@ -556,7 +556,7 @@ public class Facade {
 		}
 	}
 
-	public String getNomeArquivoInterface(Assignment assignment) throws Throwable {
+	public String getInterfaceFileName(Assignment assignment) throws Throwable {
 		try {
 			return system.getInterfaceFileName(assignment);
 		} catch (Throwable e) {
@@ -566,7 +566,7 @@ public class Facade {
 		
 	}
 
-	public String getNomeArquivoTestes(Assignment assignment) throws Throwable {
+	public String getTestsFileName(Assignment assignment) throws Throwable {
 		try {
 			return system.getTestsFileName(assignment);
 		} catch (Throwable e) {
@@ -638,7 +638,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assessment> getAssessmentByAssignmentAndCorrector(Assignment assignment, 
+	public List<Assessment> getAvaliacaoPorRoteiroEquipePorCorretor(Assignment assignment, 
 			Integer us) throws Throwable {
 		try {
 			return system.getAssessmentByAssignmentAndCorrector(assignment, us);
@@ -686,7 +686,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assignment> getClosedAssignments() throws Throwable {
+	public List<Assignment> getRoteirosFechados() throws Throwable {
 		try {
 			return system.getClosedAssignments();
 		} catch (Throwable e) {
@@ -701,7 +701,7 @@ public class Facade {
 	 * informacoes)
 	 * 
 	 */
-	public List<User> getCorrectors() throws Throwable {
+	public List<User> getCorretores() throws Throwable {
 		try {
 			return system.getCorrectors();
 		} catch (Throwable e) {
@@ -710,7 +710,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assessment> getAssignmentWithOutCorrectorsAssessments(int assignmentId) throws Throwable {
+	public List<Assessment> getAvaliacoesDoRoteiroSemCorretor(int assignmentId) throws Throwable {
 		try {
 			return system.getAssignmentWithOutCorrectorsAssessments(assignmentId);
 		} catch (Throwable e) {
@@ -719,7 +719,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assessment> getAssignmentWithCorrectorsAssessments(int assignmentId, int correctorId) throws Throwable {
+	public List<Assessment> getAvaliacoesDoRoteiroComCorretor(int assignmentId, int correctorId) throws Throwable {
 		try {
 			return system.getAssignmentWithCorrectorsAssessments(assignmentId, correctorId);
 		} catch (Throwable e) {
@@ -737,7 +737,7 @@ public class Facade {
 		}
 	}
 	
-	public Assessment allocateCorrector(Assessment assessment) throws Throwable{
+	public Assessment alocaCorretor(Assessment assessment) throws Throwable{
 		try{
 			return system.allocateCorrector(assessment);
 		} catch (Throwable e) {
@@ -774,7 +774,7 @@ public class Facade {
 		}
 	}
 	
-	public List<Assessment> getAvaliacoesPorEquipeERoteiro(Integer teamId, Integer assignmentId) throws Throwable{
+	public List<Assessment> getAssessmentsByTeamAndAssignment(Integer teamId, Integer assignmentId) throws Throwable{
 		try{
 			return system.getAssessmentByTeamAndAssignment(teamId, assignmentId);
 		}catch (Throwable e) {

@@ -149,7 +149,7 @@ public class System {
 		return accessUserManager.listUsers();
 	}
 
-	public List<Group> listGroups() {
+	public List<Group> groupList() {
 		return accessPermissionManager.listGroups();
 	}
 
@@ -188,7 +188,7 @@ public class System {
 		return accessUserManager.listUserGroupsByGroup(groupName);
 	}
 
-	public List<Permission> consultPermissionsByGroup(Integer groupId) {
+	public List<Permission> retrievePermissionsByGroup(Integer groupId) {
 		return accessPermissionManager.consultPermissionsByGroup(groupId);
 	}
 
@@ -219,7 +219,7 @@ public class System {
 		return accessUserManager.consultUserByLogin(login);
 	}
 
-	public List<UserGroup> consultUserByGroup(Integer groupId) {
+	public List<UserGroup> getUserByGroup(Integer groupId) {
 		return accessUserManager.consultUserByGroup(groupId);
 	}
 
