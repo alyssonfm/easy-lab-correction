@@ -154,7 +154,7 @@
 	
 	<mx:Label x="10" y="21" text="Selecione o Grupo:" id="labelGroup"/>
 	<mx:Label x="10" y="70" text="Funções:" id="labelGroup0"/>
-	<comp:ComboBoxAC labelField="nome" x="142" y="20" width="472" change="getPermissionsByGroup()" id="cbGroup" enter="getPermissionsByGroup()"/>
+	<comp:ComboBoxAC labelField="name" x="142" y="20" width="472" change="getPermissionsByGroup()" id="cbGroup" enter="getPermissionsByGroup()"/>
 	<mx:DataGrid x="10" y="98" width="604" height="249" id="dgFunctions" labelFunction="labelGridFunctions">
 		<mx:columns>
 			<mx:DataGridColumn headerText="P" width="30">
