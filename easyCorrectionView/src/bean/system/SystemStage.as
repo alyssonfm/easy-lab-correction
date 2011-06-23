@@ -6,7 +6,7 @@ package bean.system{
 	[Bindable]
 	[RemoteClass(alias="br.edu.ufcg.easyLabCorrection.pojo.system.Stage")]
 
-	public class Stage{
+	public class SystemStage{
 		
 		public var id:int;
 		public var semester:String;
