@@ -124,6 +124,7 @@ public class System {
 
 	public UserGroup saveUser(UserGroup userGroup)
 			throws EasyCorrectionException {
+		userGroup.getUser().setPeriod(getCurrentStage().get(0));
 		return accessUserManager.saveUser(userGroup);
 	}
 
