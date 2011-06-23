@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.managers.AccessPermissionManager;
-import br.edu.ufcg.easyLabCorrection.pojo.permission.Function;
+import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
@@ -28,7 +28,7 @@ public class AccessPermissionManagerTest {
 	
 	private Menu mOK;
 	private Group gOK;
-	private Function fOK;
+	private MenuFunction fOK;
 	private Permission pOK; 	
 
 	public AccessPermissionManagerTest() {
@@ -36,7 +36,7 @@ public class AccessPermissionManagerTest {
 		access = new AccessPermissionManager();
 		
 		mOK = new Menu(1, "OK", "MENUOK");
-		fOK = new Function(1, mOK, "OK", "FunctionOK");
+		fOK = new MenuFunction(1, mOK, "OK", "FunctionOK");
 		gOK = new Group(1, "OK");
 		pOK = new Permission(1, gOK, fOK);
 	}
@@ -189,9 +189,9 @@ public class AccessPermissionManagerTest {
 	@Test
 	public void functionCRUDBadParametersTest() {
 	
-		Function fNULL1 = access.getFunction(1); // NULL
-		List<Function> list1 = access.listFunctions(); // EMPTY
-		List<Function> list3 = access.consultFunctionsByMenu(1); // EMPTY
+		MenuFunction fNULL1 = access.getFunction(1); // NULL
+		List<MenuFunction> list1 = access.listFunctions(); // EMPTY
+		List<MenuFunction> list3 = access.consultFunctionsByMenu(1); // EMPTY
 		
 		Assert.assertNull(fNULL1);
 		Assert.assertNotSame(list1.size(), 0);
@@ -201,12 +201,12 @@ public class AccessPermissionManagerTest {
 		 * CREATE
 		 */
 		
-		Function f1 = new Function(-1, mOK, "9090", "klkl");  
-		Function f2 = new Function(1, null, "9090", "klkl");
-		Function f3 = new Function(1, mOK, null, "klkl");
-		Function f4 = new Function(1, mOK, "", "klkl");
-		Function f5 = new Function(1, mOK, "90909", null);
-		Function f6 = new Function(1, mOK, "90909", "");
+		MenuFunction f1 = new MenuFunction(-1, mOK, "9090", "klkl");  
+		MenuFunction f2 = new MenuFunction(1, null, "9090", "klkl");
+		MenuFunction f3 = new MenuFunction(1, mOK, null, "klkl");
+		MenuFunction f4 = new MenuFunction(1, mOK, "", "klkl");
+		MenuFunction f5 = new MenuFunction(1, mOK, "90909", null);
+		MenuFunction f6 = new MenuFunction(1, mOK, "90909", "");
 		
 		try {
 			access.saveFunction(f1);
@@ -251,10 +251,10 @@ public class AccessPermissionManagerTest {
 		 * RETRIEVE
 		 */
 		
-		Function fNULL2 = access.getFunction(-1); // NULL
-		List<Function> list4 = access.listFunctions(); // NOT EMPTY
-		List<Function> list5 = access.consultFunctionsByMenu(-1); // EMPTY
-		List<Function> list6 = access.consultFunctionsByMenu(2); // EMPTY		
+		MenuFunction fNULL2 = access.getFunction(-1); // NULL
+		List<MenuFunction> list4 = access.listFunctions(); // NOT EMPTY
+		List<MenuFunction> list5 = access.consultFunctionsByMenu(-1); // EMPTY
+		List<MenuFunction> list6 = access.consultFunctionsByMenu(2); // EMPTY		
 
 		Assert.assertNull(fNULL2);
 		Assert.assertNotSame(list4.size(), 0);
@@ -265,12 +265,12 @@ public class AccessPermissionManagerTest {
 		 * UPDATE 
 		 */
 		
-		Function f11 = new Function(-1, mOK, "9090", "klkl");  
-		Function f12 = new Function(1, null, "9090", "klkl");
-		Function f13 = new Function(1, mOK, null, "klkl");
-		Function f14 = new Function(1, mOK, "", "klkl");
-		Function f15 = new Function(1, mOK, "90909", null);
-		Function f16 = new Function(1, mOK, "90909", "");
+		MenuFunction f11 = new MenuFunction(-1, mOK, "9090", "klkl");  
+		MenuFunction f12 = new MenuFunction(1, null, "9090", "klkl");
+		MenuFunction f13 = new MenuFunction(1, mOK, null, "klkl");
+		MenuFunction f14 = new MenuFunction(1, mOK, "", "klkl");
+		MenuFunction f15 = new MenuFunction(1, mOK, "90909", null);
+		MenuFunction f16 = new MenuFunction(1, mOK, "90909", "");
 		
 		try {
 			access.saveFunction(f11);
@@ -466,16 +466,16 @@ public class AccessPermissionManagerTest {
 		Permission p4 = new Permission(1, new Group(-1, "OK"), fOK);
 		Permission p5 = new Permission(1, new Group(1, null), fOK);
 		Permission p6 = new Permission(1, new Group(1, ""), fOK);
-		Permission p7 = new Permission(1, gOK, new Function(-1, mOK, "OK", "FunctionOK"));
-		Permission p8 = new Permission(1, gOK, new Function(1, new Menu(-1, "OK", "MENUOK"), "OK", "FunctionOK"));
-		Permission p9 = new Permission(1, gOK, new Function(1, new Menu(1, null, "MENUOK"), "OK", "FunctionOK"));
-		Permission p10 = new Permission(1, gOK, new Function(1, new Menu(-1, "", "MENUOK"), "OK", "FunctionOK"));
-		Permission p11 = new Permission(1, gOK, new Function(1, new Menu(-1, "OK", null), "OK", "FunctionOK"));
-		Permission p12 = new Permission(1, gOK, new Function(1, new Menu(-1, "OK", ""), "OK", "FunctionOK"));
-		Permission p13 = new Permission(1, gOK, new Function(1, new Menu(-1, "OK", ""), null, "FunctionOK"));
-		Permission p14 = new Permission(1, gOK, new Function(1, new Menu(-1, "OK", ""), "", "FunctionOK"));
-		Permission p15 = new Permission(1, gOK, new Function(1, new Menu(-1, "OK", ""), "OK", null));
-		Permission p16 = new Permission(1, gOK, new Function(1, new Menu(-1, "OK", ""), "OK", ""));
+		Permission p7 = new Permission(1, gOK, new MenuFunction(-1, mOK, "OK", "FunctionOK"));
+		Permission p8 = new Permission(1, gOK, new MenuFunction(1, new Menu(-1, "OK", "MENUOK"), "OK", "FunctionOK"));
+		Permission p9 = new Permission(1, gOK, new MenuFunction(1, new Menu(1, null, "MENUOK"), "OK", "FunctionOK"));
+		Permission p10 = new Permission(1, gOK, new MenuFunction(1, new Menu(-1, "", "MENUOK"), "OK", "FunctionOK"));
+		Permission p11 = new Permission(1, gOK, new MenuFunction(1, new Menu(-1, "OK", null), "OK", "FunctionOK"));
+		Permission p12 = new Permission(1, gOK, new MenuFunction(1, new Menu(-1, "OK", ""), "OK", "FunctionOK"));
+		Permission p13 = new Permission(1, gOK, new MenuFunction(1, new Menu(-1, "OK", ""), null, "FunctionOK"));
+		Permission p14 = new Permission(1, gOK, new MenuFunction(1, new Menu(-1, "OK", ""), "", "FunctionOK"));
+		Permission p15 = new Permission(1, gOK, new MenuFunction(1, new Menu(-1, "OK", ""), "OK", null));
+		Permission p16 = new Permission(1, gOK, new MenuFunction(1, new Menu(-1, "OK", ""), "OK", ""));
 		
 		ArrayList<Permission> list = new ArrayList<Permission>();
 		list.add(p1);

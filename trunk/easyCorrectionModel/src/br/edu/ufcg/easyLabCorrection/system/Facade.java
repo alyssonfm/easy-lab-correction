@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
-import br.edu.ufcg.easyLabCorrection.pojo.permission.Function;
+import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
@@ -38,7 +38,7 @@ public class Facade {
 	 * 
 	 * @throws Throwable
 	 */
-	public Function getFunction(Integer id) throws Throwable {
+	public MenuFunction getFunction(Integer id) throws Throwable {
 		try {
 			return system.getFunction(id);
 		} catch (Throwable e) {
@@ -101,7 +101,7 @@ public class Facade {
 		}
 	}
 
-	public Function saveFunction(Function function) throws Throwable {
+	public MenuFunction saveFunction(MenuFunction function) throws Throwable {
 		try {
 			return system.saveFunction(function);
 		} catch (Throwable e) {
@@ -158,7 +158,7 @@ public class Facade {
 		}
 	}
 
-	public List<Function> validateUser(User user) throws Throwable {
+	public List<MenuFunction> validateUser(User user) throws Throwable {
 		try {
 			return system.validateUser(user);
 		} catch (Throwable e) {
@@ -185,7 +185,7 @@ public class Facade {
 		}
 	}
 
-	public List<Function> functionList() throws Throwable {
+	public List<MenuFunction> functionList() throws Throwable {
 		try {
 			return system.listFunctions();
 		} catch (Throwable e) {
@@ -212,7 +212,7 @@ public class Facade {
 		}
 	}
 
-	public void removeFunction(Function function) throws Throwable {
+	public void removeFunction(MenuFunction function) throws Throwable {
 		try {
 			system.deleteFunction(function);
 		} catch (Throwable e) {
@@ -268,7 +268,7 @@ public class Facade {
 		}
 	}
 
-	public List<Permission> saveGroupPermission(Group g, List<Function> list)
+	public List<Permission> saveGroupPermission(Group g, List<MenuFunction> list)
 			throws Throwable {
 		try {
 			return system.saveGroupPermission(g, list);
@@ -287,7 +287,7 @@ public class Facade {
 		}
 	}
 
-	public List<Function> getFunctionByMenu(Integer menuId) throws Throwable {
+	public List<MenuFunction> getFunctionByMenu(Integer menuId) throws Throwable {
 		try {
 			return system.consultFunctionByMenu(menuId);
 		} catch (Throwable e) {

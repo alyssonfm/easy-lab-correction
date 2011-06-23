@@ -29,7 +29,7 @@ public class UserHibernateDAO extends
 	}
 
 	public List<User> findById(Integer id) {
-		return findByCriteria(Restrictions.eq("useId", id));
+		return findByCriteria(Restrictions.eq("userId", id));
 	}
 	
 	public List<User> findByLabel(String name) {

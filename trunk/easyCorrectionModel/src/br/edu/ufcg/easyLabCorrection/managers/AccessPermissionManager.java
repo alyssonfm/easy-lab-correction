@@ -7,7 +7,7 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.DuplicatedValueException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
-import br.edu.ufcg.easyLabCorrection.pojo.permission.Function;
+import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
@@ -156,13 +156,13 @@ public class AccessPermissionManager extends Manager {
 	 * 
 	 * @return menu The new function stored in the system.<br>
 	 */
-	public Function saveFunction(Function function)
+	public MenuFunction saveFunction(MenuFunction function)
 			throws EasyCorrectionException {
 		if (!easyCorrectionUtil.isNull(function)) {
 			if (easyCorrectionUtil.isNull(function.getFunctionId())
 					|| function.getFunctionId().equals(new Integer(0))) {
 				// Verifica se o rótulo ou o nome já existe
-				Function f = consultFunctionByNameAndLabel(function.getName(),
+				MenuFunction f = consultFunctionByNameAndLabel(function.getName(),
 						function.getLabel());
 				// Se o rótulo/nome não existe e e o id é null
 				if (easyCorrectionUtil.isNull(f)) {
@@ -180,22 +180,22 @@ public class AccessPermissionManager extends Manager {
 		return function;
 	}
 
-	public Function updateFunction(Function function)
+	public MenuFunction updateFunction(MenuFunction function)
 			throws EasyCorrectionException {
 
 		if (!easyCorrectionUtil.isNull(function)) {
 			if (!(easyCorrectionUtil.isNull(function.getFunctionId()) || function
 					.getFunctionId().equals(new Integer(0)))) {
-				Function fun = consultFunctionByNameAndLabel(
+				MenuFunction fun = consultFunctionByNameAndLabel(
 						function.getName(), function.getLabel());
 				if (easyCorrectionUtil.isNull(fun)) {
 					fun = getFunction(function.getFunctionId());
-					fun = (Function) SwapperAtributosReflect.swapObject(fun,
-							function, Function.class);
+					fun = (MenuFunction) SwapperAtributosReflect.swapObject(fun,
+							function, MenuFunction.class);
 					DAOFactory.DEFAULT.buildFunctionDAO().update(fun);
 				} else if (function.getFunctionId().equals(fun.getFunctionId())) {
-					fun = (Function) SwapperAtributosReflect.swapObject(fun,
-							function, Function.class);
+					fun = (MenuFunction) SwapperAtributosReflect.swapObject(fun,
+							function, MenuFunction.class);
 					DAOFactory.DEFAULT.buildFunctionDAO().update(fun);
 				} else {
 					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
@@ -213,8 +213,8 @@ public class AccessPermissionManager extends Manager {
 	 *            The identifier used for search a function in the system.<br>
 	 * @return The function with the identifier passed as parameter.<br>
 	 */
-	public Function getFunction(Integer id) {
-		List<Function> functions = DAOFactory.DEFAULT.buildFunctionDAO()
+	public MenuFunction getFunction(Integer id) {
+		List<MenuFunction> functions = DAOFactory.DEFAULT.buildFunctionDAO()
 				.findById(id);
 		if (functions.isEmpty()) {
 			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
@@ -233,8 +233,8 @@ public class AccessPermissionManager extends Manager {
 	 * @return A menu if any one function system that has the same label and
 	 *         name passed as parameter, null otherwise.<br>
 	 */
-	private Function consultFunctionByNameAndLabel(String name, String label) {
-		List<Function> list = DAOFactory.DEFAULT.buildFunctionDAO()
+	private MenuFunction consultFunctionByNameAndLabel(String name, String label) {
+		List<MenuFunction> list = DAOFactory.DEFAULT.buildFunctionDAO()
 				.findByNameAndLabel(name, label);
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -252,7 +252,7 @@ public class AccessPermissionManager extends Manager {
 	 *            The function it is verifying the existence.<br>
 	 * @return A boolean value: true - if exist; false - otherwise.<br>
 	 */
-	private boolean containsFunction(List<Permission> list, Function function) {
+	private boolean containsFunction(List<Permission> list, MenuFunction function) {
 		for (Permission p : list) {
 			if (p.getFunction().getFunctionId()
 					.equals(function.getFunctionId())) {
@@ -267,7 +267,7 @@ public class AccessPermissionManager extends Manager {
 	 * 
 	 * @return All functions of the system.<br>
 	 */
-	public List<Function> listFunctions() {
+	public List<MenuFunction> listFunctions() {
 		return DAOFactory.DEFAULT.buildFunctionDAO().findAll();
 	}
 
@@ -277,11 +277,11 @@ public class AccessPermissionManager extends Manager {
 	 * @param function
 	 *            The function to be removed.<br>
 	 */
-	public void deleteFunction(Function function)
+	public void deleteFunction(MenuFunction function)
 			throws EasyCorrectionException {
-		Function f = getFunction(function.getFunctionId());
-		f = (Function) SwapperAtributosReflect.swapObject(f, function,
-				Function.class);
+		MenuFunction f = getFunction(function.getFunctionId());
+		f = (MenuFunction) SwapperAtributosReflect.swapObject(f, function,
+				MenuFunction.class);
 		DAOFactory.DEFAULT.buildFunctionDAO().delete(f);
 	}
 
@@ -294,7 +294,7 @@ public class AccessPermissionManager extends Manager {
 	 *            system.<br>
 	 * @return The function list with the identifier passed as parameter.<br>
 	 */
-	public List<Function> consultFunctionsByMenu(Integer menuId) {
+	public List<MenuFunction> consultFunctionsByMenu(Integer menuId) {
 		return DAOFactory.DEFAULT.buildFunctionDAO().findByMenu(menuId);
 	}
 
@@ -489,12 +489,12 @@ public class AccessPermissionManager extends Manager {
 	 *            The list of permissions that saved.<br>
 	 * @return The list of permissions save for a group.<br>
 	 */
-	public List<Permission> saveGroupPermission(Group g, List<Function> list) {
+	public List<Permission> saveGroupPermission(Group g, List<MenuFunction> list) {
 		List<Permission> permissaoDoGrupoBanco = DAOFactory.DEFAULT
 				.buildPermissionDAO().findByGroupId(g.getGroupId());
 		List<Permission> newList = new LinkedList<Permission>();
 		// criando a lista de Permissao
-		for (Function f : list) {
+		for (MenuFunction f : list) {
 			Permission p = new Permission();
 			p.setFunction(f);
 			p.setGroup(g);
@@ -553,8 +553,8 @@ public class AccessPermissionManager extends Manager {
 	 * @return The list of permissions of user whose identifier is passed as
 	 *         parameter.<br>
 	 */
-	public List<Function> verifyPermissions(Integer userId) {
-		List<Function> functionsList = new LinkedList<Function>();
+	public List<MenuFunction> verifyPermissions(Integer userId) {
+		List<MenuFunction> functionsList = new LinkedList<MenuFunction>();
 		List<UserGroup> GUlist = DAOFactory.DEFAULT.buildUserGroupDAO()
 				.findByUserId(userId);
 		if (!GUlist.isEmpty()) {
@@ -597,8 +597,8 @@ public class AccessPermissionManager extends Manager {
 	 *            system.<br>
 	 * @return A boolean: true - if already, false - otherwise.<br>
 	 */
-	private boolean isFunctionRepeated(List<Function> list, Function function) {
-		for (Function f : list) {
+	private boolean isFunctionRepeated(List<MenuFunction> list, MenuFunction function) {
+		for (MenuFunction f : list) {
 			if (f.equals(function)) {
 				return true;
 			}
