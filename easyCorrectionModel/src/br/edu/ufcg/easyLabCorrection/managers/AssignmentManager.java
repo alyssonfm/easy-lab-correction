@@ -8,6 +8,7 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.AssignmentException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
+import br.edu.ufcg.easyLabCorrection.pojo.assignments.AssignmentType;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
@@ -514,6 +515,11 @@ public class AssignmentManager extends Manager {
 
 		return assignmentAttributesBasicValidations(assignment);
 
+	}
+	
+	public List<AssignmentType> listAssignmentType(){
+		
+		return DAOFactory.DEFAULT.buildAssignmentTypeDAO().findAll();
 	}
 
 	private boolean assignmentAttributesBasicValidations(Assignment assignment)
