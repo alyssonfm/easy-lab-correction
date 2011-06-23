@@ -232,28 +232,28 @@ private function PressedMenuItem(event: MenuEvent):void  {
      	ModulesController.createModule("modules/AccessControl/Permissions.swf", this, "");
      }
      if (event.item.@data == "agendaRoteiros") {
-     	ModulesController.createModule("modules/Views/SchedulingAssignment.swf", this, "");
+     	ModulesController.createModule("modules/Views/AssignmentSchedule.swf", this, "");
      }
      if (event.item.@data == "penalidades") {
      	ModulesController.createModule("modules/Views/Penalidades.swf", this, "");
      }
      if (event.item.@data == "atribuicaoDeRoteiros") {
-     	ModulesController.createModule("modules/Views/AllocateAssignment.swf", this, "");
+     	ModulesController.createModule("modules/Views/AssignmentAllocator.swf", this, "");
      }
      if (event.item.@data == "notas") {
-     	ModulesController.createModule("modules/Views/viewNotes.swf", this, "");
+     	ModulesController.createModule("modules/Views/GradeViewer.swf", this, "");
      }
      if (event.item.@data == "avaliacaoDeRoteiros") {
-     	ModulesController.createModule("modules/Views/AssignmentAssessment.swf", this, "");
+     	ModulesController.createModule("modules/Views/AssignmentCorrector.swf", this, "");
      }
      if (event.item.@data == "submissaoDeRoteiros") {
-     	ModulesController.createModule("modules/Views/SubmissionOfAssignment.swf", this, "");
+     	ModulesController.createModule("modules/Views/AssignmentSubmission.swf", this, "");
      }
      if (event.item.@data == "chat") {
      	ModulesController.createModule("modules/Views/Chat.swf", this, "");
      }
      if (event.item.@data == "criaEquipe") {
-     	ModulesController.createModule("modules/Views/CreateTeam.swf", this, "");
+     	ModulesController.createModule("modules/Views/TeamManagement.swf", this, "");
      }
      if (event.item.@data == "reinicializaBD") {
      	ModulesController.createModule("modules/Views/RebootsDatabase.swf", this, "");
