@@ -4,7 +4,7 @@
 -->
 
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
-						xmlns:les="modulos.sistema.*" 
+						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
 	width="800" height="538" creationComplete="init()" title="Agendamento de Roteiros" showCloseButton="true" close="closeWindow()" layout="absolute">
