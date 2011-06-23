@@ -244,7 +244,7 @@ private function PressedMenuItem(event: MenuEvent):void  {
      	ModulesController.createModule("modules/Views/GradeViewer.swf", this, "");
      }
      if (event.item.@data == "avaliacaoDeRoteiros") {
-     	ModulesController.createModule("modules/Views/AssignmentCorrector.swf", this, "");
+     	ModulesController.createModule("modules/Views/AssingmentCorrector.swf", this, "");
      }
      if (event.item.@data == "submissaoDeRoteiros") {
      	ModulesController.createModule("modules/Views/AssignmentSubmission.swf", this, "");
