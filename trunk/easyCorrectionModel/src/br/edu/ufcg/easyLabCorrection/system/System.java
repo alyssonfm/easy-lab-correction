@@ -534,9 +534,7 @@ public class System {
 	}
 	
 	public List<AssignmentType> listAssignmentType(){
-		
 		return assignmentManager.listAssignmentType();
-		
 	}
 
 }
