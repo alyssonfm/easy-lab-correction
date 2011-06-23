@@ -14,7 +14,7 @@
 	<destination id="easyCorrection">
 		<properties>
 			<scope>request</scope>
-			<source>br.edu.les.easyCorrection.sistema.Facade</source>
+			<source>br.edu.ufcg.easyLabCorrection.system.Facade</source>
 		</properties>
 	</destination>
 
