@@ -17,7 +17,7 @@ public class FacadeAcceptanceTestUS02{
 	}
 
 	public void reinicializaBancoDeDados(){
-		facadeSistema.reinicializaBancoDeDados();
+		facadeSistema.rebootsDataBase();
 	}
 	
 // ******************************************* Menus ******************************************
@@ -107,7 +107,7 @@ public class FacadeAcceptanceTestUS02{
 
 	//EasyAcceptOK
 	public void excluirFuncao(int idFuncao) throws Throwable {
-		facadeSistema.removeFunction(facadeSistema.getFuncao(idFuncao));
+		facadeSistema.removeFunction(facadeSistema.getFunction(idFuncao));
 	}
 
 	//EasyAcceptOK
@@ -129,7 +129,7 @@ public class FacadeAcceptanceTestUS02{
 
 	//EasyAcceptOK
 	public Function getFuncao(int idFuncao) throws Throwable {
-		return facadeSistema.getFuncao(idFuncao);
+		return facadeSistema.getFunction(idFuncao);
 	}
 	
 //******************************************* Grupos ******************************************
@@ -160,7 +160,7 @@ public class FacadeAcceptanceTestUS02{
 
 	//EasyAcceptOK
 	public void excluirGrupo(int idGrupo) throws Throwable {
-		facadeSistema.removeGroup(facadeSistema.getGrupo(idGrupo));
+		facadeSistema.removeGroup(facadeSistema.getGroup(idGrupo));
 	}
 
 	//EasyAcceptOK
@@ -182,7 +182,7 @@ public class FacadeAcceptanceTestUS02{
 
 	//EasyAcceptOK
 	public Group getGrupo(int idGrupo) throws Throwable {
-		return facadeSistema.getGrupo(idGrupo);
+		return facadeSistema.getGroup(idGrupo);
 	}
 // ******************************************* Usuarios *****************************************
 	
@@ -200,7 +200,7 @@ public class FacadeAcceptanceTestUS02{
 	//EasyAcceptOK
 	public int cadastrarUsuario(int grupoId, String nome, String login, String senha, String email) throws Throwable{
 		UserGroup usuarioAux = new UserGroup();
-		usuarioAux.setGroup(facadeSistema.getGrupo(grupoId));
+		usuarioAux.setGroup(facadeSistema.getGroup(grupoId));
 		User usu = new User(login, nome, senha, email);
 		usu.setUserId(0);
 		usuarioAux.setUser(usu);
@@ -218,7 +218,7 @@ public class FacadeAcceptanceTestUS02{
 		
 		UserGroup usuarioAux = new UserGroup();
 		usuarioAux.setUserGroupId(grupoUsuarioId);
-		usuarioAux.setGroup(facadeSistema.getGrupo(grupoId));
+		usuarioAux.setGroup(facadeSistema.getGroup(grupoId));
 		User us = facadeSistema.getUserByLogin(login);
 		us.setName(nome);
 		us.setLogin(login);
@@ -231,7 +231,7 @@ public class FacadeAcceptanceTestUS02{
 
 	//EasyAcceptOK
 	public void excluirUsuario(int idGrupoUsuario) throws Throwable {
-		facadeSistema.removeUserGroup(facadeSistema.getGrupoUsuario(idGrupoUsuario));
+		facadeSistema.removeUserGroup(facadeSistema.getUserGroup(idGrupoUsuario));
 	}
 	
 	//EasyAcceptOK
@@ -247,23 +247,23 @@ public class FacadeAcceptanceTestUS02{
 	
 	//EasyAcceptOK
 	public User getUsuario(int idUsuario) throws Throwable {
-		return facadeSistema.getUsuario(idUsuario);
+		return facadeSistema.getUser(idUsuario);
 	}
 
 	//EasyAcceptOK
 	public List<UserGroup> listarGrupoUsuarios() throws Throwable{
-		List<UserGroup> listarGrupoUsuarios = facadeSistema.listarGrupoUsuarios();
+		List<UserGroup> listarGrupoUsuarios = facadeSistema.listUserGroups();
 		return listarGrupoUsuarios;
 	}
 	
 	//EasyAcceptOK
 	public UserGroup getGrupoUsuario(int idGrupoUsuario) throws Throwable {
-		return facadeSistema.getGrupoUsuario(idGrupoUsuario);
+		return facadeSistema.getUserGroup(idGrupoUsuario);
 	}
 	
 	//EasyAcceptOK
 	public List<User> listarUsuarios() throws Throwable{
-		List<User> listarFuncoes = facadeSistema.listarUsuarios();
+		List<User> listarFuncoes = facadeSistema.listUsers();
 		return listarFuncoes;
 	}
 

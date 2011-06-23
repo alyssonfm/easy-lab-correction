@@ -215,7 +215,7 @@ public class System {
 		return accessUserManager.updateUser(user);
 	}
 
-	public User consultUserByLogin(String login) {
+	public User retrieveUserByLogin(String login) {
 		return accessUserManager.consultUserByLogin(login);
 	}
 
@@ -232,11 +232,11 @@ public class System {
 	}
 
 	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
-	public Stage getPeriod(int periodId) {
+	public Stage getStage(int periodId) {
 		return assignmentManager.getPeriod(periodId);
 	}
 
-	public List<Stage> getCurrentPeriod() {
+	public List<Stage> getCurrentStage() {
 		return assignmentManager.getCurrentPeriod();
 	}
 

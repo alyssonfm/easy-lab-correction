@@ -29,11 +29,11 @@ public class UserHibernateDAO extends
 	}
 
 	public List<User> findById(Integer id) {
-		return findByCriteria(Restrictions.eq("id", id));
+		return findByCriteria(Restrictions.eq("useId", id));
 	}
 	
 	public List<User> findByLabel(String name) {
-		return findByCriteria(Restrictions.eq("nome", name));
+		return findByCriteria(Restrictions.eq("name", name));
 	}
 	
 	public List <User> findByLogin(String login){
@@ -45,7 +45,7 @@ public class UserHibernateDAO extends
 	}
 	
 	public List<User> findByLoginAndPassword(String login, String password) {
-		SimpleExpression criteria = Restrictions.eq("senha", password);
+		SimpleExpression criteria = Restrictions.eq("password", password);
 		SimpleExpression criteria2 = Restrictions.eq("login", login);
 		return findByCriteria(criteria,criteria2);
 	}

@@ -26,8 +26,8 @@ public class TeamHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Team> findByName(String name) {
-		Query q = getSession().createQuery("from Equipe where nome = :nome");
-		q.setParameter("nome",name);
+		Query q = getSession().createQuery("from Team where name = :name");
+		q.setParameter("name", name);
 		q.setCacheable(true);
 		List <Team> list = q.list();
 		return instantiatesList(list);

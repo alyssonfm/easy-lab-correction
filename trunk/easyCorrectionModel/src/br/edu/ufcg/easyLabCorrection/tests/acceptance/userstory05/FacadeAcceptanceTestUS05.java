@@ -41,13 +41,13 @@ public class FacadeAcceptanceTestUS05 extends FacadeAcceptanceTestUS04 {
 		sub.setId(0);
 		sub.setUrl(url);
 
-		Submission resultado = facadeSistema.submeteRoteiro(sub);
+		Submission resultado = facadeSistema.submitAssignment(sub);
 		return resultado.getId();
 	}
 
 	public void excluirSubmissao(int submissaoId) throws Throwable {
 		Submission sub = getSubmissao(submissaoId);
-		facadeSistema.excluirSubmissao(sub);;
+		facadeSistema.deleteSubmission(sub);;
 	}
 
 	

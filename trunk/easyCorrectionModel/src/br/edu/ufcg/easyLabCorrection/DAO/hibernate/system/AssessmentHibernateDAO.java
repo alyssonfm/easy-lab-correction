@@ -29,8 +29,9 @@ public class AssessmentHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Assessment> findByAssignmentWithOutCorrector(int assignmentId) {
-		Query q = getSession().createQuery("from Avaliacao where corretor.idUsuario is null and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
-		q.setParameter("idRoteiro", assignmentId);
+		Query q = getSession().createQuery("from Assessment where corrector.userId is null and " +
+				"submission.teamHasUserHasAssignment.assignment.assignmentId = :assignmentId");
+		q.setParameter("assignmentId", assignmentId);
 		q.setCacheable(true);
 		List <Assessment> list = q.list();
 		instantiatesList(list);
@@ -39,10 +40,10 @@ public class AssessmentHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Assessment> findByAssignmentAndTeam(int assignmentId, int teamId) {
-		Query q = getSession().createQuery("from Avaliacao where submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro " +
-				" and submissao.equipeHasUsuarioHasRoteiro.equipe.id =:idEquipe");
-		q.setParameter("idEquipe", teamId);
-		q.setParameter("idRoteiro", assignmentId);
+		Query q = getSession().createQuery("from Assessment where submission.teamHasUserHasAssignment.assignment.assignmentId = :assignmentId " +
+				" and submission.teamHasUserHasAssignment.team.teamId =:teamId");
+		q.setParameter("teamId", teamId);
+		q.setParameter("assignmentId", assignmentId);
 		q.setCacheable(true);
 		List <Assessment> list = q.list();
 		instantiatesList(list);
@@ -51,8 +52,8 @@ public class AssessmentHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Assessment> findBySubmission(int submissionId) {
-		Query q = getSession().createQuery("from Avaliacao where submissao.id = :idSubmissao");
-		q.setParameter("idSubmissao", submissionId);
+		Query q = getSession().createQuery("from Assessment where submission.submissionId = :submissionId");
+		q.setParameter("submissionId", submissionId);
 		q.setCacheable(true);
 		List <Assessment> list = q.list();
 		instantiatesList(list);
@@ -62,9 +63,10 @@ public class AssessmentHibernateDAO extends
 
 	@SuppressWarnings("unchecked")
 	public List<Assessment> findByAssignmentWithCorrector(int assignmentId, int correctorId) {
-		Query q = getSession().createQuery("from Avaliacao where corretor.idUsuario = :idCorretor and submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
-		q.setParameter("idRoteiro", assignmentId);
-		q.setParameter("idCorretor", correctorId);
+		Query q = getSession().createQuery("from Assessment where corrector.userId = :correctorId " +
+				"and submission.teamHasUserHasAssignment.assignment.assignmentId = :assignmentId");
+		q.setParameter("assignmentId", assignmentId);
+		q.setParameter("correctorId", correctorId);
 		q.setCacheable(true);
 		List <Assessment> list = q.list();
 		instantiatesList(list);
@@ -73,11 +75,11 @@ public class AssessmentHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Assessment> findByTeamAndAssignmentByCorrector(Integer assignmentId, Integer correctorId) {
-		Query q = getSession().createQuery("from Avaliacao where submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro " +
-				"and corretor.idUsuario = :idCorretor " +
-				"GROUP BY submissao.equipeHasUsuarioHasRoteiro.equipe.id");
-		q.setParameter("idRoteiro",assignmentId);
-		q.setParameter("idCorretor",correctorId);
+		Query q = getSession().createQuery("from Assessment where submission.teamHasUserHasAssignment.assignment.assignmentId = :assignmentId " +
+				"and corrector.userId = :correctorId " +
+				"GROUP BY submission.teamHasUserHasAssignment.team.teamId");
+		q.setParameter("assignmentId",assignmentId);
+		q.setParameter("correctorId",correctorId);
 		q.setCacheable(true);
 		List <Assessment> list = q.list();
 		return instantiatesList(list);
@@ -85,8 +87,8 @@ public class AssessmentHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Assessment> findByAssignment(int assignmentId) {
-		Query q = getSession().createQuery("from Avaliacao where submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro");
-		q.setParameter("idRoteiro", assignmentId);
+		Query q = getSession().createQuery("from Assessment where submission.teamHasUserHasAssignment.assignment.assignmentId = :assignmentId");
+		q.setParameter("assignmentId", assignmentId);
 		q.setCacheable(true);
 		List <Assessment> list = q.list();
 		instantiatesList(list);
@@ -95,10 +97,10 @@ public class AssessmentHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Assessment> findByTeamAndAssignment(Integer teamId, Integer assignmentId) {
-		Query q = getSession().createQuery("from Avaliacao where submissao.equipeHasUsuarioHasRoteiro.roteiro.id = :idRoteiro" +
-				" and submissao.equipeHasUsuarioHasRoteiro.equipe.id = :idEquipe");
-		q.setParameter("idEquipe", teamId);
-		q.setParameter("idRoteiro", assignmentId);
+		Query q = getSession().createQuery("from Assessment where submission.teamHasUserHasAssignment.assignment.assignmentId = :assignmentId" +
+				" and submission.teamHasUserHasAssignment.team.teamId = :teamId");
+		q.setParameter("teamId", teamId);
+		q.setParameter("assignmentId", assignmentId);
 		q.setCacheable(true);
 		List <Assessment> list = q.list();
 		instantiatesList(list);

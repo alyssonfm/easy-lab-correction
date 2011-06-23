@@ -27,11 +27,11 @@ public class GroupHibernateDAO extends
 	}
 
 	public List<Group> findById(Integer id) {
-		return findByCriteria(Restrictions.eq("id", id));
+		return findByCriteria(Restrictions.eq("groupId", id));
 	}
 	
 	public List<Group> findByName(String name) {
-		return findByCriteria(Restrictions.eq("nome", name));
+		return findByCriteria(Restrictions.eq("name", name));
 	}
 
 	@Override
