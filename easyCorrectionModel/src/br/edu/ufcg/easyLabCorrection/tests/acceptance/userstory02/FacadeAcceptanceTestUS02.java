@@ -79,29 +79,29 @@ public class FacadeAcceptanceTestUS02{
 	
 	//EasyAcceptOK
 	public Object getAtributoFuncao(int id, String nomeAtributo) throws Throwable{
-		Function objFuncao = getFuncao(id);
+		MenuFunction objFuncao = getFuncao(id);
 		return easyCorrectionUtil.getAttribute(objFuncao, nomeAtributo, false);
 	}
 	
 	//EasyAcceptOK
 	public int cadastrarFuncao(String nomeFuncao, String rotulo, int idMenu)
 			throws Throwable{
-		Function funcaoAux = new Function();
+		MenuFunction funcaoAux = new MenuFunction();
 		funcaoAux.setName(nomeFuncao);
 		funcaoAux.setLabel(rotulo);
 		funcaoAux.setMenu(getMenu(idMenu));
-		Function n = facadeSistema.saveFunction(funcaoAux);
+		MenuFunction n = facadeSistema.saveFunction(funcaoAux);
 		return n.getFunctionId();
 	}
 	
 	//EasyAcceptOK
 	public int editarFuncao(int id, String nomeFuncao, String rotulo, int idMenu) throws Throwable {
-		Function funcaoAux = new Function();
+		MenuFunction funcaoAux = new MenuFunction();
 		funcaoAux.setFunctionId(id);
 		funcaoAux.setName(nomeFuncao);
 		funcaoAux.setLabel(rotulo);
 		funcaoAux.setMenu(getMenu(idMenu));
-		Function n = facadeSistema.saveFunction(funcaoAux);
+		MenuFunction n = facadeSistema.saveFunction(funcaoAux);
 		return n.getFunctionId();
 	}
 
@@ -111,15 +111,15 @@ public class FacadeAcceptanceTestUS02{
 	}
 
 	//EasyAcceptOK
-	public List<Function> listarFuncaos() throws Throwable{
-		List<Function> listarFuncaos = facadeSistema.functionList();
+	public List<MenuFunction> listarFuncaos() throws Throwable{
+		List<MenuFunction> listarFuncaos = facadeSistema.functionList();
 		return listarFuncaos;
 	}
 	
 	//EasyAcceptOK
 	public Object getAtributoFuncaoListaFuncoes(int id, String nomeAtributo) throws Throwable{
-		List<Function> listaFuncaos = listarFuncaos();
-		for(Function funcao: listaFuncaos){
+		List<MenuFunction> listaFuncaos = listarFuncaos();
+		for(MenuFunction funcao: listaFuncaos){
 			if(funcao.getFunctionId() == id){
 				return easyCorrectionUtil.getAttribute(funcao, nomeAtributo, false); 
 			}
@@ -128,7 +128,7 @@ public class FacadeAcceptanceTestUS02{
 	}
 
 	//EasyAcceptOK
-	public Function getFuncao(int idFuncao) throws Throwable {
+	public MenuFunction getFuncao(int idFuncao) throws Throwable {
 		return facadeSistema.getFunction(idFuncao);
 	}
 	

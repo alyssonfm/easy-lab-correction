@@ -13,7 +13,7 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.ufcg.easyLabCorrection.exceptions.ConstraintViolationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EmptyFieldException;
-import br.edu.ufcg.easyLabCorrection.pojo.permission.Function;
+import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.util.MyPersistenceLayer;
 
 /**
@@ -24,48 +24,48 @@ import br.edu.ufcg.easyLabCorrection.util.MyPersistenceLayer;
  * @see http://www.hibernate.org/328.html
  */
 public class FunctionHibernateDAO extends
-		AbstractHibernateDAO<Function, Integer>  {
+		AbstractHibernateDAO<MenuFunction, Integer>  {
 
 	public FunctionHibernateDAO(Session s) {
 		super(s);
 	}
 
-	public List<Function> findById(Integer id) {
-		List <Function> list = findByCriteria(Restrictions.eq("functionId", id));
+	public List<MenuFunction> findById(Integer id) {
+		List <MenuFunction> list = findByCriteria(Restrictions.eq("functionId", id));
 		instantiatesList(list);
 		return list;
 	}
 	
-	public List<Function> findByName(String name) {
-		List <Function> list = findByCriteria(Restrictions.eq("name", name));
+	public List<MenuFunction> findByName(String name) {
+		List <MenuFunction> list = findByCriteria(Restrictions.eq("name", name));
 		instantiatesList(list);
 		return list;
 	}
 	
 	
-	public List<Function> findByNameAndLabel(String name, String label) {
+	public List<MenuFunction> findByNameAndLabel(String name, String label) {
 		 SimpleExpression criteria1 = Restrictions.eq("name", name);
 		 SimpleExpression criteria2 = Restrictions.eq("label", label);
 		 LogicalExpression criteria = Restrictions.or(criteria1, criteria2);
-		 List <Function> list = findByCriteria(criteria);
+		 List <MenuFunction> list = findByCriteria(criteria);
 		 instantiatesList(list);
 		return list;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List <Function> findByMenu(Integer idMenu){
+	public List <MenuFunction> findByMenu(Integer idMenu){
 		Criteria crit = getSession().createCriteria(getPersistentClass());
 		crit.add(Restrictions.eq("menu.menuId", idMenu));
 		crit.addOrder(Order.desc("label"));
-		List <Function> list = crit.list();
+		List <MenuFunction> list = crit.list();
 		instantiatesList(list);
 		return list;
 	}
 	
 	@Override
-	public List<Function> instantiatesList(List<Function> list) {
+	public List<MenuFunction> instantiatesList(List<MenuFunction> list) {
 		try {
-			for (Function f : list) {
+			for (MenuFunction f : list) {
 				f = instantiatesFunction(f);
 			}	
 		} catch (EmptyFieldException e) {
@@ -77,9 +77,9 @@ public class FunctionHibernateDAO extends
 		return list;
 	}
 	
-	public static Function instantiatesFunction(Function f) throws EmptyFieldException{
+	public static MenuFunction instantiatesFunction(MenuFunction f) throws EmptyFieldException{
 		f.setMenu(MenuHibernateDAO.instantiatesMenu(f.getMenu()));
-		f = MyPersistenceLayer.deproxy(f, Function.class);
+		f = MyPersistenceLayer.deproxy(f, MenuFunction.class);
 		return f;
 	}
 

@@ -17,7 +17,7 @@ import br.edu.ufcg.easyLabCorrection.managers.TeamManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
-import br.edu.ufcg.easyLabCorrection.pojo.permission.Function;
+import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
@@ -56,7 +56,7 @@ public class System {
 		accessPermissionManager.deleteMenu(menu);
 	}
 
-	public void deleteFunction(Function function)
+	public void deleteFunction(MenuFunction function)
 			throws EasyCorrectionException {
 		accessPermissionManager.deleteFunction(function);
 	}
@@ -71,7 +71,7 @@ public class System {
 
 	/******************************************** Controle de Acesso EasyCorrection *********************************************/
 
-	public Function getFunction(Integer id) {
+	public MenuFunction getFunction(Integer id) {
 		return accessPermissionManager.getFunction(id);
 	}
 
@@ -99,7 +99,7 @@ public class System {
 		return accessUserManager.getUserByLogin(login);
 	}
 
-	public Function saveFunction(Function function)
+	public MenuFunction saveFunction(MenuFunction function)
 			throws EasyCorrectionException {
 		return accessPermissionManager.saveFunction(function);
 	}
@@ -131,7 +131,7 @@ public class System {
 		return accessPermissionManager.updateGroup(group);
 	}
 
-	public Function updateFunction(Function function)
+	public MenuFunction updateFunction(MenuFunction function)
 			throws EasyCorrectionException {
 		return accessPermissionManager.updateFunction(function);
 	}
@@ -153,7 +153,7 @@ public class System {
 		return accessPermissionManager.listGroups();
 	}
 
-	public List<Function> listFunctions() {
+	public List<MenuFunction> listFunctions() {
 		return accessPermissionManager.listFunctions();
 	}
 
@@ -161,9 +161,9 @@ public class System {
 		return accessPermissionManager.listMenus();
 	}
 
-	public List<Function> validateUser(User user) {
+	public List<MenuFunction> validateUser(User user) {
 
-		List<Function> functions = new LinkedList<Function>();
+		List<MenuFunction> functions = new LinkedList<MenuFunction>();
 
 		// Gera o md5 da senha
 		String password = MD5Generator.md5(user.getPassword());
@@ -192,7 +192,7 @@ public class System {
 		return accessPermissionManager.consultPermissionsByGroup(groupId);
 	}
 
-	public List<Permission> saveGroupPermission(Group g, List<Function> list)
+	public List<Permission> saveGroupPermission(Group g, List<MenuFunction> list)
 			throws Throwable {
 		return accessPermissionManager.saveGroupPermission(g, list);
 	}
@@ -201,7 +201,7 @@ public class System {
 		return accessPermissionManager.listOrderedMenus();
 	}
 
-	public List<Function> consultFunctionByMenu(Integer idMenu) {
+	public List<MenuFunction> consultFunctionByMenu(Integer idMenu) {
 		return accessPermissionManager.consultFunctionsByMenu(idMenu);
 	}
 
