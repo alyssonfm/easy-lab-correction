@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modules.System.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+	width="800" height="450" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="closeWindow()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import bean.Utility.Constant;
+				import bean.Utility.Util;
+				import bean.assessments.Assessment;
+				import bean.assignments.Submission;
+				import bean.team.TeamHasUserHasAssignment;
+				import bean.Utility.CastEntities;
+				import bean.assignments.Assignment;
+				import mx.collections.ArrayCollection;
+				import mx.utils.ArrayUtil;
+				import events.ClosePopupEvent;
+				import mx.utils.StringUtil;
+				import Scripts.ModulesController;
+				import mx.binding.utils.BindingUtils;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+				import com.flexspy.imp.Utils;
+				import mx.effects.Rotate;
+				import mx.controls.Image;
+				import flash.net.navigateToURL;
+				
+				[Bindable]
+	            [Embed(source="../../image/atencao.gif")]
+	            public var attention:Class;
+	
+	            [Bindable]
+	            [Embed(source="../../image/sucessoCorrecao.png")]
+	            public var correctionSuccess:Class;
+				
+				
+				private const FILE_UPLOAD_URL:String = Constant.urlUploadDonwload;
+				private var fileRef:FileReference = new FileReference();
+				private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadRoteiro'));
+				private var codeNameFile: String = "";
+				
+				private var tua:TeamHasUserHasAssignment = new TeamHasUserHasAssignment();
+				private var assessment:Assessment = new Assessment();
+					            
+	            private function failure(event:FaultEvent):void {
+					var message:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							message = event.fault.faultString;
+						} else {
+							message = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						message = "Serviço indisponível, reinicie a operação.";
+					}
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
+				}
+				
+				private function closeWindow():void {
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function eventLaunches(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					var status: String = String(ModulesController.getParam());
+					var assignment: ArrayCollection = new ArrayCollection();
+					listAssignment();
+				}
+				
+				private function listAssignment():void{
+					facade.getOperation("listAssignments").send();
+				}
+				
+				private function listAssignments_result(event:ResultEvent):void{
+					comboAssignment.dataProvider = new ArrayCollection();
+					comboAssignment.selectedIndex = -1;
+					comboAssignment.dataProvider = event.result;
+					
+				}				
+				
+				private function getAssingmentTeamByAssingment():void{
+					var assig: Assignment = CastEntities.castAssignment(comboAssignment.selectedItem);
+					inputWeight.text = String(100 - assig.automaticTestsPercentage) + "%";
+					var userId: int = SharedObject.getLocal("sistema", "/").data.usuarioId;
+					facade.getOperation("getAssessmentByAssignmentAndCorrector").send(assig, userId);
+				}
+				
+				private function getAssessmentByAssignmentAndCorrector_result(event:ResultEvent):void{
+					teamList.dataProvider = new ArrayCollection(); 
+					teamList.dataProvider = event.result;
+				}
+				
+				private function labelSelectionTeams(item: *): String{
+					return item.submission.teamHasUserHasAssignment.team.name;
+				}
+				
+				private function selectTeam():void{
+					assessment = CastEntities.castAssessment(teamList.selectedItem);
+					tua = assessment.submission.teamHasUserHasAssignment;
+					facade.getOperation("getTeamHasUserHasAssignmentByTeamAndAssignment").send(tua.team.id, tua.assignment.id);
+				}
+				
+				private function getTeamHasUserHasAssignmentByTeamAndAssignment_result(event:ResultEvent):void{
+					membersList.dataProvider = new ArrayCollection(); 
+					membersList.dataProvider = event.result;
+					try{
+						var grade: Number = assessment.correctionGrade;
+						grade = (grade / (100 - assessment.submission.teamHasUserHasAssignment.assignment.automaticTestsPercentage)) * 100;
+						if(grade == 10){
+							inputGrade.text = String(grade);
+						}else{
+							inputGrade.text = "0" + String(grade);
+						}
+					}
+					catch(e: Error){
+						inputGrade.text = "0000";
+					}
+					facade.getOperation("getSourceFileName").send(assessment.submission);
+					
+				}
+					
+				private function selecaoLabelIntegrantes(item: *): String{
+					return item.usuario.nome;
+				}
+				
+				private function getSourceFileName_result(event:ResultEvent):void{
+					codeNameFile = String(event.result);
+					downloadImplementation.enabled = true;
+					buttonSave.enabled = true;
+				}
+				
+				private function codeDownload():void{
+					try{
+						var variables:URLVariables = new URLVariables();
+						variables.fileName = assessment.submission.url + codeNameFile;
+						request.data = variables;
+						fileRef.download(request, codeNameFile);		
+					}
+					catch(e: Error){
+						var message:String = "Selecione Uma Equipe.";
+						ModulesController.createModule("modules/System/MenssageStatus.swf", this, new Array(true, message));
+					}
+				}
+				
+				private function saveGradeCorrector():void{
+					if (Util.formatsTextValueToNumber2(inputGrade.fullText) <= 10){
+						assessment.correctionGrade = Util.formatsTextValueToNumber2(inputGrade.fullText);
+						assessment.corrected = true;
+						facade.getOperation("saveAssessment").send(assessment);
+					}
+					else{
+						var message:String = "A nota deve ser menor ou igual a 10.";
+						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+					}
+				}
+				
+				private function saveAssessment_result(event:ResultEvent):void{
+					var message:String = "Equipe Avaliada Com Sucesso.";
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(false, message));
+					getAssingmentTeamByAssingment();	
+				}
+				
+				private function defIcone(item:Object):Class {
+	                var iconClass:Class;
+	                if (item.corrected) {
+	                    iconClass = correctionSuccess;
+	                } else {
+	                    iconClass = attention;
+	                }
+	                return iconClass;
+	            }
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			<mx:method name="listAssignments" result="listAssignments_result(event)" fault="failure(event)"/>
+			<mx:method name="getTeamHasUserHasAssignmentByTeamAndAssignment" result="getTeamHasUserHasAssignmentByTeamAndAssignment_result(event)" fault="failure(event)"/>
+			<mx:method name="getAssessmentByAssignmentAndCorrector" result="getAssessmentByAssignmentAndCorrector_result(event)" fault="failure(event)"/>
+			<mx:method name="getSourceFileName" result="getSourceFileName_result(event)" fault="failure(event)"/>
+			<mx:method name="saveAssessment" result="saveAssessment_result(event)" fault="failure(event)"/>
+		</mx:RemoteObject>
+		
+		<mx:Label text="Roteiro:" fontWeight="bold"
+			textAlign="left" width="64" x="10" y="22" id="labelAssignment"/>
+		<mx:Label text="Equipes:" fontWeight="bold"
+			textAlign="left" width="72" x="10" y="72" id="labelGroups"/>
+		<mx:Label text="Integrantes: " fontWeight="bold"
+			textAlign="left" width="93.04999" x="265.95" y="72" id="labelMembers" height="20"/>
+		<comp:ComboBoxAC labelField="nome" x="72" y="21" width="698" id="comboAssignment" change="getAssingmentTeamByAssingment()"/>
+		<mx:HRule x="10" y="62" width="760" height="2"/>
+		<mx:HRule x="251" y="234" width="518" height="2"/>
+		<mx:List id="teamList" x="10" y="94" width="226" height="302" labelFunction="labelSelectionTeams" itemClick="selectTeam()" iconFunction="defIcone" fontSize="12" color="#042E8E"/>
+		<mx:List id="membersList" x="265.95" y="94" width="504.05" height="66" labelFunction="selecaoLabelIntegrantes"/>
+		<mx:VRule x="244" y="62" height="334" width="13.95"/>
+		<mx:Button x="398" y="179" label="Baixar Implementação" click="codeDownload()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="downloadImplementation" enabled="false"/>
+		<mx:Button x="398" y="329" label="Salvar Nota" click="saveGradeCorrector()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" enabled="false" id="buttonSave"/>
+		<mx:Label text="Nota:" fontWeight="bold"
+			textAlign="left" width="58" x="398" y="275" id="labelGrade" fontSize="16"/>
+		<mx:Label text="Peso:" fontWeight="bold"
+			textAlign="left" width="49" x="541" y="278" id="labelWeight"/>
+		<mx:Label fontWeight="bold" textAlign="left" width="49" x="588" y="278" id="inputWeight" height="23"/>
+		<comp:MaskedTextInput x="464" y="276" inputMask="##,##" width="69" id="inputGrade" color="#1B7A0F" text="0"/>
+		
+		
+</les:ModuleTitleWindow>
