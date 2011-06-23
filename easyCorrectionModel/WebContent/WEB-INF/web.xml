@@ -3,8 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http:/java.sun.com/dtd/web-app_2_3.dtd">
 
-    <display-name>easyCorrection@LES</display-name>
-    <description>BlazeDS Application</description>
+    <display-name>EasyLabCorrection@UFCG</display-name>
+    <description>ELC Application</description>
 
     <!-- Http Flex Session attribute and binding listener support -->
     <listener>
@@ -30,7 +30,7 @@
     	<description>Envia email para supporte</description>
     	<display-name>SendMailServlet</display-name>
 	    <servlet-name>SendMailServlet</servlet-name>
-    	<servlet-class>br.edu.les.easyCorrection.servlet.SendMailServlet</servlet-class>
+    	<servlet-class>br.edu.ufcg.easyLabCorrection.servlet.SendMailServlet</servlet-class>
 	    <load-on-startup>2</load-on-startup>
 	</servlet>
 	
@@ -38,7 +38,7 @@
     	<description></description>
     	<display-name>upload</display-name>
     	<servlet-name>Upload</servlet-name>
-    	<servlet-class>br.edu.les.easyCorrection.servlet.ServletUpload</servlet-class>
+    	<servlet-class>br.edu.ufcg.easyLabCorrection.servlet.ServletUpload</servlet-class>
     	<load-on-startup>3</load-on-startup>
   	</servlet>
 
