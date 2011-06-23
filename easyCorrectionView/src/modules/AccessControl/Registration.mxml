@@ -956,9 +956,9 @@
 			private function handleEmail(event:ResultEvent):void {
 				var type: String = "";
 				if (currentState != "teacherState"){
-					type = cbUserGroup.selectedItem.nome;
+					type = cbUserGroup.selectedItem.name;
 				}else{
-					type = cbUserGroupState.selectedItem.nome;
+					type = cbUserGroupState.selectedItem.name;
 				}
 				ModulesController.createModule("modules/System/MessageStatus.swf", this,
 					[false, type + " cadastrado com sucesso! Email já enviado."]);
