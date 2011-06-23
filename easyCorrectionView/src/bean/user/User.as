@@ -1,6 +1,6 @@
 // ActionScript file
 package bean.user {
-	import bean.system.Stage;
+	import bean.system.SystemStage;
 	
 	
 
@@ -19,6 +19,6 @@ package bean.user {
 	
 		public var email:String;
 	
-		public var period:Stage;
+		public var period:SystemStage;
 	}
 }
