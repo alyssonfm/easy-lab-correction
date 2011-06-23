@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
-						xmlns:les="modulos.sistema.*" 
+						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
 	width="800" height="592" creationComplete="init()" title="Cadastro de Roteiro" showCloseButton="true" close="closeWindow()" layout="absolute">
@@ -10,11 +10,12 @@
 				import bean.Utility.Util;
 				import bean.Utility.CastEntities;
 				import bean.assignments.Assignment;
+				import bean.system.Stage;
 				import mx.skins.halo.NumericStepperUpSkin;
 				import mx.collections.ArrayCollection;
-				import eventos.UserEvent;
-				import eventos.EventLogResponse;
-				import eventos.ClosePopupEvent;
+				import events.UserEvent;
+				import events.EventLogResponse;
+				import events.ClosePopupEvent;
 				import mx.utils.Base64Decoder;
 				import mx.controls.Image;
 				import com.adobe.serialization.json.JSON;
@@ -38,9 +39,9 @@
 				public static var edited: Boolean = false;
 				public static var save: Boolean = false; 
 				
-				private var stage:Stage = new Stage();
+				private var stg:Stage = new Stage();
 				private var assignment:Assignment = new Assignment();
-				private var status:*;
+				private var stat:*;
 				private var doUpload: Boolean = false;
 				private var isCreate: Boolean = false;
 				private var urlTests: String = "";
@@ -80,11 +81,11 @@
 				private function init():void {
 					
 					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
-					status = ModulesController.getParam();
+					stat = ModulesController.getParam();
 					dfMaximumDate.selectedDate = new Date(new Date().getTime()+(7*millisecondsPerDay));
 					dfDiscussionDate.selectedDate = new Date(new Date().getTime()+(21*millisecondsPerDay));
 					getCurrentStage();
-					if(status != null){
+					if(stat != null){
 						getAssignment();
 						updateAssignmentButton.visible = true;
 						createAssignmentButton.visible = false;
@@ -96,7 +97,7 @@
 				
 				private function getAssignment():void{
 					assignment = new Assignment();
-					assignment = CastEntities.castAssignment(status);
+					assignment = CastEntities.castAssignment(stat);
 					inputDescription.text = assignment.description;
 
 					var discussionDate: Date = assignment.discussionDate as Date;
@@ -105,124 +106,124 @@
 					dfDiscussionDate.selectedDate = discussionDate;
 					dfDiscussionDate.text = Util.formatsDate(assignment.discussionDate);
 					
-					var horarioLimite: Date = assignment.dataFinalEntrega as Date;
-					inputHora.text = Util.organizaUnidadeTempo(String(horarioLimite.getHours()));
-					inputMinuto.text = Util.organizaUnidadeTempo(String(horarioLimite.getMinutes()));
-					dfMaximumDate.selectedDate = horarioLimite;
-					dfMaximumDate.text = Util.formataData(assignment.dataFinalEntrega);
+					var timeLimit: Date = assignment.deliveryDate as Date;
+					inputHour.text = Util.unitOrganizesTime(String(timeLimit.getHours()));
+					inputMinute.text = Util.unitOrganizesTime(String(timeLimit.getMinutes()));
+					dfMaximumDate.selectedDate = timeLimit;
+					dfMaximumDate.text = Util.formatsDate(assignment.deliveryDate);
 					
-					var horarioLiberacao: Date = assignment.dataLiberacao as Date;
-					inputHoraLiberacao.text = Util.organizaUnidadeTempo(String(horarioLiberacao.getHours()));
-					inputMinutoLiberacao.text = Util.organizaUnidadeTempo(String(horarioLiberacao.getMinutes()));
-					dfDataLiberacao.selectedDate = horarioLiberacao;
-					dfDataLiberacao.text = Util.formataData(assignment.dataLiberacao);
+					var releaseTime: Date = assignment.releaseDate as Date;
+					inputReleaseTime.text = Util.unitOrganizesTime(String(releaseTime.getHours()));
+					inputMinuteRelease.text = Util.unitOrganizesTime(String(releaseTime.getMinutes()));
+					dfReleaseDate.selectedDate = releaseTime;
+					dfReleaseDate.text = Util.formatsDate(assignment.releaseDate);
 					
-					inputDescription.text = assignment.descricao;
-					caminhoInterface.text = assignment.diretorioInterface;
-					caminhoTestes.text = assignment.diretorioTestes;
-					inputTitulo.text = assignment.nome;
-					inputNumeroMaxEnvios.text = String(assignment.numeroMaximoEnvios);
-					inputMaximoEquipe.text = String(assignment.numeroMaximoParticipantes);
-					inputPenalidade.text = String(assignment.penalidadeDiasAtraso);
-					inputPorcentagem.text = String(assignment.porcentagemTestesAutomaticos);
-					inputTempoLimite.text = String(assignment.tempoLimiteTestes);
+					inputDescription.text = assignment.description;
+					pathInterface.text = assignment.interfaceDirectory;
+					pathTests.text = assignment.testsDirectory;
+					inputTitle.text = assignment.name;
+					inputMaxNumberSent.text = String(assignment.sendMaxNumber);
+					inputMaxTeam.text = String(assignment.participantsMaxNumber);
+					inputPenalty.text = String(assignment.penaltyPerDaysLate);
+					inputPercentage.text = String(assignment.automaticTestsPercentage);
+					inputTimeout.text = String(assignment.testTimeLimit);
 				}
 				
-				private function escolheArquivoTestes(): void{
+				private function chooseFileTests(): void{
 					fileRefTests = new FileReference();
-			   	 	fileRefTests.addEventListener(Event.SELECT, arquivoSelecionadoTestes);
-			   	 	fileRefTests.addEventListener(Event.COMPLETE, envioCompletoTestes);
-			   	 	fileRefTests.addEventListener(IOErrorEvent.IO_ERROR, erroEnvioTestes);
+			   	 	fileRefTests.addEventListener(Event.SELECT, selectedFileTests);
+			   	 	fileRefTests.addEventListener(Event.COMPLETE, fullSendingTests);
+			   	 	fileRefTests.addEventListener(IOErrorEvent.IO_ERROR, sendErrorTests);
 			    	fileRefTests.browse(new Array(new FileFilter("Testes (*.zip)","*.zip")));
 				}
 				
-				public function erroEnvioTestes(evt:Event):void {
+				public function sendErrorTests(evt:Event):void {
 			       	var param:Array = new Array(true, "Ocorreu um erro de transmissão. O arquivo(s) de teste não foi(foram) enviado(s)." +
 														"\n\nTente novamente! Caso este erro persista..." + 
 														"\n\nVerifique se sua conexão com a internet está ativada.");
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 				}
 				
-				public function arquivoSelecionadoTestes(evt:Event):void {
+				public function selectedFileTests(evt:Event):void {
 			       	requestTests = new URLRequest(FILE_UPLOAD_URL);
-			       	caminhoTestes.text = fileRefTests.name;
+			       	pathTests.text = fileRefTests.name;
 				}
 				
-				public function envioCompletoTestes(evt:Event):void {
+				public function fullSendingTests(evt:Event):void {
 					requestTests = new URLRequest(FILE_UPLOAD_URL);
 					var variables:URLVariables = new URLVariables();
 					variables.url = urlInterface;
-					variables.nomeArquivo = caminhoInterface.text;
+					variables.nomeArquivo = pathInterface.text;
 					requestInterface.data = variables;
 					fileRefInterface.upload(requestInterface);
 				}
 				
-				public function cadastraRoteiro(): void{
+				public function saveAssignment(): void{
 					dispatchEvent(new ClosePopupEvent(this));
 				}
 				
-				private function escolheArquivoInterface(): void{
+				private function selectFileInterface(): void{
 					fileRefInterface = new FileReference();
-			   	 	fileRefInterface.addEventListener(Event.SELECT, arquivoSelecionadoInterface);
-			   	 	fileRefInterface.addEventListener(Event.COMPLETE, envioCompletoInterface);
-			   	 	fileRefInterface.addEventListener(IOErrorEvent.IO_ERROR, erroEnvioInterface);
+			   	 	fileRefInterface.addEventListener(Event.SELECT, selectedFileInterface);
+			   	 	fileRefInterface.addEventListener(Event.COMPLETE, fullSendingInterface);
+			   	 	fileRefInterface.addEventListener(IOErrorEvent.IO_ERROR, errorSendingInterface);
 			    	fileRefInterface.browse(new Array(new FileFilter("Interface (*.java)","*.java")));
 				}
 				
-				public function erroEnvioInterface(evt:Event):void {
+				public function errorSendingInterface(evt:Event):void {
 			       	var param:Array = new Array(true, "Ocorreu um erro de transmissão. O arquivo de Interface não foi enviado." +
 														"\n\nTente novamente! Caso este erro persista..." + 
 														"\n\nVerifique se sua conexão com a internet está ativada.");
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 				}
 				
-				public function arquivoSelecionadoInterface(evt:Event):void {
+				public function selectedFileInterface(evt:Event):void {
 			       	requestInterface = new URLRequest(FILE_UPLOAD_URL);
-			       	caminhoInterface.text = fileRefInterface.name;
+			       	pathInterface.text = fileRefInterface.name;
 				}
 				
-				public function envioCompletoInterface(evt:Event):void {
+				public function fullSendingInterface(evt:Event):void {
 				}
 				
 				private function getCurrentStage():void{
-					facade.getOperation("getPeriodoAtual").send();
+					facade.getOperation("getCurrentPeriod").send();
 				}
 				
-				private function getPeriodoAtual_result(event:ResultEvent):void{
-					stage = new Stage();
-					stage = CastDeEntidades.castPeriodo(ArrayCollection(event.result).getItemAt(0));
+				private function getCurrentPeriod_result(event:ResultEvent):void{
+					stg = new Stage();
+					stg = CastEntities.castStage(ArrayCollection(event.result).getItemAt(0));
 				}
 				
-				private function preencheRoteiro():void{
-					var dataLimiteDiscussao: Date = Util.formataDataStringEmDate(dfDiscussionDate.text);
-					dataLimiteDiscussao.setHours(Number(inputDiscussionHour.text), Number(inputDiscussionMinute.text),0,0);
-					assignment.dataFinalDiscussao= dataLimiteDiscussao;
+				private function fillsAssignment():void{
+					var dateDiscussion: Date = Util.formatsDateStringToDate(dfDiscussionDate.text);
+					dateDiscussion.setHours(Number(inputDiscussionHour.text), Number(inputDiscussionMinute.text),0,0);
+					assignment.discussionDate = dateDiscussion;
 					
-					var dataLimiteEntrega: Date = Util.formataDataStringEmDate(dfMaximumDate.text);
-					dataLimiteEntrega.setHours(Number(inputHora.text), Number(inputMinuto.text),0,0);						
-					assignment.dataFinalEntrega = dataLimiteEntrega;
+					var deliveryDeadline: Date = Util.formatsDateStringToDate(dfMaximumDate.text);
+					deliveryDeadline.setHours(Number(inputHour.text), Number(inputMinute.text),0,0);						
+					assignment.deliveryDate = deliveryDeadline;
 					 
-					var dataLiberacao: Date = Util.formataDataStringEmDate(dfDataLiberacao.text);
-					dataLiberacao.setHours(Number(inputHoraLiberacao.text), Number(inputMinutoLiberacao.text),0,0);
-					assignment.dataLiberacao = dataLiberacao;
+					var releaseDate: Date = Util.formatsDateStringToDate(dfReleaseDate.text);
+					releaseDate.setHours(Number(inputReleaseTime.text), Number(inputMinuteRelease.text),0,0);
+					assignment.releaseDate = releaseDate;
 					
-					assignment.descricao = inputDescription.text;
-					assignment.nome = inputTitulo.text;
-					assignment.diretorioInterface = "/periodo" + stage.semestre + "/interface/" + assignment.id + "/";
-					assignment.diretorioTestes = "/periodo" + stage.semestre + "/testes/" + assignment.id + "/";
-					assignment.numeroMaximoEnvios = int(inputNumeroMaxEnvios.text);
-					assignment.numeroMaximoParticipantes = int(inputMaximoEquipe.text);
-					assignment.penalidadeDiasAtraso = Util.formataTextValorToNumber(inputPenalidade.text);
-					assignment.periodo = stage;
-					assignment.porcentagemTestesAutomaticos = Util.formataTextValorToNumber(inputPorcentagem.text);
-					assignment.tempoLimiteTestes = int(inputTempoLimite.text);
+					assignment.description = inputDescription.text;
+					assignment.name = inputTitle.text;
+					assignment.interfaceDirectory = "/periodo" + stg.semester + "/interface/" + assignment.id + "/";
+					assignment.testsDirectory = "/periodo" + stg.semester + "/testes/" + assignment.id + "/";
+					assignment.sendMaxNumber = int(inputMaxNumberSent.text);
+					assignment.participantsMaxNumber = int(inputMaxTeam.text);
+					assignment.penaltyPerDaysLate = Util.formatsTextValueToNumber(inputPenalty.text);
+					assignment.stage = stg;
+					assignment.automaticTestsPercentage = Util.formatsTextValueToNumber(inputPercentage.text);
+					assignment.testTimeLimit = int(inputTimeout.text);
 					
 				}
 				
-				private function checaHora(): Boolean{
+				private function CzechTime(): Boolean{
 					try{
-						if( Number(inputHora.text) > 23 ||
-							Number(inputMinuto.text) > 59){
+						if( Number(inputHour.text) > 23 ||
+							Number(inputMinute.text) > 59){
 							return false;
 						}
 					}catch(e: Error){
@@ -231,12 +232,12 @@
 					return true;
 				}
 				
-				private function editarRoteiro():void{
+				private function updateAssignment():void{
 					if(assignment.id != 0){
-						if (checaHora()){
-							preencheRoteiro();
+						if (CzechTime()){
+							fillsAssignment();
 							isCreate = false;
-							facade.getOperation("editarRoteiro").send(CastDeEntidades.castRoteiro(assignment));
+							facade.getOperation("updateAssignment").send(CastEntities.castAssignment(assignment));
 						}
 						else{
 							var param:Array = new Array(true, "Horário limite para entrega inválido. (Intervalo: 00:00 ~ 23:59)");
@@ -245,13 +246,13 @@
 					}					
 				}
 				
-				private function cadastrarRoteiro():void{
-					var horaValida: Boolean = checaHora();
-					if (checaHora()){
-						assignment = new Roteiro();
-						preencheRoteiro();
+				private function saveAssignments():void{
+					var validTime: Boolean = CzechTime();
+					if (CzechTime()){
+						assignment = new Assignment();
+						fillsAssignment();
 						isCreate = true;
-						facade.getOperation("cadastrarRoteiro").send(CastDeEntidades.castRoteiro(assignment));
+						facade.getOperation("saveAssignment").send(CastEntities.castAssignment(assignment));
 					}
 					else{
 						var param:Array = new Array(true, "Horário limite para entrega inválido. (Intervalo: 00:00 ~ 23:59)");
@@ -259,16 +260,16 @@
 					}
 				}
 				
-				private function cadastrarRoteiro_result(event:ResultEvent):void{
-					assignment = new Roteiro();
-					assignment = CastDeEntidades.castRoteiro(event.result);
-					urlTests = "/periodo" + stage.semestre + "/testes/" + assignment.id + "/";
-					urlInterface = "/periodo" + stage.semestre + "/interface/" + assignment.id + "/";
+				private function saveAssignment_result(event:ResultEvent):void{
+					assignment = new Assignment();
+					assignment = CastEntities.castAssignment(event.result);
+					urlTests = "/periodo" + stg.semester + "/testes/" + assignment.id + "/";
+					urlInterface = "/periodo" + stg.semester + "/interface/" + assignment.id + "/";
 					if (!isCreate){
 						try{
 							var variables:URLVariables = new URLVariables();
 							variables.url = urlTests;
-							variables.nomeArquivo = "testes.zip";
+							variables.nameFile = "testes.zip";
 							requestTests.data = variables;
 							fileRefTests.upload(requestTests);
 						}catch(e: Error){}
@@ -279,43 +280,43 @@
 					}
 					else{
 						doUpload = true;
-						editarRoteiro();
+						updateAssignment();
 						save = true;
 						closeWindow();
 					}
 				}
 				
-				private function atualizaDatasDefaut():void{
-					var dataAux: String = dfDataLiberacao.text;
-					dfMaximumDate.selectedDate = new Date(dfDataLiberacao.selectedDate.getTime()+(7*millisecondsPerDay));
-					dfDiscussionDate.selectedDate = new Date(dfDataLiberacao.selectedDate.getTime()+(21*millisecondsPerDay));
+				private function datesUpdatedDefaut():void{
+					var dateAux: String = dfReleaseDate.text;
+					dfMaximumDate.selectedDate = new Date(dfReleaseDate.selectedDate.getTime()+(7*millisecondsPerDay));
+					dfDiscussionDate.selectedDate = new Date(dfReleaseDate.selectedDate.getTime()+(21*millisecondsPerDay));
 				}
 				
 			]]>
 		</mx:Script>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
-			<mx:method name="getPeriodoAtual" result="getPeriodoAtual_result(event)" fault="failure(event)"/>
-			<mx:method name="cadastrarRoteiro" result="cadastrarRoteiro_result(event)" fault="failure(event)"/>
-			<mx:method name="editarRoteiro" result="cadastrarRoteiro_result(event)" fault="failure(event)"/>
+			<mx:method name="getCurrentPeriod" result="getCurrentPeriod_result(event)" fault="failure(event)"/>
+			<mx:method name="saveAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
+			<mx:method name="updateAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
 		<mx:Label text="Título:" fontWeight="bold"
-			textAlign="left" width="54" x="10" y="10" id="labelTitulo"/>
+			textAlign="left" width="54" x="10" y="10" id="labelTitle"/>
 		<mx:Label text="Porcentagem Automática da Avaliação:" fontWeight="bold"
 			textAlign="left" width="270" x="10" y="330"/>
 		<mx:Label text="%" fontWeight="bold"
 			textAlign="left" width="20" x="384" y="330"/>
 		<mx:Label text="Descrição:" fontWeight="bold"
-			textAlign="left" width="79" x="10" y="50" id="labelDescricao"/>
-		<mx:TextInput x="62" y="8" id="inputTitulo" width="329" maxChars="250"/>
+			textAlign="left" width="79" x="10" y="50" id="labelDescription"/>
+		<mx:TextInput x="62" y="8" id="inputTitle" width="329" maxChars="250"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
 		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"		
-		toolTip="" x="538" y="8" width="129" id="dfDataLiberacao" text="{df.format(new Date())}" change="atualizaDatasDefaut()"/>
-		<mx:TextInput x="675" y="8" id="inputHoraLiberacao" width="28" restrict="[0-9]" maxChars="2" text="00"/>
-		<mx:TextInput x="724" y="8" id="inputMinutoLiberacao" width="28" restrict="[0-9]" maxChars="2" text="00"/>
+		toolTip="" x="538" y="8" width="129" id="dfReleaseDate" text="{df.format(new Date())}" change="datesUpdatedDefaut()"/>
+		<mx:TextInput x="675" y="8" id="inputReleaseTime" width="28" restrict="[0-9]" maxChars="2" text="00"/>
+		<mx:TextInput x="724" y="8" id="inputMinuteRelease" width="28" restrict="[0-9]" maxChars="2" text="00"/>
 		<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
 		<mx:TextArea x="10" y="78" width="760" height="122" id="inputDescription" maxChars="30000"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
@@ -323,8 +324,8 @@
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
 		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"
 		toolTip="" x="219" y="223" width="129" id="dfMaximumDate"/>
-		<mx:TextInput x="356" y="223" id="inputHora" width="28" restrict="[0-9]" maxChars="2" text="00"/>
-		<mx:TextInput x="405" y="223" id="inputMinuto" width="28" restrict="[0-9]" maxChars="2" text="00"/>
+		<mx:TextInput x="356" y="223" id="inputHour" width="28" restrict="[0-9]" maxChars="2" text="00"/>
+		<mx:TextInput x="405" y="223" id="inputMinute" width="28" restrict="[0-9]" maxChars="2" text="00"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -332,21 +333,21 @@
 		toolTip="" x="219" y="253" width="129" id="dfDiscussionDate"/>
 		<mx:TextInput x="356" y="253" id="inputDiscussionHour" width="28" restrict="[0-9]" maxChars="2" text="00"/>
 		<mx:TextInput x="405" y="253" id="inputDiscussionMinute" width="28" restrict="[0-9]" maxChars="2" text="00"/>
-		<mx:TextInput x="723" y="251" id="inputMaximoEquipe" width="47" restrict="[0-9]" maxChars="2" text="1"/>
-		<mx:TextInput x="723" y="221" id="inputNumeroMaxEnvios" width="47" restrict="[0-9]" maxChars="2" text="3"/>
-		<extra:DecimalInput x="219" y="285"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalidade" width="113" text="0.5"/>
-		<extra:DecimalInput x="285" y="328"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPorcentagem" width="91" text="100"/>
-		<mx:TextInput x="641" y="330" id="inputTempoLimite" width="95" restrict="[0-9]" maxChars="2" text="10"/>
+		<mx:TextInput x="723" y="251" id="inputMaxTeam" width="47" restrict="[0-9]" maxChars="2" text="1"/>
+		<mx:TextInput x="723" y="221" id="inputMaxNumberSent" width="47" restrict="[0-9]" maxChars="2" text="3"/>
+		<extra:DecimalInput x="219" y="285"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalty" width="113" text="0.5"/>
+		<extra:DecimalInput x="285" y="328"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPercentage" width="91" text="100"/>
+		<mx:TextInput x="641" y="330" id="inputTimeout" width="95" restrict="[0-9]" maxChars="2" text="10"/>
 		<mx:Label text="Máximo de integrantes por equipe:" fontWeight="bold"
-			textAlign="left" width="239" x="476" y="255" id="labelAutomatica0"/>
+			textAlign="left" width="239" x="476" y="255" id="labelAutomatic0"/>
 		<mx:Label text="Penalidade por dia de atraso:" fontWeight="bold"
 			textAlign="left" width="201" x="10" y="287"/>
 		<mx:Label text="Número máximo de envios:" fontWeight="bold"
-			textAlign="left" width="191" x="476" y="225" id="labelAutomatica3"/>
+			textAlign="left" width="191" x="476" y="225" id="labelAutomatic3"/>
 		<mx:Label text="Time-limit dos teste por método:" fontWeight="bold"
-			textAlign="left" width="224" x="415" y="332" id="labelAutomatica5"/>
+			textAlign="left" width="224" x="415" y="332" id="labelAutomatic5"/>
 		<mx:Label text="ms" fontWeight="bold"
-			textAlign="left" width="27" x="744" y="332" id="labelAutomatica6"/>
+			textAlign="left" width="27" x="744" y="332"/>
 		<mx:Label text="H" fontWeight="bold"
 			textAlign="left" width="17" x="387" y="225" id="labelAutomatica8"/>
 		<mx:Label text="M" fontWeight="bold"
@@ -356,21 +357,21 @@
 		<mx:Label text="M" fontWeight="bold"
 			textAlign="left" width="17" x="434" y="255" id="labelAutomatica12"/>
 		<mx:Label text="Data Máxima para entrega:" fontWeight="bold"
-			textAlign="left" width="201" x="10" y="225" id="labelAutomatica1"/>
+			textAlign="left" width="201" x="10" y="225" id="labelAutomatic1"/>
 		<mx:Label text="Data Máxima para discussão:" fontWeight="bold"
-			textAlign="left" width="201" x="10" y="255" id="labelAutomatica2"/>
+			textAlign="left" width="201" x="10" y="255" id="labelAutomatic2"/>
 		<mx:Label text="Data da liberação:" fontWeight="bold"
-			textAlign="left" width="131" x="399" y="10" id="labelAutomatica4"/>
+			textAlign="left" width="131" x="399" y="10" id="labelAutomatic4"/>
 		<mx:HRule x="10" y="364" width="760"/>
 		<mx:HRule x="10" y="208" width="760"/>
 		<mx:HRule x="10" y="317" width="760"/>
 		<mx:HRule x="10" y="40" width="760"/>
-		<mx:LinkButton x="263.55" y="374" label="   Anexar Testes Automáticos" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="anexarTestes" click="escolheArquivoTestes()"/>
-		<mx:Label x="10" y="406" width="760" id="caminhoTestes" textAlign="center"/>
-		<mx:LinkButton x="273.05" y="438" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="anexarInterface" click="escolheArquivoInterface()"/>
-		<mx:Label x="10" y="470" width="760" id="caminhoInterface" textAlign="center"/>
-		<mx:Button x="298.05" y="510" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="updateAssignmentButton" click="editarRoteiro()"/>
-		<mx:Button x="298.05" y="510" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="createAssignmentButton" click="cadastrarRoteiro()"/>
+		<mx:LinkButton x="263.55" y="374" label="   Anexar Testes Automáticos" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="chooseFileTests()"/>
+		<mx:Label x="10" y="406" width="760" id="pathTests" textAlign="center"/>
+		<mx:LinkButton x="273.05" y="438" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="attachInterface" click="selectFileInterface()"/>
+		<mx:Label x="10" y="470" width="760" id="pathInterface" textAlign="center"/>
+		<mx:Button x="298.05" y="510" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="updateAssignmentButton" click="editingAssignment()"/>
+		<mx:Button x="298.05" y="510" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="createAssignmentButton" click="saveAssignments()"/>
 		<mx:Label text="H" fontWeight="bold"
 			textAlign="left" width="17" x="706" y="10" id="labelAutomatica20"/>
 		<mx:Label text="M" fontWeight="bold"
