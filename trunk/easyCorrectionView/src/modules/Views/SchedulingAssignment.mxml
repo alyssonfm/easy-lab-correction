@@ -12,7 +12,6 @@
 		<mx:Script>
 			<![CDATA[
 				import events.ObjectEvent;
-				import events.ObjetoEvent;
 				import mx.managers.SystemManager;
 				import bean.Utility.Util;
 				import mx.collections.ArrayCollection;

@@ -7,10 +7,12 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.Utility.Constant;
+				import events.ObjectEvent;
 				import bean.Utility.Util;
 				import bean.Utility.CastEntities;
 				import bean.assignments.Assignment;
-				import bean.system.Stage;
+				import bean.system.SystemStage;
 				import mx.skins.halo.NumericStepperUpSkin;
 				import mx.collections.ArrayCollection;
 				import events.UserEvent;
@@ -34,12 +36,12 @@
 				private var requestTests: URLRequest;
 				private var fileRefInterface:FileReference;
 				private var requestInterface: URLRequest;
-				private const FILE_UPLOAD_URL:String = Constantes.urlUploadDonwload;
+				private const FILE_UPLOAD_URL:String = Constant.urlUploadDonwload;
 				
 				public static var edited: Boolean = false;
 				public static var save: Boolean = false; 
 				
-				private var stg:Stage = new Stage();
+				private var stg:SystemStage = new SystemStage();
 				private var assignment:Assignment = new Assignment();
 				private var stat:*;
 				private var doUpload: Boolean = false;
@@ -190,7 +192,7 @@
 				}
 				
 				private function getCurrentPeriod_result(event:ResultEvent):void{
-					stg = new Stage();
+					stg = new SystemStage();
 					stg = CastEntities.castStage(ArrayCollection(event.result).getItemAt(0));
 				}
 				
@@ -370,7 +372,7 @@
 		<mx:Label x="10" y="406" width="760" id="pathTests" textAlign="center"/>
 		<mx:LinkButton x="273.05" y="438" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="attachInterface" click="selectFileInterface()"/>
 		<mx:Label x="10" y="470" width="760" id="pathInterface" textAlign="center"/>
-		<mx:Button x="298.05" y="510" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="updateAssignmentButton" click="editingAssignment()"/>
+		<mx:Button x="298.05" y="510" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="updateAssignmentButton" click="updateAssignment()"/>
 		<mx:Button x="298.05" y="510" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="createAssignmentButton" click="saveAssignments()"/>
 		<mx:Label text="H" fontWeight="bold"
 			textAlign="left" width="17" x="706" y="10" id="labelAutomatica20"/>
