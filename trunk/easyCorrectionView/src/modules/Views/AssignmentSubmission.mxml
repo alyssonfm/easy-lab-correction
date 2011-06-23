@@ -113,7 +113,7 @@
 					facade.getOperation("submissionNumber").send(CastEntities.castSubmission(submission));
 				}
 				
-				public function submissionNumber_result(event:ResultEvent){
+				public function submissionNumber_result(event:ResultEvent): void{
 					try{
 						numberSubmissions.text = String(event.result);
 						maxNumberSubmission.text = comboAssignment.selectedItem.sendMaxNumber;
@@ -171,9 +171,9 @@
 							param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
 							ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 						}
-					}catch(e: Error){
-						var param:Array = new Array(true, "Falha técnica. Tente mais tarde...");
-						ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
+					}catch(e: Error){	
+						var param2: Array = new Array(true, "Falha técnica. Tente mais tarde...");					
+						ModulesController.createModule("modules/System/MessageStatus.swf", this, param2);
 					}
 				}
 				
