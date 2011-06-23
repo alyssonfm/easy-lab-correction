@@ -18,10 +18,10 @@ import br.edu.ufcg.easyLabCorrection.util.MyPersistenceLayer;
  * @author Salto-db Generator v1.0.16 / Pojos + Hibernate mapping + Generic DAO
  * @see http://www.hibernate.org/328.html
  */
-public class PeriodHibernateDAO extends
+public class SystemStageHibernateDAO extends
 		AbstractHibernateDAO<SystemStage, Integer>  {
 
-	public PeriodHibernateDAO(Session s) {
+	public SystemStageHibernateDAO(Session s) {
 		super(s);
 	}
 
@@ -29,7 +29,7 @@ public class PeriodHibernateDAO extends
 	public List<SystemStage> instantiatesList(List<SystemStage> list) {
 		try {
 			for (SystemStage p : list) {
-				p = instantiatesPeriod(p);
+				p = instantiatesSystemStage(p);
 			}	
 		} catch (EmptyFieldException e) {
 			throw new ConstraintViolationException(e.getMessage());
@@ -40,7 +40,7 @@ public class PeriodHibernateDAO extends
 		return list;
 	}
 	
-	public static SystemStage instantiatesPeriod(SystemStage p) throws EmptyFieldException{
+	public static SystemStage instantiatesSystemStage(SystemStage p) throws EmptyFieldException{
 		p = MyPersistenceLayer.deproxy(p, SystemStage.class);
 		return p;
 	}
