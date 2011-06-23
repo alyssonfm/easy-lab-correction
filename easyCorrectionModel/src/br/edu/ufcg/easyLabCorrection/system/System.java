@@ -21,7 +21,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
-import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
+import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
@@ -232,11 +232,11 @@ public class System {
 	}
 
 	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
-	public Stage getStage(int periodId) {
+	public SystemStage getStage(int periodId) {
 		return assignmentManager.getPeriod(periodId);
 	}
 
-	public List<Stage> getCurrentStage() {
+	public List<SystemStage> getCurrentStage() {
 		return assignmentManager.getCurrentPeriod();
 	}
 

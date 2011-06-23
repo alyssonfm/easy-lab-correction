@@ -3,7 +3,7 @@ package br.edu.ufcg.easyLabCorrection.managers;
 import java.util.List;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
-import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
+import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 
 /**
  * Abstract super class of managers, which is extended by the 
@@ -24,7 +24,7 @@ public abstract class Manager {
 	 * 
 	 * @return The stage corresponding at the identifier received as parameter.<br>
 	 */
-	public Stage getPeriod(int periodId) {
+	public SystemStage getPeriod(int periodId) {
 		return DAOFactory.DEFAULT.buildPeriodDAO().getById(periodId);
 	}
 
@@ -32,7 +32,7 @@ public abstract class Manager {
 	 * Function used to retrieve the current stage.<br>
 	 * @return The stage current.<br>
 	 */
-	public List<Stage> getCurrentPeriod() {
+	public List<SystemStage> getCurrentPeriod() {
 		return DAOFactory.DEFAULT.buildPeriodDAO().findAll();
 	}
 

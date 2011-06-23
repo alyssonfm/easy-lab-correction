@@ -1,12 +1,12 @@
 package br.edu.ufcg.easyLabCorrection.pojo.assignments;
 
 import java.util.Date;
-import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
+import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 
 public class Assignment {
 	
 	private Integer id;
-	private Stage stage;
+	private SystemStage stage;
 	private String name;
 	private String description;
 	private Date releaseDate;
@@ -25,7 +25,7 @@ public class Assignment {
 		super();
 	}
 
-	public Assignment(Integer id, Stage stage, String name,
+	public Assignment(Integer id, SystemStage stage, String name,
 			String description, Date releaseDate, Date deliveryDate,
 			Date discussionDate, Integer participantsMaxNumber,
 			Integer sendMaxNumber, double penaltyPerDaysLate,
@@ -66,11 +66,11 @@ public class Assignment {
 		this.id = id;
 	}
 	
-	public Stage getStage() {
+	public SystemStage getStage() {
 		return stage;
 	}
 	
-	public void setStage(Stage stage) {
+	public void setStage(SystemStage stage) {
 		this.stage = stage;
 	}
 	
