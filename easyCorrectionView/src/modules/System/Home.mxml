@@ -63,7 +63,7 @@
 				catch(e:Error){
 					message = "Serviço indisponível, reinicie a operação.";
 				}
-				ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+				ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 			}
 			
 			private function getReleasedAssignments():void{
@@ -186,7 +186,7 @@
 				}
 				catch(e: Error){
 					var message:String = "Selecione Um Roteiro.";
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 				}
 			}
 			
@@ -199,7 +199,7 @@
 				}
 				catch(e: Error){
 					var message:String = "Selecione Um Roteiro.";
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 				}
 			}
 		]]>
