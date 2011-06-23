@@ -26,7 +26,7 @@ public class SubmissionManagerTest {
 	
 	@BeforeClass
 	public void reinicializaBD() {
-		facade.reinicializaBancoDeDados();
+		facade.rebootsDataBase();
 	}
 
 }

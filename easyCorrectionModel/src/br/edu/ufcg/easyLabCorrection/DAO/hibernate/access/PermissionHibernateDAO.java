@@ -28,17 +28,17 @@ public class PermissionHibernateDAO extends
 	}
 	
 	public List<Permission> findById(Integer id) {
-		List<Permission> list = findByCriteria(Restrictions.eq("id", id));
+		List<Permission> list = findByCriteria(Restrictions.eq("permissionId", id));
 		return list;
 	}
 	
 	public List<Permission> findByLabel(Integer id) {
-		List <Permission> list = findByCriteria(Restrictions.eq("id", id));
+		List <Permission> list = findByCriteria(Restrictions.eq("permissionId", id));
 		return list;
 	}
 	
 	public List<Permission> findByGroupId(Integer groupId) {
-		List <Permission> list = findByCriteria(Restrictions.eq("grupo.id", groupId));
+		List <Permission> list = findByCriteria(Restrictions.eq("group.groupId", groupId));
 		return list;
 	}
 	
@@ -50,8 +50,8 @@ public class PermissionHibernateDAO extends
 	@SuppressWarnings("unchecked")
 	public List<Permission> findByGroupAndFunction(Integer groupId, Integer functionId) {
 		Criteria crit = getSession().createCriteria(getPersistentClass());
-		crit.add(Restrictions.eq("grupo.idGrupo", groupId));
-		crit.add(Restrictions.eq("funcao.idFuncao", functionId));
+		crit.add(Restrictions.eq("group.groupId", groupId));
+		crit.add(Restrictions.eq("function.functionId", functionId));
         List<Permission> list = crit.list();
         instantiatesList(list);
         return list;

@@ -38,7 +38,7 @@ public class AccessUserManagerTest {
 
 	@BeforeClass
 	public void restartDatabase() {
-		facade.reinicializaBancoDeDados();
+		facade.rebootsDataBase();
 	}
 
 	@Test

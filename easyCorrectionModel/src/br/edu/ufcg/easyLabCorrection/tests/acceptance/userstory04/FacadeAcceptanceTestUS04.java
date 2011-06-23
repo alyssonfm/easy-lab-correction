@@ -28,7 +28,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 */
 	public int criaEquipe() throws Throwable {
 		Team e = new Team();
-		Team equipeFinal = facadeSistema.cadastrarEquipe(e);
+		Team equipeFinal = facadeSistema.saveTeam(e);
 		return equipeFinal.getId();
 	}
 
@@ -39,7 +39,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @throws Throwable
 	 */
 	public int getQuantidadeTotalEquipes() throws Throwable {
-		return facadeSistema.getEquipes().size();
+		return facadeSistema.getTeams().size();
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @throws Throwable
 	 */
 	public int getQuantidadeEquipesAlocadas(Integer roteiroId) throws Throwable {
-		return facadeSistema.getEquipeAlocadas(roteiroId);
+		return facadeSistema.getAllocatedTeams(roteiroId);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @throws Throwable 
 	 */
 	public int getQuantidadeTotalAlunos() throws Throwable {
-		return facadeSistema.listarGrupoUsuariosPorGrupo("Aluno").size();
+		return facadeSistema.listUserGroupsByGroup("Aluno").size();
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 		teamHasUserHasAssignment.setTeam(getTeam(equipeDeEntradaId));
 		teamHasUserHasAssignment.setUser(getGrupoUsuario(grupoUsuarioId).getUser());
 		teamHasUserHasAssignment.setAssignment(getRoteiro(roteiroId));
-		return facadeSistema.mudarEquipe(teamHasUserHasAssignment).getTeam().getId();
+		return facadeSistema.changeTeam(teamHasUserHasAssignment).getTeam().getId();
 	}
 
 	
@@ -118,15 +118,15 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * UTIL
 	 */
 	public int getEquipeIDPorNome(String nome) throws Throwable {
-		return facadeSistema.getEquipePorNome(nome).getId();
+		return facadeSistema.getTeamByName(nome).getId();
 	}
 	
 	public Team getTeam(int idEquipe) throws Throwable {
-		return facadeSistema.getEquipe(idEquipe);
+		return facadeSistema.getTeam(idEquipe);
 	}
 
 	public Submission getSubmissao(int submissaoId) throws Throwable{
-		return facadeSistema.getSubmissao(submissaoId);
+		return facadeSistema.getSubmission(submissaoId);
 	}
 	
 	public int getAlunoGrupoID() {

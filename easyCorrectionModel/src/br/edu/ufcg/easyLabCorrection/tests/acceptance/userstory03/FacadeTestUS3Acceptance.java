@@ -25,7 +25,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 			boolean bloqueado) throws Throwable {
 
 		Assignment roteiroTemp = new Assignment();
-		roteiroTemp.setStage(facadeSistema.getPeriodo(periodoId));
+		roteiroTemp.setStage(facadeSistema.getStage(periodoId));
 		roteiroTemp.setId(0);
 		roteiroTemp.setName(nome);
 		roteiroTemp.setDescription(descricao);
@@ -60,7 +60,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 					.valueOf(numeroMaximoParticipantes));
 		}
 
-		Assignment roteiroCriado = facadeSistema.cadastrarRoteiro(roteiroTemp);
+		Assignment roteiroCriado = facadeSistema.saveAssignment(roteiroTemp);
 		return roteiroCriado.getId();
 	}
 
@@ -76,9 +76,9 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 			String diretorioTestes, int numeroMaximoParticipantes,
 			boolean isBloqueado) throws Throwable {
 
-		Assignment roteiroTemp = facadeSistema.getRoteiro(roteiroId);
+		Assignment roteiroTemp = facadeSistema.getAssignment(roteiroId);
 		roteiroTemp.setId(roteiroId);
-		roteiroTemp.setStage(facadeSistema.getPeriodo(periodoId));
+		roteiroTemp.setStage(facadeSistema.getStage(periodoId));
 		roteiroTemp.setName(nome);
 		roteiroTemp.setDescription(descricao);
 		roteiroTemp.setReleaseDate(translateData(dataLiberacao));
@@ -116,7 +116,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 					.valueOf(numeroMaximoParticipantes));
 		}
 
-		Assignment rotAtualizado = facadeSistema.editarRoteiro(roteiroTemp);
+		Assignment rotAtualizado = facadeSistema.updateAssignment(roteiroTemp);
 		return rotAtualizado.getId();
 	}
 
@@ -144,7 +144,7 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 
 	// EasyAcceptOK
 	public void excluirRoteiro(int idRoteiro) throws Throwable {
-		facadeSistema.excluirRoteiro(facadeSistema.getRoteiro(idRoteiro));
+		facadeSistema.excluirRoteiro(facadeSistema.getAssignment(idRoteiro));
 	}
 
 	// ******************************************* UTIL
@@ -178,13 +178,13 @@ public class FacadeTestUS3Acceptance extends FacadeAcceptanceTestUS02 {
 
 	// EasyAcceptOK
 	public List<Assignment> listarRoteiros() throws Throwable {
-		List<Assignment> listarRoteiros = facadeSistema.listarRoteiros();
+		List<Assignment> listarRoteiros = facadeSistema.listAssignments();
 		return listarRoteiros;
 	}
 
 	// EasyAcceptOK
 	public Assignment getRoteiro(int idRoteiro) throws Throwable {
-		return facadeSistema.getRoteiro(idRoteiro);
+		return facadeSistema.getAssignment(idRoteiro);
 	}
 
 	public Date translateData(String dataCodificada) {

@@ -31,21 +31,21 @@ public class FunctionHibernateDAO extends
 	}
 
 	public List<Function> findById(Integer id) {
-		List <Function> list = findByCriteria(Restrictions.eq("id", id));
+		List <Function> list = findByCriteria(Restrictions.eq("functionId", id));
 		instantiatesList(list);
 		return list;
 	}
 	
 	public List<Function> findByName(String name) {
-		List <Function> list = findByCriteria(Restrictions.eq("nome", name));
+		List <Function> list = findByCriteria(Restrictions.eq("name", name));
 		instantiatesList(list);
 		return list;
 	}
 	
 	
 	public List<Function> findByNameAndLabel(String name, String label) {
-		 SimpleExpression criteria1 = Restrictions.eq("nome", name);
-		 SimpleExpression criteria2 = Restrictions.eq("rotulo", label);
+		 SimpleExpression criteria1 = Restrictions.eq("name", name);
+		 SimpleExpression criteria2 = Restrictions.eq("label", label);
 		 LogicalExpression criteria = Restrictions.or(criteria1, criteria2);
 		 List <Function> list = findByCriteria(criteria);
 		 instantiatesList(list);
@@ -55,8 +55,8 @@ public class FunctionHibernateDAO extends
 	@SuppressWarnings("unchecked")
 	public List <Function> findByMenu(Integer idMenu){
 		Criteria crit = getSession().createCriteria(getPersistentClass());
-		crit.add(Restrictions.eq("menu.idMenu", idMenu));
-		crit.addOrder(Order.desc("rotulo"));
+		crit.add(Restrictions.eq("menu.menuId", idMenu));
+		crit.addOrder(Order.desc("label"));
 		List <Function> list = crit.list();
 		instantiatesList(list);
 		return list;

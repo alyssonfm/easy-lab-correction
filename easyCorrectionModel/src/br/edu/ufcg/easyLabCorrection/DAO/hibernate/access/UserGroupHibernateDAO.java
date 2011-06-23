@@ -36,8 +36,8 @@ public class UserGroupHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByGroup(Integer groupId) {
-		Query q = getSession().createQuery("from GrupoUsuario where grupo.idGrupo = :idGrupo");
-		q.setParameter("idGrupo",groupId);
+		Query q = getSession().createQuery("from UserGroup where group.groupId = :groupId");
+		q.setParameter("groupId",groupId);
 		q.setCacheable(true);
 		List <UserGroup> list = q.list();
 		instantiatesList(list);
@@ -46,8 +46,8 @@ public class UserGroupHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByGroup(String name) {
-		Query q = getSession().createQuery("from GrupoUsuario where grupo.nome like :nome");
-		q.setParameter("nome",name);
+		Query q = getSession().createQuery("from UserGroup where group.name like :name");
+		q.setParameter("name",name);
 		q.setCacheable(true);
 		List <UserGroup> list = q.list();
 		instantiatesList(list);
@@ -56,8 +56,8 @@ public class UserGroupHibernateDAO extends
 
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByUserId(Integer userId) {
-		Query q = getSession().createQuery("from GrupoUsuario where usuario.idUsuario = :idUsuario");
-		q.setParameter("idUsuario",userId);
+		Query q = getSession().createQuery("from UserGroup where user.userId = :userId");
+		q.setParameter("userId",userId);
 		q.setCacheable(true);
 		List <UserGroup> list = q.list();
 		instantiatesList(list);
@@ -65,8 +65,8 @@ public class UserGroupHibernateDAO extends
 	}
 	
 	public List<UserGroup> findByUserAndGroup(Integer groupId, Integer userId) {
-		SimpleExpression criteria1 = Restrictions.eq("usuario.idUsuario", userId);
-		SimpleExpression criteria2 = Restrictions.eq("grupo.idGrupo", groupId);
+		SimpleExpression criteria1 = Restrictions.eq("user.userId", userId);
+		SimpleExpression criteria2 = Restrictions.eq("group.groupId", groupId);
 		List<UserGroup> list = findByCriteria(criteria1, criteria2);
 		return list;
 	}

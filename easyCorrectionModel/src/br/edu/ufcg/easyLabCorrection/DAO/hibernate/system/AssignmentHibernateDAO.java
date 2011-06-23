@@ -32,8 +32,8 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 	public List<Assignment> findByReleasedAssignments(Date currentDate) {
 		Query q = getSession()
 				.createQuery(
-						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega > :dataAtual");
-		q.setParameter("dataAtual", currentDate);
+						"from Assignment where releaseDate <= :currentDate and deliveryDate > :currentDate");
+		q.setParameter("currentDate", currentDate);
 		q.setCacheable(true);
 		List<Assignment> list = q.list();
 		return instantiatesList(list);
@@ -53,9 +53,11 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 	public List<Assignment> findByReleasedAssignments(Date currentDate, Integer assignmentId) {
 		Query q = getSession()
 				.createQuery(
-						"from Roteiro where dataLiberacao <= :dataAtual and dataFinalEntrega > :dataAtual and id = :idRoteiro");
-		q.setParameter("dataAtual", currentDate);
-		q.setParameter("idRoteiro", assignmentId);
+						"from Assignment where releaseDate <= :currentDate and " +
+						"deliveryDate > :currentDate and " +
+						"assignmentId = :idAssignment");
+		q.setParameter("currentDate", currentDate);
+		q.setParameter("idAssignment", assignmentId);
 		q.setCacheable(true);
 		List<Assignment> list = q.list();
 		return instantiatesList(list);
@@ -63,12 +65,12 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 
 	@SuppressWarnings("unchecked")
 	/**
-	 * Retorna os roteiros que estao fechados, ou seja, a data atual deve ser pelo menos 1 dia apos a data de entrega
+	 * Retorna os Assignments que estao fechados, ou seja, a data atual deve ser pelo menos 1 dia apos a data de entrega
 	 */
 	public List<Assignment> findByClosedAssignments(Date currentDate) {
 		Query q = getSession().createQuery(
-				"from Roteiro where dataFinalEntrega <= :dataAtual");
-		q.setParameter("dataAtual", currentDate);
+				"from Assignment where releaseDate <= :currentDate");
+		q.setParameter("currentDate", currentDate);
 		q.setCacheable(true);
 		List<Assignment> list = q.list();
 		return instantiatesList(list);

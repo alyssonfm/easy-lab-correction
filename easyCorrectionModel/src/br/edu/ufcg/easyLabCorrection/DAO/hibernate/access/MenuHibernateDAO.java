@@ -34,16 +34,16 @@ public class MenuHibernateDAO extends
 	 * Find Agenda by dataInicio
 	 */
 	public List<Menu> findByLabel(String label) {
-		return findByCriteria(Restrictions.eq("titulo", label));
+		return findByCriteria(Restrictions.eq("label", label));
 	}
 	
 	public List<Menu> findById(Integer id) {
-		return findByCriteria(Restrictions.eq("id", id));
+		return findByCriteria(Restrictions.eq("menuId", id));
 	}
 	
 	public List<Menu> findByNameAndLabel(String name, String label) {
-		SimpleExpression criteria1 = Restrictions.eq("nome", name);
-		SimpleExpression criteria2 = Restrictions.eq("rotulo", label);
+		SimpleExpression criteria1 = Restrictions.eq("name", name);
+		SimpleExpression criteria2 = Restrictions.eq("label", label);
 		LogicalExpression criteria = Restrictions.or(criteria1, criteria2);
 		return findByCriteria(criteria);
 	}
@@ -51,7 +51,7 @@ public class MenuHibernateDAO extends
 	@SuppressWarnings("unchecked")
 	public List<Menu> findAllByOrder(){
 		Criteria crit = getSession().createCriteria(getPersistentClass());
-		crit.addOrder(Order.asc("rotulo"));
+		crit.addOrder(Order.asc("label"));
 		List <Menu> list = crit.list();
 		instantiatesList(list);
 		return list;
