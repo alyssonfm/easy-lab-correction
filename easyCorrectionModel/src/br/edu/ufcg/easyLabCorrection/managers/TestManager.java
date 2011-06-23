@@ -131,7 +131,7 @@ public class TestManager extends Manager {
 			cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
 					.toURI().toURL() }, JUnitCore.class.getClassLoader());
 			
-			testClass = cl.loadClass(Constants.mainTeste);
+			testClass = cl.loadClass(Constants.mainTest);
 
 			testAdapter = new JUnit4TestAdapter(testClass);
 			result = TestRunner.run(testAdapter);

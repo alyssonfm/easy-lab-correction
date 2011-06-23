@@ -156,48 +156,6 @@ public class SubmissionManager {
 		}
 		return null;
 	}
-	/*
-	 * END OF PRIVATE METHODS 
-	 */
-	
-	// TODO: It is not being used!
-	// private String[] compilerParameters(String libDirectory,
-	// String sourceDirectory, String interfaceDirectory,
-	// String testsDirectory, String[] sourceFileList,
-	// String[] interfaceFileList, String[] testsFileList) {
-	//
-	// List<String> params = new ArrayList<String>();
-	// params.add("-sourcepath");
-	// params.add(sourceDirectory + ";" + interfaceDirectory + ";"
-	// + testsDirectory);
-	// params.add("-classpath");
-	// params.add(libDirectory + "junit.jar");
-	// String fileName = "";
-	// for (int i = 0; i < sourceFileList.length; i++) {
-	// fileName = sourceFileList[i];
-	// if (fileName.substring(fileName.length() - 4, fileName.length())
-	// .equals("java")) {
-	// params.add(sourceDirectory + fileName);
-	// }
-	// }
-	// for (int i = 0; i < interfaceFileList.length; i++) {
-	// fileName = interfaceFileList[i];
-	// if (fileName.substring(fileName.length() - 4, fileName.length())
-	// .equals("java")) {
-	// params.add(interfaceDirectory + fileName);
-	// }
-	// }
-	// for (int i = 0; i < testsFileList.length; i++) {
-	// fileName = testsFileList[i];
-	// if (fileName.substring(fileName.length() - 4, fileName.length())
-	// .equals("java")) {
-	// params.add(testsDirectory + fileName);
-	// }
-	// }
-	// params.add("-d");
-	// params.add(sourceDirectory);
-	// return params.toArray(new String[params.size()]);
-	// }
 
 	/*
 	 * TODO: Move to System
