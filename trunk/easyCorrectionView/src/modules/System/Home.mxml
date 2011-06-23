@@ -67,7 +67,7 @@
 			}
 			
 			private function getReleasedAssignments():void{
-				facade.getOperation("getRoteirosLiberados").send();
+				facade.getOperation("getReleasedAssignments").send();
 			}
 			
 			private function getReleasedAssignments_result(event:ResultEvent):void{
@@ -99,7 +99,7 @@
 						Util.unitOrganizesTime(String(assignment.releaseDate.minutes));
 					
 					loadFiles();
-					facade.getOperation("getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro").send(userId, assignment.id);
+					facade.getOperation("getTeamHasUserHasAssignmentByUserAndAssignment").send(userId, assignment.id);
 				}
 				catch(e: Error){}
 			}
@@ -108,7 +108,7 @@
 				var tua: TeamHasUserHasAssignment = new TeamHasUserHasAssignment();
 				tua = CastEntities.castTeamHasUserHasAssignment(event.result);
 				if(tua != null){
-					facade.getOperation("getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro").send(tua.team.id, tua.assignment.id);
+					facade.getOperation("getTeamHasUserHasAssignmentByTeamAndAssignment").send(tua.team.id, tua.assignment.id);
 				}
 			}
 			
@@ -122,7 +122,7 @@
 				for (var i: int = 0; i < tuaList.length; i++){
 					var tua: TeamHasUserHasAssignment = CastEntities.castTeamHasUserHasAssignment(tuaList.getItemAt(i));
 					if (tua.user.userId == userId){
-						facade.getOperation("getAvaliacoesPorEquipeERoteiro").send(tua.team.id, tua.assignment.id);
+						facade.getOperation("getAssessmentsByTeamAndAssignment").send(tua.team.id, tua.assignment.id);
 						break;
 					}
 				}
@@ -154,7 +154,7 @@
 			
 			private function loadInterface(): void{
 				try{
-					facade.getOperation("getNomeArquivoInterface").send(assignment);
+					facade.getOperation("getInterfaceFileName").send(assignment);
 				}
 				catch(e: Error){
 					var message:String = "Selecione Um Roteiro.";
@@ -168,7 +168,7 @@
 			
 			private function getInterfaceFileName_result(event:ResultEvent):void{
 				interfaceFileName = String(event.result);
-				facade.getOperation("getNomeArquivoTestes").send(assignment);
+				facade.getOperation("getTestsFileName").send(assignment);
 			}
 			
 			private function getTestsFileName_result(event:ResultEvent):void{
@@ -206,12 +206,12 @@
 	</mx:Script>	
 	
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">		
-		<mx:method name="getRoteirosLiberados" result="getReleasedAssignments_result(event)" fault="failure(event)"/>
-		<mx:method name="getNomeArquivoInterface" result="getInterfaceFileName_result(event)" fault="failure(event)"/>
-		<mx:method name="getNomeArquivoTestes" result="getTestsFileName_result(event)" fault="failure(event)"/>
-		<mx:method name="getEquipeHasUsuarioHasRoteiroPorUsuarioERoteiro" result="getTeamHasUserHasAssignmentByUserAndAssignment_result(event)" fault="failure(event)"/>
-		<mx:method name="getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro" result="getTeamHasUserHasAssignmentByTeamAndAssignment_result(event)" fault="failure(event)"/>
-		<mx:method name="getAvaliacoesPorEquipeERoteiro" result="getAssessmentsByTeamAndAssignment_result(event)" fault="failure(event)"/>
+		<mx:method name="getReleasedAssignments" result="getReleasedAssignments_result(event)" fault="failure(event)"/>
+		<mx:method name="getInterfaceFileName" result="getInterfaceFileName_result(event)" fault="failure(event)"/>
+		<mx:method name="getTestsFileName" result="getTestsFileName_result(event)" fault="failure(event)"/>
+		<mx:method name="getTeamHasUserHasAssignmentByUserAndAssignment" result="getTeamHasUserHasAssignmentByUserAndAssignment_result(event)" fault="failure(event)"/>
+		<mx:method name="getTeamHasUserHasAssignmentByTeamAndAssignment" result="getTeamHasUserHasAssignmentByTeamAndAssignment_result(event)" fault="failure(event)"/>
+		<mx:method name="getAssessmentsByTeamAndAssignment" result="getAssessmentsByTeamAndAssignment_result(event)" fault="failure(event)"/>
 	</mx:RemoteObject>
 		
 	<mx:Canvas label="Roteiros" id="assignmentCanvas">

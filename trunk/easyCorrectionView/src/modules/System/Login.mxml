@@ -176,11 +176,8 @@
 			textAlign="center" width="379" x="78.5" y="173" text="Easy Lab Correction" fontSize="16" height="29" fontStyle="normal"/>
 			
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
-		
 			<mx:method name="validateUser" result="validateUser_result(event)" fault="fail(event)"/>
 			<mx:method name="getUserByLogin" result="getUser_result(event)" fault="fail(event)"/>
-			
-			
 		</mx:RemoteObject>
 	
 		<mx:Form width="439" y="223" x="48.5">
