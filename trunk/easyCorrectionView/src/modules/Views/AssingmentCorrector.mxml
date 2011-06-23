@@ -95,7 +95,7 @@
 				private function getAssingmentTeamByAssingment():void{
 					var assig: Assignment = CastEntities.castAssignment(comboAssignment.selectedItem);
 					inputWeight.text = String(100 - assig.automaticTestsPercentage) + "%";
-					var userId: int = SharedObject.getLocal("sistema", "/").data.usuarioId;
+					var userId: int = SharedObject.getLocal("sistema", "/").data.idUsuario;
 					facade.getOperation("getAssessmentByAssignmentAndCorrector").send(assig, userId);
 				}
 				
@@ -134,7 +134,7 @@
 				}
 					
 				private function selecaoLabelIntegrantes(item: *): String{
-					return item.user.nome;
+					return item.user.name;
 				}
 				
 				private function getSourceFileName_result(event:ResultEvent):void{
