@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flexProperties flexServerType="0" toolCompile="true" useServerFlexSDK="false" version="1"/>
+<flexProperties flexServerType="16" serverContextRoot="/easyCorrectionView" serverRoot="C:/apache-tomcat-6.0.20/webapps/easyCorrectionView" serverRootURL="http://localhost:8080/easyCorrectionView" toolCompile="true" useServerFlexSDK="false" version="1"/>
