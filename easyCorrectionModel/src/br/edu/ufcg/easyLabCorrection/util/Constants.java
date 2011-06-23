@@ -18,7 +18,7 @@ public class Constants {
 	//public static final String diretorioBackupBancoDeDados = "/home/elc/";
 	public static final String bdBackupDirectory = "D:/Graduação/";
 	public static final String bdBackupFile = "backupEasyLabCorrection0000.sql";
-	public static final String mainTeste = "MainTest";
+	public static final String mainTest = "MainTest";
 	
 	public static final String notAllowedWords = "System.exit";
 	
