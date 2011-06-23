@@ -93,7 +93,7 @@ package bean.Utility {
 			
 		}
 		
-		public static function formatsDateStringEmDate(data:String):Date{
+		public static function formatsDateStringToDate(data:String):Date{
 			var dat:Date = new Date();
 			var datStr:String = "";
 			var arr:Array = new Array();
