@@ -1,6 +1,6 @@
 // ActionScript file
 package bean.assignments{
-	import bean.system.Stage;
+	import bean.system.SystemStage;
 	
 
 	[Bindable]
@@ -9,7 +9,7 @@ package bean.assignments{
 	public class Assignment{
 
 		public var id:int;
-		public var stage:Stage;
+		public var stage:SystemStage;
 		public var name:String;
 		public var description:String;
 		public var releaseDate:Date;
