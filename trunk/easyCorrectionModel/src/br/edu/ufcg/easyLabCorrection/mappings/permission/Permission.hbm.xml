@@ -12,7 +12,7 @@
 
 		<many-to-one name="group" lazy="false" column="grupo_id" class="br.edu.ufcg.easyLabCorrection.pojo.permission.Group" insert="true" update="true"/>
 		
-		<many-to-one name="function" lazy="false" column="funcao_id" class="br.edu.ufcg.easyLabCorrection.pojo.permission.Function" insert="true" update="true"/>
+		<many-to-one name="menuFunction" lazy="false" column="funcao_id" class="br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction" insert="true" update="true"/>
 
 	</class>
 </hibernate-mapping>

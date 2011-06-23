@@ -254,7 +254,7 @@ public class AccessPermissionManager extends Manager {
 	 */
 	private boolean containsFunction(List<Permission> list, MenuFunction function) {
 		for (Permission p : list) {
-			if (p.getFunction().getFunctionId()
+			if (p.getMenuFunction().getFunctionId()
 					.equals(function.getFunctionId())) {
 				return true;
 			}
@@ -496,14 +496,14 @@ public class AccessPermissionManager extends Manager {
 		// criando a lista de Permissao
 		for (MenuFunction f : list) {
 			Permission p = new Permission();
-			p.setFunction(f);
+			p.setMenuFunction(f);
 			p.setGroup(g);
 			newList.add(p);
 		}
 		// gravando as novas permissoes
 		for (Permission addPermission : newList) {
 			if (!containsFunction(permissaoDoGrupoBanco, addPermission
-					.getFunction())) {
+					.getMenuFunction())) {
 				Integer id = DAOFactory.DEFAULT.buildPermissionDAO().save(
 						addPermission);
 				addPermission.setPermissionId(id);
@@ -511,14 +511,14 @@ public class AccessPermissionManager extends Manager {
 				List<Permission> anotherP = DAOFactory.DEFAULT
 						.buildPermissionDAO().findByGroupAndFunction(
 								g.getGroupId(),
-								addPermission.getFunction().getFunctionId());
+								addPermission.getMenuFunction().getFunctionId());
 				addPermission = anotherP.get(0); // eh garantido que a lista não
 				// é vazia
 			}
 		}
 		// removendo as permissoes não passada na lista
 		for (Permission delPermissao : permissaoDoGrupoBanco) {
-			if (!containsFunction(newList, delPermissao.getFunction())) {
+			if (!containsFunction(newList, delPermissao.getMenuFunction())) {
 				DAOFactory.DEFAULT.buildPermissionDAO().delete(delPermissao);
 			}
 		}
@@ -564,8 +564,8 @@ public class AccessPermissionManager extends Manager {
 								gU.getGroup().getGroupId());
 				if (!pList.isEmpty()) {
 					for (Permission p : pList) {
-						if (!isFunctionRepeated(functionsList, p.getFunction())) {
-							functionsList.add(p.getFunction());
+						if (!isFunctionRepeated(functionsList, p.getMenuFunction())) {
+							functionsList.add(p.getMenuFunction());
 						}
 					}
 				}

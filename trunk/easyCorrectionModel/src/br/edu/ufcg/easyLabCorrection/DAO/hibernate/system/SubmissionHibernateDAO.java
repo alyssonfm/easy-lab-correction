@@ -28,8 +28,8 @@ public class SubmissionHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Submission> findByTeamAndAssignment(Integer teamId, Integer assignmentId) {
-		Query q = getSession().createQuery("from Submission where teamHasUserHasAssignment.team.teamId = :teamId " +
-				"and teamHasUserHasAssignment.assignment.assignmentId = :assignmentId");
+		Query q = getSession().createQuery("from Submission where teamHasUserHasAssignment.team.id = :teamId " +
+				"and teamHasUserHasAssignment.assignment.id = :assignmentId");
 		q.setParameter("teamId",teamId);
 		q.setParameter("assignmentId",assignmentId);
 		q.setCacheable(true);

@@ -30,7 +30,7 @@ public class TeamHasUserHasAssignmentHibernateDAO extends
 	@SuppressWarnings("unchecked")
 	public List<TeamHasUserHasAssignment> findByUserAndAssignment(Integer userId, Integer assignmentId) {
 		Query q = getSession().createQuery("from TeamHasUserHasAssignment where user.userId = :userId " +
-				"and assignment.assignmentId = :assignmentId");
+				"and assignment.id = :assignmentId");
 		q.setParameter("userId", userId);
 		q.setParameter("assignmentId", assignmentId);
 		q.setCacheable(true);
@@ -40,8 +40,8 @@ public class TeamHasUserHasAssignmentHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<TeamHasUserHasAssignment> findByTeamAndAssignment(Integer teamId, Integer assignmentId) {
-		Query q = getSession().createQuery("from TeamHasUserHasAssignment where team.teamId = :teamId " +
-				"and assignment.assignmentId = :assignmentId");
+		Query q = getSession().createQuery("from TeamHasUserHasAssignment where team.id = :teamId " +
+				"and assignment.id = :assignmentId");
 		q.setParameter("teamId",teamId);
 		q.setParameter("assignmentId", assignmentId);
 		q.setCacheable(true);
@@ -52,7 +52,7 @@ public class TeamHasUserHasAssignmentHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<TeamHasUserHasAssignment> findByAssignment(Integer assignmentId) {
-		Query q = getSession().createQuery("from TeamHasUserHasAssignment where assignment.assignmentId = :assignmentId");
+		Query q = getSession().createQuery("from TeamHasUserHasAssignment where assignment.id = :assignmentId");
 		q.setParameter("assignmentId", assignmentId);
 		q.setCacheable(true);
 		List <TeamHasUserHasAssignment> list = q.list();
@@ -61,7 +61,7 @@ public class TeamHasUserHasAssignmentHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<TeamHasUserHasAssignment> findByAssignmentGroupByTeam(Integer assignmentId) {
-		Query q = getSession().createQuery("from TeamHasUserHasAssignment where assignment.assignmentId = :assignmentId GROUP BY team.teamId");
+		Query q = getSession().createQuery("from TeamHasUserHasAssignment where assignment.id = :assignmentId GROUP BY team.id");
 		q.setParameter("assignmentId",assignmentId);
 		q.setCacheable(true);
 		List <TeamHasUserHasAssignment> list = q.list();

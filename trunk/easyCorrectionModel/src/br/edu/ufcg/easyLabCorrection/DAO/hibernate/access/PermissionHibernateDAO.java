@@ -51,7 +51,7 @@ public class PermissionHibernateDAO extends
 	public List<Permission> findByGroupAndFunction(Integer groupId, Integer functionId) {
 		Criteria crit = getSession().createCriteria(getPersistentClass());
 		crit.add(Restrictions.eq("group.groupId", groupId));
-		crit.add(Restrictions.eq("function.functionId", functionId));
+		crit.add(Restrictions.eq("menuFunction.functionId", functionId));
         List<Permission> list = crit.list();
         instantiatesList(list);
         return list;
@@ -73,7 +73,7 @@ public class PermissionHibernateDAO extends
 	}
 	
 	public static Permission instantiatesPermission(Permission p) throws EmptyFieldException{
-		p.setFunction(FunctionHibernateDAO.instantiatesFunction(p.getFunction()));
+		p.setMenuFunction(FunctionHibernateDAO.instantiatesFunction(p.getMenuFunction()));
 		p.setGroup(GroupHibernateDAO.instanciaGroup(p.getGroup()));
 		p = MyPersistenceLayer.deproxy(p, Permission.class);
 		return p;

@@ -22,7 +22,7 @@ public class Permission implements Serializable {
 	
 	private Group group;
 	
-	private MenuFunction function;
+	private MenuFunction menuFunction;
 	
 	public Permission() {
 		super();
@@ -32,7 +32,7 @@ public class Permission implements Serializable {
 		super();
 		this.permissionId = permissionId;
 		this.group = group;
-		this.function = function;
+		this.menuFunction = function;
 	}
 
 	public Integer getPermissionId() {
@@ -51,12 +51,12 @@ public class Permission implements Serializable {
 		this.group = group;
 	}
 
-	public MenuFunction getFunction() {
-		return function;
+	public MenuFunction getMenuFunction() {
+		return menuFunction;
 	}
 
-	public void setFunction(MenuFunction function) {
-		this.function = function;
+	public void setMenuFunction(MenuFunction function) {
+		this.menuFunction = function;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class Permission implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((function == null) ? 0 : function.hashCode());
+				+ ((menuFunction == null) ? 0 : menuFunction.hashCode());
 		result = prime * result + ((group == null) ? 0 : group.hashCode());
 		result = prime * result
 				+ ((permissionId == null) ? 0 : permissionId.hashCode());
@@ -80,10 +80,10 @@ public class Permission implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Permission other = (Permission) obj;
-		if (function == null) {
-			if (other.function != null)
+		if (menuFunction == null) {
+			if (other.menuFunction != null)
 				return false;
-		} else if (!function.equals(other.function))
+		} else if (!menuFunction.equals(other.menuFunction))
 			return false;
 		if (group == null) {
 			if (other.group != null)
@@ -101,7 +101,7 @@ public class Permission implements Serializable {
 	@Override
 	public String toString() {
 		return "Permission [permissionId=" + permissionId + ", group=" + group
-				+ ", function=" + function + "]";
+				+ ", function=" + menuFunction + "]";
 	}
 	
 }
