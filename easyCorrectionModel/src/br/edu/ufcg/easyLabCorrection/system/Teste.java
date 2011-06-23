@@ -17,7 +17,7 @@ import javax.tools.ToolProvider;
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
 import br.edu.ufcg.easyLabCorrection.managers.CompilationManager;
 import br.edu.ufcg.easyLabCorrection.managers.TestManager;
-import br.edu.ufcg.easyLabCorrection.util.SubmissionFileFilter;
+import br.edu.ufcg.easyLabCorrection.util.CompilationFileFilter;
 
 public class Teste {
 	
