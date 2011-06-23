@@ -3,7 +3,7 @@
 
 -->
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
-						xmlns:les="modulos.sistema.*" 
+						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
 	width="696" height="418" creationComplete="init()" title="Gerenciamento de Equipes" showCloseButton="true" close="closeWindow()" layout="absolute">
@@ -147,7 +147,7 @@
 			}
 			
 			private function getUser_result(event:ResultEvent):void{
-				user = new Usuario();
+				user = new User();
 				user = CastEntities.castUser(event.result);
 			}
 			
@@ -178,12 +178,12 @@
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 		
-			<mx:method name="getReleasedAssignments" result="getReleasedAssignments_result(event)" fault="falha(event)"/>
-			<mx:method name="getTeams" result="getTeams_result(event)" fault="falha(event)"/>
-			<mx:method name="getTeamHasUserHasAssignmentByTeamAndAssignment" result="getTeamHasUserHasAssignmentByTeamAndAssignment_result(event)" fault="falha(event)"/>
-			<mx:method name="getTeamHasUserHasAssignments" result="getTeamHasUserHasAssignments_result(event)" fault="falha(event)"/>
-			<mx:method name="changeTeam" result=" changeTeam_result(event)" fault="falha(event)"/>
-			<mx:method name="getUser" result="getUser_result(event)" fault="falha(event)"/>
+			<mx:method name="getReleasedAssignments" result="getReleasedAssignments_result(event)" fault="failure(event)"/>
+			<mx:method name="getTeams" result="getTeams_result(event)" fault="failure(event)"/>
+			<mx:method name="getTeamHasUserHasAssignmentByTeamAndAssignment" result="getTeamHasUserHasAssignmentByTeamAndAssignment_result(event)" fault="failure(event)"/>
+			<mx:method name="getTeamHasUserHasAssignments" result="getTeamHasUserHasAssignments_result(event)" fault="failure(event)"/>
+			<mx:method name="changeTeam" result=" changeTeam_result(event)" fault="failure(event)"/>
+			<mx:method name="getUser" result="getUser_result(event)" fault="failure(event)"/>
 			
 		</mx:RemoteObject>
 		

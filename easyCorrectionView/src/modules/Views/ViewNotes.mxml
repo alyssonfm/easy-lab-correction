@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
-						xmlns:les="modulos.sistema.*" 
+						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
 	width="800" height="538" creationComplete="init()" title="Notas" showCloseButton="true" close="closeWindow()" layout="absolute">
@@ -126,7 +126,7 @@
 		<mx:DataGrid x="10" y="58" width="760" height="426" wordWrap="true" id="dgNotes" labelFunction="labelGrid">
 			<mx:columns>
 				<mx:DataGridColumn headerText="Matrícula" width="50" sortCompareFunction="compareLogin"/>
-				<mx:DataGridColumn headerText="Nome do aluno"  width="150" sortable="true" sortCompareFunction="compareNome"/>
+				<mx:DataGridColumn headerText="Nome do aluno"  width="150" sortable="true" sortCompareFunction="compareName"/>
 				<mx:DataGridColumn headerText="Porcentagem (Testes Automáticos)" width="50"/>
 				<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
 				<mx:DataGridColumn headerText="Nota2 (Corretor)" width="50"/>
