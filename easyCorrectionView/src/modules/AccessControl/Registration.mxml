@@ -20,16 +20,16 @@
 				<mx:TextInput x="479" y="70.5" width="134" id="inputUserPasswordState" displayAsPassword="true"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="244.5" y="132.5" label="   Salvar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButtonState" height="28" enabled="false"/>
+				<mx:Button x="244.5" y="132.5" label="   Salvar" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButtonState" height="28" enabled="false"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="101.5" y="132.5" label="   Novo" width="135" height="28" id="newUserButtonState" click="mudaCadastrar()" icon="@Embed(source='../../image/novo.png')"/>
+				<mx:Button x="101.5" y="132.5" label="   Novo" width="135" height="28" id="newUserButtonState" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="387.5" y="132.5" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButtonState" height="28"/>
+				<mx:Button x="387.5" y="132.5" label="   Remover" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButtonState" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="244.5" y="132.5" label="   Atualizar" click="verificaUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButtonState" height="28"/>
+				<mx:Button x="244.5" y="132.5" label="   Atualizar" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButtonState" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="12" y="11.5" text="Grupo:" id="labelUserGroupState"/>
@@ -50,8 +50,8 @@
 				<mx:Label x="421" y="72.5" text="Senha:" id="labelUserPasswordState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:DataGrid x="11" y="168.5" width="602" height="223.5" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
-						 labelFunction="labelGridUsuarios" id="dgUsersState">
+				<mx:DataGrid x="11" y="168.5" width="602" height="223.5" draggableColumns="false" change="selectUser()" itemClick="selectUser()"
+						 labelFunction="labelGridUsers" id="dgUsersState">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Login" dataField="id" width="200"/>
 						<mx:DataGridColumn headerText="Usuário"/>
@@ -63,6 +63,13 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import events.ClosePopupEvent;
+			import bean.permission.Menu;
+			import bean.permission.MenuFunction;
+			import bean.permission.Group;
+			import bean.user.UserGroup;
+			import bean.user.User;
+			import bean.Utility.Util;
 			import bean.Utility.CastEntities;
 			import mx.utils.ObjectUtil;
 			import mx.utils.StringUtil;
@@ -123,9 +130,9 @@
 			private var groups: ArrayCollection = new ArrayCollection();
 			
 			private var menu: Menu = new Menu();
-			private var func: Function = new Function();
+			private var func: MenuFunction = new MenuFunction();
 			private var group: Group = new Group();
-			private var user: Usuario = new Usuario();
+			private var user: User = new User();
 			private var userGroup: UserGroup = new UserGroup();
 			private var loggedUser: *;
 			private var validEmail: Boolean;
@@ -211,15 +218,15 @@
 			
 			private function menuFailure(event:FaultEvent):void {
 				var message:String = "Não é possível realizar a exclusão. Pois existem funções cadastradas nesse Menu.";
-				lancaExcessao(new Array(true, message));
+				launchException(new Array(true, message));
 			}
 			
 			private function groupFailure(event:FaultEvent):void {
 				var message:String = "Não é possível realizar a operação. Pois existem usuários cadastrados nesse Grupo.";
-				lancaExcessao(new Array(true, message));
+				launchException(new Array(true, message));
 			}
 			
-			private function lancaExcessao(params: Array): void{
+			private function launchException(params: Array): void{
 				ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, params);
 			}
 			
@@ -239,11 +246,11 @@
 				if (tabNav.selectedIndex == 3){
 					cbMenu.dataProvider = menus;
 					cbMenu.selectedIndex = -1;
-					functionsList();
+					functionList();
 				}
 			}
 			
-			private function functionsList():void{
+			private function functionList():void{
 				facade.getOperation("listarFuncoes").send()
 			}
 			
@@ -286,7 +293,7 @@
 							groups = new ArrayCollection();
 							groups.addItem(event.result);
 						}
-						dgGrupos.dataProvider = groups;
+						dgGroups.dataProvider = groups;
 					}
 					if (tabNav.selectedIndex == 0){
 						cbUserGroup.dataProvider = groups;
@@ -400,166 +407,165 @@
 				}
 			}
 			
-			//Parei Aqui!
-			private function cadastrarFuncao(): void{
-				func = new Function();
-				editarFuncao();
+			private function saveFunction(): void{
+				func = new MenuFunction();
+				updateFunction();
 			}
 			
-			private function editarFuncao():void {
-				func.name = StringUtil.trim(inputNomeFuncao.text);
-				func.label = StringUtil.trim(inputRotuloFuncao.text);
-				func.menu = CastDeEntidades.castMenu(cbMenu.selectedItem);
+			private function updateFunction():void {
+				func.name = StringUtil.trim(inputFunctionName.text);
+				func.label = StringUtil.trim(inputFunctionLabel.text);
+				func.menu = CastEntities.castMenu(cbMenu.selectedItem);
 				facade.getOperation("cadastrarFuncao").send(func);
 			}
 			
-			private function excluirFuncao():void {
+			private function removeFunction():void {
 				facade.getOperation("excluirFuncao").send(func);
 			}
 			
-			private function excluirFuncao_result(): void{
-				functionsList();
+			private function removeFunction_result(): void{
+				functionList();
 				clearFieldsByTab();
 			}
 			
-			private function filtrarFuncoesPorMenu():void {
+			private function filtrateFunctionsByMenu():void {
 				try{
-					handleValidaFuncao(null);
+					handleValidateFunction(null);
 					var menuAux : * = cbMenu.selectedItem;
-					facade.getOperation("consultarFuncaoPorMenu").send(menuAux.idMenu);
+					facade.getOperation("consultarFuncaoPorMenu").send(menuAux.menuId);
 				} catch(e: Error){}
 				
 			}
 			
-			private function consultarFuncaoPorMenu_result(event:ResultEvent): void{
+			private function getFunctionByMenu_result(event:ResultEvent): void{
 				dgFunctions.dataProvider = new ArrayCollection();
 				dgFunctions.dataProvider = event.result as ArrayCollection;
 			}
 			
-			private function cadastrarFuncao_result(event:ResultEvent): void{
-				var funcaoP: Function = CastDeEntidades.castFuncao(event.result);
-				if (funcaoP != null && funcaoP.functionId != 0){
-					functionsList();	
-					inputNomeFuncao.text = "";
-					inputRotuloFuncao.text = "";
+			private function saveFunction_result(event:ResultEvent): void{
+				var pFunction: MenuFunction = CastEntities.castFunction(event.result);
+				if (pFunction != null && pFunction.functionId != 0){
+					functionList();	
+					inputFunctionName.text = "";
+					inputFunctionLabel.text = "";
 				}
 				else{
-					var paramErro:Array = new Array(true, "Falha ao cadastrar esta Função.");
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramErro);
+					var paramError:Array = new Array(true, "Falha ao cadastrar esta Função.");
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramError);
 				} 	
 			}
 			
-			private function selecionarFuncao(): void{
+			private function selectFunction(): void{
 				if (dgFunctions.selectedItem != null) {
-					func.functionId = dgFunctions.selectedItem.idFuncao;
-					func.name = dgFunctions.selectedItem.nome;
-					func.label = dgFunctions.selectedItem.rotulo;
-					func.menu = CastDeEntidades.castMenu(dgFunctions.selectedItem.menu);
-					inputNomeFuncao.text = func.name;
-					inputRotuloFuncao.text = func.label;
-					cbMenu.selectedIndex = Util.pegaPosObjeto("idMenu", ArrayCollection(cbMenu.dataProvider), func.menu);
-					botaoCadastrarFuncao.visible = false;
-					botaoAtualizarFuncao.visible = true;
-					botaoRemoverFuncao.visible = true;
-					botaoRemoverFuncao.enabled = true;
-					botaoAtualizarFuncao.enabled = true;
+					func.functionId = dgFunctions.selectedItem.functionId;
+					func.name = dgFunctions.selectedItem.name;
+					func.label = dgFunctions.selectedItem.label;
+					func.menu = CastEntities.castMenu(dgFunctions.selectedItem.menu);
+					inputFunctionName.text = func.name;
+					inputFunctionLabel.text = func.label;
+					cbMenu.selectedIndex = Util.objectTakesPost("menuId", ArrayCollection(cbMenu.dataProvider), func.menu);
+					saveFunctionButton.visible = false;
+					updateFunctionButton.visible = true;
+					removeFunctionButton.visible = true;
+					removeFunctionButton.enabled = true;
+					updateFunctionButton.enabled = true;
 				}
 			}
 			
-			private function cadastrarGrupo(): void{
+			private function saveGroup(): void{
 				group = new Group();
-				editarGrupo();
+				updateGroup();
 			}
 			
-			private function editarGrupo():void {
-				group.name = StringUtil.trim(inputGrupo.text);
+			private function updateGroup():void {
+				group.name = StringUtil.trim(inputGroup.text);
 				facade.getOperation("cadastrarGrupo").send(group);
 			}
 			
-			private function excluirGrupo():void {
+			private function removeGroup():void {
 				facade.getOperation("excluirGrupo").send(group);
 			}
 			
-			private function excluirGrupo_result(): void{
+			private function removeGroup_result(): void{
 				groupList();
 				clearFieldsByTab();
 			}
 			
-			private function cadastrarGrupo_result(event:ResultEvent): void{
-				var grupoP: Group = CastDeEntidades.castGrupo(event.result);
-				if (grupoP != null && grupoP.groupId != 0){
+			private function saveGroup_result(event:ResultEvent): void{
+				var pGroup: Group = CastEntities.castGroup(event.result);
+				if (pGroup != null && pGroup.groupId != 0){
 					groupList();	
-					inputGrupo.text = "";
+					inputGroup.text = "";
 				}
 				else{
-					var paramErro:Array = new Array(true, "Falha ao cadastrar este Grupo.");
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramErro);
+					var paramError:Array = new Array(true, "Falha ao cadastrar este Grupo.");
+					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramError);
 				} 	
 			}
 			
-			private function selecionarGrupo(): void{
-				if (dgGrupos.selectedItem != null) {
-					group.groupId = dgGrupos.selectedItem.idGrupo;
-					group.name = dgGrupos.selectedItem.nome;
-					inputGrupo.text = group.name;
-					botaoCadastrarGrupo.visible = false;
-					botaoAtualizarGrupo.visible = true;
-					botaoRemoverGrupo.visible = true;
+			private function selectGroup(): void{
+				if (dgGroups.selectedItem != null) {
+					group.groupId = dgGroups.selectedItem.groupId;
+					group.name = dgGroups.selectedItem.name;
+					inputGroup.text = group.name;
+					saveGroupButton.visible = false;
+					updateGroupButton.visible = true;
+					removeGroupButton.visible = true;
 				}
 			}
 			
-			private function cadastrarGrupoUsuario(): void{
+			private function saveUserGroup(): void{
 				firstEntry = true;
-				user = new Usuario();
+				user = new User();
 				userGroup = new UserGroup();
-				verificaUsuario();
+				verifyUser();
 			}
 			
-			private function getUsuarioPorLogin_result(event:ResultEvent): void{
-				var mens:Array = new Array(true, "Login já existente, alteração não realizada.");
-				lancaExcessao(mens);
+			private function getUserByLogin_result(event:ResultEvent): void{
+				var localMessage:Array = new Array(true, "Login já existente, alteração não realizada.");
+				launchException(localMessage);
 			}
 			
-			private function falhaUsuarioExistente(event:FaultEvent):void {
+			private function ExistingUserFailure(event:FaultEvent):void {
 				if(firstEntry){
 					if (currentState != "teacherState"){
-						if(inputSenhaUsuario.text.length == 0){
+						if(inputUserPassword.text.length == 0){
 							facade.getOperation("gerarSenha").send(6,"");		
 						}
 						else{
-							editarUsuario();
+							UpdateUser();
 						}
 					}else{
 						if(inputUserPasswordState.text.length == 0){
 							facade.getOperation("gerarSenha").send(6,"");
 						}
 						else{
-							editarUsuario();
+							UpdateUser();
 						}
 					}
 				}
 				else{
-					editarUsuario();		
+					UpdateUser();		
 				}
 			}
 			
-			private function gerarSenha_result(event:ResultEvent): void{
+			private function generatePassword_result(event:ResultEvent): void{
 				generatedPassword = event.result as String;
-				editarUsuario();
+				UpdateUser();
 			}
 			
-			private function verificaUsuario(): void{
+			private function verifyUser(): void{
 				try{
 					if (currentState != "teacherState"){
 						if(firstEntry){
-							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));
+							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputUserLogin.text));
 						}
 						else{
-							if(dgUsuarios.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
-								facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputLoginUsuario.text));	
+							if(dgUsers.selectedItem.user.login != StringUtil.trim(inputUserLogin.text)){
+								facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputUserLogin.text));	
 							}
 							else{
-								editarUsuario();		
+								UpdateUser();		
 							}
 						}
 					}
@@ -568,110 +574,110 @@
 							facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputUserLoginState.text));
 						}
 						else{
-							if(dgUsersState.selectedItem.usuario.login != StringUtil.trim(inputLoginUsuario.text)){
+							if(dgUsersState.selectedItem.user.login != StringUtil.trim(inputUserLogin.text)){
 								facade.getOperation("getUsuarioPorLogin").send(StringUtil.trim(inputUserLoginState.text));	
 							}
 							else{
-								editarUsuario();		
+								UpdateUser();		
 							}	
 						}
 					}
 				}catch(e: Error){
-					editarUsuario();
+					UpdateUser();
 				}
 			}
 			
-			private function editarUsuario(): void{
-				var mens:Array;
+			private function UpdateUser(): void{
+				var localMessage:Array;
 				if (currentState != "teacherState"){
-					if(inputSenhaUsuario.text.length != 0 && inputSenhaUsuario.text.length < 6){
-						mens = new Array(true, "Senha muito pequena, cadastro não realizado.");
-						lancaExcessao(mens);
+					if(inputUserPassword.text.length != 0 && inputUserPassword.text.length < 6){
+						localMessage = new Array(true, "Senha muito pequena, cadastro não realizado.");
+						launchException(localMessage);
 					}
 					else{
-						if(dgUsuarios.selectedItem != null){
-							if(!firstEntry) user.idUsuario = dgUsuarios.selectedItem.usuario.idUsuario;
-							if(StringUtil.trim(inputSenhaUsuario.text) != ""){
-								user.senha = StringUtil.trim(inputSenhaUsuario.text);
+						if(dgUsers.selectedItem != null){
+							if(!firstEntry) user.userId = dgUsers.selectedItem.user.userId;
+							if(StringUtil.trim(inputUserPassword.text) != ""){
+								user.password = StringUtil.trim(inputUserPassword.text);
 							}else{
-								if(firstEntry) user.senha = generatedPassword;
-								else user.senha = dgUsuarios.selectedItem.usuario.senha;
+								if(firstEntry) user.password = generatedPassword;
+								else user.password = dgUsers.selectedItem.user.password;
 							}	
 						}else{
-							if(firstEntry && inputSenhaUsuario.text.length == 0){
-								user.senha = generatedPassword;
+							if(firstEntry && inputUserPassword.text.length == 0){
+								user.password = generatedPassword;
 							}
 							else{
-								user.senha = StringUtil.trim(inputSenhaUsuario.text);
+								user.password = StringUtil.trim(inputUserPassword.text);
 							}	
 						}
-						user.login = StringUtil.trim(inputLoginUsuario.text);
-						user.nome = StringUtil.trim(inputNomeUsuario.text);
-						user.email = StringUtil.trim(inputEmailUsuario.text);
+						user.login = StringUtil.trim(inputUserLogin.text);
+						user.name = StringUtil.trim(inputUserName.text);
+						user.email = StringUtil.trim(inpuUserEmail.text);
 						if(!firstEntry && userGroup.user.email != user.email){
 							emailChanged = true;
 						}
-						userGroup.group = CastDeEntidades.castGrupo(cbUserGroup.selectedItem);
+						userGroup.group = CastEntities.castGroup(cbUserGroup.selectedItem);
 						userGroup.user = user;
 						facade.getOperation("cadastrarUsuario").send(userGroup);
 					}
 				}
 				else{
 					if(inputUserPasswordState.text.length != 0 && inputUserPasswordState.text.length < 6){
-						mens = new Array(true, "Senha muito pequena, cadastro não realizado.");
-						lancaExcessao(mens);
+						localMessage = new Array(true, "Senha muito pequena, cadastro não realizado.");
+						launchException(localMessage);
 					}
 					else{
 						if(dgUsersState.selectedItem != null){
-							if(!firstEntry) user.idUsuario = dgUsersState.selectedItem.usuario.idUsuario;
+							if(!firstEntry) user.userId = dgUsersState.selectedItem.user.userId;
 							if(StringUtil.trim(inputUserPasswordState.text) != ""){
-								user.senha = StringUtil.trim(inputUserPasswordState.text);
+								user.password = StringUtil.trim(inputUserPasswordState.text);
 							}else{
-								if(firstEntry) user.senha = generatedPassword;
-								else user.senha = dgUsersState.selectedItem.usuario.senha;
+								if(firstEntry) user.password = generatedPassword;
+								else user.password = dgUsersState.selectedItem.user.password;
 							}	
 						}else{
 							if(firstEntry && inputUserPasswordState.text.length == 0){
-								user.senha = generatedPassword;
+								user.password = generatedPassword;
 							}
 							else{
-								user.senha = StringUtil.trim(inputUserPasswordState.text);
+								user.password = StringUtil.trim(inputUserPasswordState.text);
 							}	
 						}
 						user.login = StringUtil.trim(inputUserLoginState.text);
-						user.nome = StringUtil.trim(inputUserNameState.text);
+						user.name = StringUtil.trim(inputUserNameState.text);
 						user.email = StringUtil.trim(inputUserEmailState.text);
 						if(!firstEntry && userGroup.user.email != user.email){
 							emailChanged = true;
 						}
-						userGroup.group = CastDeEntidades.castGrupo(cbUserGroupState.selectedItem);
+						userGroup.group = CastEntities.castGroup(cbUserGroupState.selectedItem);
 						userGroup.user = user;
 						facade.getOperation("cadastrarUsuario").send(userGroup);
 					}
 				}
 			}
 			
-			private function excluirUsuario():void {
+			private function removeUser():void {
 				facade.getOperation("excluirUsuario").send(userGroup);
 			}
 			
-			private function excluirGrupoUsuario_result(): void{
+			private function removeUserGroup_result(): void{
 				filtrateUserByGroup();
 				clearFieldsByTab();
 				var mens: Array = new Array(false, "Usuário removido com sucesso!");
-				lancaExcessao(mens);
+				launchException(mens);
 			}
 			
-			private function cadastrarUsuario_result(event:ResultEvent): void{
-				var grupoUsuarioP: UserGroup = CastDeEntidades.castGrupoUsuario(event.result);
-				if (grupoUsuarioP != null && grupoUsuarioP.userGroupId != 0){
+			private function saveUser_result(event:ResultEvent): void{
+				var pUserGroup: UserGroup = CastEntities.castUserGroup(event.result);
+				if (pUserGroup != null && pUserGroup.userGroupId != 0){
 					filtrateUserByGroup();
 					if (currentState != "teacherState"){
-						inputLoginUsuario.text = "";
-						inputNomeUsuario.text = "";
-						passwordSaved = inputSenhaUsuario.text;
-						inputSenhaUsuario.text = "";
-						inputEmailUsuario.text = "";
+						inputUserLogin.text = "";
+						inputUserName.text = "";
+						passwordSaved = inputUserPassword.text;
+						inputUserPassword.text = "";
+						inpuUserEmail.text = "";
 					}
 					else{	
 						inputUserLoginState.text = "";
@@ -681,24 +687,24 @@
 						inputUserEmailState.text = "";
 					}
 				}
-				var mens:Array;
+				var localMessage:Array;
 				if (firstEntry){
-					envioEmails(grupoUsuarioP);
+					sendEmails(pUserGroup);
 					firstEntry = false;
 					filtrateUserByGroup();
 				}
 				else{
 					if(emailChanged){
-						envioEmails(userGroup);
+						sendEmails(userGroup);
 						emailChanged = false;
 					} else{
-						mens = new Array(false, "Dados atualizados com sucesso!");
-						lancaExcessao(mens);
+						localMessage = new Array(false, "Dados atualizados com sucesso!");
+						launchException(localMessage);
 					}
 				}
 			}
 			
-			private function envioEmails(grupoUsuarioP: UserGroup):void {
+			private function sendEmails(grupoUsuarioP: UserGroup):void {
 				if(passwordSaved == ""){
 					passwordSaved = generatedPassword;
 				}
@@ -714,36 +720,36 @@
 						"<BR>Atenciosamente,</BR>" +
 						"<BR>Easy Lab Correction</BR>";
 				
-				message = Util.geraCodigosHTML(message);
+				message = Util.generateHTMLCode(message);
 				contact = grupoUsuarioP.user.email;
-				userName = grupoUsuarioP.user.nome;
-				servicoEnviarEmail.send();
+				userName = grupoUsuarioP.user.name;
+				sendEmailService.send();
 				
 			}
 			
-			private function selecionarUsuario(): void{
+			private function selectUser(): void{
 				if (currentState != "teacherState"){
-					if (dgUsuarios.selectedItem != null) {
-						userGroup.userGroupId = dgUsuarios.selectedItem.idGrupoUsuario;
-						userGroup.user = CastDeEntidades.castUsuario(dgUsuarios.selectedItem.usuario);
-						userGroup.group = dgUsuarios.selectedItem.grupo;
-						cbUserGroup.selectedIndex = Util.pegaPosObjeto("idGrupo", ArrayCollection(cbUserGroup.dataProvider), userGroup.group);
-						inputNomeUsuario.text = userGroup.user.nome;
-						inputLoginUsuario.text = userGroup.user.login;
-						inputEmailUsuario.text = userGroup.user.email;
-						botaoCadastrarUsuario.visible = false;
-						botaoAtualizarUsuario.visible = true;
-						botaoNovoUsuario.visible = true;
-						botaoRemoverUsuario.visible = true;
+					if (dgUsers.selectedItem != null) {
+						userGroup.userGroupId = dgUsers.selectedItem.userGroupId;
+						userGroup.user = CastEntities.castUser(dgUsers.selectedItem.user);
+						userGroup.group = dgUsers.selectedItem.group;
+						cbUserGroup.selectedIndex = Util.objectTakesPost("groupId", ArrayCollection(cbUserGroup.dataProvider), userGroup.group);
+						inputUserName.text = userGroup.user.name;
+						inputUserLogin.text = userGroup.user.login;
+						inpuUserEmail.text = userGroup.user.email;
+						saveUserButton.visible = false;
+						updateUserButton.visible = true;
+						newUserButton.visible = true;
+						removeUserButton.visible = true;
 					}
 				}
 				else{
 					if (dgUsersState.selectedItem != null) {
-						userGroup.userGroupId = dgUsersState.selectedItem.idGrupoUsuario;
-						userGroup.user = CastDeEntidades.castUsuario(dgUsersState.selectedItem.usuario);
-						userGroup.group = dgUsersState.selectedItem.grupo;
-						cbUserGroupState.selectedIndex = Util.pegaPosObjeto("idGrupo", ArrayCollection(cbUserGroupState.dataProvider), userGroup.group);
-						inputUserNameState.text = userGroup.user.nome;
+						userGroup.userGroupId = dgUsersState.selectedItem.userGroupId;
+						userGroup.user = CastEntities.castUser(dgUsersState.selectedItem.user);
+						userGroup.group = dgUsersState.selectedItem.group;
+						cbUserGroupState.selectedIndex = Util.objectTakesPost("groupId", ArrayCollection(cbUserGroupState.dataProvider), userGroup.group);
+						inputUserNameState.text = userGroup.user.name;
 						inputUserLoginState.text = userGroup.user.login;
 						inputUserEmailState.text = userGroup.user.email;
 						saveUserButtonState.visible = false;
@@ -754,7 +760,7 @@
 				}
 			}
 			
-			private function mudaCadastrar(): void {
+			private function changeSaver(): void {
 				clearFieldsByTab();
 				
 			}
@@ -762,33 +768,33 @@
 			private function clearFieldsByTab():void {
 				if (currentState != "teacherState"){
 					if (tabNav.selectedIndex == 2){
-						limpaCamposMenu();
+						clearFieldsMenu();
 						createMenuButton.visible = true;
 						updateMenuButton.visible = false;
 						removeMenuButton.visible = false;
 					}
 					if (tabNav.selectedIndex == 3){
-						limpaCamposFuncao();
-						botaoCadastrarFuncao.visible = true;
-						botaoAtualizarFuncao.visible = false;
-						botaoRemoverFuncao.visible = false;
+						clearFieldsFunction();
+						saveFunctionButton.visible = true;
+						updateFunctionButton.visible = false;
+						removeFunctionButton.visible = false;
 					}
 					if (tabNav.selectedIndex == 1){
-						limpaCamposGrupo();
-						botaoCadastrarGrupo.visible = true;
-						botaoAtualizarGrupo.visible = false;
-						botaoRemoverGrupo.visible = false;
+						clearFieldsGroup();
+						saveGroupButton.visible = true;
+						updateGroupButton.visible = false;
+						removeGroupButton.visible = false;
 					}
 					if (tabNav.selectedIndex == 0){
-						limpaCamposUsuario();
-						botaoCadastrarUsuario.visible = true;
-						botaoAtualizarUsuario.visible = false;
-						botaoNovoUsuario.visible = false;
-						botaoRemoverUsuario.visible = false;
+						clearFieldsUser();
+						saveUserButton.visible = true;
+						updateUserButton.visible = false;
+						newUserButton.visible = false;
+						removeUserButton.visible = false;
 					}
 				}
 				else{
-					limpaCamposUsuario();
+					clearFieldsUser();
 					saveUserButtonState.visible = true;
 					updateUserButtonState.visible = false;
 					newUserButtonState.visible = false;
@@ -796,27 +802,27 @@
 				}
 			}
 			
-			private function limpaCamposMenu(): void{
+			private function clearFieldsMenu(): void{
 				inputMenuName.text = "";
 				inputMenuLabel.text = "";	
 			}
 			
-			private function limpaCamposFuncao(): void{
-				inputNomeFuncao.text = "";
-				inputRotuloFuncao.text = "";
+			private function clearFieldsFunction(): void{
+				inputFunctionName.text = "";
+				inputFunctionLabel.text = "";
 				cbMenu.selectedIndex = -1;	
 			}
 			
-			private function limpaCamposGrupo(): void{
-				inputGrupo.text = "";	
+			private function clearFieldsGroup(): void{
+				inputGroup.text = "";	
 			}
 			
-			private function limpaCamposUsuario(): void{
+			private function clearFieldsUser(): void{
 				if (currentState != "teacherState"){
-					inputLoginUsuario.text = "";
-					inputNomeUsuario.text = "";
-					inputSenhaUsuario.text = "";
-					inputEmailUsuario.text = "";
+					inputUserLogin.text = "";
+					inputUserName.text = "";
+					inputUserPassword.text = "";
+					inpuUserEmail.text = "";
 					//cbGrupoUsuario.selectedIndex = -1;
 					//dgUsuarios.dataProvider = new ArrayCollection;
 				}
@@ -833,27 +839,27 @@
 			private function filtrateUserByGroup(): void{
 				try{
 					handleValidaUsuario(null);
-					var grupoUsuarioAux : *;
+					var auxUserGroup : *;
 					if (currentState != "teacherState"){
-						grupoUsuarioAux = cbUserGroup.selectedItem;	
+						auxUserGroup = cbUserGroup.selectedItem;	
 					}
 					else{
-						grupoUsuarioAux = cbUserGroupState.selectedItem;
+						auxUserGroup = cbUserGroupState.selectedItem;
 					}
-					facade.getOperation("consultarUsuarioPorGrupo").send(grupoUsuarioAux.idGrupo);
+					facade.getOperation("consultarUsuarioPorGrupo").send(auxUserGroup.groupId);
 				} catch(e: Error){}
 			}
 			
-			private function consultarUsuarioPorGrupo_result(event:ResultEvent): void{
+			private function getUserByGroup_result(event:ResultEvent): void{
 				if (currentState != "teacherState"){
-					dgUsuarios.dataProvider = new ArrayCollection();
-					dgUsuarios.dataProvider = event.result as ArrayCollection;
-					if(dgUsuarios.dataProvider.length > 0){
-						dgUsuarios.selectedIndex = 0;
-						selecionarUsuario();
+					dgUsers.dataProvider = new ArrayCollection();
+					dgUsers.dataProvider = event.result as ArrayCollection;
+					if(dgUsers.dataProvider.length > 0){
+						dgUsers.selectedIndex = 0;
+						selectUser();
 					}
 					else{
-						mudaCadastrar();
+						changeSaver();
 					}
 				}
 				else{
@@ -861,10 +867,10 @@
 					dgUsersState.dataProvider = event.result as ArrayCollection;
 					if(dgUsersState.dataProvider.length > 0){
 						dgUsersState.selectedIndex = 0;
-						selecionarUsuario();
+						selectUser();
 					}
 					else{
-						mudaCadastrar();
+						changeSaver();
 					}
 				}
 			}
@@ -882,47 +888,47 @@
         		}
             }
             
-            private function handleValidaFuncao(eventObj:ValidationResultEvent):void {
-            	if (StringUtil.trim(inputNomeFuncao.text) != "" && 
-                	StringUtil.trim(inputRotuloFuncao.text) != "" &&
+            private function handleValidateFunction(eventObj:ValidationResultEvent):void {
+            	if (StringUtil.trim(inputFunctionName.text) != "" && 
+                	StringUtil.trim(inputFunctionLabel.text) != "" &&
                 	cbMenu.selectedIndex != -1){
-                 	botaoCadastrarFuncao.enabled = true;
-                	botaoAtualizarFuncao.enabled = true;
-                	botaoRemoverFuncao.enabled = true;
+                 	saveFunctionButton.enabled = true;
+                	updateFunctionButton.enabled = true;
+                	removeFunctionButton.enabled = true;
              	}
              	else{             		
-                   	botaoCadastrarFuncao.enabled = false;
-                	botaoAtualizarFuncao.enabled = false;
-                	botaoRemoverFuncao.enabled = false;	
+                   	saveFunctionButton.enabled = false;
+                	updateFunctionButton.enabled = false;
+                	removeFunctionButton.enabled = false;	
              	}
             }
             
             private function handleValidaGrupo(eventObj:ValidationResultEvent):void {
-                if (StringUtil.trim(inputGrupo.text) != ""){                
-                    botaoCadastrarGrupo.enabled = true;
-                 	botaoAtualizarGrupo.enabled = true;
-                 	botaoRemoverGrupo.enabled = true;                 	
+                if (StringUtil.trim(inputGroup.text) != ""){                
+                    saveGroupButton.enabled = true;
+                 	updateGroupButton.enabled = true;
+                 	removeGroupButton.enabled = true;                 	
             	}                    
                 else{                
-                    botaoCadastrarGrupo.enabled = false;
-                 	botaoAtualizarGrupo.enabled = false;
-                 	botaoRemoverGrupo.enabled = false;	
+                    saveGroupButton.enabled = false;
+                 	updateGroupButton.enabled = false;
+                 	removeGroupButton.enabled = false;	
                 }   
             }
             
             private function handleValidaUsuario(eventObj:ValidationResultEvent):void {
             	if (currentState != "teacherState"){
-	                if (StringUtil.trim(inputNomeUsuario.text) != "" && 
-	                	StringUtil.trim(inputLoginUsuario.text) != "" &&
+	                if (StringUtil.trim(inputUserName.text) != "" && 
+	                	StringUtil.trim(inputUserLogin.text) != "" &&
 	                	validEmail &&
 	                	cbUserGroup.selectedIndex != -1){
-	                	botaoCadastrarUsuario.enabled = true;
-	                	botaoAtualizarUsuario.enabled = true;
-	                	botaoNovoUsuario.enabled = true;
-	                	botaoRemoverUsuario.enabled = true;                	
+	                	saveUserButton.enabled = true;
+	                	updateUserButton.enabled = true;
+	                	newUserButton.enabled = true;
+	                	removeUserButton.enabled = true;                	
 	                }
 	                else{
-	                	botaoCadastrarUsuario.enabled = false;               	
+	                	saveUserButton.enabled = false;               	
 	                }
             	}
             	else{
@@ -948,28 +954,28 @@
 			}
 			
 			private function handleEmail(event:ResultEvent):void {
-				var tipo: String = "";
+				var type: String = "";
 				if (currentState != "teacherState"){
-					tipo = cbUserGroup.selectedItem.nome;
+					type = cbUserGroup.selectedItem.nome;
 				}else{
-					tipo = cbUserGroupState.selectedItem.nome;
+					type = cbUserGroupState.selectedItem.nome;
 				}
 				ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this,
-					[false, tipo + " cadastrado com sucesso! Email já enviado."]);
+					[false, type + " cadastrado com sucesso! Email já enviado."]);
 			}
             
-            private function falhaRemove(event:FaultEvent):void{
+            private function removeFail(event:FaultEvent):void{
 				var mens:Array = new Array(true, "Não é possível realizar a operação.");
-				lancaExcessao(mens);
+				launchException(mens);
 			}
 			
-			private function invalidaEmail(event:ValidationResultEvent):void {
+			private function invalidateEmail(event:ValidationResultEvent):void {
 				validEmail = false;
 				if (currentState != "teacherState"){
-                	botaoCadastrarUsuario.enabled = false;
-                	botaoAtualizarUsuario.enabled = false;
-                	botaoNovoUsuario.enabled = false;
-                	botaoRemoverUsuario.enabled = false;
+                	saveUserButton.enabled = false;
+                	updateUserButton.enabled = false;
+                	newUserButton.enabled = false;
+                	removeUserButton.enabled = false;
             	}
             	else{
 	                saveUserButtonState.enabled = false;
@@ -979,23 +985,23 @@
             	}
 			}
 			
-			private function validaEmail(event:ValidationResultEvent):void {
+			private function validateEmail(event:ValidationResultEvent):void {
 				validEmail = true;
 				handleValidaUsuario(event);
 			}
 			
-			private function compareNome(itemA:Object, itemB:Object):int {  
+			private function nameCompare(itemA:Object, itemB:Object):int {  
 				return ObjectUtil.stringCompare(
-					itemA.usuario.nome,  
-					itemB.usuario.nome,   
+					itemA.user.name,  
+					itemB.user.name,   
 					true
 				);
 			}
 			
-			private function compareLogin(itemA:Object, itemB:Object):int {  
+			private function loginCompare(itemA:Object, itemB:Object):int {  
 				return ObjectUtil.stringCompare(
-					itemA.usuario.login,  
-					itemB.usuario.login,   
+					itemA.user.login,  
+					itemB.user.login,   
 					true
 				);
 			}
@@ -1009,22 +1015,22 @@
 		<mx:method name="listarFuncoes" result="functionsList_result(event)" fault="failure(event)"/>
 		<mx:method name="listarGrupos" result="groupList_result(event)" fault="failure(event)"/>
 		<mx:method name="cadastrarMenu" result="saveMenu_result(event)" fault="failure(event)"/>
-		<mx:method name="cadastrarFuncao" result="cadastrarFuncao_result(event)" fault="failure(event)"/>
-		<mx:method name="consultarFuncaoPorMenu" result="consultarFuncaoPorMenu_result(event)" fault="failure(event)"/>
-		<mx:method name="cadastrarGrupo" result="cadastrarGrupo_result(event)" fault="failure(event)"/>
-		<mx:method name="cadastrarUsuario" result="cadastrarUsuario_result(event)" fault="failure(event)"/>
-		<mx:method name="consultarUsuarioPorGrupo" result="consultarUsuarioPorGrupo_result(event)" fault="failure(event)"/>
+		<mx:method name="cadastrarFuncao" result="saveFunction_result(event)" fault="failure(event)"/>
+		<mx:method name="consultarFuncaoPorMenu" result="getFunctionByMenu_result(event)" fault="failure(event)"/>
+		<mx:method name="cadastrarGrupo" result="saveGroup_result(event)" fault="failure(event)"/>
+		<mx:method name="cadastrarUsuario" result="saveUser_result(event)" fault="failure(event)"/>
+		<mx:method name="consultarUsuarioPorGrupo" result="getUserByGroup_result(event)" fault="failure(event)"/>
 		<mx:method name="getGrupoUsuarioPorUsuario" result="getUserGroupByUser_result(event)" fault="failure(event)"/>
-		<mx:method name="getUsuarioPorLogin" result="getUsuarioPorLogin_result(event)" fault="falhaUsuarioExistente(event)"/>
+		<mx:method name="getUsuarioPorLogin" result="getUserByLogin_result(event)" fault="ExistingUserFailure(event)"/>
 		<mx:method name="excluirMenu" result="removeMenu_result()" fault="menuFailure(event)"/>
-		<mx:method name="excluirFuncao" result="excluirFuncao_result()" fault="failure(event)"/>
-		<mx:method name="excluirGrupo" result="excluirGrupo_result()" fault="groupFailure(event)"/>
-		<mx:method name="excluirUsuario" result="excluirGrupoUsuario_result()" fault="falhaRemove(event)"/>
-		<mx:method name="gerarSenha" result="gerarSenha_result(event)" fault="failure(event)"/>
+		<mx:method name="excluirFuncao" result="removeFunction_result()" fault="failure(event)"/>
+		<mx:method name="excluirGrupo" result="removeGroup_result()" fault="groupFailure(event)"/>
+		<mx:method name="excluirUsuario" result="removeUserGroup_result()" fault="removeFail(event)"/>
+		<mx:method name="gerarSenha" result="generatePassword_result(event)" fault="failure(event)"/>
 		
 	</mx:RemoteObject>
 	
-	<mx:HTTPService id="servicoEnviarEmail" method="POST" 
+	<mx:HTTPService id="sendEmailService" method="POST" 
     	url="{ExternalInterface.call('getUrlSendMail')}"
     	useProxy="false"
     	resultFormat="text"
@@ -1039,48 +1045,48 @@
 	    </mx:request>
 	</mx:HTTPService>
 	
-	<mx:Validator required="true" id="validatorNomeMenu" source="{inputMenuName}"
+	<mx:Validator required="true" id="menuNameValidator" source="{inputMenuName}"
     	property="text" valid="handleValidaMenu(event)" invalid="handleValidaMenu(event)"
     	requiredFieldError="Informe o nome do menu."/>
     	
-    <mx:Validator required="true" id="validatorRotuloMenu" source="{inputMenuLabel}"
+    <mx:Validator required="true" id="labelMenuValidator" source="{inputMenuLabel}"
     	property="text" valid="handleValidaMenu(event)" invalid="handleValidaMenu(event)"
     	requiredFieldError="Informe o rótulo do menu."/>
     	
-    <mx:Validator required="true" id="validatorNomeFuncao" source="{inputNomeFuncao}"
-    	property="text" valid="handleValidaFuncao(event)" invalid="handleValidaFuncao(event)"
+    <mx:Validator required="true" id="functionNameValidator" source="{inputFunctionName}"
+    	property="text" valid="handleValidateFunction(event)" invalid="handleValidateFunction(event)"
     	requiredFieldError="Informe o nome da função."/>
     	
-    <mx:Validator required="true" id="validatorRotuloFuncao" source="{inputRotuloFuncao}"
-    	property="text" valid="handleValidaFuncao(event)" invalid="handleValidaFuncao(event)"
+    <mx:Validator required="true" id="labelFunctionValidator" source="{inputFunctionLabel}"
+    	property="text" valid="handleValidateFunction(event)" invalid="handleValidateFunction(event)"
     	requiredFieldError="Informe o rótulo da função."/>
     	
-    <mx:Validator required="true" id="validatorMenuFuncao" source="{cbMenu}"
-    	property="text" valid="handleValidaFuncao(event)" invalid="handleValidaFuncao(event)"
+    <mx:Validator required="true" id="menuFunctionValidtator" source="{cbMenu}"
+    	property="text" valid="handleValidateFunction(event)" invalid="handleValidateFunction(event)"
     	requiredFieldError="Informe o menu da função."/>
     	
-    <mx:Validator required="true" id="validatorGrupo" source="{inputGrupo}"
+    <mx:Validator required="true" id="groupValidator" source="{inputGroup}"
     	property="text" valid="handleValidaGrupo(event)" invalid="handleValidaGrupo(event)"
     	requiredFieldError="Informe o nome de grupo."/>
     	
-    <mx:Validator required="true" id="validatorLoginUsuario" source="{inputLoginUsuario}"
+    <mx:Validator required="true" id="loginUserValidator" source="{inputUserLogin}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
     	requiredFieldError="Informe o login do usuário."/>
     	
-    <mx:Validator required="true" id="validatorNomeUsuario" source="{inputNomeUsuario}"
+    <mx:Validator required="true" id="userNameValidator" source="{inputUserName}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
     	requiredFieldError="Informe o nome do usuário."/>
     	
-    <mx:Validator required="true" id="validatorEmailUsuario" source="{inputEmailUsuario}"
+    <mx:Validator required="true" id="userEmailValidator" source="{inpuUserEmail}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
     	requiredFieldError="Informe o email do usuário."/>
     	
-    <mx:Validator required="true" id="validatorGrupoUsuario" source="{cbUserGroup}"
+    <mx:Validator required="true" id="userGroupValidator" source="{cbUserGroup}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
     	requiredFieldError="Informe o grupo do usuário."/>
     
-    <mx:EmailValidator id="emailValidator" invalid="invalidaEmail(event)" valid="validaEmail(event)"
-		source="{inputEmailUsuario}" property="text" trigger="{inputEmailUsuario}" 
+    <mx:EmailValidator id="emailValidator" invalid="invalidateEmail(event)" valid="validateEmail(event)"
+		source="{inpuUserEmail}" property="text" trigger="{inpuUserEmail}" 
 		triggerEvent="change"
 		invalidCharError="Seu endereço de email contém caracteres inválidos."
 	    invalidDomainError= "O dominio de seu endereço de email está formatado incorretamente." 
@@ -1096,37 +1102,37 @@
 		
 		<mx:Canvas label="Usuário" width="100%" height="100%" id="canvas4">
 			<mx:ComboBox prompt="selecione..." x="64" y="10" width="548" labelField="nome" id="cbUserGroup" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
-			<mx:TextInput x="64" y="41" width="548" id="inputNomeUsuario" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="64" y="70.5" width="348" id="inputLoginUsuario" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="478" y="70.5" width="134" id="inputSenhaUsuario" displayAsPassword="true"/>
-			<mx:TextInput x="64" y="100.5" width="548" id="inputEmailUsuario" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
-			<mx:Button x="243.5" y="132.5" label="   Salvar" click="cadastrarGrupoUsuario()" icon="@Embed(source='../../image/disquete.png')" width="135" id="botaoCadastrarUsuario" height="28" enabled="false"/>
-			<mx:Button x="100.5" y="132.5" label="   Novo" width="135" height="28" id="botaoNovoUsuario" click="mudaCadastrar()" icon="@Embed(source='../../image/novo.png')"/>
-			<mx:Button x="386.5" y="132.5" label="   Remover" click="excluirUsuario()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverUsuario" height="28"/>
-			<mx:Button x="243.5" y="132.5" label="   Atualizar" click="verificaUsuario()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarUsuario" height="28"/>
+			<mx:TextInput x="64" y="41" width="548" id="inputUserName" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="64" y="70.5" width="348" id="inputUserLogin" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="478" y="70.5" width="134" id="inputUserPassword" displayAsPassword="true"/>
+			<mx:TextInput x="64" y="100.5" width="548" id="inpuUserEmail" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
+			<mx:Button x="243.5" y="132.5" label="   Salvar" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButton" height="28" enabled="false"/>
+			<mx:Button x="100.5" y="132.5" label="   Novo" width="135" height="28" id="newUserButton" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
+			<mx:Button x="386.5" y="132.5" label="   Remover" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButton" height="28"/>
+			<mx:Button x="243.5" y="132.5" label="   Atualizar" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButton" height="28"/>
 			<mx:Label x="10" y="11.5" text="Grupo:" id="labelGrupoUsuario"/>
 			<mx:Label x="10" y="43" text="Nome:" id="labelNomeUsuario"/>
 			<mx:Label x="12" y="72.5" text="Login:" id="labelLoginUsuario"/>
 			<mx:Label x="12" y="102.5" text="Email:" id="labelEmailUsuario"/>
 			<mx:Label x="420" y="72.5" text="Senha:" id="labelSenhaUsuario"/>
-			<mx:DataGrid x="10" y="168.5" width="602" height="188.5" draggableColumns="false" change="selecionarUsuario()" itemClick="selecionarUsuario()"
-					 labelFunction="labelGridUsuarios" id="dgUsuarios">
+			<mx:DataGrid x="10" y="168.5" width="602" height="188.5" draggableColumns="false" change="selectUser()" itemClick="selectUser()"
+					 labelFunction="labelGridUsers" id="dgUsers">
 				<mx:columns>
-					<mx:DataGridColumn headerText="Login" width="200" sortCompareFunction="compareLogin"/>
-					<mx:DataGridColumn headerText="Usuário" sortCompareFunction="compareNome"/>
+					<mx:DataGridColumn headerText="Login" width="200" sortCompareFunction="loginCompare"/>
+					<mx:DataGridColumn headerText="Usuário" sortCompareFunction="nameCompare"/>
 				</mx:columns>
 			</mx:DataGrid>
 		</mx:Canvas>
 		
 		<mx:Canvas label="Grupo" width="100%" height="100%" id="canvas3">
-			<mx:TextInput x="74" y="45" width="538" id="inputGrupo" toolTip="{toolTipGroupName}" change="handleValidaGrupo(null)"/>
+			<mx:TextInput x="74" y="45" width="538" id="inputGroup" toolTip="{toolTipGroupName}" change="handleValidaGrupo(null)"/>
 			<mx:Label x="18" y="45.5" text="Grupo:" id="labelGrupo"/>
-			<mx:Button x="243.5" y="90" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" click="cadastrarGrupo()" id="botaoCadastrarGrupo" height="28" enabled="false"/>
-			<mx:Button x="548" y="23" label="Novo" width="63" id="botaoNovoGrupo" height="23" click="mudaCadastrar()"/>
-			<mx:Button x="315" y="90" label="   Remover" click="excluirGrupo()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverGrupo" height="28" visible="false" enabled="false"/>
-			<mx:Button x="172" y="90" label="   Atualizar" click="editarGrupo()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarGrupo" height="28" visible="false" enabled="false"/>
-			<mx:DataGrid x="10" y="141" width="602" height="216" change="selecionarGrupo()" itemClick="selecionarGrupo()"
-					draggableColumns="false" labelFunction="labelGridGrupos" id="dgGrupos">
+			<mx:Button x="243.5" y="90" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" click="saveGroup()" id="saveGroupButton" height="28" enabled="false"/>
+			<mx:Button x="548" y="23" label="Novo" width="63" id="botaoNovoGrupo" height="23" click="changeSaver()"/>
+			<mx:Button x="315" y="90" label="   Remover" click="removeGroup()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeGroupButton" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="90" label="   Atualizar" click="updateGroup()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateGroupButton" height="28" visible="false" enabled="false"/>
+			<mx:DataGrid x="10" y="141" width="602" height="216" change="selectGroup()" itemClick="selectGroup()"
+					draggableColumns="false" labelFunction="labelGridGroups" id="dgGroups">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Grupo"/>
 				</mx:columns>
@@ -1137,7 +1143,7 @@
 			<mx:TextInput x="64" y="45" width="548" id="inputMenuName" toolTip="{toolTipMenuName}" change="handleValidaMenu(null)"/>
 			<mx:TextInput x="64" y="73" width="548" id="inputMenuLabel" toolTip="{toolTipLabelMenu}" change="handleValidaMenu(null)"/>
 			<mx:Button x="243.5" y="111" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" click="saveMenu()" width="135" id="createMenuButton" height="28" enabled="false"/>
-			<mx:Button x="548" y="23" label="Novo" width="63" click="mudaCadastrar()" id="botaoNovoMenu" height="23"/>
+			<mx:Button x="548" y="23" label="Novo" width="63" click="changeSaver()" id="botaoNovoMenu" height="23"/>
 			<mx:Label x="10" y="47" text="Nome:" id="labelNomeMenu"/>
 			<mx:Label x="10" y="75" text="Rótulo:" id="labelRotuloMenu"/>
 			<mx:Button x="315" y="111" label="   Remover" click="removeMenu()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeMenuButton" height="28" visible="false" enabled="false"/>
@@ -1152,19 +1158,19 @@
 		</mx:Canvas>
 		
 		<mx:Canvas label="Função" width="100%" height="100%" id="canvas2">
-			<comp:ComboBoxAC labelField="nome" x="62" y="15.5" width="550" id="cbMenu" toolTip="{toolTipMenuFunction}" change="filtrarFuncoesPorMenu()"/>
-			<mx:TextInput x="62" y="76" width="550" id="inputNomeFuncao" toolTip="{toolTipNameFunction}" change="handleValidaFuncao(null)"/>
-			<mx:TextInput x="62" y="104" width="550" id="inputRotuloFuncao" toolTip="{toolTipNameFunction}" change="handleValidaFuncao(null)"/>
+			<comp:ComboBoxAC labelField="nome" x="62" y="15.5" width="550" id="cbMenu" toolTip="{toolTipMenuFunction}" change="filtrateFunctionsByMenu()"/>
+			<mx:TextInput x="62" y="76" width="550" id="inputFunctionName" toolTip="{toolTipNameFunction}" change="handleValidateFunction(null)"/>
+			<mx:TextInput x="62" y="104" width="550" id="inputFunctionLabel" toolTip="{toolTipNameFunction}" change="handleValidateFunction(null)"/>
 			<mx:Button x="243.5" y="144" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" 
-				id="botaoCadastrarFuncao" click="cadastrarFuncao()" height="28" enabled="false"/>
-			<mx:Button x="548" y="54" label="Novo" width="63" id="botaoNovaFuncao" height="23" click="mudaCadastrar()"/>
-			<mx:Button x="315" y="143" label="   Remover" click="excluirFuncao()" icon="@Embed(source='../../image/delete.png')" width="135" id="botaoRemoverFuncao" height="28" visible="false" enabled="false"/>
-			<mx:Button x="172" y="143" label="   Atualizar" click="editarFuncao()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="botaoAtualizarFuncao" height="28" visible="false" enabled="false"/>
+				id="saveFunctionButton" click="saveFunction()" height="28" enabled="false"/>
+			<mx:Button x="548" y="54" label="Novo" width="63" id="botaoNovaFuncao" height="23" click="changeSaver()"/>
+			<mx:Button x="315" y="143" label="   Remover" click="removeFunction()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeFunctionButton" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="143" label="   Atualizar" click="updateFunction()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateFunctionButton" height="28" visible="false" enabled="false"/>
 			<mx:Label x="10" y="16.5" text="Menu:" id="labelCbMenu"/>
 			<mx:Label x="10" y="78" text="Nome:" id="labelNomeFuncao"/>
 			<mx:Label x="10" y="106" text="Rótulo:" id="labelRotuloFuncao"/>
-			<mx:DataGrid x="10" y="189" width="602" height="168" change="selecionarFuncao()" itemClick="selecionarFuncao()"
-					draggableColumns="false" labelFunction="labelGridFuncoes" id="dgFunctions">
+			<mx:DataGrid x="10" y="189" width="602" height="168" change="selectFunction()" itemClick="selectFunction()"
+					draggableColumns="false" labelFunction="labelGridFunctions" id="dgFunctions">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Rótulo" width="100"/>
 					<mx:DataGridColumn headerText="Nome"/>
