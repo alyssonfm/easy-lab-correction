@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author Salto-db Generator v1.0.16 / Hibernate pojos and xml mapping files.
  * 
  */
-public class Function implements Serializable {
+public class MenuFunction implements Serializable {
 	/**
 	 * 
 	 */
@@ -26,11 +26,11 @@ public class Function implements Serializable {
 	
 	private String label;
 
-	public Function() {
+	public MenuFunction() {
 		super();
 	}
 
-	public Function(Integer functionId, Menu menu, String name, String label) {
+	public MenuFunction(Integer functionId, Menu menu, String name, String label) {
 		super();
 		this.functionId = functionId;
 		this.menu = menu;
@@ -90,7 +90,7 @@ public class Function implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Function other = (Function) obj;
+		MenuFunction other = (MenuFunction) obj;
 		if (functionId == null) {
 			if (other.functionId != null)
 				return false;

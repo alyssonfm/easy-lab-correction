@@ -22,13 +22,13 @@ public class Permission implements Serializable {
 	
 	private Group group;
 	
-	private Function function;
+	private MenuFunction function;
 	
 	public Permission() {
 		super();
 	}
 
-	public Permission(Integer permissionId, Group group, Function function) {
+	public Permission(Integer permissionId, Group group, MenuFunction function) {
 		super();
 		this.permissionId = permissionId;
 		this.group = group;
@@ -51,11 +51,11 @@ public class Permission implements Serializable {
 		this.group = group;
 	}
 
-	public Function getFunction() {
+	public MenuFunction getFunction() {
 		return function;
 	}
 
-	public void setFunction(Function function) {
+	public void setFunction(MenuFunction function) {
 		this.function = function;
 	}
 
