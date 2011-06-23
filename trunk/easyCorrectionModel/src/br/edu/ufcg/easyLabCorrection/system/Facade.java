@@ -28,7 +28,7 @@ public class Facade {
 
 	}
 
-	public void reinicializaBancoDeDados() {
+	public void backupEasyCorrection() {
 		system.rebootsDataBase("backupEasyCorrection");
 	}
 
@@ -386,7 +386,7 @@ public class Facade {
 		}
 	}
 
-	public List<Stage> getPeriodoAtual() throws Throwable {
+	public List<Stage> getCurrentPeriod() throws Throwable {
 		try {
 			return system.getCurrentPeriod();
 		} catch (Throwable e) {
@@ -400,7 +400,7 @@ public class Facade {
 	 * **********************************************************************
 	 */
 
-	public Assignment cadastrarRoteiro(Assignment assignment) throws Throwable {
+	public Assignment saveAssignment(Assignment assignment) throws Throwable {
 		try {
 			return system.saveAssignment(assignment);
 		} catch (Throwable e) {
@@ -409,7 +409,7 @@ public class Facade {
 		}
 	}
 
-	public Assignment editarRoteiro(Assignment assignment) throws Throwable {
+	public Assignment updateAssignment(Assignment assignment) throws Throwable {
 		try {
 			return system.updateAssignment(assignment);
 		} catch (Throwable e) {
@@ -427,7 +427,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assignment> listarRoteiros() throws Throwable {
+	public List<Assignment> listAssignments() throws Throwable {
 		try {
 			return system.listAssignments();
 		} catch (Throwable e) {
@@ -516,7 +516,7 @@ public class Facade {
 		}
 	}
 
-	public List<TeamHasUserHasAssignment> getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(
+	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByTeamAndAssignment(
 			Integer teamId, Integer assignmentId) throws Throwable {
 		try {
 			return system.getTeamHasUserHasAssignmentByTeamAndAssignment(
@@ -638,7 +638,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assessment> getAvaliacaoPorRoteiroEquipePorCorretor(Assignment assignment, 
+	public List<Assessment> getAssessmentByAssignmentAndCorrector(Assignment assignment, 
 			Integer us) throws Throwable {
 		try {
 			return system.getAssessmentByAssignmentAndCorrector(assignment, us);
@@ -686,7 +686,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assignment> getRoteirosFechados() throws Throwable {
+	public List<Assignment> getClosedAssignments() throws Throwable {
 		try {
 			return system.getClosedAssignments();
 		} catch (Throwable e) {
@@ -701,7 +701,7 @@ public class Facade {
 	 * informacoes)
 	 * 
 	 */
-	public List<User> getCorretores() throws Throwable {
+	public List<User> getCorrectors() throws Throwable {
 		try {
 			return system.getCorrectors();
 		} catch (Throwable e) {
@@ -710,7 +710,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assessment> getAvaliacoesDoRoteiroSemCorretor(int assignmentId) throws Throwable {
+	public List<Assessment> getAssignmentWithOutCorrectorsAssessments(int assignmentId) throws Throwable {
 		try {
 			return system.getAssignmentWithOutCorrectorsAssessments(assignmentId);
 		} catch (Throwable e) {
@@ -719,7 +719,7 @@ public class Facade {
 		}
 	}
 
-	public List<Assessment> getAvaliacoesDoRoteiroComCorretor(int assignmentId, int correctorId) throws Throwable {
+	public List<Assessment> getAssignmentWithCorrectorsAssessments(int assignmentId, int correctorId) throws Throwable {
 		try {
 			return system.getAssignmentWithCorrectorsAssessments(assignmentId, correctorId);
 		} catch (Throwable e) {
@@ -737,7 +737,7 @@ public class Facade {
 		}
 	}
 	
-	public Assessment alocaCorretor(Assessment assessment) throws Throwable{
+	public Assessment allocateCorrector(Assessment assessment) throws Throwable{
 		try{
 			return system.allocateCorrector(assessment);
 		} catch (Throwable e) {
