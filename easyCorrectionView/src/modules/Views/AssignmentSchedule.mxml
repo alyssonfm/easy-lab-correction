@@ -86,15 +86,15 @@
 					dg_agenda.dataProvider = new ArrayCollection();
 					dg_agenda.dataProvider = event.result;
 					var paramMenssage: Array = new Array();
-					if(SaveAssignment.edited){
+					if(AssignmentManagement.edited){
 						paramMenssage = new Array(false, "Roteiro Atualizado com sucesso.");
 						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramMenssage);
-						SaveAssignment.edited = false;
+						AssignmentManagement.edited = false;
 					}
-					else if(SaveAssignment.save){
+					else if(AssignmentManagement.save){
 						paramMenssage = new Array(false, "Roteiro Cadastrado com sucesso.");
 						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramMenssage);
-						SaveAssignment.save = false;	
+						AssignmentManagement.save = false;	
 					}
 				}
 				
