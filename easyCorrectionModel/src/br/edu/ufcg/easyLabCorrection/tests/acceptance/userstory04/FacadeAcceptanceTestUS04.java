@@ -66,7 +66,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 	 * @throws Throwable 
 	 */
 	public int getQuantidadeAlunosPorEquipe(int equipeId, int roteiroId) throws Throwable {
-		return facadeSistema.getEquipeHasUsuarioHasRoteiroPorEquipeERoteiro(equipeId, roteiroId).size();
+		return facadeSistema.getTeamHasUserHasAssignmentByTeamAndAssignment(equipeId, roteiroId).size();
 	}
 
 	/**
