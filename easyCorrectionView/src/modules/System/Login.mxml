@@ -117,7 +117,7 @@
 				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
 				 *	então devemos mostra uma mensagem de erro
 				 */
-				private function EventLaunches(event:FaultEvent):void {
+				private function eventLaunches(event:FaultEvent):void {
 					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
 						event.fault, event.token, event.message);
 					dispatchEvent(e);
