@@ -9,7 +9,7 @@ import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
-import br.edu.ufcg.easyLabCorrection.util.SubmissionFileFilter;
+import br.edu.ufcg.easyLabCorrection.util.CompilationFileFilter;
 
 /**
  * Class responsible for managing of compilation in the system Easy 
@@ -125,7 +125,7 @@ public class CompilationManager extends Manager{
 			}
 		};
 		
-		SubmissionFileFilter pv = new SubmissionFileFilter();
+		CompilationFileFilter pv = new CompilationFileFilter();
 		
 		//Gets the names of all java files inside sourceDirectory
 		ArrayList<String> listSource = pv.visitAllDirsAndFiles(new File(sourceDirectory));
