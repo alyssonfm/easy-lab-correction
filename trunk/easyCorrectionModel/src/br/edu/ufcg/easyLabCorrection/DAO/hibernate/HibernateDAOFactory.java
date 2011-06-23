@@ -10,8 +10,8 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.AssessmentHibernateDAO
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.AssignmentHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.AssignmentTypeHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.ChatHibernateDAO;
-import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.PeriodHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.SubmissionHibernateDAO;
+import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.SystemStageHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.TeamHasUserHasAssignmentHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.TeamHibernateDAO;
 
@@ -68,8 +68,8 @@ public class HibernateDAOFactory extends DAOFactory {
 	}
 
 	@Override
-	public PeriodHibernateDAO buildPeriodDAO() {
-		return new PeriodHibernateDAO(HibernateUtil.getSession());
+	public SystemStageHibernateDAO buildSystemStage() {
+		return new SystemStageHibernateDAO(HibernateUtil.getSession());
 	}
 
 	@Override
