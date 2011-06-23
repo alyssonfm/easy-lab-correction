@@ -8,7 +8,7 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.ufcg.easyLabCorrection.exceptions.ConstraintViolationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EmptyFieldException;
-import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
+import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.util.MyPersistenceLayer;
 
 /**
@@ -19,16 +19,16 @@ import br.edu.ufcg.easyLabCorrection.util.MyPersistenceLayer;
  * @see http://www.hibernate.org/328.html
  */
 public class PeriodHibernateDAO extends
-		AbstractHibernateDAO<Stage, Integer>  {
+		AbstractHibernateDAO<SystemStage, Integer>  {
 
 	public PeriodHibernateDAO(Session s) {
 		super(s);
 	}
 
 	@Override
-	public List<Stage> instantiatesList(List<Stage> list) {
+	public List<SystemStage> instantiatesList(List<SystemStage> list) {
 		try {
-			for (Stage p : list) {
+			for (SystemStage p : list) {
 				p = instantiatesPeriod(p);
 			}	
 		} catch (EmptyFieldException e) {
@@ -40,8 +40,8 @@ public class PeriodHibernateDAO extends
 		return list;
 	}
 	
-	public static Stage instantiatesPeriod(Stage p) throws EmptyFieldException{
-		p = MyPersistenceLayer.deproxy(p, Stage.class);
+	public static SystemStage instantiatesPeriod(SystemStage p) throws EmptyFieldException{
+		p = MyPersistenceLayer.deproxy(p, SystemStage.class);
 		return p;
 	}
 

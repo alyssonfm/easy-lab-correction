@@ -11,7 +11,7 @@ import org.junit.Test;
 import br.edu.ufcg.easyLabCorrection.exceptions.AssignmentException;
 import br.edu.ufcg.easyLabCorrection.managers.AssignmentManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
-import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
+import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.system.Facade;
 
 /**
@@ -26,7 +26,7 @@ public class AssignmentManagerTest {
 	private static final Calendar testCalendar = Calendar.getInstance();
 
 	private int idOK;
-	private Stage stageOK;
+	private SystemStage stageOK;
 	private String nameOK;
 	private String descriptionOK;
 	private Date releaseDateOK;
@@ -44,7 +44,7 @@ public class AssignmentManagerTest {
 		facade = new Facade();
 
 		this.idOK = 0;
-		this.stageOK = new Stage(1, "2011.1");
+		this.stageOK = new SystemStage(1, "2011.1");
 		this.nameOK = "ROTEIRO OK";
 		this.descriptionOK = "DESCRIPTION OK";
 		testCalendar.add(Calendar.DAY_OF_YEAR, 7);

@@ -14,7 +14,7 @@ import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.managers.TeamManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
-import br.edu.ufcg.easyLabCorrection.pojo.system.Stage;
+import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
@@ -48,7 +48,7 @@ public class TeamManagerTest {
 
 		assignOK = new Assignment();
 		assignOK.setId(idOK);
-		assignOK.setStage(new Stage(1, "2011.1"));
+		assignOK.setStage(new SystemStage(1, "2011.1"));
 		assignOK.setName("AssignOK");
 		assignOK.setDescription("DescOK");
 		Calendar testCalendar = Calendar.getInstance();
