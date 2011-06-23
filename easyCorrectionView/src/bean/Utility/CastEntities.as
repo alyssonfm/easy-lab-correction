@@ -28,6 +28,7 @@ package bean.Utility {
 					f.menu = castMenu(object.menu);
 					f.name = object.name;
 					f.label = object.label;
+					f.selected = object.selected;
 					return f;
 				}
 			}
@@ -178,6 +179,7 @@ package bean.Utility {
 					a.stage = castStage(object.stage);
 					a.testsDirectory = object.testsDirectory;
 					a.testTimeLimit = object.testTimeLimit;
+					a.name = object.name;
 					return a;
 				}
 			}
