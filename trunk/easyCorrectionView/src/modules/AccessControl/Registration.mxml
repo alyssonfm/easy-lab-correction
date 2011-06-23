@@ -254,7 +254,7 @@
 				facade.getOperation("listarFuncoes").send()
 			}
 			
-			private function functionsList_result(event:ResultEvent):void{
+			private function functionList_result(event:ResultEvent):void{
 				dgFunctions.dataProvider = event.result; 
 			}
 			
@@ -1012,7 +1012,7 @@
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 		
 		<mx:method name="listarMenus" result="menuList_result(event)" fault="failure(event)"/>
-		<mx:method name="listarFuncoes" result="functionsList_result(event)" fault="failure(event)"/>
+		<mx:method name="listarFuncoes" result="functionList_result(event)" fault="failure(event)"/>
 		<mx:method name="listarGrupos" result="groupList_result(event)" fault="failure(event)"/>
 		<mx:method name="cadastrarMenu" result="saveMenu_result(event)" fault="failure(event)"/>
 		<mx:method name="cadastrarFuncao" result="saveFunction_result(event)" fault="failure(event)"/>
