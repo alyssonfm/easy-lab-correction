@@ -212,10 +212,10 @@ private function generateLoginScreen():void {
 	SharedObject.getLocal("sistema", "/").clear();
 	this.visible = false;
 	if (attribute != "senha" || confirmed) {
-		ModulesController.createModule("modulos/sistema/Login.swf", this, null);
+		ModulesController.createModule("modules/System/Login.swf", this, null);
 	}
 	else {
-		ModulesController.createModule("modulos/ConfirmacaoMembroCE.swf", this,
+		ModulesController.createModule("modules/ConfirmacaoMembroCE.swf", this,
 					[false, value]);	
 		confirmed = true;
 	}
@@ -226,37 +226,37 @@ private function PressedMenuItem(event: MenuEvent):void  {
      
      //Caso o evento tenha sido num item de menu 'Setor' -> 'Cadastrar'
      if (event.item.@data == "acesso") {
-     	ModulesController.createModule("modules/AccessControl/Cadastros.swf", this, user);
+     	ModulesController.createModule("modules/AccessControl/Registration.swf", this, user);
      }
      if (event.item.@data == "defPerm") {
-     	ModulesController.createModule("modules/AccessControl/DefinirFuncoes.swf", this, "");
+     	ModulesController.createModule("modules/AccessControl/Permissions.swf", this, "");
      }
      if (event.item.@data == "agendaRoteiros") {
-     	ModulesController.createModule("modules/Views/AgendamentoRoteiros.swf", this, "");
+     	ModulesController.createModule("modules/Views/SchedulingAssignment.swf", this, "");
      }
      if (event.item.@data == "penalidades") {
      	ModulesController.createModule("modules/Views/Penalidades.swf", this, "");
      }
      if (event.item.@data == "atribuicaoDeRoteiros") {
-     	ModulesController.createModule("modules/Views/AtribuicaoDeRoteiros.swf", this, "");
+     	ModulesController.createModule("modules/Views/AllocateAssignment.swf", this, "");
      }
      if (event.item.@data == "notas") {
-     	ModulesController.createModule("modules/Views/VisualizacaoDeNotas.swf", this, "");
+     	ModulesController.createModule("modules/Views/viewNotes.swf", this, "");
      }
      if (event.item.@data == "avaliacaoDeRoteiros") {
-     	ModulesController.createModule("modules/Views/AvaliacaoDeRoteiros.swf", this, "");
+     	ModulesController.createModule("modules/Views/AssignmentAssessment.swf", this, "");
      }
      if (event.item.@data == "submissaoDeRoteiros") {
-     	ModulesController.createModule("modules/Views/SubmissaoDeRoteiros.swf", this, "");
+     	ModulesController.createModule("modules/Views/SubmissionOfAssignment.swf", this, "");
      }
      if (event.item.@data == "chat") {
      	ModulesController.createModule("modules/Views/Chat.swf", this, "");
      }
      if (event.item.@data == "criaEquipe") {
-     	ModulesController.createModule("modules/Views/CriaEquipe.swf", this, "");
+     	ModulesController.createModule("modules/Views/CreateTeam.swf", this, "");
      }
      if (event.item.@data == "reinicializaBD") {
-     	ModulesController.createModule("modules/Views/ReinicializaBancoDeDados.swf", this, "");
+     	ModulesController.createModule("modules/Views/RebootsDatabase.swf", this, "");
      }
 }
 
