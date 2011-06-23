@@ -4,7 +4,7 @@ package bean.system{
 	
 
 	[Bindable]
-	[RemoteClass(alias="br.edu.ufcg.easyLabCorrection.pojo.system.Stage")]
+	[RemoteClass(alias="br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage")]
 
 	public class SystemStage{
 		

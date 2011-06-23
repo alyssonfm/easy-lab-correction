@@ -227,7 +227,7 @@
 			}
 			
 			private function launchException(params: Array): void{
-				ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, params);
+				ModulesController.createModule("modules/System/MessageStatus.swf", this, params);
 			}
 			
 			private function menuList(): void{
@@ -390,7 +390,7 @@
 				}
 				else{
 					var paramError:Array = new Array(true, "Falha ao cadastrar este Menu.");
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramError);
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, paramError);
 				} 	
 			}
 			
@@ -451,7 +451,7 @@
 				}
 				else{
 					var paramError:Array = new Array(true, "Falha ao cadastrar esta Função.");
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramError);
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, paramError);
 				} 	
 			}
 			
@@ -499,7 +499,7 @@
 				}
 				else{
 					var paramError:Array = new Array(true, "Falha ao cadastrar este Grupo.");
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramError);
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, paramError);
 				} 	
 			}
 			
@@ -704,7 +704,7 @@
 				}
 			}
 			
-			private function sendEmails(grupoUsuarioP: UserGroup):void {
+			private function sendEmails(pUserGroup: UserGroup):void {
 				if(passwordSaved == ""){
 					passwordSaved = generatedPassword;
 				}
@@ -712,7 +712,7 @@
 						"<BR></BR>" +				
 						"<BR>Informamos que o envio de roteiros será realizado através do sistema mediante os seguintes dados de acesso:</BR>" +
 						"<BR></BR>" +
-						"Login:<BR>" + grupoUsuarioP.user.login + "</BR>" + 
+						"Login:<BR>" + pUserGroup.user.login + "</BR>" + 
 						"<BR>Senha:</BR><BR>"+ passwordSaved +"</br><p>Obs.:\nLembre-se! Sua senha é pessoal e intransferível, " +
 						"sugerimos sua alteração imediata.</p>" + 
 						"<BR>Clique <a href=http://les.dsc.ufcg.edu.br:8080/EasyLabCorrection/>aqui</a> para acessar o sistema.</BR>" +
@@ -721,8 +721,8 @@
 						"<BR>Easy Lab Correction</BR>";
 				
 				message = Util.generateHTMLCode(message);
-				contact = grupoUsuarioP.user.email;
-				userName = grupoUsuarioP.user.name;
+				contact = pUserGroup.user.email;
+				userName = pUserGroup.user.name;
 				sendEmailService.send();
 				
 			}
@@ -960,7 +960,7 @@
 				}else{
 					type = cbUserGroupState.selectedItem.nome;
 				}
-				ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this,
+				ModulesController.createModule("modules/System/MessageStatus.swf", this,
 					[false, type + " cadastrado com sucesso! Email já enviado."]);
 			}
             

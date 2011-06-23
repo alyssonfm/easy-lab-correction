@@ -158,7 +158,7 @@
 				
 				private function changePassword():void {
 					clearFields();
-					ModulesController.createModule("modulos/sistema/ChangePassword.swf", this, null);
+					ModulesController.createModule("modules/System/ChangePassword.swf", this, null);
 				}
 				
 				private function resendPassword():void {

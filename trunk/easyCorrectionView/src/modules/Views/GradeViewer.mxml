@@ -64,7 +64,7 @@
 					catch(e:Error){
 						message = "Serviço indisponível, reinicie a operação.";
 					}
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 				}
 				
 				private function closeWindow():void {
