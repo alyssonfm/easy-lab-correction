@@ -18,6 +18,16 @@
     <module application="src/main.mxml" destPath="modules/System/RecoverPassword.swf" optimize="true" sourcePath="src/modules/System/RecoverPassword.mxml"/>
     <module application="src/main.mxml" destPath="modules/AccessControl/Registration.swf" optimize="true" sourcePath="src/modules/AccessControl/Registration.mxml"/>
     <module application="src/main.mxml" destPath="modules/AccessControl/Permissions.swf" optimize="true" sourcePath="src/modules/AccessControl/Permissions.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/AllocatorAssignment.swf" optimize="true" sourcePath="src/modules/Views/AllocatorAssignment.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/AssingmentAssessment.swf" optimize="true" sourcePath="src/modules/Views/AssingmentAssessment.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/Chat.swf" optimize="true" sourcePath="src/modules/Views/Chat.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/CorrectionModule.swf" optimize="true" sourcePath="src/modules/Views/CorrectionModule.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/CreateTeam.swf" optimize="true" sourcePath="src/modules/Views/CreateTeam.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/RebootsDatabase.swf" optimize="true" sourcePath="src/modules/Views/RebootsDatabase.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/SaveAssignment.swf" optimize="true" sourcePath="src/modules/Views/SaveAssignment.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/SchedulingAssignment.swf" optimize="true" sourcePath="src/modules/Views/SchedulingAssignment.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/SubmissionOfAssignment.swf" optimize="true" sourcePath="src/modules/Views/SubmissionOfAssignment.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/ViewNotes.swf" optimize="true" sourcePath="src/modules/Views/ViewNotes.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>
