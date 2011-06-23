@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
+import br.edu.ufcg.easyLabCorrection.pojo.assignments.AssignmentType;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
@@ -779,6 +780,15 @@ public class Facade {
 			return system.getAssessmentByTeamAndAssignment(teamId, assignmentId);
 		}catch (Throwable e) {
 			log.error("getAssessmentByTeamAndAssignment()", e);
+			throw e;
+		}
+	}
+	
+	public List<AssignmentType> listAssignmentType() throws Throwable{
+		try{
+			return system.listAssignmentType();
+		}catch (Throwable e) {
+			log.error("listAssignmentType()", e);
 			throw e;
 		}
 	}
