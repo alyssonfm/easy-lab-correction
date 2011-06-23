@@ -93,6 +93,7 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 	public static Assignment instantiatesAssignment(Assignment a)
 			throws EmptyFieldException {
 		a.setStage(SystemStageHibernateDAO.instantiatesSystemStage(a.getStage()));
+		a.setAssignmentType(AssignmentTypeHibernateDAO.instantiatesAssignmentType(a.getAssignmentType()));
 		a = MyPersistenceLayer.deproxy(a, Assignment.class);
 		return a;
 	}
