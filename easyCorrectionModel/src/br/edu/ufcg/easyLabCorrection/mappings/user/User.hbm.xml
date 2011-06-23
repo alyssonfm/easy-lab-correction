@@ -18,7 +18,7 @@
 		
 		<property name="email" column="email"/>
 		
-		<many-to-one name="period" lazy="false" column="periodo_id" class="br.edu.ufcg.easyLabCorrection.pojo.system.Stage" insert="true" update="true"/>
+		<many-to-one name="period" lazy="false" column="periodo_id" class="br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage" insert="true" update="true"/>
 
 	</class>
 </hibernate-mapping>

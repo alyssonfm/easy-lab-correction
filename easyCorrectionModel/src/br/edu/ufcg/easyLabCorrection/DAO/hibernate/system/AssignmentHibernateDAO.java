@@ -55,7 +55,7 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 				.createQuery(
 						"from Assignment where releaseDate <= :currentDate and " +
 						"deliveryDate > :currentDate and " +
-						"assignmentId = :idAssignment");
+						"id = :idAssignment");
 		q.setParameter("currentDate", currentDate);
 		q.setParameter("idAssignment", assignmentId);
 		q.setCacheable(true);

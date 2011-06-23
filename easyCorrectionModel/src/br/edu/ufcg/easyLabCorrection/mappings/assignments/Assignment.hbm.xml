@@ -22,7 +22,7 @@
 		<property name="interfaceDirectory" column="diretorio_interface"/>
 		<property name="testsDirectory" column="diretorio_testes"/>
 		<property name="participantsMaxNumber" column="numero_maximo_participantes"/>
-		<many-to-one name="stage" class="br.edu.ufcg.easyLabCorrection.pojo.system.Stage" column="periodo_id"/>
+		<many-to-one name="stage" class="br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage" column="periodo_id"/>
 		<many-to-one name="assignmentType" class="br.edu.ufcg.easyLabCorrection.pojo.assignments.AssignmentType" column="tipo_roteiro_id"/>
 		
 	</class>
