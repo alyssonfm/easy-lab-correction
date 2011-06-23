@@ -294,11 +294,11 @@ function getPorta() {
 }
 
 function getUrlAMFCanal(destino) {
-	return "http://" + top.location.host + ":8080/" + destino + "/messagebroker/amf";
+	return "http://" + top.location.host + "/" + destino + "/messagebroker/amf";
 }
 
 function getUrlAMFCanalSeguro(destino) {
-	return "https://" + top.location.host + ":8443/" + destino + "/messagebroker/amfsecure";
+	return "https://" + top.location.host + "/" + destino + "/messagebroker/amfsecure";
 }
 
 function getUrlSendMail() {
