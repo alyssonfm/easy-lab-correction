@@ -121,7 +121,7 @@
 			<mx:method name="getAssessmentsByAssignment" result="getAssessmentsByAssignment_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
-		<mx:ComboBox x="73" y="10" width="697" id="comboAssignment" change="getAssessmentsByAssignment()" enter="getAssessmentsByAssignment()" labelField="nome"></mx:ComboBox>
+		<mx:ComboBox x="73" y="10" width="697" id="comboAssignment" change="getAssessmentsByAssignment()" enter="getAssessmentsByAssignment()" labelField="name"></mx:ComboBox>
 		<mx:HRule x="10" y="40" width="760" height="10"/>
 		<mx:DataGrid x="10" y="58" width="760" height="426" wordWrap="true" id="dgNotes" labelFunction="labelGrid">
 			<mx:columns>

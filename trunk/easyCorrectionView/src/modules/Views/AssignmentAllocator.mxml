@@ -227,8 +227,8 @@
 			textAlign="left" width="64" x="10" y="22"/>
 		<mx:Label text="Equipes:" fontWeight="bold"
 			textAlign="left" width="63" x="10" y="72"/>
-		<comp:ComboBoxAC labelField="nome" x="73" y="21" width="304" change="getTeamsNoCorretorList()" id="comboAssignment"/>
-		<comp:ComboBoxAC labelField="nome" x="476" y="21" width="294" change="getWithCorretorTeamsList()" id="comboCorrectors" enabled="false"/>
+		<comp:ComboBoxAC labelField="name" x="73" y="21" width="304" change="getTeamsNoCorretorList()" id="comboAssignment"/>
+		<comp:ComboBoxAC labelField="name" x="476" y="21" width="294" change="getWithCorretorTeamsList()" id="comboCorrectors" enabled="false"/>
 		<mx:HRule x="10" y="61" width="760" height="3"/>
 		<mx:List id="teamListByAssignmentWithoutCorrector" x="10" y="100" width="352" height="295" labelFunction="exposesEvaluationTeam" itemClick="teamSelectsDeallocated()"/>
 		<mx:Label text="Equipes Selecionadas:" fontWeight="bold" textAlign="left" width="155" x="418" y="72"/>
