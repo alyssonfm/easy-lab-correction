@@ -8,7 +8,7 @@ package bean.Utility {
 	import bean.permission.Menu;
 	import bean.permission.MenuFunction;
 	import bean.permission.Permission;
-	import bean.system.Stage;
+	import bean.system.SystemStage;
 	import bean.team.Team;
 	import bean.team.TeamHasUserHasAssignment;
 	import bean.user.User;
@@ -79,12 +79,12 @@ package bean.Utility {
 			return object;
 		}
 		
-		public static function castStage(object: *):Stage{
+		public static function castStage(object: *):SystemStage{
 			if (object != null) {
 				if(object == undefined){
 					object = null;
 				}else{
-					var s:Stage = new Stage();
+					var s:SystemStage = new SystemStage();
 					s.id = object.id;
 					s.semester = object.semester;
 					return s;
