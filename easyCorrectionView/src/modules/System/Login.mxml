@@ -71,7 +71,7 @@
 					catch(e:Error){
 						msg = "Serviço indisponível, reinicie a operação.";
 					}
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, msg));
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, msg));
 				}
 	
 		        /*
@@ -154,7 +154,6 @@
 				
 				private function saveUser(): void{
 					ModulesController.createModule("modulos/ValidaOrientador.swf", this, null);
-					//ControladorDeModulos.criaModulo("modulos/ConfirmacaoMembroCE.swf", this, null);
 				}
 				
 				private function changePassword():void {
