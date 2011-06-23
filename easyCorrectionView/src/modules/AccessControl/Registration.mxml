@@ -8,7 +8,7 @@
 		<mx:State name="teacherState">
 			<mx:RemoveChild target="{tabNav}"/>
 			<mx:AddChild position="lastChild">
-				<mx:ComboBox prompt="selecione..." x="66" y="10" width="548" labelField="nome" id="cbUserGroupState" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
+				<mx:ComboBox prompt="selecione..." x="66" y="10" width="548" labelField="name" id="cbUserGroupState" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:TextInput x="65" y="41" width="548" id="inputUserNameState" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
@@ -1101,7 +1101,7 @@
 	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="false">	
 		
 		<mx:Canvas label="Usuário" width="100%" height="100%" id="canvas4">
-			<mx:ComboBox prompt="selecione..." x="64" y="10" width="548" labelField="nome" id="cbUserGroup" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
+			<mx:ComboBox prompt="selecione..." x="64" y="10" width="548" labelField="name" id="cbUserGroup" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
 			<mx:TextInput x="64" y="41" width="548" id="inputUserName" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="64" y="70.5" width="348" id="inputUserLogin" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="478" y="70.5" width="134" id="inputUserPassword" displayAsPassword="true"/>
@@ -1158,7 +1158,7 @@
 		</mx:Canvas>
 		
 		<mx:Canvas label="Função" width="100%" height="100%" id="canvas2">
-			<comp:ComboBoxAC labelField="nome" x="62" y="15.5" width="550" id="cbMenu" toolTip="{toolTipMenuFunction}" change="filtrateFunctionsByMenu()"/>
+			<comp:ComboBoxAC labelField="name" x="62" y="15.5" width="550" id="cbMenu" toolTip="{toolTipMenuFunction}" change="filtrateFunctionsByMenu()"/>
 			<mx:TextInput x="62" y="76" width="550" id="inputFunctionName" toolTip="{toolTipNameFunction}" change="handleValidateFunction(null)"/>
 			<mx:TextInput x="62" y="104" width="550" id="inputFunctionLabel" toolTip="{toolTipNameFunction}" change="handleValidateFunction(null)"/>
 			<mx:Button x="243.5" y="144" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" 
