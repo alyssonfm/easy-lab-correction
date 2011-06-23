@@ -89,7 +89,7 @@
 				cleanCheck();
 				for(var i:int = 0; i < permissions.length; i++){
 					permission = CastEntities.castPermission(permissions.getItemAt(i));
-					dgFunctions.selectedIndex = Util.objectTakesPost("functionId", ArrayCollection(dgFunctions.dataProvider), permission.func);
+					dgFunctions.selectedIndex = Util.objectTakesPost("functionId", ArrayCollection(dgFunctions.dataProvider), permission.menuFunction);
 					dgFunctions.selectedItem.selected = true;
 				}
 				dgFunctions.headerHeight = dgFunctions.headerHeight;
@@ -125,7 +125,7 @@
 				catch(e:Error){
 					message = "Serviço indisponível, reinicie a operação.";
 				}
-				ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+				ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 			}
 			
 			private function labelGridFunctions(item:*, column:DataGridColumn):String {
@@ -161,7 +161,7 @@
 				<mx:itemRenderer>
 					<mx:Component>
 						<mx:Canvas width="100%" height="100%">
-							<mx:CheckBox creationComplete="inicializeChecks(event)" change="getSelected(event)" selected="{data.selecionado}" id="check" x="18">
+							<mx:CheckBox creationComplete="inicializeChecks(event)" change="getSelected(event)" selected="{data.selected}" id="check" x="18">
 						 		<mx:Script>
 	                            	<![CDATA[
 	                            

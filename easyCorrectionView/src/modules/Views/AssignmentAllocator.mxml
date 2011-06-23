@@ -199,7 +199,7 @@
 				}
 				
 				private function selecaoLabelIntegrantes(item: *): String{
-					return item.usuario.nome;
+					return item.user.name;
 				}
 				
 				private function messageDisplays(message: String): void{

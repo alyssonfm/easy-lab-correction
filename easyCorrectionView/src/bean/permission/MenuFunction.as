@@ -4,7 +4,7 @@ package bean.permission {
 	
 
 	[Bindable]
-	[RemoteClass(alias="br.edu.ufcg.easyLabCorrection.pojo.permission.Function")]
+	[RemoteClass(alias="br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction")]
 
 	public class MenuFunction{
 

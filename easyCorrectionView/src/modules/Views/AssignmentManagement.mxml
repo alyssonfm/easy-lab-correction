@@ -243,7 +243,7 @@
 						}
 						else{
 							var param:Array = new Array(true, "Horário limite para entrega inválido. (Intervalo: 00:00 ~ 23:59)");
-							ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+							ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 						}	
 					}					
 				}
@@ -258,7 +258,7 @@
 					}
 					else{
 						var param:Array = new Array(true, "Horário limite para entrega inválido. (Intervalo: 00:00 ~ 23:59)");
-						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+						ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 					}
 				}
 				

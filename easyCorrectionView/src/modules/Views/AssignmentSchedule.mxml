@@ -43,7 +43,7 @@
 					catch(e:Error){
 						msg = "Serviço indisponível, reinicie a operação.";
 					}
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, msg));
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, msg));
 				}
 				
 				private function closeWindow():void {
@@ -88,12 +88,12 @@
 					var paramMenssage: Array = new Array();
 					if(AssignmentManagement.edited){
 						paramMenssage = new Array(false, "Roteiro Atualizado com sucesso.");
-						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramMenssage);
+						ModulesController.createModule("modules/System/MessageStatus.swf", this, paramMenssage);
 						AssignmentManagement.edited = false;
 					}
 					else if(AssignmentManagement.save){
 						paramMenssage = new Array(false, "Roteiro Cadastrado com sucesso.");
-						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, paramMenssage);
+						ModulesController.createModule("modules/System/MessageStatus.swf", this, paramMenssage);
 						AssignmentManagement.save = false;	
 					}
 				}
@@ -131,14 +131,14 @@
 				private function editAssignmentCalls():void{
 					if(dg_agenda.selectedItem != null){
 						var param:* = dg_agenda.selectedItem;
-						ModulesController.createModule("modulos/Views/CadastrarRoteiro.swf", this, param);
+						ModulesController.createModule("modules/Views/AssignmentManagement.swf", this, param);
 					}else{
-						ModulesController.createModule("modulos/Views/CadastrarRoteiro.swf", this, null);
+						ModulesController.createModule("modules/Views/AssignmentManagement.swf", this, null);
 					}
 				}
 				
 				private function createsAssignment():void{
-					ModulesController.createModule("modulos/Views/CadastrarRoteiro.swf", this, null);
+					ModulesController.createModule("modules/Views/AssignmentManagement.swf", this, null);
 				}
 
 			]]>

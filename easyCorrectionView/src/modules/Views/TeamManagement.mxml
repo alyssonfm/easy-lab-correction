@@ -51,7 +51,7 @@
 					catch(e:Error){
 						message = "Serviço indisponível, reinicie a operação.";
 					}
-					ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 				}
 				
 				private function closeWindow():void {
@@ -106,7 +106,7 @@
 							comboTeam.selectedItem.id, comboAssignment.selectedItem.id)
 					}else{
 						var param:Array = new Array(false, "Selecione o roteiro e a equipe.");
-						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+						ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 					}
 				}
 				
@@ -167,7 +167,7 @@
 			private function  changeTeam_result(event:ResultEvent):void{
 				if(event.result != null){
 					var param:Array = new Array(false, "Usuario cadastrado com sucesso.");
-						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, param);
+						ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 				}
 				getTeamHasUserHasAssignmentByTeamAndAssignment();
 				

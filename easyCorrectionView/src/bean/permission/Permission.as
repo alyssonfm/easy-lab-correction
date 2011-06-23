@@ -12,6 +12,6 @@ package bean.permission {
 	
 		public var group:Group;
 	
-		public var func:MenuFunction;
+		public var menuFunction:MenuFunction;
 	}
 }

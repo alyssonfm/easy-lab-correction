@@ -72,7 +72,7 @@ package bean.Utility {
 					var p:Permission = new Permission();
 					p.permissionId = object.permissionId;
 					p.group = castGroup(object.group);
-					p.func = castFunction(object.func);
+					p.menuFunction = castFunction(object.menuFunction);
 					return p;
 				}
 			}

@@ -134,7 +134,7 @@
 				}
 					
 				private function selecaoLabelIntegrantes(item: *): String{
-					return item.usuario.nome;
+					return item.user.nome;
 				}
 				
 				private function getSourceFileName_result(event:ResultEvent):void{
