@@ -3,7 +3,7 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="800" height="592" creationComplete="init()" title="Cadastro de Roteiro" showCloseButton="true" close="closeWindow()" layout="absolute">
+	width="800" height="640" creationComplete="init()" title="Cadastro de Roteiro" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -86,6 +86,15 @@
 					stat = ModulesController.getParam();
 					dfMaximumDate.selectedDate = new Date(new Date().getTime()+(7*millisecondsPerDay));
 					dfDiscussionDate.selectedDate = new Date(new Date().getTime()+(21*millisecondsPerDay));
+					listAssignmentType();
+				}
+				
+				private function listAssignmentType():void{
+					facade.getOperation("listAssignmentType").send();
+				}
+				
+				private function listAssignmentType_result(event:ResultEvent):void{
+					comboType.dataProvider = event.result;
 					getCurrentStage();
 					if(stat != null){
 						getAssignment();
@@ -129,6 +138,7 @@
 					inputPenalty.text = String(assignment.penaltyPerDaysLate);
 					inputPercentage.text = String(assignment.automaticTestsPercentage);
 					inputTimeout.text = String(assignment.testTimeLimit);
+					comboType.selectedIndex = Util.objectTakesPost("id", ArrayCollection(comboType.dataProvider), assignment.assignmentType);
 				}
 				
 				private function chooseFileTests(): void{
@@ -219,6 +229,7 @@
 					assignment.stage = stg;
 					assignment.automaticTestsPercentage = Util.formatsTextValueToNumber(inputPercentage.text);
 					assignment.testTimeLimit = int(inputTimeout.text);
+					assignment.assignmentType = CastEntities.castAssignmentType(comboType.selectedItem);
 					
 				}
 				
@@ -301,83 +312,87 @@
 			<mx:method name="getCurrentStage" result="getCurrentStage_result(event)" fault="failure(event)"/>
 			<mx:method name="saveAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="updateAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
+			<mx:method name="listAssignmentType" result="listAssignmentType_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
 		<mx:Label text="Título:" fontWeight="bold"
-			textAlign="left" width="54" x="10" y="10" id="labelTitle"/>
+			textAlign="left" width="54" x="10" y="12" id="labelTitle"/>
+		<mx:Label text="Tipo:" fontWeight="bold"
+			textAlign="left" width="44" x="10" y="43" id="labelTitle0"/>
 		<mx:Label text="Porcentagem Automática da Avaliação:" fontWeight="bold"
-			textAlign="left" width="270" x="10" y="330"/>
+			textAlign="left" width="270" x="10" y="363"/>
 		<mx:Label text="%" fontWeight="bold"
-			textAlign="left" width="20" x="384" y="330"/>
+			textAlign="left" width="20" x="384" y="363"/>
 		<mx:Label text="Descrição:" fontWeight="bold"
-			textAlign="left" width="79" x="10" y="50" id="labelDescription"/>
-		<mx:TextInput x="62" y="8" id="inputTitle" width="329" maxChars="250"/>
+			textAlign="left" width="79" x="10" y="83" id="labelDescription"/>
+		<mx:TextInput x="62" y="10" id="inputTitle" width="708" maxChars="250"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
 		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"		
-		toolTip="" x="538" y="8" width="129" id="dfReleaseDate" text="{df.format(new Date())}" change="datesUpdatedDefaut()"/>
-		<mx:TextInput x="675" y="8" id="inputReleaseTime" width="28" restrict="[0-9]" maxChars="2" text="00"/>
-		<mx:TextInput x="724" y="8" id="inputMinuteRelease" width="28" restrict="[0-9]" maxChars="2" text="00"/>
+		toolTip="" x="538" y="41" width="129" id="dfReleaseDate" text="{df.format(new Date())}" change="datesUpdatedDefaut()"/>
+		<mx:TextInput x="675" y="41" id="inputReleaseTime" width="28" restrict="[0-9]" maxChars="2" text="00"/>
+		<mx:TextInput x="724" y="41" id="inputMinuteRelease" width="28" restrict="[0-9]" maxChars="2" text="00"/>
 		<mx:DateFormatter id="df" formatString="DD/MM/YYYY"/>
-		<mx:TextArea x="10" y="78" width="760" height="122" id="inputDescription" maxChars="30000"/>
+		<mx:TextArea x="10" y="111" width="760" height="122" id="inputDescription" maxChars="30000"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
 		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"
-		toolTip="" x="219" y="223" width="129" id="dfMaximumDate"/>
-		<mx:TextInput x="356" y="223" id="inputHour" width="28" restrict="[0-9]" maxChars="2" text="00"/>
-		<mx:TextInput x="405" y="223" id="inputMinute" width="28" restrict="[0-9]" maxChars="2" text="00"/>
+		toolTip="" x="219" y="256" width="129" id="dfMaximumDate"/>
+		<mx:TextInput x="356" y="256" id="inputHour" width="28" restrict="[0-9]" maxChars="2" text="00"/>
+		<mx:TextInput x="405" y="256" id="inputMinute" width="28" restrict="[0-9]" maxChars="2" text="00"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
 		'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']"
-		toolTip="" x="219" y="253" width="129" id="dfDiscussionDate"/>
-		<mx:TextInput x="356" y="253" id="inputDiscussionHour" width="28" restrict="[0-9]" maxChars="2" text="00"/>
-		<mx:TextInput x="405" y="253" id="inputDiscussionMinute" width="28" restrict="[0-9]" maxChars="2" text="00"/>
-		<mx:TextInput x="723" y="251" id="inputMaxTeam" width="47" restrict="[0-9]" maxChars="2" text="1"/>
-		<mx:TextInput x="723" y="221" id="inputMaxNumberSent" width="47" restrict="[0-9]" maxChars="2" text="3"/>
-		<extra:DecimalInput x="219" y="285"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalty" width="113" text="0.5"/>
-		<extra:DecimalInput x="285" y="328"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPercentage" width="91" text="100"/>
-		<mx:TextInput x="641" y="330" id="inputTimeout" width="95" restrict="[0-9]" maxChars="2" text="10"/>
+		toolTip="" x="219" y="286" width="129" id="dfDiscussionDate"/>
+		<mx:TextInput x="356" y="286" id="inputDiscussionHour" width="28" restrict="[0-9]" maxChars="2" text="00"/>
+		<mx:TextInput x="405" y="286" id="inputDiscussionMinute" width="28" restrict="[0-9]" maxChars="2" text="00"/>
+		<mx:TextInput x="723" y="284" id="inputMaxTeam" width="47" restrict="[0-9]" maxChars="2" text="1"/>
+		<mx:TextInput x="723" y="254" id="inputMaxNumberSent" width="47" restrict="[0-9]" maxChars="2" text="3"/>
+		<extra:DecimalInput x="219" y="318"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalty" width="113" text="0.5"/>
+		<extra:DecimalInput x="285" y="361"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPercentage" width="91" text="100"/>
+		<mx:TextInput x="641" y="363" id="inputTimeout" width="95" restrict="[0-9]" maxChars="2" text="10"/>
 		<mx:Label text="Máximo de integrantes por equipe:" fontWeight="bold"
-			textAlign="left" width="239" x="476" y="255" id="labelAutomatic0"/>
+			textAlign="left" width="239" x="476" y="288" id="labelAutomatic0"/>
 		<mx:Label text="Penalidade por dia de atraso:" fontWeight="bold"
-			textAlign="left" width="201" x="10" y="287"/>
+			textAlign="left" width="201" x="10" y="320"/>
 		<mx:Label text="Número máximo de envios:" fontWeight="bold"
-			textAlign="left" width="191" x="476" y="225" id="labelAutomatic3"/>
+			textAlign="left" width="191" x="476" y="258" id="labelAutomatic3"/>
 		<mx:Label text="Time-limit dos teste por método:" fontWeight="bold"
-			textAlign="left" width="224" x="415" y="332" id="labelAutomatic5"/>
+			textAlign="left" width="224" x="415" y="365" id="labelAutomatic5"/>
 		<mx:Label text="ms" fontWeight="bold"
-			textAlign="left" width="27" x="744" y="332"/>
+			textAlign="left" width="27" x="744" y="365"/>
 		<mx:Label text="H" fontWeight="bold"
-			textAlign="left" width="17" x="387" y="225" id="labelAutomatica8"/>
+			textAlign="left" width="17" x="387" y="258" id="labelAutomatica8"/>
 		<mx:Label text="M" fontWeight="bold"
-			textAlign="left" width="17" x="434" y="225" id="labelAutomatica7"/>
+			textAlign="left" width="17" x="434" y="258" id="labelAutomatica7"/>
 		<mx:Label text="H" fontWeight="bold"
-			textAlign="left" width="17" x="387" y="255" id="labelAutomatica11"/>
+			textAlign="left" width="17" x="387" y="288" id="labelAutomatica11"/>
 		<mx:Label text="M" fontWeight="bold"
-			textAlign="left" width="17" x="434" y="255" id="labelAutomatica12"/>
+			textAlign="left" width="17" x="434" y="288" id="labelAutomatica12"/>
 		<mx:Label text="Data Máxima para entrega:" fontWeight="bold"
-			textAlign="left" width="201" x="10" y="225" id="labelAutomatic1"/>
+			textAlign="left" width="201" x="10" y="258" id="labelAutomatic1"/>
 		<mx:Label text="Data Máxima para discussão:" fontWeight="bold"
-			textAlign="left" width="201" x="10" y="255" id="labelAutomatic2"/>
+			textAlign="left" width="201" x="10" y="288" id="labelAutomatic2"/>
 		<mx:Label text="Data da liberação:" fontWeight="bold"
-			textAlign="left" width="131" x="399" y="10" id="labelAutomatic4"/>
-		<mx:HRule x="10" y="364" width="760"/>
-		<mx:HRule x="10" y="208" width="760"/>
-		<mx:HRule x="10" y="317" width="760"/>
-		<mx:HRule x="10" y="40" width="760"/>
-		<mx:LinkButton x="263.55" y="374" label="   Anexar Testes Automáticos" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="chooseFileTests()"/>
-		<mx:Label x="10" y="406" width="760" id="pathTests" textAlign="center"/>
-		<mx:LinkButton x="273.05" y="438" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="attachInterface" click="selectFileInterface()"/>
-		<mx:Label x="10" y="470" width="760" id="pathInterface" textAlign="center"/>
-		<mx:Button x="298.05" y="510" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="updateAssignmentButton" click="updateAssignment()"/>
-		<mx:Button x="298.05" y="510" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="createAssignmentButton" click="saveAssignments()"/>
+			textAlign="left" width="131" x="399" y="43" id="labelAutomatic4"/>
+		<mx:HRule x="10" y="397" width="760"/>
+		<mx:HRule x="10" y="241" width="760"/>
+		<mx:HRule x="10" y="350" width="760"/>
+		<mx:HRule x="10" y="73" width="760"/>
+		<mx:LinkButton x="263.55" y="407" label="   Anexar Testes Automáticos" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="chooseFileTests()"/>
+		<mx:Label x="10" y="439" width="760" id="pathTests" textAlign="center"/>
+		<mx:LinkButton x="273.05" y="471" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="attachInterface" click="selectFileInterface()"/>
+		<mx:Label x="10" y="503" width="760" id="pathInterface" textAlign="center"/>
+		<mx:Button x="298.05" y="543" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="updateAssignmentButton" click="updateAssignment()"/>
+		<mx:Button x="298.05" y="543" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="createAssignmentButton" click="saveAssignments()"/>
 		<mx:Label text="H" fontWeight="bold"
-			textAlign="left" width="17" x="706" y="10" id="labelAutomatica20"/>
+			textAlign="left" width="17" x="706" y="43" id="labelAutomatica20"/>
 		<mx:Label text="M" fontWeight="bold"
-			textAlign="left" width="17" x="753" y="10" id="labelAutomatica10"/>
+			textAlign="left" width="17" x="753" y="43" id="labelAutomatica10"/>
+		<mx:ComboBox x="62" y="41" width="329" id="comboType" labelField="name"></mx:ComboBox>
 		
 		
 		
