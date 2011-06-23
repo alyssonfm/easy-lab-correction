@@ -34,7 +34,7 @@ public class FacadeAcceptanceTestUS02{
 		Menu menuAux = new Menu();
 		menuAux.setName(nomeMenu);
 		menuAux.setLabel(rotulo);
-		Menu n = facadeSistema.cadastrarMenu(menuAux);
+		Menu n = facadeSistema.saveMenu(menuAux);
 		return n.getMenuId();
 	}
 
@@ -44,18 +44,18 @@ public class FacadeAcceptanceTestUS02{
 		menuAux.setMenuId(id);
 		menuAux.setName(nomeMenu);
 		menuAux.setLabel(rotulo);
-		Menu n = facadeSistema.cadastrarMenu(menuAux);
+		Menu n = facadeSistema.saveMenu(menuAux);
 		return n.getMenuId();
 	}
 
 	//EasyAcceptOK
 	public void excluirMenu(int idMenu) throws Throwable {
-		facadeSistema.excluirMenu(facadeSistema.getMenu(idMenu));
+		facadeSistema.removeMenu(facadeSistema.getMenu(idMenu));
 	}
 
 	//EasyAcceptOK
 	public List<Menu> listarMenus() throws Throwable{
-		List<Menu> listarMenus = facadeSistema.listarMenus();
+		List<Menu> listarMenus = facadeSistema.menuList();
 		return listarMenus;
 	}
 	
@@ -90,7 +90,7 @@ public class FacadeAcceptanceTestUS02{
 		funcaoAux.setName(nomeFuncao);
 		funcaoAux.setLabel(rotulo);
 		funcaoAux.setMenu(getMenu(idMenu));
-		Function n = facadeSistema.cadastrarFuncao(funcaoAux);
+		Function n = facadeSistema.saveFunction(funcaoAux);
 		return n.getFunctionId();
 	}
 	
@@ -101,18 +101,18 @@ public class FacadeAcceptanceTestUS02{
 		funcaoAux.setName(nomeFuncao);
 		funcaoAux.setLabel(rotulo);
 		funcaoAux.setMenu(getMenu(idMenu));
-		Function n = facadeSistema.cadastrarFuncao(funcaoAux);
+		Function n = facadeSistema.saveFunction(funcaoAux);
 		return n.getFunctionId();
 	}
 
 	//EasyAcceptOK
 	public void excluirFuncao(int idFuncao) throws Throwable {
-		facadeSistema.excluirFuncao(facadeSistema.getFuncao(idFuncao));
+		facadeSistema.removeFunction(facadeSistema.getFuncao(idFuncao));
 	}
 
 	//EasyAcceptOK
 	public List<Function> listarFuncaos() throws Throwable{
-		List<Function> listarFuncaos = facadeSistema.listarFuncoes();
+		List<Function> listarFuncaos = facadeSistema.functionList();
 		return listarFuncaos;
 	}
 	
@@ -145,7 +145,7 @@ public class FacadeAcceptanceTestUS02{
 			throws Throwable{
 		Group grupoAux = new Group();
 		grupoAux.setName(nomeGrupo);
-		Group n = facadeSistema.cadastrarGrupo(grupoAux);
+		Group n = facadeSistema.saveGroup(grupoAux);
 		return n.getGroupId();
 	}
 
@@ -154,18 +154,18 @@ public class FacadeAcceptanceTestUS02{
 		Group grupoAux = new Group();
 		grupoAux.setGroupId(id);
 		grupoAux.setName(nomeGrupo);
-		Group n = facadeSistema.cadastrarGrupo(grupoAux);
+		Group n = facadeSistema.saveGroup(grupoAux);
 		return n.getGroupId();
 	}
 
 	//EasyAcceptOK
 	public void excluirGrupo(int idGrupo) throws Throwable {
-		facadeSistema.excluirGrupo(facadeSistema.getGrupo(idGrupo));
+		facadeSistema.removeGroup(facadeSistema.getGrupo(idGrupo));
 	}
 
 	//EasyAcceptOK
 	public List<Group> listarGrupos() throws Throwable{
-		List<Group> listarGrupos = facadeSistema.listarGrupos();
+		List<Group> listarGrupos = facadeSistema.groupList();
 		return listarGrupos;
 	}
 	
@@ -204,7 +204,7 @@ public class FacadeAcceptanceTestUS02{
 		User usu = new User(login, nome, senha, email);
 		usu.setUserId(0);
 		usuarioAux.setUser(usu);
-		UserGroup n = facadeSistema.cadastrarUsuario(usuarioAux);
+		UserGroup n = facadeSistema.saveUser(usuarioAux);
 		return n.getUserGroupId();
 	}
 
@@ -219,19 +219,19 @@ public class FacadeAcceptanceTestUS02{
 		UserGroup usuarioAux = new UserGroup();
 		usuarioAux.setUserGroupId(grupoUsuarioId);
 		usuarioAux.setGroup(facadeSistema.getGrupo(grupoId));
-		User us = facadeSistema.getUsuarioPorLogin(login);
+		User us = facadeSistema.getUserByLogin(login);
 		us.setName(nome);
 		us.setLogin(login);
 		us.setPassword(senha);
 		us.setEmail(email);
 		usuarioAux.setUser(us);
-		UserGroup n = facadeSistema.cadastrarUsuario(usuarioAux);
+		UserGroup n = facadeSistema.saveUser(usuarioAux);
 		return n.getUserGroupId();
 	}
 
 	//EasyAcceptOK
 	public void excluirUsuario(int idGrupoUsuario) throws Throwable {
-		facadeSistema.excluirUsuario(facadeSistema.getGrupoUsuario(idGrupoUsuario));
+		facadeSistema.removeUserGroup(facadeSistema.getGrupoUsuario(idGrupoUsuario));
 	}
 	
 	//EasyAcceptOK
