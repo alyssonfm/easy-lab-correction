@@ -34,8 +34,8 @@
 				
 				private var fileRefTests:FileReference;
 				private var requestTests: URLRequest;
-				private var fileRefInterface:FileReference;
-				private var requestInterface: URLRequest;
+				private var fileRefEnvironment:FileReference;
+				private var requestEnvironment: URLRequest;
 				private const FILE_UPLOAD_URL:String = Constant.urlUploadDonwload;
 				
 				public static var edited: Boolean = false;
@@ -47,7 +47,7 @@
 				private var doUpload: Boolean = false;
 				private var isCreate: Boolean = false;
 				private var urlTests: String = "";
-				private var urlInterface: String = "";
+				private var urlEnvironment: String = "";
 				private var paramMessage:Array;
 	            
 	            private function failure(event:FaultEvent):void {
@@ -130,7 +130,7 @@
 					dfReleaseDate.text = Util.formatsDate(assignment.releaseDate);
 					
 					inputDescription.text = assignment.description;
-					pathInterface.text = assignment.interfaceDirectory;
+					pathEnvironment.text = assignment.interfaceDirectory;
 					pathTests.text = assignment.testsDirectory;
 					inputTitle.text = assignment.name;
 					inputMaxNumberSent.text = String(assignment.sendMaxNumber);
@@ -164,37 +164,37 @@
 				public function fullSendingTests(evt:Event):void {
 					requestTests = new URLRequest(FILE_UPLOAD_URL);
 					var variables:URLVariables = new URLVariables();
-					variables.url = urlInterface;
-					variables.fileName = pathInterface.text;
-					requestInterface.data = variables;
-					fileRefInterface.upload(requestInterface);
+					variables.url = urlEnvironment;
+					variables.fileName = pathEnvironment.text;
+					requestEnvironment.data = variables;
+					fileRefEnvironment.upload(requestEnvironment);
 				}
 				
 				public function saveAssignment(): void{
 					dispatchEvent(new ClosePopupEvent(this));
 				}
 				
-				private function selectFileInterface(): void{
-					fileRefInterface = new FileReference();
-			   	 	fileRefInterface.addEventListener(Event.SELECT, selectedFileInterface);
-			   	 	fileRefInterface.addEventListener(Event.COMPLETE, fullSendingInterface);
-			   	 	fileRefInterface.addEventListener(IOErrorEvent.IO_ERROR, errorSendingInterface);
-			    	fileRefInterface.browse(new Array(new FileFilter("Interface (*.java)","*.java")));
+				private function selectFileEnvironment(): void{
+					fileRefEnvironment = new FileReference();
+			   	 	fileRefEnvironment.addEventListener(Event.SELECT, selectedFileEnvironment);
+			   	 	fileRefEnvironment.addEventListener(Event.COMPLETE, fullSendingEnvironment);
+			   	 	fileRefEnvironment.addEventListener(IOErrorEvent.IO_ERROR, errorSendingEnvironment);
+			    	fileRefEnvironment.browse(new Array(new FileFilter("Testes (*.zip)","*.zip")));
 				}
 				
-				public function errorSendingInterface(evt:Event):void {
+				public function errorSendingEnvironment(evt:Event):void {
 			       	var param:Array = new Array(true, "Ocorreu um erro de transmissão. O arquivo de Interface não foi enviado." +
 														"\n\nTente novamente! Caso este erro persista..." + 
 														"\n\nVerifique se sua conexão com a internet está ativada.");
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 				}
 				
-				public function selectedFileInterface(evt:Event):void {
-			       	requestInterface = new URLRequest(FILE_UPLOAD_URL);
-			       	pathInterface.text = fileRefInterface.name;
+				public function selectedFileEnvironment(evt:Event):void {
+			       	requestEnvironment = new URLRequest(FILE_UPLOAD_URL);
+			       	pathEnvironment.text = fileRefEnvironment.name;
 				}
 				
-				public function fullSendingInterface(evt:Event):void {
+				public function fullSendingEnvironment(evt:Event):void {
 				}
 				
 				private function getCurrentStage():void{
@@ -221,7 +221,7 @@
 					
 					assignment.description = inputDescription.text;
 					assignment.name = inputTitle.text;
-					assignment.interfaceDirectory = "/periodo" + stg.semester + "/interface/" + assignment.id + "/";
+					assignment.interfaceDirectory = "/periodo" + stg.semester + "/environment/" + assignment.id + "/";
 					assignment.testsDirectory = "/periodo" + stg.semester + "/testes/" + assignment.id + "/";
 					assignment.sendMaxNumber = int(inputMaxNumberSent.text);
 					assignment.participantsMaxNumber = int(inputMaxTeam.text);
@@ -277,7 +277,7 @@
 					assignment = new Assignment();
 					assignment = CastEntities.castAssignment(event.result);
 					urlTests = "/periodo" + stg.semester + "/testes/" + assignment.id + "/";
-					urlInterface = "/periodo" + stg.semester + "/interface/" + assignment.id + "/";
+					urlEnvironment = "/periodo" + stg.semester + "/environment/" + assignment.id + "/";
 					if (!isCreate){
 						try{
 							var variables:URLVariables = new URLVariables();
@@ -384,8 +384,8 @@
 		<mx:HRule x="10" y="73" width="760"/>
 		<mx:LinkButton x="263.55" y="407" label="   Anexar Testes Automáticos" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="chooseFileTests()"/>
 		<mx:Label x="10" y="439" width="760" id="pathTests" textAlign="center"/>
-		<mx:LinkButton x="273.05" y="471" label="   Anexar Interface" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="attachInterface" click="selectFileInterface()"/>
-		<mx:Label x="10" y="503" width="760" id="pathInterface" textAlign="center"/>
+		<mx:LinkButton x="273.05" y="471" label="   Anexar Ambiente" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="attachEnvironment" click="selectFileEnvironment()"/>
+		<mx:Label x="10" y="503" width="760" id="pathEnvironment" textAlign="center"/>
 		<mx:Button x="298.05" y="543" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="updateAssignmentButton" click="updateAssignment()"/>
 		<mx:Button x="298.05" y="543" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="createAssignmentButton" click="saveAssignments()"/>
 		<mx:Label text="H" fontWeight="bold"
