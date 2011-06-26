@@ -221,8 +221,9 @@ public class AssessmentManager extends Manager {
 	 * @param automaticTestsGrade The value of automatic tests.<br> 
 	 * @param automaticTestsResult The result of automatic tests.<br> 
 	 * @return The assessment save in the system.<br>
+	 * @throws EasyCorrectionException 
 	 */
-	public Assessment saveAssessment(Submission submission, double automaticTestsGrade, String automaticTestsResult){
+	public Assessment setAssessment(Submission submission, double automaticTestsGrade, String automaticTestsResult) throws EasyCorrectionException{
 		try{
 			Assessment assess = getAssessmentByAssignmentAndTeam(submission.getTeamHasUserHasAssignment().getAssignment().getId(), 
 					submission.getTeamHasUserHasAssignment().getTeam().getId());
@@ -232,9 +233,7 @@ public class AssessmentManager extends Manager {
 			assess.setTestsExecutionResult(automaticTestsResult);
 			return updateAssessment(assess);
 		}
-		// TODO: What kind of exception?
-		catch (Exception e) {
-			
+		catch (ObjectNotFoundException e) {
 			Assessment assess = new Assessment(0, 
 					submission, 
 					automaticTestsGrade, 
@@ -244,8 +243,7 @@ public class AssessmentManager extends Manager {
 					easyCorrectionUtil.getDataNow(),
 					null);
 			return createAssessment(assess);
-		}	
-		
+		}
 	}
 
 }
