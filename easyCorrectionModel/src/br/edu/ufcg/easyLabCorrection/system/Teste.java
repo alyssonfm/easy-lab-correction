@@ -25,7 +25,7 @@ public class Teste {
 	    
 		CompilationManager cm = new CompilationManager();
 		TestManager tm = new TestManager();
-		tm.executeTests2("D:/TEMP/codigo/", "D:/TEMP/testes/");
+		tm.executeTests("D:/TEMP/codigo/", "D:/TEMP/testes/");
 		//cm.runJavaCompiler2(, , "D:/TEMP/lib/");
 	    
 	    /*

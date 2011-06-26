@@ -3,11 +3,9 @@ package br.edu.ufcg.easyLabCorrection.managers;
 import java.io.File;
 import java.util.List;
 
-import junit.framework.TestResult;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.SubmissionException;
-import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
@@ -26,14 +24,13 @@ import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
  */
 public class SubmissionManager {
 
-	private TestManager testManager;
+	
 
 	/**
 	 * Constructor default of class.<br>
 	 */
 	public SubmissionManager() {
 		super();
-		testManager = new TestManager();
 	}
 
 	/**
@@ -124,24 +121,9 @@ public class SubmissionManager {
 
 	/*
 	 * BEGIN OF PRIVATE METHODS
+	 * This method is used to provide the environment, test and source downloads.
 	 */
-	private String firstOccurrence(String[] fileList) {
-		try {
-			String fileName = "";
-			for (int i = 0; i < fileList.length; i++) {
-				fileName = fileList[i];
-				if (fileName
-						.substring(fileName.length() - 4, fileName.length())
-						.equals("java")) {
-					return fileName;
-				}
-			}
-		} catch (Exception e) {
-		}
-		return null;
-	}
-
-	private String zipFirstOccurrence(String[] fileList) {
+	private String getZipFile(String[] fileList) {
 		try {
 			String fileName = "";
 			for (int i = 0; i < fileList.length; i++) {
@@ -155,61 +137,6 @@ public class SubmissionManager {
 		} catch (Exception e) {
 		}
 		return null;
-	}
-
-	/*
-	 * TODO: Move to System
-	 * 
-	 * Idea: The compiler filenames will be build on the System and the
-	 * TestManager will receive the filename completely build
-	 */
-	
-	/**
-	 * Function used to run automatic tests in the submission performed.<br>
-	 * @param submission The submission which will run in automatic testing.<br>
-	 * @return A string containing the result of running the tests.<br> 
-	 * @throws EasyCorrectionException Exception can be thrown in the execution 
-	 * of automated tests.<br>
-	 */
-	public String runAutomaticTests(Submission submission)
-			throws EasyCorrectionException {
-
-		if (submission.getTeamHasUserHasAssignment().getAssignment()
-				.getAutomaticTestsPercentage() > 0) {
-			String testsDirectory = ServletUpload.local
-					+ submission.getTeamHasUserHasAssignment().getAssignment()
-							.getTestsDirectory().replace("/", File.separator);
-			String interfaceDirectory = ServletUpload.local
-					+ submission.getTeamHasUserHasAssignment().getAssignment()
-							.getInterfaceDirectory().replace("/",
-									File.separator);
-			String sourceDirectory = ServletUpload.local
-					+ submission.getUrl().replace("/", File.separator);
-
-			File testsDir = new File(testsDirectory);
-			String testFile = firstOccurrence(testsDir.list());
-			File interfaceDir = new File(interfaceDirectory);
-			String interfaceFile = firstOccurrence(interfaceDir.list());
-			File sourceDir = new File(sourceDirectory);
-			String sourceFile = firstOccurrence(sourceDir.list());
-
-			TestResult testResult;
-
-			try {
-				testResult = testManager.executeTests(testsDirectory, testFile,
-						interfaceDirectory, interfaceFile, sourceDirectory,
-						sourceFile);
-			} catch (TestExecutionException e) {
-				deleteSubmission(submission);
-				return e.getMessage();
-			}
-
-			return testManager.getTestsExecutionOutput(testResult, submission);
-		} else {
-			String result = "Este roteiro não possui testes automáticos.";
-			testManager.saveAssessment(submission, 0, result);
-			return "Resultado: " + result;
-		}
 	}
 
 	/**
@@ -233,7 +160,7 @@ public class SubmissionManager {
 	 */
 	public void deleteSubmission(Submission sub) throws EasyCorrectionException {
 		if (sub == null) {
-			throw new SubmissionException("Submissão inexistente!");
+			throw new SubmissionException("Submiss�o inexistente!");
 		}
 		Submission submission = getSubmission(sub.getId());
 		submission = (Submission) SwapperAtributosReflect.swapObject(
@@ -249,12 +176,12 @@ public class SubmissionManager {
 	 * @return The string corresponding at the filename of interface of 
 	 * assignment passed as parameter.<br>
 	 */
-	public String getInterfaceFileName(Assignment assignment) {
-		String interfaceDirectory = ServletUpload.local
+	public String getEnvironmentFileName(Assignment assignment) {
+		String environmentDirectory = ServletUpload.local
 				+ assignment.getInterfaceDirectory().replace("/",
 						File.separator);
-		File interfaceDir = new File(interfaceDirectory);
-		return firstOccurrence(interfaceDir.list());
+		File interfaceDir = new File(environmentDirectory);
+		return getZipFile(interfaceDir.list());
 	}
 
 	/**
@@ -269,7 +196,7 @@ public class SubmissionManager {
 		String testsDirectory = ServletUpload.local
 				+ assignment.getTestsDirectory().replace("/", File.separator);
 		File testsDir = new File(testsDirectory);
-		return zipFirstOccurrence(testsDir.list());
+		return getZipFile(testsDir.list());
 	}
 
 	/**
@@ -284,7 +211,7 @@ public class SubmissionManager {
 		String sourceDirectory = ServletUpload.local
 				+ submission.getUrl().replace("/", File.separator);
 		File sourceDir = new File(sourceDirectory);
-		return zipFirstOccurrence(sourceDir.list());
+		return getZipFile(sourceDir.list());
 	}
 
 }

@@ -2,7 +2,6 @@ package br.edu.ufcg.easyLabCorrection.managers;
 
 import java.util.List;
 
-
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.AuthenticationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
@@ -10,7 +9,6 @@ import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.system.System;
 import br.edu.ufcg.easyLabCorrection.util.MD5Generator;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
@@ -28,8 +26,6 @@ public class AccessUserManager extends Manager {
 	/*
 	 * Attributes private of the class.<br>
 	 */
-	private AssignmentManager assignmentManager;
-	private System system; 
 
 	/**
 	 * Constructor default of the class, creates a new object 
@@ -37,8 +33,6 @@ public class AccessUserManager extends Manager {
 	 */
 	public AccessUserManager() {
 		super();
-		assignmentManager = new AssignmentManager();
-		//system = new System();
 	}
 
 	/*
@@ -69,20 +63,33 @@ public class AccessUserManager extends Manager {
 	 */
 	public UserGroup saveUserGroup(UserGroup userGroup)
 			throws EasyCorrectionException {
-		UserGroup ugs = new UserGroup();
+		UserGroup ug = new UserGroup();
 		if (!easyCorrectionUtil.isNull(userGroup)) {
 			try {
-				ugs = getUserGroupByGroupAndUser(userGroup.getGroup()
-						.getGroupId(), userGroup.getUser().getUserId());
-				ugs = (UserGroup) SwapperAtributosReflect.swapObject(ugs,
-						userGroup, UserGroup.class);
-				DAOFactory.DEFAULT.buildUserGroupDAO().update(ugs);
+				ug = updateUserGroup(userGroup);
 			} catch (ObjectNotFoundException e) {
-				Integer id = DAOFactory.DEFAULT.buildUserGroupDAO().save(
-						userGroup);
-				userGroup.setUserGroupId(id);
+				ug = createUserGroup(userGroup);
 			}
 		}
+		return ug;
+	}
+	
+	private UserGroup createUserGroup(UserGroup userGroup)
+			throws EasyCorrectionException {
+		Integer id = DAOFactory.DEFAULT.buildUserGroupDAO().save(
+				userGroup);
+		userGroup.setUserGroupId(id);
+		return userGroup;
+	}
+	
+	private UserGroup updateUserGroup(UserGroup userGroup)
+			throws EasyCorrectionException {
+		UserGroup ugs = new UserGroup();
+		ugs = getUserGroupByGroupAndUser(userGroup.getGroup()
+				.getGroupId(), userGroup.getUser().getUserId());
+		ugs = (UserGroup) SwapperAtributosReflect.swapObject(ugs,
+				userGroup, UserGroup.class);
+		DAOFactory.DEFAULT.buildUserGroupDAO().update(ugs);
 		return userGroup;
 	}
 
@@ -178,7 +185,7 @@ public class AccessUserManager extends Manager {
 	 * @return The user corresponding at the login passed
 	 * as parameter.<br>
 	 */
-	public User consultUserByLogin(String login) {
+	public User retrieveUserByLogin(String login) {
 		List<User> list = DAOFactory.DEFAULT.buildUserDAO().findByLogin(login);
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -189,119 +196,26 @@ public class AccessUserManager extends Manager {
 	/*
 	 * Private Method.<br>
 	 */
-	private User getUserByEmail(String email) {
+	public User getUserByEmail(String email) {
 		List<User> list = DAOFactory.DEFAULT.buildUserDAO().findByEmail(email);
 		if (!list.isEmpty()) {
 			return list.get(0);
 		}
 		return null;
 	}
-
-	// TODO Refatorar. Dividir em update e passar parte das responsabilidade
-	// para System
 	
-	/**
-	 * Function used to save a new user in the database 
-	 * of the system.<br>
-	 * @param userGroup The user group that contains the user 
-	 * to be saved.<br>
-	 * @return The user save in the system.<br> 
-	 * @throws EasyCorrectionException Exception can be thrown in an 
-	 * attempt to save a new User in the system.<br>
-	 */
-	public UserGroup saveUser(UserGroup userGroup)
-			throws EasyCorrectionException {
-		User u = new User();
-		User us = new User();
-		User use = new User();
-		
-		if (easyCorrectionUtil.isNull(userGroup)) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
-					.msg("O GrupoUsuario"));
-		}
-		if (easyCorrectionUtil.isNull(userGroup.getUser())) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
-					.msg("O Usuario"));
-		}
-		if (easyCorrectionUtil.isNull(userGroup.getGroup())) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
-					.msg("O Grupo"));
-		}
-
-		if (!easyCorrectionUtil.isNull(userGroup.getUser())) {
-			if (!userGroup.getUser().getUserId().equals(new Integer(0))) {
-				u = getUser(userGroup.getUser().getUserId());
-				if (!u.getPassword().equals(userGroup.getUser().getPassword())) {
-					// Gera o md5 da senha
-					String password = MD5Generator.md5(userGroup.getUser()
-							.getPassword());
-					userGroup.getUser().setPassword(password);
-				}
-			} else {
-				// Gera o md5 da senha
-				String password = "";
-				if (userGroup.getUser().getPassword().equals("")) {
-					password = MD5Generator.md5(userGroup.getUser().getLogin());
-				} else {
-					password = MD5Generator.md5(userGroup.getUser()
-							.getPassword());
-				}
-				userGroup.getUser().setPassword(password);
-			}
-			// Cadastrar o usuário
-			u = consultUserByLogin(userGroup.getUser().getLogin());
-			use = getUserByEmail(userGroup.getUser().getEmail());
-			// Se o login não existe e e o id é null
-			if (easyCorrectionUtil.isNull(u) && easyCorrectionUtil.isNull(use)) {
-				try {
-					us = getUser(userGroup.getUser().getUserId());
-					us = (User) SwapperAtributosReflect.swapObject(us,
-							userGroup.getUser(), User.class);
-					DAOFactory.DEFAULT.buildUserDAO().update(us);
-					userGroup.getUser().setUserId(us.getUserId());
-				} catch (ObjectNotFoundException e) {
-					Integer id = DAOFactory.DEFAULT.buildUserDAO().save(
-							userGroup.getUser());
-					userGroup.getUser().setUserId(id);
-					system = new System();
-					system.createTeamForIncomingAluno(userGroup);
-				}
-			} else {
-				try {
-					us = getUser(userGroup.getUser().getUserId());
-					if (!easyCorrectionUtil.isNull(u)) {
-						if (!userGroup.getUser().getUserId().equals(
-								u.getUserId())) {
-							throw new ObjectNotFoundException(MsgErros.LOGIN
-									.msg(""));
-						}
-					}
-					if (!easyCorrectionUtil.isNull(use)) {
-						if (!userGroup.getUser().getUserId().equals(
-								use.getUserId())) {
-							throw new ObjectNotFoundException(MsgErros.EMAIL
-									.msg(""));
-						}
-					}
-					us = (User) SwapperAtributosReflect.swapObject(us,
-							userGroup.getUser(), User.class);
-					DAOFactory.DEFAULT.buildUserDAO().update(us);
-					userGroup.getUser().setUserId(us.getUserId());
-				} catch (ObjectNotFoundException e) {
-					if (!easyCorrectionUtil.isNull(u)) {
-						throw new ObjectNotFoundException(MsgErros.LOGIN
-								.msg(""));
-					}
-					if (!easyCorrectionUtil.isNull(use)) {
-						throw new ObjectNotFoundException(MsgErros.EMAIL
-								.msg(""));
-					}
-				}
-			}
-
-		}
-		// Cadastra o grupoUsuário do usuário
-		saveUserGroup(userGroup);
+	public UserGroup createUser(UserGroup userGroup){
+		Integer id = DAOFactory.DEFAULT.buildUserDAO().save(
+				userGroup.getUser());
+		userGroup.getUser().setUserId(id);
+		return userGroup;
+	}
+	
+	public UserGroup updateUser(UserGroup userGroup, User user) throws EasyCorrectionException{
+		user = (User) SwapperAtributosReflect.swapObject(user,
+				userGroup.getUser(), User.class);
+		DAOFactory.DEFAULT.buildUserDAO().update(user);
+		userGroup.getUser().setUserId(user.getUserId());
 		return userGroup;
 	}
 
@@ -335,9 +249,8 @@ public class AccessUserManager extends Manager {
 	 * @throws EasyCorrectionException Exception can be thrown in an 
 	 * attempt to delete user in the system.<br>
 	 */
-	public void deleteUser(UserGroup userGroup) throws EasyCorrectionException {
+	public void deleteUser(UserGroup userGroup, List<Assignment> assigns) throws EasyCorrectionException {
 
-		List<Assignment> assigns = assignmentManager.getAssignments();
 		if (userGroup.getGroup().getName().equals("Aluno")
 				&& assigns.size() > 0) {
 			throw new EasyCorrectionException(MsgErros.USUARIO_ALOCADO
@@ -349,13 +262,13 @@ public class AccessUserManager extends Manager {
 					.msg("O GrupoUsuario"));
 		}
 
-		// Exclui grupoUsuario
+		// Remove User Group
 		UserGroup ug = getUserGroup(userGroup.getUserGroupId());
 		ug = (UserGroup) SwapperAtributosReflect.swapObject(ug, userGroup,
 				UserGroup.class);
 		DAOFactory.DEFAULT.buildUserGroupDAO().delete(ug);
 
-		// Exclui usuário
+		// Remove User
 		User u = getUser(userGroup.getUser().getUserId());
 		u = (User) SwapperAtributosReflect.swapObject(u, userGroup.getUser(),
 				User.class);

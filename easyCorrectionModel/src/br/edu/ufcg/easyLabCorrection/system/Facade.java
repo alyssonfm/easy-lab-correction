@@ -2,14 +2,16 @@ package br.edu.ufcg.easyLabCorrection.system;
 
 import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
+
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.AssignmentType;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
-import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
+import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
 import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
@@ -314,6 +316,42 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public Group updateGroup(Group group) throws Throwable {
+		try {
+			return system.updateGroup(group);
+		} catch (Throwable e) {
+			log.error("updateGroup()", e);
+			throw e;
+		}
+	}
+
+	public MenuFunction updateFunction(MenuFunction function) throws Throwable {
+		try {
+			return system.updateFunction(function);
+		} catch (Throwable e) {
+			log.error("updateFunction()", e);
+			throw e;
+		}
+	}
+
+	public Menu updateMenu(Menu menu) throws Throwable {
+		try {
+			return system.updateMenu(menu);
+		} catch (Throwable e) {
+			log.error("updateMenu()", e);
+			throw e;
+		}
+	}
+
+	public List<Permission> updatePermissions(List<Permission> permissions) throws Throwable {
+		try {
+			return system.updatePermissions(permissions);
+		} catch (Throwable e) {
+			log.error("updatePermissions()", e);
+			throw e;
+		}
+	}
 
 	public User retrieveUserByLogin(String login) throws Throwable {
 		try {
@@ -557,11 +595,11 @@ public class Facade {
 		}
 	}
 
-	public String getInterfaceFileName(Assignment assignment) throws Throwable {
+	public String getEnvironmentFileName(Assignment assignment) throws Throwable {
 		try {
-			return system.getInterfaceFileName(assignment);
+			return system.getEnvironmentFileName(assignment);
 		} catch (Throwable e) {
-			log.error("getInterfaceFileName()", e);
+			log.error("getEnvironmentFileName()", e);
 			throw e;
 		}
 		

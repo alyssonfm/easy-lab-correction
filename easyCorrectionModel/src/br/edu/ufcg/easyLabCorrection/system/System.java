@@ -1,32 +1,38 @@
 package br.edu.ufcg.easyLabCorrection.system;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import junit.framework.TestResult;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.AssignmentException;
+import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.managers.AccessPermissionManager;
 import br.edu.ufcg.easyLabCorrection.managers.AccessUserManager;
 import br.edu.ufcg.easyLabCorrection.managers.AssessmentManager;
 import br.edu.ufcg.easyLabCorrection.managers.AssignmentManager;
+import br.edu.ufcg.easyLabCorrection.managers.CompilationManager;
 import br.edu.ufcg.easyLabCorrection.managers.SubmissionManager;
 import br.edu.ufcg.easyLabCorrection.managers.TeamManager;
+import br.edu.ufcg.easyLabCorrection.managers.TestManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.AssignmentType;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
-import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
+import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
 import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
+import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
 import br.edu.ufcg.easyLabCorrection.util.MD5Generator;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
@@ -38,7 +44,9 @@ public class System {
 	private AssignmentManager assignmentManager;
 	private SubmissionManager submissionManager;
 	private AssessmentManager assessmentManager;
+	private CompilationManager compilationManager;
 	private TeamManager teamManager;
+	private TestManager testManager;
 
 	public System() {
 		accessPermissionManager = new AccessPermissionManager();
@@ -46,7 +54,9 @@ public class System {
 		assignmentManager = new AssignmentManager();
 		submissionManager = new SubmissionManager();
 		assessmentManager = new AssessmentManager();
+		compilationManager = new CompilationManager();
 		teamManager = new TeamManager();
+		testManager = new TestManager();
 	}
 
 	public void rebootsDataBase(String script) {
@@ -67,7 +77,8 @@ public class System {
 	}
 
 	public void deleteUser(UserGroup userGroup) throws EasyCorrectionException {
-		accessUserManager.deleteUser(userGroup);
+		List<Assignment> assigns = assignmentManager.getAssignments();
+		accessUserManager.deleteUser(userGroup, assigns);
 	}
 
 	/******************************************** Controle de Acesso EasyCorrection *********************************************/
@@ -108,10 +119,112 @@ public class System {
 	public Group saveGroup(Group group) throws EasyCorrectionException {
 		return accessPermissionManager.saveGroup(group);
 	}
-
+	
 	public UserGroup saveUserGroup(UserGroup userGroup)
-			throws EasyCorrectionException {
+		throws EasyCorrectionException {
 		return accessUserManager.saveUserGroup(userGroup);
+	}
+
+	/**
+	 * Function used to save a new user in the database 
+	 * of the system.<br>
+	 * @param userGroup The user group that contains the user 
+	 * to be saved.<br>
+	 * @return The user save in the system.<br> 
+	 * @throws EasyCorrectionException Exception can be thrown in an 
+	 * attempt to save a new User in the system.<br>
+	 */
+	
+	public UserGroup saveUser(UserGroup userGroup)
+			throws EasyCorrectionException {
+		
+		userGroup.getUser().setPeriod(getCurrentStage().get(0));
+	
+		User u = new User();
+		User us = new User();
+		User use = new User();
+		
+		if (easyCorrectionUtil.isNull(userGroup)) {
+			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+					.msg("O GrupoUsuario"));
+		}
+		if (easyCorrectionUtil.isNull(userGroup.getUser())) {
+			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+					.msg("O Usuario"));
+		}
+		if (easyCorrectionUtil.isNull(userGroup.getGroup())) {
+			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+					.msg("O Grupo"));
+		}
+
+		if (!easyCorrectionUtil.isNull(userGroup.getUser())) {
+			if (!userGroup.getUser().getUserId().equals(new Integer(0))) {
+				u = getUser(userGroup.getUser().getUserId());
+				if (!u.getPassword().equals(userGroup.getUser().getPassword())) {
+					// Generates password MD5
+					String password = MD5Generator.md5(userGroup.getUser()
+							.getPassword());
+					userGroup.getUser().setPassword(password);
+				}
+			} else {
+				// Generates password MD5
+				String password = "";
+				if (userGroup.getUser().getPassword().equals("")) {
+					password = MD5Generator.md5(userGroup.getUser().getLogin());
+				} else {
+					password = MD5Generator.md5(userGroup.getUser()
+							.getPassword());
+				}
+				userGroup.getUser().setPassword(password);
+			}
+			// Create User
+			u = retrieveUserByLogin(userGroup.getUser().getLogin());
+			use = accessUserManager.getUserByEmail(userGroup.getUser().getEmail());
+			
+			// If login do not exist and user id is null
+			if (easyCorrectionUtil.isNull(u) && easyCorrectionUtil.isNull(use)) {
+				try {
+					us = getUser(userGroup.getUser().getUserId());
+					userGroup = accessUserManager.updateUser(userGroup, us);
+				} catch (ObjectNotFoundException e) {
+					userGroup = accessUserManager.createUser(userGroup);
+					createTeamForIncomingAluno(userGroup);
+				}
+			} else {
+				try {
+					us = getUser(userGroup.getUser().getUserId());
+					if (!easyCorrectionUtil.isNull(u)) {
+						if (!userGroup.getUser().getUserId().equals(
+								u.getUserId())) {
+							throw new ObjectNotFoundException(MsgErros.LOGIN
+									.msg(""));
+						}
+					}
+					if (!easyCorrectionUtil.isNull(use)) {
+						if (!userGroup.getUser().getUserId().equals(
+								use.getUserId())) {
+							throw new ObjectNotFoundException(MsgErros.EMAIL
+									.msg(""));
+						}
+					}
+					userGroup = accessUserManager.updateUser(userGroup, us);
+				} catch (ObjectNotFoundException e) {
+					if (!easyCorrectionUtil.isNull(u)) {
+						throw new ObjectNotFoundException(MsgErros.LOGIN
+								.msg(""));
+					}
+					if (!easyCorrectionUtil.isNull(use)) {
+						throw new ObjectNotFoundException(MsgErros.EMAIL
+								.msg(""));
+					}
+				}
+			}
+
+		}
+		// Create User UserGroup
+		accessUserManager.saveUserGroup(userGroup);
+		return userGroup;
+		//urn accessUserManager.saveUserGroup(userGroup);
 	}
 
 	public Menu saveMenu(Menu menu) throws EasyCorrectionException {
@@ -121,12 +234,6 @@ public class System {
 	public List<Permission> savePermissions(List<Permission> permissions)
 			throws EasyCorrectionException {
 		return accessPermissionManager.savePermissions(permissions);
-	}
-
-	public UserGroup saveUser(UserGroup userGroup)
-			throws EasyCorrectionException {
-		userGroup.getUser().setPeriod(getCurrentStage().get(0));
-		return accessUserManager.saveUser(userGroup);
 	}
 
 	public Group updateGroup(Group group) throws EasyCorrectionException {
@@ -167,15 +274,14 @@ public class System {
 
 		List<MenuFunction> functions = new LinkedList<MenuFunction>();
 
-		// Gera o md5 da senha
+		// Generate password MD5
 		String password = MD5Generator.md5(user.getPassword());
 		user.setPassword(password);
 
-		// Verifica se o login e senha são válidas
+		// Checks if login and password is valid
 		User u = accessUserManager.verifyLoginAndPassword(user);
 		if (!easyCorrectionUtil.isNull(u)) {
-			// Verifica as permissões do usuário e retorna um conjunto de
-			// funções
+			// Checks the user permissions and returns a set of functions
 			functions = accessPermissionManager
 					.verifyPermissions(u.getUserId());
 		}
@@ -218,7 +324,7 @@ public class System {
 	}
 
 	public User retrieveUserByLogin(String login) {
-		return accessUserManager.consultUserByLogin(login);
+		return accessUserManager.retrieveUserByLogin(login);
 	}
 
 	public List<UserGroup> getUserByGroup(Integer groupId) {
@@ -332,7 +438,66 @@ public class System {
 
 	public String runAutomaticTests(Submission submission)
 			throws EasyCorrectionException {
-		return submissionManager.runAutomaticTests(submission);
+		
+		TestResult testResult;
+		String result = "";
+		
+		String testsDirectory = ServletUpload.local
+				+ submission.getTeamHasUserHasAssignment().getAssignment()
+						.getTestsDirectory().replace("/", File.separator);
+		String sourceDirectory = ServletUpload.local
+				+ submission.getUrl().replace("/", File.separator);
+		String libDirectory = (ServletUpload.local + "/").replace("/",
+				File.separator);
+		
+		if (submission.getTeamHasUserHasAssignment().getAssignment()
+				.getAutomaticTestsPercentage() > 0) {
+			
+			//Compilation			
+			compilationUnit(sourceDirectory, testsDirectory, libDirectory);
+			
+			//Running Tests
+			testResult = testManager.runAutomaticTests(submission, sourceDirectory, testsDirectory);
+			
+			if(testResult != null){
+				Object[] answer = testManager.getTestsExecutionOutput(testResult, submission);
+				double automaticTestsGrade = (Double)answer[0];
+				result = (String)answer[1];
+				assessmentManager.saveAssessment(submission, automaticTestsGrade, result);
+			}
+			else{
+				submissionManager.deleteSubmission(submission);
+			}
+		} else{
+			result = "Este roteiro n�o possui testes autom�ticos.";
+			assessmentManager.saveAssessment(submission, 0, result);
+			return "Resultado: " + result;
+		}
+		
+		return result;
+	}
+	
+	//This method should map the compilers.
+	private void compilationUnit(String sourceDirectory,
+			String testsDirectory, String libDirectory) throws CompilationException{
+		try{
+			compilationManager.runJavaCompiler(sourceDirectory,
+					testsDirectory, 
+					libDirectory);
+		} catch(CompilationException e){
+			throw new CompilationException(e.getMessage());
+		}
+		if (compilationManager.isCompilationError()) {
+			compilationManager.setCompilationError(false);
+			throw new CompilationException(deleteDirectory(compilationManager.getErrorResult(), testsDirectory, sourceDirectory, libDirectory));
+		}
+	}
+	
+	private String deleteDirectory(String errorResult, String td, String sd, String id){
+		String result = errorResult.replace(td, "");
+		result = result.replace(sd, "");
+		result = result.replace(id, "");
+		return result;
 	}
 
 	public int getAllocatedTeams(Integer assignmentId) {
@@ -374,8 +539,8 @@ public class System {
 		return submissionManager.getSubmissionNumberByTUA(tua);
 	}
 
-	public String getInterfaceFileName(Assignment assignment) {
-		return submissionManager.getInterfaceFileName(assignment);
+	public String getEnvironmentFileName(Assignment assignment) {
+		return submissionManager.getEnvironmentFileName(assignment);
 	}
 
 	public String getTestsFileName(Assignment assignment) {

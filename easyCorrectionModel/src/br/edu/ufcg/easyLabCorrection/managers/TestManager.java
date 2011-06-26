@@ -4,18 +4,19 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
+
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.TestFailure;
 import junit.framework.TestResult;
 import junit.textui.TestRunner;
+
 import org.junit.runner.JUnitCore;
+
+import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
-import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
-import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
 import br.edu.ufcg.easyLabCorrection.util.Constants;
-import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 /**
  * Class responsible for managing of tests in the system 
@@ -25,79 +26,32 @@ import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
  *
  */
 public class TestManager extends Manager {
-	
-	/*
-	 * Attributes private of class.<br>
-	 */
-	private AssessmentManager assessmentManager;
-	private CompilationManager compilationManager;
 
 	/**
 	 * Constructor default of class, creates a new object TestManager.<br>
 	 */
 	public TestManager() {
 		super();
-		assessmentManager = new AssessmentManager();
-		compilationManager = new CompilationManager();
 	}
-
+	
 	/**
-	 * Function used to execute the tests of system, receives as parameter
-	 * the path of the tests directory, of the interface directory, 
-	 * of the source code directory, of the test file, of the interface 
-	 * file and of the source code file.<br>
-	 * @param testsDirectory The path of tests directory.<br>
-	 * @param testFile The path of test file.<br>
-	 * @param interfaceDirectory The path of interface directory.<br>
-	 * @param interfaceFile The path of interface file.<br>
-	 * @param sourceDirectory The path of source code directory.<br>
-	 * @param sourceFile The path of source code file.<br>
-	 * @return The test result of execution.<br>
-	 * @throws TestExecutionException Exception can be thrown during 
-	 * the execution of tests.<br>
+	 * Function used to run automatic tests in the submission performed.<br>
+	 * @param submission The submission which will run in automatic testing.<br>
+	 * @return A string containing the result of running the tests.<br> 
+	 * @throws EasyCorrectionException Exception can be thrown in the execution 
+	 * of automated tests.<br>
 	 */
-	public TestResult executeTests(String testsDirectory,
-			String testFile, String interfaceDirectory,
-			String interfaceFile, String sourceDirectory,
-			String sourceFile) throws TestExecutionException {
+	public TestResult runAutomaticTests(Submission submission, String sourceDirectory,
+			String testsDirectory)
+			throws EasyCorrectionException {
 
-		String libDirectory = (ServletUpload.local + "/").replace("/",
-				File.separator);
-
-		JUnit4TestAdapter testAdapter;
-		TestResult result;
-		URLClassLoader cl;
-		Class<?> testClass;
-
+		TestResult testResult;
 		try {
-			
-			compilationManager.runJavaCompiler(sourceDirectory, 
-					interfaceDirectory, 
-					testsDirectory, 
-					libDirectory, 
-					interfaceFile, 
-					sourceFile, 
-					testFile);
-
-			cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
-					.toURI().toURL() }, JUnitCore.class.getClassLoader());
-			
-			testClass = cl.loadClass(testFile.substring(0, testFile.length() - 5));
-
-			testAdapter = new JUnit4TestAdapter(testClass);
-			result = TestRunner.run(testAdapter);
-
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			throw new TestExecutionException(e.getMessage());
+			testResult = executeTests(sourceDirectory, testsDirectory);
+		} catch (TestExecutionException e) {
+			return null;
 		}
-
-		if (compilationManager.isCompilationError()) {
-			compilationManager.setCompilationError(false);
-			throw new TestExecutionException(deleteDirectory(compilationManager.getErrorResult(), testsDirectory, sourceDirectory, interfaceDirectory));
-		}
-		
-		return result;
+		return testResult;
 	}
 	
 	/**
@@ -109,13 +63,8 @@ public class TestManager extends Manager {
 	 * @throws TestExecutionException Exception can be thrown during 
 	 * the execution of tests.<br>
 	 */
-	public TestResult executeTests2(String sourceDirectory,
+	public TestResult executeTests(String sourceDirectory,
 			String testsDirectory) throws TestExecutionException {
-
-		String libDirectory = "D:/TEMP/lib/";
-		
-		//String libDirectory = (ServletUpload.local + "/").replace("/",
-				//File.separator);
 
 		JUnit4TestAdapter testAdapter;
 		TestResult result;
@@ -123,11 +72,6 @@ public class TestManager extends Manager {
 		Class<?> testClass;
 
 		try {
-			
-			compilationManager.runJavaCompiler2(sourceDirectory,
-					testsDirectory, 
-					libDirectory);
-
 			cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
 					.toURI().toURL() }, JUnitCore.class.getClassLoader());
 			
@@ -140,19 +84,7 @@ public class TestManager extends Manager {
 			System.err.println(e.getMessage());
 			throw new TestExecutionException(e.getMessage());
 		}
-
-		if (compilationManager.isCompilationError()) {
-			compilationManager.setCompilationError(false);
-			throw new TestExecutionException(deleteDirectory(compilationManager.getErrorResult(), testsDirectory, sourceDirectory, libDirectory));
-		}
 		
-		return result;
-	}
-	
-	private String deleteDirectory(String errorResult, String td, String sd, String id){
-		String result = errorResult.replace(td, "");
-		result = result.replace(sd, "");
-		result = result.replace(id, "");
 		return result;
 	}
 
@@ -165,7 +97,7 @@ public class TestManager extends Manager {
 	 * @return The string corresponding at the tests execution of the submission
 	 * received as parameter.<br>
 	 */
-	public String getTestsExecutionOutput(TestResult result,
+	public Object[] getTestsExecutionOutput(TestResult result,
 			Submission submission) {
 		
 		TeamHasUserHasAssignment tua = submission.getTeamHasUserHasAssignment();
@@ -200,45 +132,10 @@ public class TestManager extends Manager {
 				report += failures.nextElement().trace() + "\n";
 			}
 		}
-		saveAssessment(submission, automaticTestsGrade, report);
-		return report;
-	}
-	
-	/* TODO: to System
-	 * 
-	 * The idea is to reuse the other saveAssessment there is on the AssessmentManager
-	 */
-	/**
-	 * Function used to save an assessment in the database of the system.<br>
-	 * @param submission The submission who want to save the assessment.<br>
-	 * @param automaticTestsGrade The value of automatic tests.<br> 
-	 * @param automaticTestsResult The result of automatic tests.<br> 
-	 * @return The assessment save in the system.<br>
-	 */
-	public Assessment saveAssessment(Submission submission, double automaticTestsGrade, String automaticTestsResult){
-		try{
-			Assessment assess = assessmentManager.getAssessmentByAssignmentAndTeam(submission.getTeamHasUserHasAssignment().getAssignment().getId(), 
-					submission.getTeamHasUserHasAssignment().getTeam().getId());
-			assess.setSubmission(submission);
-			assess.setAutomaticGrade(automaticTestsGrade);
-			assess.setAssessmentDate(easyCorrectionUtil.getDataNow());
-			assess.setTestsExecutionResult(automaticTestsResult);
-			return assessmentManager.updateAssessment(assess);
-		}
-		// TODO: What kind of exception?
-		catch (Exception e) {
-			
-			Assessment assess = new Assessment(0, 
-					submission, 
-					automaticTestsGrade, 
-					0.0, 
-					automaticTestsResult, 
-					0.0, 
-					easyCorrectionUtil.getDataNow(),
-					null);
-			return assessmentManager.createAssessment(assess);
-		}	
-		
+		Object[] answer = new Object[2];
+		answer[0] = automaticTestsGrade;
+		answer[1] = report;
+		return answer;
 	}
 
 }
