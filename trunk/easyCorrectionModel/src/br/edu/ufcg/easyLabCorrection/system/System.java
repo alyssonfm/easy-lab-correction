@@ -463,14 +463,14 @@ public class System {
 				Object[] answer = testManager.getTestsExecutionOutput(testResult, submission);
 				double automaticTestsGrade = (Double)answer[0];
 				result = (String)answer[1];
-				assessmentManager.saveAssessment(submission, automaticTestsGrade, result);
+				assessmentManager.setAssessment(submission, automaticTestsGrade, result);
 			}
 			else{
 				submissionManager.deleteSubmission(submission);
 			}
 		} else{
 			result = "Este roteiro não possui testes automáticos.";
-			assessmentManager.saveAssessment(submission, 0, result);
+			assessmentManager.setAssessment(submission, 0, result);
 			return "Resultado: " + result;
 		}
 		
