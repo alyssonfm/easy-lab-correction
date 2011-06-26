@@ -45,61 +45,6 @@ public class CompilationManager extends Manager{
 	
 	/**
 	 * Procedure used to run the Java compiler, receiving as parameter
-	 * the path of source code directory, of interface directory, of tests 
-	 * directory, of library directory, of interface file, of source 
-	 * code file and of test file that will be used in the compilation.<br>
-	 * @param sourceDirectory The path of source code directory.<br>
-	 * @param interfaceDirectory The path of interface directory.<br>
-	 * @param testsDirectory The path of tests directory.<br>
-	 * @param libDirectory The path of library directory.<br>
-	 * @param interfaceFile The path of interface file.<br>
-	 * @param sourceFile The path of source code file.<br>
-	 * @param testFile The path of test file.<br>
-	 * @throws CompilationException Exception can be thrown 
-	 * during the compilation of files.<br>
-	 */
-	public void runJavaCompiler(String sourceDirectory, 
-			String interfaceDirectory, 
-			String testsDirectory,
-			String libDirectory,
-			String interfaceFile,
-			String sourceFile,
-			String testFile) throws CompilationException{
-		
-		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
-		
-		OutputStream out = new OutputStream() {
-			public void write(int b) throws IOException {
-				errorResult += (char) b;
-			}
-		};
-
-		OutputStream error = new OutputStream() {
-			public void write(int b) throws IOException {
-				compilationError = true;
-				errorResult += (char) b;
-			}
-		};
-
-		try {
-			javaCompiler.run(null, out, error, "-sourcepath", sourceDirectory
-					+ ";" + interfaceDirectory + ";" + testsDirectory,
-					"-classpath", libDirectory + "junit.jar",
-					interfaceDirectory + interfaceFile, sourceDirectory
-							+ sourceFile, testsDirectory + testFile,
-					"-d", sourceDirectory); // diretório de saída dos .class
-
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-		
-		if (compilationError) {
-			throw new CompilationException("Compilation Error!");
-		}
-	}
-	
-	/**
-	 * Procedure used to run the Java compiler, receiving as parameter
 	 * the path of source code directory, of tests directory and of 
 	 * library directory that will be used in the compilation.<br>
 	 * @param sourceDirectory The path of source code directory.<br>
@@ -108,7 +53,7 @@ public class CompilationManager extends Manager{
 	 * @throws CompilationException Exception can be thrown 
 	 * during the compilation.<br>
 	 */
-	public void runJavaCompiler2(String sourceDirectory, String testDirectory, String libDirectory) throws CompilationException{
+	public void runJavaCompiler(String sourceDirectory, String testDirectory, String libDirectory) throws CompilationException{
 		
 		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
 		
@@ -131,9 +76,13 @@ public class CompilationManager extends Manager{
 		ArrayList<String> listSource = pv.visitAllDirsAndFiles(new File(sourceDirectory));
 		mountSourceDirectories(listSource);
 		
+		pv = new CompilationFileFilter();
+		
 		//Gets the names of all java test files inside sourceDirectory
 		ArrayList<String> listTestSource = pv.visitAllDirsAndFiles(new File(testDirectory));
 		mountTestDirectories(listTestSource);
+		
+		clearSourcePaths();
 		
 		//Gets the names of all jar files inside libDirectory
 		ArrayList<String> listLib = pv.visitAllDirsAndFilesFindingJars(new File(sourceDirectory));
@@ -149,7 +98,7 @@ public class CompilationManager extends Manager{
 			javaCompiler.run(null, out, error, arguments);
 
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			System.err.println("A Suite de Teste precisa ter o nome MainTest.java");
 		}
 		
 		if (compilationError) {
@@ -210,6 +159,19 @@ public class CompilationManager extends Manager{
 	private void mountLibDirectories(ArrayList<String> listLib){
 		for (String libPath: listLib){
 			libFileList.add(libPath);
+		}
+	}
+	
+	private void clearSourcePaths(){
+		for (String testPath: sourceTestFileList){
+			for (String sourcePath: sourceFileList){
+				String st = testPath.substring(testPath.lastIndexOf("\\"), testPath.length());
+				String sts = sourcePath.substring(sourcePath.lastIndexOf("\\"), sourcePath.length());
+				if (st.equals(sts)){
+					sourceFileList.remove(sourcePath);
+					break;
+				}
+			}
 		}
 	}
 	

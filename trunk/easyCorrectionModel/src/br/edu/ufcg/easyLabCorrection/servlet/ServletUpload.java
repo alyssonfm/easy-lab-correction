@@ -205,7 +205,7 @@ public class ServletUpload extends HttpServlet {
 				unZip(uploadDir, fileName);
 			}
 			else{
-				request.setAttribute("errorMessage", "Erro no envio! O pacote zip submetido possui arquivos que nï¿½o sï¿½o do tipo JAVA.");
+				request.setAttribute("errorMessage", "Erro no envio! O pacote zip submetido possui arquivos que não são do tipo JAVA.");
 				request.getRequestDispatcher("/erro.jsp").forward(request, response);
 			}
 		}

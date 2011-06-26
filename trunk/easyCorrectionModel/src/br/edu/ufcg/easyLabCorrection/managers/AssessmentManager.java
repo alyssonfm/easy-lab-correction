@@ -2,16 +2,17 @@ package br.edu.ufcg.easyLabCorrection.managers;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
+import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
+import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 /**
  * Class responsible for managing of assessments i nthe system 
@@ -212,6 +213,39 @@ public class AssessmentManager extends Manager {
 		List<Assessment> list = DAOFactory.DEFAULT.buildAssessmentDAO()
 		.findByTeamAndAssignment(teamId, assignmentId);
 	return list;
+	}
+	
+	/**
+	 * Function used to save an assessment in the database of the system.<br>
+	 * @param submission The submission who want to save the assessment.<br>
+	 * @param automaticTestsGrade The value of automatic tests.<br> 
+	 * @param automaticTestsResult The result of automatic tests.<br> 
+	 * @return The assessment save in the system.<br>
+	 */
+	public Assessment saveAssessment(Submission submission, double automaticTestsGrade, String automaticTestsResult){
+		try{
+			Assessment assess = getAssessmentByAssignmentAndTeam(submission.getTeamHasUserHasAssignment().getAssignment().getId(), 
+					submission.getTeamHasUserHasAssignment().getTeam().getId());
+			assess.setSubmission(submission);
+			assess.setAutomaticGrade(automaticTestsGrade);
+			assess.setAssessmentDate(easyCorrectionUtil.getDataNow());
+			assess.setTestsExecutionResult(automaticTestsResult);
+			return updateAssessment(assess);
+		}
+		// TODO: What kind of exception?
+		catch (Exception e) {
+			
+			Assessment assess = new Assessment(0, 
+					submission, 
+					automaticTestsGrade, 
+					0.0, 
+					automaticTestsResult, 
+					0.0, 
+					easyCorrectionUtil.getDataNow(),
+					null);
+			return createAssessment(assess);
+		}	
+		
 	}
 
 }
