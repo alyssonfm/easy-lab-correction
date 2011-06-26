@@ -26,7 +26,7 @@
 			private const FILE_UPLOAD_URL:String = Constant.urlUploadDonwload;
 			private var fileRef:FileReference = new FileReference();
 			private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadRoteiro'));
-			private var interfaceFileName: String = "";
+			private var environmentFileName: String = "";
 			private var testsFileName: String = "";
 			
 			[Bindable]
@@ -37,8 +37,8 @@
 				ModulesController.getParam();
 				this.systemManager.addEventListener(ObjectEvent.ObjetoEventConst, hasAssignment);
 				getUserGroupByUser();
-				downloadTestsButton.enabled = false;
-				downloadInterfaceButton.enabled = false;
+				//downloadTestsButton.enabled = false;
+				downloadEnvironmentButton.enabled = false;
 				checkCorrectionButton.enabled = false;
 				getReleasedAssignments();
 			}
@@ -73,8 +73,8 @@
 			private function getReleasedAssignments_result(event:ResultEvent):void{
 				assignmentList.dataProvider = event.result as ArrayCollection;
 				if ((assignmentList.dataProvider as ArrayCollection).length == 0){
-					downloadTestsButton.enabled = false;
-					downloadInterfaceButton.enabled = false;
+					//downloadTestsButton.enabled = false;
+					downloadEnvironmentButton.enabled = false;
 					buttonVisualizarNotas.enabled = false;
 					checkCorrectionButton.enabled = false;
 				}
@@ -154,7 +154,7 @@
 			
 			private function loadInterface(): void{
 				try{
-					facade.getOperation("getInterfaceFileName").send(assignment);
+					facade.getOperation("getEnvironmentFileName").send(assignment);
 				}
 				catch(e: Error){
 					var message:String = "Selecione Um Roteiro.";
@@ -166,23 +166,23 @@
 				return item.user.name;
 			}
 			
-			private function getInterfaceFileName_result(event:ResultEvent):void{
-				interfaceFileName = String(event.result);
-				facade.getOperation("getTestsFileName").send(assignment);
+			private function getEnvironmentFileName_result(event:ResultEvent):void{
+				environmentFileName = String(event.result);
+				//facade.getOperation("getTestsFileName").send(assignment);
+				downloadEnvironmentButton.enabled = true;
 			}
 			
 			private function getTestsFileName_result(event:ResultEvent):void{
-				testsFileName = String(event.result);
-				downloadTestsButton.enabled = true;
-				downloadInterfaceButton.enabled = true;
+				//testsFileName = String(event.result);
+				//downloadTestsButton.enabled = true;
 			}
 			
-			private function downloadInterface(): void{
+			private function downloadEnvironment(): void{
 				try{
 					var variables:URLVariables = new URLVariables();
-					variables.fileMame = assignment.interfaceDirectory + interfaceFileName;
+					variables.fileName = assignment.interfaceDirectory + environmentFileName;
 					request.data = variables;
-					fileRef.download(request, interfaceFileName);		
+					fileRef.download(request, environmentFileName);		
 				}
 				catch(e: Error){
 					var message:String = "Selecione Um Roteiro.";
@@ -207,7 +207,7 @@
 	
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">		
 		<mx:method name="getReleasedAssignments" result="getReleasedAssignments_result(event)" fault="failure(event)"/>
-		<mx:method name="getInterfaceFileName" result="getInterfaceFileName_result(event)" fault="failure(event)"/>
+		<mx:method name="getEnvironmentFileName" result="getEnvironmentFileName_result(event)" fault="failure(event)"/>
 		<mx:method name="getTestsFileName" result="getTestsFileName_result(event)" fault="failure(event)"/>
 		<mx:method name="getTeamHasUserHasAssignmentByUserAndAssignment" result="getTeamHasUserHasAssignmentByUserAndAssignment_result(event)" fault="failure(event)"/>
 		<mx:method name="getTeamHasUserHasAssignmentByTeamAndAssignment" result="getTeamHasUserHasAssignmentByTeamAndAssignment_result(event)" fault="failure(event)"/>
@@ -219,11 +219,10 @@
 		<mx:Label x="331" y="12" text="Detalhes do Roteiro" fontWeight="bold" fontStyle="normal" fontSize="14"/>
 		<mx:Label x="14" y="552" text="Total de Projetos Inscritos:" id="labelTotalProjetosInscritos" visible="false"/>
 		<mx:Label x="198" y="552" width="85" id="totalProjetosInscritos" visible="false"/>
-		<mx:Label x="10" y="461" text="Equipe:"/>
-		<mx:LinkButton x="454.8" y="520" id="downloadInterfaceButton" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Interface" click="downloadInterface()"/>
-		<mx:LinkButton x="636.8" y="520" id="downloadTestsButton" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Testes" click="downloadTests()"/>
-		<mx:LinkButton x="435.8" y="551" id="checkCorrectionButton" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Correção" click="checkCorrection()"/>
-		<mx:LinkButton x="636.8" y="551" id="buttonVisualizarNotas" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Planilha de Notas" click="checkGrades()"/>
+		<mx:Label x="10" y="457" text="Equipe:"/>
+		<mx:LinkButton x="330.95" y="420" id="downloadEnvironmentButton" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Ambiente" click="downloadEnvironment()"/>
+		<mx:LinkButton x="500.6" y="420" id="checkCorrectionButton" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Correção" click="checkCorrection()"/>
+		<mx:LinkButton x="688.8" y="420" id="buttonVisualizarNotas" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Planilha de Notas" click="checkGrades()"/>
 		<mx:LinkButton x="626" y="10" visible="false" icon="@Embed(source='../../image/help2.png')" label="  Instruções para Avaliação dos Projetos" id="linkInstrucao"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Atualizar Projeto" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAtualizaOrientador"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Avaliar" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAvaliacao"/>
@@ -234,30 +233,30 @@
 		<mx:Label x="333" y="70" text="Título:" id="labelDescRoteiro0"/>
 		<mx:Label x="745" y="38" text="Nota do Corretor:"/>
 		<mx:Label y="10" text="Nota Automática:" x="748"/>
-		<mx:Label x="588" y="423" text="Data de Liberação:"/>
-		<mx:Label x="588" y="450" text="Data de Entrega:"/>
-		<mx:Label x="588" y="478" text="Data Final para Discussão:"/>
-		<mx:Label x="331" y="422" text="Número máximo de envios:"/>
-		<mx:Label x="331" y="450" text="Máximo de Integrantes por Equipe:"/>
-		<mx:Label x="331" y="478" text="Penalidade por dia de atraso:"/>
+		<mx:Label x="587.95" y="481" text="Data de Liberação:"/>
+		<mx:Label x="587.95" y="511" text="Data de Entrega:"/>
+		<mx:Label x="587.95" y="542" text="Data Final para Discussão:"/>
+		<mx:Label x="330.95" y="480" text="Número máximo de envios:"/>
+		<mx:Label x="330.95" y="511" text="Máximo de Integrantes por Equipe:"/>
+		<mx:Label x="330.95" y="542" text="Penalidade por dia de atraso:"/>
 		<mx:Label x="10" y="46" text="Projetos para Avaliação:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetoAvaliacaoLabel" visible="false"/>
 		<mx:Label x="10" y="378" text="Meus Projetos:" fontStyle="normal" fontWeight="bold" fontSize="14" id="meusProjetosLabel" visible="false"/>
 		<mx:Label x="10" y="176" text="Projetos da Cota Atual:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetosCotaLabel" visible="false"/>
-		<mx:VRule x="302" y="13" height="577"  width="1"/>
-		<mx:Label x="557" y="478" width="16" id="inputPenalty" color="#1B7A0F" text="0" textAlign="right"/>
-		<mx:Label x="557" y="450" width="16" id="inputMembersByTeam" color="#1B7A0F" text="0" textAlign="right"/>
-		<mx:Label x="557" y="422" width="16" id="inputMaxNumberSends" color="#1B7A0F" text="0" textAlign="right"/>
-		<mx:Label x="769" y="422" width="93" id="inputReleaseDate" color="#1B7A0F"/>
-		<mx:Label x="769" y="450" width="93" id="inputDeliveryDate" color="#1B7A0F"/>
-		<mx:Label x="769" y="478" width="93" id="inputDiscussionDate" color="#1B7A0F"/>
-		<mx:Label x="864" y="422" width="54" id="inputReleaseTime" color="#1B7A0F"/>
-		<mx:Label x="864" y="450" width="54" id="inputDeliveryTime" color="#1B7A0F"/>
-		<mx:Label x="864" y="478" width="54" id="inputDiscussionTime" color="#1B7A0F"/>
-		<mx:TextArea x="331" y="124" width="587" height="279" backgroundAlpha="0.0" id="resumeText" editable="false" alpha="0.5" cornerRadius="10"/>
+		<mx:VRule x="302" y="13" height="552"  width="1"/>
+		<mx:Label x="556.95" y="542" width="16" id="inputPenalty" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="556.95" y="511" width="16" id="inputMembersByTeam" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="556.95" y="480" width="16" id="inputMaxNumberSends" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="768.95" y="480" width="93" id="inputReleaseDate" color="#1B7A0F"/>
+		<mx:Label x="768.95" y="511" width="93" id="inputDeliveryDate" color="#1B7A0F"/>
+		<mx:Label x="768.95" y="542" width="93" id="inputDiscussionDate" color="#1B7A0F"/>
+		<mx:Label x="863.95" y="480" width="54" id="inputReleaseTime" color="#1B7A0F"/>
+		<mx:Label x="863.95" y="511" width="54" id="inputDeliveryTime" color="#1B7A0F"/>
+		<mx:Label x="863.95" y="542" width="54" id="inputDiscussionTime" color="#1B7A0F"/>
+		<mx:TextArea x="331" y="124" width="587" height="282" backgroundAlpha="0.0" id="resumeText" editable="false" alpha="0.5" cornerRadius="10"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
 		<mx:List x="10" y="44" scroll="true" width="264" height="399" id="assignmentList" labelField="name" itemClick="updateAssignmentData()" fontSize="14"/>
-		<mx:List x="10" y="489" width="267" height="85" labelFunction="labelTeamAssignmentMembers" id="teamAssignmentMembers"></mx:List>
+		<mx:List x="10" y="480" width="267" height="85" labelFunction="labelTeamAssignmentMembers" id="teamAssignmentMembers"></mx:List>
 		<mx:Label x="386" y="70" width="532" id="inputAssignmentTitle" color="#1B7A0F" text="..."/>
 		<mx:Label x="870" y="38" width="48" id="inputCorrectionGrade" color="#1B7A0F" text="0,0"/>
 		<mx:Label x="870" y="10" width="48" id="inputAutomaticGrade" color="#1B7A0F" text="0,0"/>
