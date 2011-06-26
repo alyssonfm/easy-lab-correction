@@ -369,7 +369,11 @@
 			private function updateMenu():void {
 				menu.name = StringUtil.trim(inputMenuName.text);
 				menu.label = StringUtil.trim(inputMenuLabel.text);
-				facade.getOperation("saveMenu").send(menu);
+				if(menu.menuId == 0){
+					facade.getOperation("saveMenu").send(menu);
+				}else{
+					facade.getOperation("updateMenu").send(menu);
+				}
 			}
 			
 			private function removeMenu():void {
@@ -416,7 +420,12 @@
 				func.name = StringUtil.trim(inputFunctionName.text);
 				func.label = StringUtil.trim(inputFunctionLabel.text);
 				func.menu = CastEntities.castMenu(cbMenu.selectedItem);
-				facade.getOperation("saveFunction").send(func);
+				if(func.functionId == 0){
+					facade.getOperation("saveFunction").send(func);
+				}
+				else{
+					facade.getOperation("updateFunction").send(func);
+				}
 			}
 			
 			private function removeFunction():void {
@@ -479,7 +488,11 @@
 			
 			private function updateGroup():void {
 				group.name = StringUtil.trim(inputGroup.text);
-				facade.getOperation("saveGroup").send(group);
+				if(group.groupId == 0){
+					facade.getOperation("saveGroup").send(group);
+				} else{
+					facade.getOperation("updateGroup").send(group);
+				}
 			}
 			
 			private function removeGroup():void {
@@ -1015,9 +1028,12 @@
 		<mx:method name="functionList" result="functionList_result(event)" fault="failure(event)"/>
 		<mx:method name="groupList" result="groupList_result(event)" fault="failure(event)"/>
 		<mx:method name="saveMenu" result="saveMenu_result(event)" fault="failure(event)"/>
+		<mx:method name="updateMenu" result="saveMenu_result(event)" fault="failure(event)"/>
 		<mx:method name="saveFunction" result="saveFunction_result(event)" fault="failure(event)"/>
+		<mx:method name="updateFunction" result="saveFunction_result(event)" fault="failure(event)"/>
 		<mx:method name="getFunctionByMenu" result="getFunctionByMenu_result(event)" fault="failure(event)"/>
 		<mx:method name="saveGroup" result="saveGroup_result(event)" fault="failure(event)"/>
+		<mx:method name="updateGroup" result="saveGroup_result(event)" fault="failure(event)"/>
 		<mx:method name="saveUser" result="saveUser_result(event)" fault="failure(event)"/>
 		<mx:method name="getUserByGroup" result="getUserByGroup_result(event)" fault="failure(event)"/>
 		<mx:method name="getUserGroupByUser" result="getUserGroupByUser_result(event)" fault="failure(event)"/>
