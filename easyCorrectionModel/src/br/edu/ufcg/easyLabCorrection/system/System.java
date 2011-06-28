@@ -453,8 +453,12 @@ public class System {
 		if (submission.getTeamHasUserHasAssignment().getAssignment()
 				.getAutomaticTestsPercentage() > 0) {
 			
-			//Compilation			
-			compilationUnit(sourceDirectory, testsDirectory, libDirectory);
+			//Compilation
+			try{
+				compilationUnit(sourceDirectory, testsDirectory, libDirectory);
+			}catch(CompilationException compilationError){
+				return "ERRO DE COMPILAÇÂO: \n" + compilationError.getMessage();
+			}
 			
 			//Running Tests
 			testResult = testManager.runAutomaticTests(submission, sourceDirectory, testsDirectory);
@@ -485,9 +489,6 @@ public class System {
 					testsDirectory, 
 					libDirectory);
 		} catch(CompilationException e){
-			throw new CompilationException(e.getMessage());
-		}
-		if (compilationManager.isCompilationError()) {
 			compilationManager.setCompilationError(false);
 			throw new CompilationException(deleteDirectory(compilationManager.getErrorResult(), testsDirectory, sourceDirectory, libDirectory));
 		}
