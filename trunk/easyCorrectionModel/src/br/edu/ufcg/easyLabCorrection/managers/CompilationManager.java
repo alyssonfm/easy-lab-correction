@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
 import br.edu.ufcg.easyLabCorrection.util.CompilationFileFilter;
+import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**
  * Class responsible for managing of compilation in the system Easy 
@@ -30,7 +33,7 @@ public class CompilationManager extends Manager{
 	private ArrayList<String> pathTestList;
 	private ArrayList<String> sourceTestFileList;
 	private ArrayList<String> libFileList;
-
+	
 	/**
 	 * Constructor default of class, creates a new object CompilationManager.<br>
 	 */
