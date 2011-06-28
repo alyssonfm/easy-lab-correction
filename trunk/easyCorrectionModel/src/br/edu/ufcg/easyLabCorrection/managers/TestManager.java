@@ -1,6 +1,7 @@
 package br.edu.ufcg.easyLabCorrection.managers;
 
 import java.io.File;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -76,19 +77,23 @@ public class TestManager extends Manager {
 
 		try {
 			CompilationFileFilter pv = new CompilationFileFilter();
-			
 			//Gets the names of all java files inside sourceDirectory
 			ArrayList<String> listSource = pv.visitAllDirsAndFiles(new File(sourceDirectory));
-			URL[] urls = mountSourceDirectories(listSource);
-			cl = new URLClassLoader(urls, JUnitCore.class.getClassLoader());
-			String test = Constants.mainTest;
 			
-			testClass = cl.loadClass(test);
-			/*
-			cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
-					.toURI().toURL() }, JUnitCore.class.getClassLoader());
-			*/
-
+			if (listSource.size() == 0){
+				cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
+						.toURI().toURL() }, JUnitCore.class.getClassLoader());
+				testClass = cl.loadClass(Constants.mainTest);
+			}else{
+				String pathFile = listSource.get(0);
+				String path = pathFile.substring(0, pathFile.lastIndexOf("\\") + 1);
+				String lastPath = path.substring(0, pathFile.lastIndexOf("\\"));
+				lastPath = lastPath.substring(lastPath.lastIndexOf("\\") + 1, lastPath.length());
+				cl = new URLClassLoader(new URL[] { 
+						new File(path)
+						.toURI().toURL() }, JUnitCore.class.getClassLoader());
+				testClass = cl.loadClass(lastPath + "." + Constants.mainTest);
+			}
 			testAdapter = new JUnit4TestAdapter(testClass);
 			result = TestRunner.run(testAdapter);
 
