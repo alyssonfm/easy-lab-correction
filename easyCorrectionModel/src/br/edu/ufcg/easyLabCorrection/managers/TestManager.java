@@ -1,8 +1,10 @@
 package br.edu.ufcg.easyLabCorrection.managers;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import junit.framework.JUnit4TestAdapter;
@@ -16,6 +18,7 @@ import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
+import br.edu.ufcg.easyLabCorrection.util.CompilationFileFilter;
 import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**
@@ -72,10 +75,19 @@ public class TestManager extends Manager {
 		Class<?> testClass;
 
 		try {
+			CompilationFileFilter pv = new CompilationFileFilter();
+			
+			//Gets the names of all java files inside sourceDirectory
+			ArrayList<String> listSource = pv.visitAllDirsAndFiles(new File(sourceDirectory));
+			URL[] urls = mountSourceDirectories(listSource);
+			cl = new URLClassLoader(urls, JUnitCore.class.getClassLoader());
+			String test = Constants.mainTest;
+			
+			testClass = cl.loadClass(test);
+			/*
 			cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
 					.toURI().toURL() }, JUnitCore.class.getClassLoader());
-			
-			testClass = cl.loadClass(Constants.mainTest);
+			*/
 
 			testAdapter = new JUnit4TestAdapter(testClass);
 			result = TestRunner.run(testAdapter);
@@ -86,6 +98,24 @@ public class TestManager extends Manager {
 		}
 		
 		return result;
+	}
+	
+	/*
+	 * PRIVATE METHODS.
+	 */
+	private URL[] mountSourceDirectories(ArrayList<String> listSource) throws MalformedURLException{
+		ArrayList<String> pathList = new ArrayList<String>();
+		for (String sourcePath: listSource){
+			String path = sourcePath.substring(0, sourcePath.lastIndexOf("\\") + 1);
+			if(!pathList.contains(path)){
+				pathList.add(path);
+			}
+		}
+		URL[] urlList = new URL[pathList.size()];
+		for (int i = 0; i < pathList.size(); i++){
+			urlList[i] = new File(pathList.get(i)).toURI().toURL();
+		}
+		return urlList;
 	}
 
 	/**
