@@ -3,9 +3,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -47,46 +51,79 @@ public class ServletUpload extends HttpServlet {
 	}
 	
 	/**
-	 * Method that verify the validity of the file.<br>
-	 * @param destinationFolder - the destination folder of the file<br> 
-	 * @param fileName - the name of file.<br>
-	 * @return a boolean value indicating if the file is OK or no.<br>
-	 * @throws IOException - exception that can be caused in an attempt to check the file.<br>
-	 */
-	public static boolean checkFile(String destinationFolder, String fileName)  throws IOException{
-   	 	try{
-			// String destinationname = destinationFolder;
-			// byte[] buf = new byte[1024];
-            ZipInputStream zipinputstream = null;
-            ZipEntry zipentry;
-            zipinputstream = new ZipInputStream(
-                new FileInputStream(destinationFolder + fileName));
-            zipentry = zipinputstream.getNextEntry();
-            while (zipentry != null){
-                String entryName = zipentry.getName();
-                if (!entryName.substring(entryName.length() - 4, entryName.length()).toUpperCase().equals("JAVA")){
-                	zipinputstream.close();
-                	return false;
-                }
-                zipentry = zipinputstream.getNextEntry();
-            }
-            zipinputstream.close();
-            return true;
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
-   }
-	
-	/**
 	 * Method that decompresses the file received as parameter in the destination folder chosen.<br>
 	 * @param destinationFolder - the destination folder of files uncompressed.<br>
 	 * @param fileName - the file name.<br>
 	 * @throws IOException - exception that can be caused in an attempt to decompress the file.<br>
 	 */
     public static void unZip(String destinationFolder, String fileName)  throws IOException{
-    	 try
+    	
+    	File dir = new File (destinationFolder);
+    	File zipFile = new File (destinationFolder + fileName);
+    	ZipFile zip = null;
+    	File arquivo = null;
+    	InputStream is = null;
+    	OutputStream os = null;
+    	byte[] buffer = new byte[1024];
+ 
+    	try {
+    		// create dir if not exist
+    		if (!dir.exists()) {
+    			dir.mkdirs();
+    		}
+    		if (!dir.exists() || !dir.isDirectory()) {
+    			throw new IOException("O diretório " + dir.getName() + " não é um diretório válido");
+    		}
+ 
+    		zip = new ZipFile(zipFile);
+    		Enumeration e = zip.entries();
+    		while (e.hasMoreElements()) {
+    			ZipEntry entrada = (ZipEntry) e.nextElement();
+    			arquivo = new File(dir, entrada.getName());
+     
+    			if (entrada.isDirectory() && !arquivo.exists()) {
+    				arquivo.mkdirs();
+    				continue;
+    			}
+ 
+    			if (!arquivo.getParentFile().exists()) {
+    				arquivo.getParentFile().mkdirs();
+    			}
+    			try {
+    				is = zip.getInputStream(entrada);
+    				os = new FileOutputStream(arquivo);
+    				int bytesLidos = 0;
+    				if (is == null) {
+    					throw new ZipException("Erro ao ler a entrada do zip: " + entrada.getName());
+    				}
+    				while ((bytesLidos = is.read(buffer)) > 0) {
+    					os.write(buffer, 0, bytesLidos);
+    				}
+    			} finally {
+    				if (is != null) {
+    					try {
+    						is.close();
+    					} catch (Exception ex) {
+    					}
+    				}
+    				if (os != null) {
+    					try {
+    						os.close();
+    					} catch (Exception ex) {
+    					}
+    				}
+    			}
+    		}
+    	} finally {
+    		if (zip != null) {
+    			try {
+    				zip.close();
+    			} catch (Exception e) {
+    			}
+    		}
+    	}
+    	/* 
+    	try
          {
              String destinationname = destinationFolder;
              byte[] buf = new byte[1024];
@@ -127,7 +164,7 @@ public class ServletUpload extends HttpServlet {
          catch (Exception e)
          {
              e.printStackTrace();
-         }
+         }*/
     }
 	
 	/**
@@ -201,13 +238,7 @@ public class ServletUpload extends HttpServlet {
 			request.getRequestDispatcher("/erro.jsp").forward(request, response);
 		}
 		if(fileName.substring(fileName.length() - 3, fileName.length()).equals("zip")){
-			if (checkFile(uploadDir, fileName)){
-				unZip(uploadDir, fileName);
-			}
-			else{
-				request.setAttribute("errorMessage", "Erro no envio! O pacote zip submetido possui arquivos que não são do tipo JAVA.");
-				request.getRequestDispatcher("/erro.jsp").forward(request, response);
-			}
+			unZip(uploadDir, fileName);
 		}
 	}
 }
