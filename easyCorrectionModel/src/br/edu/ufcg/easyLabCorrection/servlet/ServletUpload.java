@@ -59,6 +59,7 @@ public class ServletUpload extends HttpServlet {
     public static void unZip(String destinationFolder, String fileName)  throws IOException{
     	
     	File dir = new File (destinationFolder);
+    	dir.delete();
     	File zipFile = new File (destinationFolder + fileName);
     	ZipFile zip = null;
     	File arquivo = null;
@@ -166,6 +167,20 @@ public class ServletUpload extends HttpServlet {
              e.printStackTrace();
          }*/
     }
+    
+    private boolean deleteDir(File dir) {  
+        if (dir.isDirectory()) {  
+            String[] children = dir.list();  
+            for (int i=0; i<children.length; i++) {   
+               boolean success = deleteDir(new File(dir, children[i]));  
+                if (!success) {  
+                    return false;  
+                }  
+            }  
+        }  
+      
+        return dir.delete();  
+    }  
 	
 	/**
 	 * Method used to download files in system ELC.<br> 
@@ -215,6 +230,7 @@ public class ServletUpload extends HttpServlet {
         factory.setSizeThreshold(4096);
         
         File file = new File(uploadDir);
+        deleteDir(file);
         file.mkdirs();
         factory.setRepository(file);
 
