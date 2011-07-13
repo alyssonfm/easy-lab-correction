@@ -410,6 +410,16 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public User changePasswordAFM(User user, String currentPassword, String newPassword)
+	throws Throwable {
+		try {
+			return system.changePasswordAFM(user, currentPassword, newPassword);
+		} catch (Throwable e) {
+			log.error("changePassword()", e);
+			throw e;
+		}
+		}
 
 	/*******************************************************************
 	 * Facade Sistema (em geral)

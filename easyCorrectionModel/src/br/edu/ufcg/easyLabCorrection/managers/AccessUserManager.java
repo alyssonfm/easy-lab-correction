@@ -334,5 +334,28 @@ public class AccessUserManager extends Manager {
 		}
 		return bdUser;
 	}
+	
+	/**
+	 * Function used to change the password of the user of the 
+	 * system.<br>
+	 * @param user The user who want to change the password.<br>
+	 * @param currentPassword The current password of the user.<br>
+	 * @param newPassword The new password of the user.<br>
+	 * @return The user with password modified.<br>
+	 */
+	public User changePasswordAFM(User user, String currentPassword, String newPassword) {
+		// Generetes the md5 of the password.<br>
+		String password = MD5Generator.md5(newPassword);
+		User bdUser = getUserByLogin(user.getLogin());
+
+		if (!easyCorrectionUtil.isNull(bdUser)
+				&& bdUser.getPassword().equals(currentPassword)) {
+			bdUser.setPassword(password);
+			DAOFactory.DEFAULT.buildUserDAO().update(bdUser);
+		} else {
+			throw new ObjectNotFoundException(MsgErros.AUTENTICACAO.msg());
+		}
+		return bdUser;
+	}
 
 }
