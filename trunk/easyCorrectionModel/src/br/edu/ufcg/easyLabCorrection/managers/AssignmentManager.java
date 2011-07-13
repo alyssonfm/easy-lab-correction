@@ -81,6 +81,18 @@ public class AssignmentManager extends Manager {
 	public List<Assignment> getAssignments() {
 		return DAOFactory.DEFAULT.buildAssignmentDAO().findAll();
 	}
+	
+	/**
+	 * Function used to retrieve all assignments of system.<br>
+	 * @return A list of all assignments of the system.<br>
+	 */
+	public List<Assignment> getAssignmentsByAFM() {
+		List<Assignment> list = getInCreationAssignments();
+		list.addAll(getReleasedAssignments());
+		list.addAll(getInCorrectionAssignments());
+		list.addAll(getClosedAssignments());
+		return list;		
+	}
 
 	/**
 	 * Function used to retrieve an assignment released in the system, receives as 
@@ -101,6 +113,17 @@ public class AssignmentManager extends Manager {
 	}
 	
 	/**
+	 * Function used to retrieve all assignments in creation of system.<br>
+	 * @return A list of all assignments in creation of the system.<br>
+	 */
+	public List<Assignment> getInCreationAssignments() {
+		Date currentDate = easyCorrectionUtil.getRealTime();
+		List<Assignment> inCreationAssignments = DAOFactory.DEFAULT.buildAssignmentDAO()
+				.findByInCreationAssignments(currentDate);
+		return inCreationAssignments;
+	}
+	
+	/**
 	 * Function used to retrieve all assignments released of system.<br>
 	 * @return A list of all assignments released of the system.<br>
 	 */
@@ -109,6 +132,17 @@ public class AssignmentManager extends Manager {
 		List<Assignment> releasedAssignments = DAOFactory.DEFAULT.buildAssignmentDAO()
 				.findByReleasedAssignments(currentDate);
 		return releasedAssignments;
+	}
+	
+	/**
+	 * Function used to retrieve all assignments in correction of system.<br>
+	 * @return A list of all assignments in correction of the system.<br>
+	 */
+	public List<Assignment> getInCorrectionAssignments() {
+		Date currentDate = easyCorrectionUtil.getRealTime();
+		List<Assignment> inCorrectionAssignments = DAOFactory.DEFAULT.buildAssignmentDAO()
+				.findByInCorrectionAssignments(currentDate);
+		return inCorrectionAssignments;
 	}
 
 	/**
