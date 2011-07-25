@@ -108,7 +108,7 @@ public class TestManager extends Manager {
 	/*
 	 * PRIVATE METHODS.
 	 */
-	private URL[] mountSourceDirectories(ArrayList<String> listSource) throws MalformedURLException{
+	/*private URL[] mountSourceDirectories(ArrayList<String> listSource) throws MalformedURLException{
 		ArrayList<String> pathList = new ArrayList<String>();
 		for (String sourcePath: listSource){
 			String path = sourcePath.substring(0, sourcePath.lastIndexOf("\\") + 1);
@@ -121,7 +121,7 @@ public class TestManager extends Manager {
 			urlList[i] = new File(pathList.get(i)).toURI().toURL();
 		}
 		return urlList;
-	}
+	}*/
 
 	/**
 	 * Function used to retrieve the output of tests execution, receives a test 
