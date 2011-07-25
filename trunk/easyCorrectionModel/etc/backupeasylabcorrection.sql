@@ -970,7 +970,7 @@ CREATE TABLE `tipo_roteiro` (
 --
 
 /*!40000 ALTER TABLE `tipo_roteiro` DISABLE KEYS */;
-INSERT INTO `submissao` (`id`,`nome`) VALUES 
+INSERT INTO `tipo_roteiro` (`id`,`nome`) VALUES 
   (1, 'Roteiro Completo');
 /*!40000 ALTER TABLE `tipo_roteiro` ENABLE KEYS */;
 
