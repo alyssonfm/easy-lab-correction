@@ -338,11 +338,6 @@ public class System {
 	public User changePassword(User user, String newPassword) {
 		return accessUserManager.changePassword(user, newPassword);
 	}
-	
-	public User changePasswordAFM(User user, String currentPassword,
-			String newPassword) {
-		return accessUserManager.changePasswordAFM(user, currentPassword, newPassword);
-	}
 
 	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
 	public SystemStage getStage(int periodId) {
