@@ -98,4 +98,14 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 		return a;
 	}
 
+	public List<Assignment> findByInCorrectionAssignments(Date currentDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Assignment> findByInCreationAssignments(Date currentDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
