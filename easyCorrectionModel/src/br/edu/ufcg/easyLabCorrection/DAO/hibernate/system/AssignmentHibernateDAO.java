@@ -65,11 +65,43 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 
 	@SuppressWarnings("unchecked")
 	/**
-	 * Retorna os Assignments que estao fechados, ou seja, a data atual deve ser pelo menos 1 dia apos a data de entrega
+	 * Retorna os Assignments que estao fechados, ou seja, 
+	 * a data atual deve ser pelo menos 1 dia apos a data 
+	 * de discussao.
 	 */
 	public List<Assignment> findByClosedAssignments(Date currentDate) {
 		Query q = getSession().createQuery(
+				"from Assignment where deliveryDate <= :currentDate");
+		q.setParameter("currentDate", currentDate);
+		q.setCacheable(true);
+		List<Assignment> list = q.list();
+		return instantiatesList(list);
+	}
+	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Function that returns the assignments in correction, 
+	 * the current date must be at least 1 day after the 
+	 * delivery date.
+	 */
+	public List<Assignment> findByInCorrectionAssignments(Date currentDate) {
+		Query q = getSession().createQuery(
 				"from Assignment where releaseDate <= :currentDate");
+		q.setParameter("currentDate", currentDate);
+		q.setCacheable(true);
+		List<Assignment> list = q.list();
+		return instantiatesList(list);
+	}
+	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Function that returns the assignments in creation, 
+	 * the current date must be at least 1 day before 
+	 * the date of release.
+	 */
+	public List<Assignment> findByInCreationAssignments(Date currentDate) {
+		Query q = getSession().createQuery(
+				"from Assignment where releaseDate > :currentDate");
 		q.setParameter("currentDate", currentDate);
 		q.setCacheable(true);
 		List<Assignment> list = q.list();
@@ -96,16 +128,6 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 		a.setAssignmentType(AssignmentTypeHibernateDAO.instantiatesAssignmentType(a.getAssignmentType()));
 		a = MyPersistenceLayer.deproxy(a, Assignment.class);
 		return a;
-	}
-
-	public List<Assignment> findByInCorrectionAssignments(Date currentDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Assignment> findByInCreationAssignments(Date currentDate) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
