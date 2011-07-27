@@ -1,6 +1,7 @@
 package br.edu.ufcg.easyLabCorrection.system;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -337,6 +338,10 @@ public class System {
 
 	public User changePassword(User user, String newPassword) {
 		return accessUserManager.changePassword(user, newPassword);
+	}
+	
+	public ArrayList<UserGroup> saveUsersFromCsvFile(String path, Group group) throws IOException, EasyCorrectionException {
+		return accessUserManager.createUsersFromCsvFile(path, group);		
 	}
 
 	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
