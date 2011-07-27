@@ -43,7 +43,7 @@ public abstract class Manager {
 	 */
 	public void rebootDataBase(){
 		try{
-			HibernateUtil.executeSQL(Constants.bdBackupFile);
+			HibernateUtil.executeSQL(Constants.bdTestBackupFile);
 		} catch(Exception e){
 			System.out.println("Erro no script do banco.");
 		}

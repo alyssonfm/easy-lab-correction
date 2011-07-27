@@ -5,7 +5,7 @@ package br.edu.ufcg.easyLabCorrection.util;
  * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
  * @version 1.0 14 of May of 2011.<br>
  */
-public enum MsgErros {
+public enum MsgErrors {
 
 	/**
 	 * ERROR MESSAGES RELATING TO EMPTY FIELDS AND / OR NULL

@@ -34,7 +34,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
-import br.edu.ufcg.easyLabCorrection.util.MsgErros;
+import br.edu.ufcg.easyLabCorrection.util.MsgErrors;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 public class System {
@@ -145,15 +145,15 @@ public class System {
 		User use = new User();
 		
 		if (easyCorrectionUtil.isNull(userGroup)) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(MsgErrors.OBJ_NOT_FOUND
 					.msg("O GrupoUsuario"));
 		}
 		if (easyCorrectionUtil.isNull(userGroup.getUser())) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(MsgErrors.OBJ_NOT_FOUND
 					.msg("O Usuario"));
 		}
 		if (easyCorrectionUtil.isNull(userGroup.getGroup())) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(MsgErrors.OBJ_NOT_FOUND
 					.msg("O Grupo"));
 		}
 
@@ -196,25 +196,25 @@ public class System {
 					if (!easyCorrectionUtil.isNull(u)) {
 						if (!userGroup.getUser().getUserId().equals(
 								u.getUserId())) {
-							throw new ObjectNotFoundException(MsgErros.LOGIN
+							throw new ObjectNotFoundException(MsgErrors.LOGIN
 									.msg(""));
 						}
 					}
 					if (!easyCorrectionUtil.isNull(use)) {
 						if (!userGroup.getUser().getUserId().equals(
 								use.getUserId())) {
-							throw new ObjectNotFoundException(MsgErros.EMAIL
+							throw new ObjectNotFoundException(MsgErrors.EMAIL
 									.msg(""));
 						}
 					}
 					userGroup = accessUserManager.updateUser(userGroup, us);
 				} catch (ObjectNotFoundException e) {
 					if (!easyCorrectionUtil.isNull(u)) {
-						throw new ObjectNotFoundException(MsgErros.LOGIN
+						throw new ObjectNotFoundException(MsgErrors.LOGIN
 								.msg(""));
 					}
 					if (!easyCorrectionUtil.isNull(use)) {
-						throw new ObjectNotFoundException(MsgErros.EMAIL
+						throw new ObjectNotFoundException(MsgErrors.EMAIL
 								.msg(""));
 					}
 				}
@@ -503,7 +503,7 @@ public class System {
 
 	public int getAllocatedTeams(Integer assignmentId) {
 		if (easyCorrectionUtil.isNull(assignmentId) || assignmentId < 1) {
-			throw new ObjectNotFoundException(MsgErros.ID_ROTEIRO_INEXISTENTE
+			throw new ObjectNotFoundException(MsgErrors.ID_ROTEIRO_INEXISTENTE
 					.msg(""));
 		}
 		Assignment assignment = assignmentManager.getAssignment(assignmentId);
@@ -514,7 +514,7 @@ public class System {
 			throws EasyCorrectionException {
 		UserGroup ug = getUserGroupByUser(tua.getUser().getUserId()).get(0);
 		if (!ug.getGroup().getName().equals("Aluno")) {
-			throw new EasyCorrectionException(MsgErros.ALUNO_INEXISTENTE
+			throw new EasyCorrectionException(MsgErrors.ALUNO_INEXISTENTE
 					.msg(""));
 		}
 		return teamManager.changeTeam(tua);

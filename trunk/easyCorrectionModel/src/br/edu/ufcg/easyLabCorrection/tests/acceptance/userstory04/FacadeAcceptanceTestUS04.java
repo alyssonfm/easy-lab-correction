@@ -5,7 +5,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.tests.acceptance.userstory03.FacadeTestUS3Acceptance;
-import br.edu.ufcg.easyLabCorrection.util.MsgErros;
+import br.edu.ufcg.easyLabCorrection.util.MsgErrors;
 
 public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 
@@ -104,7 +104,7 @@ public class FacadeAcceptanceTestUS04 extends FacadeTestUS3Acceptance {
 			getTeam(equipeDeEntradaId);
 		}
 		catch(Exception e){
-			throw new ObjectNotFoundException(MsgErros.EQUIPE_INEXISTENTE
+			throw new ObjectNotFoundException(MsgErrors.EQUIPE_INEXISTENTE
 					.msg(""));
 		}
 		teamHasUserHasAssignment.setTeam(getTeam(equipeDeEntradaId));

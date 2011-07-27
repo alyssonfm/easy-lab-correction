@@ -13,7 +13,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.util.MsgErros;
+import br.edu.ufcg.easyLabCorrection.util.MsgErrors;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
@@ -40,7 +40,7 @@ public class AccessPermissionManager extends Manager {
 	public Menu getMenu(Integer id) {
 		List<Menu> menu = DAOFactory.DEFAULT.buildMenuDAO().findById(id);
 		if (menu.isEmpty()) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("menu"));
 		}
 		return menu.get(0);
@@ -84,10 +84,13 @@ public class AccessPermissionManager extends Manager {
 					menu.setMenuId(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(m)) {
-					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
-							.msg("nome ou rotulo"));
+					throw new DuplicatedValueException(
+							MsgErrors.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 				// Se o id eh diferente de null
+			} else {
+				throw new EasyCorrectionException(MsgErrors.ATRIBUTO_INVALIDO
+						.msg("id"));
 			}
 		}
 		return menu;
@@ -109,8 +112,8 @@ public class AccessPermissionManager extends Manager {
 							Menu.class);
 					DAOFactory.DEFAULT.buildMenuDAO().update(men);
 				} else {
-					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
-							.msg("nome ou rotulo"));
+					throw new DuplicatedValueException(
+							MsgErrors.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 			}
 		}
@@ -126,6 +129,10 @@ public class AccessPermissionManager extends Manager {
 	 *             The exception that can launched in the removal.<br>
 	 */
 	public void deleteMenu(Menu menu) throws EasyCorrectionException {
+		if (menu == null){
+			throw new DuplicatedValueException(
+					MsgErrors.VALORINVALIDO.msg("null"));
+		}
 		Menu m = getMenu(menu.getMenuId());
 		m = (Menu) SwapperAtributosReflect.swapObject(m, menu, Menu.class);
 		DAOFactory.DEFAULT.buildMenuDAO().delete(m);
@@ -163,8 +170,8 @@ public class AccessPermissionManager extends Manager {
 			if (easyCorrectionUtil.isNull(function.getFunctionId())
 					|| function.getFunctionId().equals(new Integer(0))) {
 				// Verifica se o rótulo ou o nome já existe
-				MenuFunction f = consultFunctionByNameAndLabel(function.getName(),
-						function.getLabel());
+				MenuFunction f = consultFunctionByNameAndLabel(function
+						.getName(), function.getLabel());
 				// Se o rótulo/nome não existe e e o id é null
 				if (easyCorrectionUtil.isNull(f)) {
 					Integer id = DAOFactory.DEFAULT.buildFunctionDAO().save(
@@ -172,8 +179,8 @@ public class AccessPermissionManager extends Manager {
 					function.setFunctionId(id);
 					// Se o rótulo existe
 				} else if (!easyCorrectionUtil.isNull(f)) {
-					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
-							.msg("nome ou rotulo"));
+					throw new DuplicatedValueException(
+							MsgErrors.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 				// Se o id é diferente de null
 			}
@@ -187,20 +194,20 @@ public class AccessPermissionManager extends Manager {
 		if (!easyCorrectionUtil.isNull(function)) {
 			if (!(easyCorrectionUtil.isNull(function.getFunctionId()) || function
 					.getFunctionId().equals(new Integer(0)))) {
-				MenuFunction fun = consultFunctionByNameAndLabel(
-						function.getName(), function.getLabel());
+				MenuFunction fun = consultFunctionByNameAndLabel(function
+						.getName(), function.getLabel());
 				if (easyCorrectionUtil.isNull(fun)) {
 					fun = getFunction(function.getFunctionId());
-					fun = (MenuFunction) SwapperAtributosReflect.swapObject(fun,
-							function, MenuFunction.class);
+					fun = (MenuFunction) SwapperAtributosReflect.swapObject(
+							fun, function, MenuFunction.class);
 					DAOFactory.DEFAULT.buildFunctionDAO().update(fun);
 				} else if (function.getFunctionId().equals(fun.getFunctionId())) {
-					fun = (MenuFunction) SwapperAtributosReflect.swapObject(fun,
-							function, MenuFunction.class);
+					fun = (MenuFunction) SwapperAtributosReflect.swapObject(
+							fun, function, MenuFunction.class);
 					DAOFactory.DEFAULT.buildFunctionDAO().update(fun);
 				} else {
-					throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
-							.msg("nome ou rotulo"));
+					throw new DuplicatedValueException(
+							MsgErrors.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
 			}
 		}
@@ -218,7 +225,7 @@ public class AccessPermissionManager extends Manager {
 		List<MenuFunction> functions = DAOFactory.DEFAULT.buildFunctionDAO()
 				.findById(id);
 		if (functions.isEmpty()) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("funcao"));
 		}
 		return functions.get(0);
@@ -253,10 +260,11 @@ public class AccessPermissionManager extends Manager {
 	 *            The function it is verifying the existence.<br>
 	 * @return A boolean value: true - if exist; false - otherwise.<br>
 	 */
-	private boolean containsFunction(List<Permission> list, MenuFunction function) {
+	private boolean containsFunction(List<Permission> list,
+			MenuFunction function) {
 		for (Permission p : list) {
-			if (p.getMenuFunction().getFunctionId()
-					.equals(function.getFunctionId())) {
+			if (p.getMenuFunction().getFunctionId().equals(
+					function.getFunctionId())) {
 				return true;
 			}
 		}
@@ -318,7 +326,7 @@ public class AccessPermissionManager extends Manager {
 				Integer id = DAOFactory.DEFAULT.buildGroupDAO().save(group);
 				group.setGroupId(id);
 			} else {
-				throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
+				throw new DuplicatedValueException(MsgErrors.VALOR_DUPLICADO
 						.msg("nome"));
 			}
 		}
@@ -340,7 +348,7 @@ public class AccessPermissionManager extends Manager {
 						Group.class);
 				DAOFactory.DEFAULT.buildGroupDAO().update(gr);
 			} else {
-				throw new DuplicatedValueException(MsgErros.VALOR_DUPLICADO
+				throw new DuplicatedValueException(MsgErrors.VALOR_DUPLICADO
 						.msg("nome"));
 			}
 		}
@@ -358,7 +366,7 @@ public class AccessPermissionManager extends Manager {
 	public Group getGroup(Integer id) {
 		List<Group> group = DAOFactory.DEFAULT.buildGroupDAO().findById(id);
 		if (group.isEmpty()) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("grupo"));
 		}
 		return group.get(0);
@@ -398,7 +406,7 @@ public class AccessPermissionManager extends Manager {
 	public Group getGroupByName(String name) {
 		List<Group> list = DAOFactory.DEFAULT.buildGroupDAO().findByName(name);
 		if (list.isEmpty()) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("grupo"));
 		}
 		return list.get(0);
@@ -510,10 +518,11 @@ public class AccessPermissionManager extends Manager {
 				addPermission.setPermissionId(id);
 			} else {
 				List<Permission> anotherP = DAOFactory.DEFAULT
-						.buildPermissionDAO().findByGroupAndFunction(
-								g.getGroupId(),
+						.buildPermissionDAO()
+						.findByGroupAndFunction(g.getGroupId(),
 								addPermission.getMenuFunction().getFunctionId());
-				addPermission = anotherP.get(0); // eh garantido que a lista não
+				addPermission = anotherP.get(0); // eh garantido que a lista
+													// não
 				// é vazia
 			}
 		}
@@ -539,7 +548,7 @@ public class AccessPermissionManager extends Manager {
 		List<Permission> permissions = DAOFactory.DEFAULT.buildPermissionDAO()
 				.findById(id);
 		if (permissions.isEmpty()) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("permissao"));
 		}
 		return permissions.get(0);
@@ -565,7 +574,8 @@ public class AccessPermissionManager extends Manager {
 								gU.getGroup().getGroupId());
 				if (!pList.isEmpty()) {
 					for (Permission p : pList) {
-						if (!isFunctionRepeated(functionsList, p.getMenuFunction())) {
+						if (!isFunctionRepeated(functionsList, p
+								.getMenuFunction())) {
 							functionsList.add(p.getMenuFunction());
 						}
 					}
@@ -598,7 +608,8 @@ public class AccessPermissionManager extends Manager {
 	 *            system.<br>
 	 * @return A boolean: true - if already, false - otherwise.<br>
 	 */
-	private boolean isFunctionRepeated(List<MenuFunction> list, MenuFunction function) {
+	private boolean isFunctionRepeated(List<MenuFunction> list,
+			MenuFunction function) {
 		for (MenuFunction f : list) {
 			if (f.equals(function)) {
 				return true;

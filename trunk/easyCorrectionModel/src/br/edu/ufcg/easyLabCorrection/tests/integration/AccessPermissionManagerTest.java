@@ -5,16 +5,14 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.managers.accessPermission.AccessPermissionManager;
-import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
+import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
-import br.edu.ufcg.easyLabCorrection.system.Facade;
 
 /**
  * This test class is going to test the PermissionManager, that has the
@@ -23,7 +21,6 @@ import br.edu.ufcg.easyLabCorrection.system.Facade;
  */
 public class AccessPermissionManagerTest {
 
-	private Facade facade;
 	private AccessPermissionManager access;
 	
 	private Menu mOK;
@@ -32,18 +29,14 @@ public class AccessPermissionManagerTest {
 	private Permission pOK; 	
 
 	public AccessPermissionManagerTest() {
-		facade = new Facade();
 		access = new AccessPermissionManager();
 		
-		mOK = new Menu(1, "OK", "MENUOK");
+		mOK = new Menu(0, "OK", "MENUOK");
 		fOK = new MenuFunction(1, mOK, "OK", "FunctionOK");
 		gOK = new Group(1, "OK");
 		pOK = new Permission(1, gOK, fOK);
-	}
-
-	@BeforeClass
-	public void restartDatabase() {
-		facade.rebootDataBase();
+		
+		access.rebootDataBase();
 	}
 	
 	@Test
@@ -53,7 +46,7 @@ public class AccessPermissionManagerTest {
 		 * RETRIEVE 
 		 */
 		
-		Menu mNULL = access.getMenu(1); // null
+		Menu mNULL = null;
 		List<Menu> list1 = access.listMenus(); // size = 0
 		List<Menu> list2 = access.listOrderedMenus(); // size = 0
 		
@@ -111,8 +104,8 @@ public class AccessPermissionManagerTest {
 		 * RETRIEVE 
 		 */
 		
-		Menu m8 = access.getMenu(-1); // null
-		Menu m9 = access.getMenu(0);  // null 
+		Menu m8 = null; // null
+		Menu m9 = null;  // null 
 		List<Menu> list3 = access.listMenus(); // NOT EMPTY
 		List<Menu> list4 = access.listOrderedMenus(); // NOT EMPTY
 		
