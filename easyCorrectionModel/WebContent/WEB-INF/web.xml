@@ -11,7 +11,7 @@
         <listener-class>flex.messaging.HttpFlexSession</listener-class>
     </listener>
     <listener>
-		<listener-class>br.edu.ufcg.easyLabCorrection.util.WebappListener</listener-class>
+		<listener-class>br.edu.ufcg.easyLabCorrection.webApp.WebappListener</listener-class>
 	</listener>
 
     <!-- MessageBroker Servlet -->
