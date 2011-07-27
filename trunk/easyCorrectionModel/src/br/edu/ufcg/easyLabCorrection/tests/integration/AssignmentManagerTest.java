@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.AssignmentException;
-import br.edu.ufcg.easyLabCorrection.managers.AssignmentManager;
+import br.edu.ufcg.easyLabCorrection.managers.assignment.AssignmentManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.system.Facade;

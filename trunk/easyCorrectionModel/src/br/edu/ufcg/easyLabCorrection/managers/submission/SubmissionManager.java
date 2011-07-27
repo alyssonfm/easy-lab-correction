@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.managers;
+package br.edu.ufcg.easyLabCorrection.managers.submission;
 
 import java.io.File;
 import java.util.List;

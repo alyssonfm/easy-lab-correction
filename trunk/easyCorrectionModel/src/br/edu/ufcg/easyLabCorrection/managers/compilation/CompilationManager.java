@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.managers;
+package br.edu.ufcg.easyLabCorrection.managers.compilation;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import javax.tools.ToolProvider;
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
-import br.edu.ufcg.easyLabCorrection.util.CompilationFileFilter;
+import br.edu.ufcg.easyLabCorrection.managers.Manager;
 import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**

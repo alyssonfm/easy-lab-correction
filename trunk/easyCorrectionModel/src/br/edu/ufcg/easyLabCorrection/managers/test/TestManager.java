@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.managers;
+package br.edu.ufcg.easyLabCorrection.managers.test;
 
 import java.io.File;
 
@@ -17,9 +17,10 @@ import org.junit.runner.JUnitCore;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
+import br.edu.ufcg.easyLabCorrection.managers.Manager;
+import br.edu.ufcg.easyLabCorrection.managers.compilation.CompilationFileFilter;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
-import br.edu.ufcg.easyLabCorrection.util.CompilationFileFilter;
 import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**

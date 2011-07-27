@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
-import br.edu.ufcg.easyLabCorrection.managers.AccessPermissionManager;
+import br.edu.ufcg.easyLabCorrection.managers.accessPermission.AccessPermissionManager;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;

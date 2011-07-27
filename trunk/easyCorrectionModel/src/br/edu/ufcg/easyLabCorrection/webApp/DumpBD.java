@@ -1,8 +1,11 @@
-package br.edu.ufcg.easyLabCorrection.util;
+package br.edu.ufcg.easyLabCorrection.webApp;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import br.edu.ufcg.easyLabCorrection.util.Constants;
+
 import java.io.File;
 import java.io.IOException;
 

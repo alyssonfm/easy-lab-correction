@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.util;
+package br.edu.ufcg.easyLabCorrection.managers.compilation;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,6 +6,8 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
+import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**
  * Class responsible for performing validation of files during the submission.<br>

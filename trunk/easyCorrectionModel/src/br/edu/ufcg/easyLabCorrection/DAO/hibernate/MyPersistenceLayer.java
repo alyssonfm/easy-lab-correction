@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.util;
+package br.edu.ufcg.easyLabCorrection.DAO.hibernate;
 
 import org.hibernate.proxy.HibernateProxy;
 

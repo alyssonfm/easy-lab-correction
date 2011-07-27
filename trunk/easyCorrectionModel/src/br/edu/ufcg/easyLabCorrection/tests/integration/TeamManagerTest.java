@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
-import br.edu.ufcg.easyLabCorrection.managers.TeamManager;
+import br.edu.ufcg.easyLabCorrection.managers.team.TeamManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
