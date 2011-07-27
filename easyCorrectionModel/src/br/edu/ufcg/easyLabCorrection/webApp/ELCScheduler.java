@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.util;
+package br.edu.ufcg.easyLabCorrection.webApp;
 
 import java.util.Timer;
 import org.quartz.JobDetail;
@@ -8,6 +8,7 @@ import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerUtils;
 import org.quartz.impl.StdSchedulerFactory;
+
 
 /**
  *  Class responsible for scheduling activities in the system.<br>

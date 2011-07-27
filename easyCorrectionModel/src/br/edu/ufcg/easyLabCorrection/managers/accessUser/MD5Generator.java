@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.util;
+package br.edu.ufcg.easyLabCorrection.managers.accessUser;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

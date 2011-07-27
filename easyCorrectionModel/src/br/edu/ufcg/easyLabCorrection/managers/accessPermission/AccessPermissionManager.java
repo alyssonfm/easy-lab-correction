@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.managers;
+package br.edu.ufcg.easyLabCorrection.managers.accessPermission;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -7,6 +7,7 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.DuplicatedValueException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
+import br.edu.ufcg.easyLabCorrection.managers.Manager;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;

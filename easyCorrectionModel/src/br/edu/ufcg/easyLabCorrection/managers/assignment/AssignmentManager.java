@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.managers;
+package br.edu.ufcg.easyLabCorrection.managers.assignment;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +7,7 @@ import java.util.List;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.AssignmentException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
+import br.edu.ufcg.easyLabCorrection.managers.Manager;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.AssignmentType;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;

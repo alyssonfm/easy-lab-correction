@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.util;
+package br.edu.ufcg.easyLabCorrection.webApp;
 
 import java.io.File;
 import java.util.Properties;
@@ -19,6 +19,8 @@ import javax.mail.internet.MimeMultipart;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**
  * Class used to send the email with the backup of the database system ELC.<br>

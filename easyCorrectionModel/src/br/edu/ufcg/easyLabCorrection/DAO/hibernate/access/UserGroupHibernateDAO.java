@@ -9,10 +9,10 @@ import org.hibernate.criterion.SimpleExpression;
 
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
+import br.edu.ufcg.easyLabCorrection.DAO.hibernate.MyPersistenceLayer;
 import br.edu.ufcg.easyLabCorrection.exceptions.ConstraintViolationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EmptyFieldException;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.util.MyPersistenceLayer;
 
 /**
  * <p>Hibernate DAO layer for Agendas</p>

@@ -1,4 +1,4 @@
-package br.edu.ufcg.easyLabCorrection.util;
+package br.edu.ufcg.easyLabCorrection.webApp;
 
 import java.sql.Driver;
 
@@ -7,6 +7,7 @@ import java.util.Enumeration;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.apache.log4j.LogManager;
+
 
 /**
  * Class responsible for realizes the web communication.<br>
