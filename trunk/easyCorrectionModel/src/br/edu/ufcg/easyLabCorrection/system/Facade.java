@@ -1,10 +1,13 @@
 package br.edu.ufcg.easyLabCorrection.system;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.managers.accessUser.PasswordGenerator;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
@@ -156,6 +159,19 @@ public class Facade {
 			return system.saveUser(userGroup);
 		} catch (Throwable e) {
 			log.error("saveUser()", e);
+			throw e;
+		}
+	}
+	
+	public ArrayList<UserGroup> saveUsersFromCsvFile(String path, Group group) 
+		throws IOException, EasyCorrectionException {
+		try {
+			return system.saveUsersFromCsvFile(path, group);
+		} catch (IOException e) {
+			log.error("saveUsersFromCsvFile", e);
+			throw e;
+		} catch (EasyCorrectionException e) {
+			log.error("saveUsersFromCsvFile", e);
 			throw e;
 		}
 	}
@@ -829,5 +845,4 @@ public class Facade {
 			throw e;
 		}
 	}
-
 }
