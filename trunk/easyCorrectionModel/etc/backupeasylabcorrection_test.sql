@@ -5,6 +5,15 @@
 -- Server version	5.1.41
 
 
+
+-- This bd script file is different from the others because of the following conditions:
+--  - There is no '
+--  - The tables are ordered by the foreign keys needs
+--  - The table creation is disabled to the elc user
+--  - The hibernatecfg file was changed in the connection to easylabcorrectiontest
+
+
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
