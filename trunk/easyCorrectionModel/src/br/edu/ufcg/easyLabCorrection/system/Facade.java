@@ -28,11 +28,10 @@ public class Facade {
 
 	public Facade() {
 		system = new System();
-
 	}
 
-	public void rebootsDataBase() {
-		system.rebootsDataBase("backupEasyCorrection");
+	public void rebootDataBase() {
+		system.rebootDataBase();
 	}
 
 	/*******************************************************************

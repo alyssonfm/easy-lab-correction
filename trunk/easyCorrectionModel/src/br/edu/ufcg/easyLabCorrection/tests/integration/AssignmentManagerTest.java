@@ -65,7 +65,7 @@ public class AssignmentManagerTest {
 
 	@BeforeClass
 	public void reinicializaBD() {
-		facade.rebootsDataBase();
+		facade.rebootDataBase();
 	}
 
 	@Test

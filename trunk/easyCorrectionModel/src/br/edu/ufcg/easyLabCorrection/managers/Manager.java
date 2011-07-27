@@ -4,6 +4,7 @@ import java.util.List;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
+import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**
  * Abstract super class of managers, which is extended by the 
@@ -13,7 +14,6 @@ import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
  * @version 1.0 14 of May of 2011.<br>
  */
 public abstract class Manager {
-
 
 	/**
 	 * Function used to retrieve a stage of year, receives an identifier 
@@ -41,9 +41,9 @@ public abstract class Manager {
 	 * as parameter.<br>
 	 * @param script The script to be used to restart the database.<br>
 	 */
-	public void reinicializaBancoDeDados(String script){
+	public void rebootDataBase(){
 		try{
-			HibernateUtil.executeSQL(script);
+			HibernateUtil.executeSQL(Constants.bdBackupFile);
 		} catch(Exception e){
 			System.out.println("Erro no script do banco.");
 		}

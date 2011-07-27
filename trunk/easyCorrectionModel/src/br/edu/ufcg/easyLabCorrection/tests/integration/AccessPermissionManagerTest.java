@@ -43,7 +43,7 @@ public class AccessPermissionManagerTest {
 
 	@BeforeClass
 	public void restartDatabase() {
-		facade.rebootsDataBase();
+		facade.rebootDataBase();
 	}
 	
 	@Test

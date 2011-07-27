@@ -17,7 +17,7 @@ public class FacadeAcceptanceTestUS02{
 	}
 
 	public void reinicializaBancoDeDados(){
-		facadeSistema.rebootsDataBase();
+		facadeSistema.rebootDataBase();
 	}
 	
 // ******************************************* Menus ******************************************

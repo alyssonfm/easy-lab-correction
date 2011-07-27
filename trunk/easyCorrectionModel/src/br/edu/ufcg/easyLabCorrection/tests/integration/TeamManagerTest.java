@@ -71,7 +71,7 @@ public class TeamManagerTest {
 	
 	@BeforeClass
 	public void restartDatabase() {
-		facade.rebootsDataBase();
+		facade.rebootDataBase();
 	}
 
 	@Test
