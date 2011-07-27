@@ -123,7 +123,7 @@ public class easyCorrectionUtil {
 			Object valor = m.invoke(objectTemp);
 			return valor;
 		} catch (Exception e) {
-			throw new NonexistantAttributeException(MsgErros.ATRIBUTO_INVALIDO
+			throw new NonexistantAttributeException(MsgErrors.ATRIBUTO_INVALIDO
 					.msg(attribute));
 		}
 	}

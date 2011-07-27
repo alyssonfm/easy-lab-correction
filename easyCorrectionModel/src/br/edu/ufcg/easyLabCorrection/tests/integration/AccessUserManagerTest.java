@@ -35,10 +35,7 @@ public class AccessUserManagerTest {
 		us = new User("userTestOk", "UserTest", "123123", "usertest@test.com");
 		gr = new Group(1, "GroupTest");
 		usgr = new UserGroup(1, gr, us);
-	}
-
-	@BeforeClass
-	public void restartDatabase() {
+		
 		facade.rebootDataBase();
 	}
 

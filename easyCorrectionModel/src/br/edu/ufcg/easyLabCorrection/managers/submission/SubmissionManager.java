@@ -11,7 +11,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
-import br.edu.ufcg.easyLabCorrection.util.MsgErros;
+import br.edu.ufcg.easyLabCorrection.util.MsgErrors;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
@@ -103,14 +103,14 @@ public class SubmissionManager {
 					submission.setId(id);
 				} else {
 					throw new EasyCorrectionException(
-							MsgErros.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO
+							MsgErrors.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO
 									.msg(submission
 											.getTeamHasUserHasAssignment()
 											.getAssignment().getName()));
 				}
 			} else {
 				throw new EasyCorrectionException(
-						MsgErros.TEMPO_MAXIMO_SUBMISSOES_EXCEDIDO
+						MsgErrors.TEMPO_MAXIMO_SUBMISSOES_EXCEDIDO
 								.msg(submission.getTeamHasUserHasAssignment()
 										.getAssignment().getName()));
 

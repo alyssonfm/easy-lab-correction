@@ -10,7 +10,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.util.MsgErros;
+import br.edu.ufcg.easyLabCorrection.util.MsgErrors;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
@@ -68,7 +68,7 @@ public class TeamManager extends Manager {
 	public Team getTeam(int id) {
 		Team team = DAOFactory.DEFAULT.buildTeamDAO().getById(id);
 		if (easyCorrectionUtil.isNull(team)) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("Team"));
 		}
 		return team;
@@ -93,7 +93,7 @@ public class TeamManager extends Manager {
 		List<Team> Teams = DAOFactory.DEFAULT.buildTeamDAO().findByName(name);
 		Team te = Teams.get(0);
 		if (easyCorrectionUtil.isNull(te)) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("Team"));
 		}
 		return te;
@@ -109,7 +109,7 @@ public class TeamManager extends Manager {
 				tua.getTeam().getId(), tua.getAssignment().getId());
 		if (list.size() >= tua.getAssignment().getParticipantsMaxNumber()) {
 			throw new EasyCorrectionException(
-					MsgErros.NUMERO_MAXIMO_PARTICIPANTES.msg(""));
+					MsgErrors.NUMERO_MAXIMO_PARTICIPANTES.msg(""));
 		}
 		return true;
 	}
@@ -147,7 +147,7 @@ public class TeamManager extends Manager {
 	 */
 	public int getNumberOfAllocatedTeams(Assignment assignment) {
 		if (assignment == null) {
-			throw new ObjectNotFoundException(MsgErros.ROTEIRO_INEXISTENTE
+			throw new ObjectNotFoundException(MsgErrors.ROTEIRO_INEXISTENTE
 					.msg(""));
 		}
 		List<TeamHasUserHasAssignment> list = DAOFactory.DEFAULT
@@ -167,7 +167,7 @@ public class TeamManager extends Manager {
 			throws EasyCorrectionException {
 
 		if (tua.getAssignment().getParticipantsMaxNumber() == 1) {
-			throw new ObjectNotFoundException(MsgErros.ROTEIRO_INDIVIDUAL
+			throw new ObjectNotFoundException(MsgErrors.ROTEIRO_INDIVIDUAL
 					.msg(""));
 		}
 		if (tua.getAssignment().getParticipantsMaxNumber() == getTeamHasUserHasAssignmentByTeamAndAssignment(
@@ -175,12 +175,12 @@ public class TeamManager extends Manager {
 			String[] params = { tua.getTeam().getName(),
 					tua.getAssignment().getParticipantsMaxNumber().toString() };
 			throw new ObjectNotFoundException(
-					MsgErros.EQUIPE_HAS_ROTEIRO_COMPLETA.msg(params));
+					MsgErrors.EQUIPE_HAS_ROTEIRO_COMPLETA.msg(params));
 		}
 		try {
 			getTeam(tua.getTeam().getId());
 		} catch (Exception e) {
-			throw new ObjectNotFoundException(MsgErros.EQUIPE_INEXISTENTE
+			throw new ObjectNotFoundException(MsgErrors.EQUIPE_INEXISTENTE
 					.msg(""));
 		}
 

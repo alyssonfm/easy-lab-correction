@@ -1,6 +1,7 @@
 package br.edu.ufcg.easyLabCorrection.managers.accessUser;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -15,7 +16,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.util.MsgErros;
+import br.edu.ufcg.easyLabCorrection.util.MsgErrors;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
@@ -53,7 +54,7 @@ public class AccessUserManager extends Manager {
 		List<UserGroup> userGroup = DAOFactory.DEFAULT.buildUserGroupDAO()
 				.findById(id);
 		if (userGroup.isEmpty()) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("usuario grupo"));
 		}
 		return userGroup.get(0);
@@ -127,7 +128,7 @@ public class AccessUserManager extends Manager {
 	public User getUser(Integer id) {
 		List<User> users = DAOFactory.DEFAULT.buildUserDAO().findById(id);
 		if (users.isEmpty()) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("usuario"));
 		}
 		return users.get(0);
@@ -142,7 +143,7 @@ public class AccessUserManager extends Manager {
 	public User getUserByLogin(String login) {
 		List<User> users = DAOFactory.DEFAULT.buildUserDAO().findByLogin(login);
 		if (users.isEmpty()) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("usuario"));
 		}
 		return users.get(0);
@@ -162,7 +163,7 @@ public class AccessUserManager extends Manager {
 		List<UserGroup> list = DAOFactory.DEFAULT.buildUserGroupDAO()
 				.findByUserAndGroup(groupId, userId);
 		if (list.isEmpty()) {
-			throw new ObjectNotFoundException(MsgErros.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
 					.msg("grupo usuario"));
 		}
 		return list.get(0);
@@ -294,7 +295,7 @@ public class AccessUserManager extends Manager {
 	public User updateUser(User user) throws EasyCorrectionException {
 
 		if (easyCorrectionUtil.isNull(user)) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(MsgErrors.OBJ_NOT_FOUND
 					.msg("O Usuario"));
 		}
 		// Gera o md5 da senha
@@ -318,12 +319,12 @@ public class AccessUserManager extends Manager {
 
 		if (userGroup.getGroup().getName().equals("Aluno")
 				&& assigns.size() > 0) {
-			throw new EasyCorrectionException(MsgErros.USUARIO_ALOCADO
+			throw new EasyCorrectionException(MsgErrors.USUARIO_ALOCADO
 					.msg("O GrupoUsuario"));
 		}
 
 		if (easyCorrectionUtil.isNull(userGroup)) {
-			throw new EasyCorrectionException(MsgErros.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(MsgErrors.OBJ_NOT_FOUND
 					.msg("O GrupoUsuario"));
 		}
 
@@ -360,7 +361,7 @@ public class AccessUserManager extends Manager {
 		List<User> list = DAOFactory.DEFAULT.buildUserDAO()
 				.findByLoginAndPassword(user.getLogin(), user.getPassword());
 		if (list.isEmpty()) {
-			throw new AuthenticationException(MsgErros.AUTENTICACAO.msg());
+			throw new AuthenticationException(MsgErrors.AUTENTICACAO.msg());
 		}
 		return list.get(0);
 
@@ -395,7 +396,7 @@ public class AccessUserManager extends Manager {
 			bdUser.setPassword(password);
 			DAOFactory.DEFAULT.buildUserDAO().update(bdUser);
 		} else {
-			throw new ObjectNotFoundException(MsgErros.AUTENTICACAO.msg());
+			throw new ObjectNotFoundException(MsgErrors.AUTENTICACAO.msg());
 		}
 		return bdUser;
 	}

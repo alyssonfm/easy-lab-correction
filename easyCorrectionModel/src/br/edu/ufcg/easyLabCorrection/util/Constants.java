@@ -19,7 +19,7 @@ public class Constants {
 	public static final String bdBackupDirectory = "D:/Graduação/";
 	public static final String bdBackupFile = "backupEasyLabCorrection.sql";
 	
-	public static final String bdTestBackupFile = "etc/backupEasyLabCorrection_test.sql";
+	public static final String bdTestBackupFile = "etc/backupeasylabcorrection_test.sql";
 	
 	public static final String mainTest = "MainTest";
 	
