@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -173,8 +174,10 @@ public final class HibernateUtil {
 
 		try {
 			for (int i = 0; i < v.size(); i++) {
-				if (!v.get(i).trim().equals("")) {
-					getSession().createSQLQuery(v.get(i)).executeUpdate();
+				String st = v.get(i).trim();
+				if (!st.equals("") && !st.substring(0,2).equals("--") && !st.substring(0,2).equals("/*")) {
+					Query q = getSession().createSQLQuery(st);
+		            q.executeUpdate();
 				}
 			}
 		} catch (Exception e) {
