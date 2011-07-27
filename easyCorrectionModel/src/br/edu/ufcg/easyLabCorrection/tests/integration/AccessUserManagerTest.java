@@ -39,7 +39,7 @@ public class AccessUserManagerTest {
 
 	@BeforeClass
 	public void restartDatabase() {
-		facade.rebootsDataBase();
+		facade.rebootDataBase();
 	}
 
 	@Test

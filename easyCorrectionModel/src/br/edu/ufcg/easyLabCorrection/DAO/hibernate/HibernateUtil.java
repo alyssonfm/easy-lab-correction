@@ -16,7 +16,7 @@ import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**
  * Generated at Wed Apr 30 16:34:10 GMT-03:00 2008
- *
+ * 
  * @author Salto-db Eclipse v1.0.15 / Pojos + Hibernate mapping + Generic DAO
  */
 public final class HibernateUtil {
@@ -31,7 +31,8 @@ public final class HibernateUtil {
 
 	static {
 		try {
-			sessionFactory = new Configuration().configure().buildSessionFactory();		
+			sessionFactory = new Configuration().configure()
+					.buildSessionFactory();
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 			throw new ExceptionInInitializerError(ex.getCause());
@@ -52,8 +53,9 @@ public final class HibernateUtil {
 	}
 
 	/**
-	 * Retrieves the current Session local to the thread. <p/> If no Session is
-	 * open, opens a new Session for the running thread.
+	 * Retrieves the current Session local to the thread.
+	 * <p/>
+	 * If no Session is open, opens a new Session for the running thread.
 	 * 
 	 * @return Session
 	 */
@@ -66,7 +68,7 @@ public final class HibernateUtil {
 			s = getSessionFactory().openSession();
 			threadSession.set(s);
 			s.setFlushMode(FlushMode.ALWAYS);
-			//beginTransaction();
+			// beginTransaction();
 		}
 
 		return s;
@@ -83,7 +85,7 @@ public final class HibernateUtil {
 		if (s != null && s.isOpen()) {
 			s.close();
 		}
-		
+
 	}
 
 	/**
@@ -115,19 +117,19 @@ public final class HibernateUtil {
 		threadTransaction.set(null);
 
 	}
-	
+
 	/**
 	 * comando para efetuar a transação fechando a sessão.
 	 */
 	@SuppressWarnings("unchecked")
-	public static void commitTransactionCloseSession(){
+	public static void commitTransactionCloseSession() {
 		Transaction tx = (Transaction) threadTransaction.get();
 
 		if (tx != null && !tx.wasCommitted() && !tx.wasRolledBack()) {
 
 			try {
 				tx.commit();
-			}catch (HibernateException he) {
+			} catch (HibernateException he) {
 				tx.rollback();
 				he.printStackTrace();
 				throw he;
@@ -136,7 +138,7 @@ public final class HibernateUtil {
 				threadTransaction.set(null);
 			}
 		}
-		
+
 	}
 
 	/**
@@ -156,34 +158,38 @@ public final class HibernateUtil {
 			closeSession();
 		}
 	}
-	
-	public static void executeSQL(String arquivoScript) throws IOException {
-		
-		FileReader reader = new FileReader(Constants.bdBackupFile);
+
+	public static void executeSQL(String sqlScript) throws IOException {
+
+		FileReader reader = new FileReader(sqlScript);
 		BufferedReader leitor = new BufferedReader(reader);
 		String linha = null;
 		Vector<String> v = new Vector<String>();
-		while((linha = leitor.readLine()) != null) {
+		while ((linha = leitor.readLine()) != null) {
 			v.add(linha);
 		}
-		  
-		Transaction t = getSession().beginTransaction();  
-		
-		try{
-			for(int i=0; i<v.size(); i++){
-				if(!v.get(i).trim().equals("")){
+
+		Transaction t = getSession().beginTransaction();
+
+		try {
+			for (int i = 0; i < v.size(); i++) {
+				if (!v.get(i).trim().equals("")) {
 					getSession().createSQLQuery(v.get(i)).executeUpdate();
 				}
 			}
-		}catch(Exception e){
-			System.out.println(e.toString());
+		} catch (Exception e) {
+			System.err.println(e.toString());
 		}
-		
-		try {  
+
+		try {
 			t.commit();
-		} catch (Exception e) {  
-			t.rollback(); 
+		} catch (Exception e) {
+			t.rollback();
 		}
-	} 
+	}
+
+	public static void main(String[] args) throws IOException {
+		HibernateUtil.executeSQL(Constants.bdTestBackupFile);
+	}
 
 }

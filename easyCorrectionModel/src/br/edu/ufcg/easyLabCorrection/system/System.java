@@ -59,8 +59,8 @@ public class System {
 		testManager = new TestManager();
 	}
 
-	public void rebootsDataBase(String script) {
-		accessPermissionManager.reinicializaBancoDeDados(script);
+	public void rebootDataBase() {
+		accessPermissionManager.rebootDataBase();
 	}
 
 	public void deleteMenu(Menu menu) throws EasyCorrectionException {
