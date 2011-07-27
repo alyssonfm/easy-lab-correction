@@ -14,7 +14,7 @@ public class CSVFileFilter {
 	
 	private FileReader reader;
 	private BufferedReader br;
-	private String lineSeparator = ";";
+	private String lineSeparator = ",";
 	private int lineNumber;
 	
 	/**
@@ -62,8 +62,5 @@ public class CSVFileFilter {
 			e.printStackTrace();
 		}
 		return listAll;
-	}	
-	// pre condicoes - recebe arquivo file
-	// pos retornar lista de listas de strings.
-
+	}
 }
