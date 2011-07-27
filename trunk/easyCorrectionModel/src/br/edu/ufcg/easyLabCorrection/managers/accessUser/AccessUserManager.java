@@ -1,6 +1,10 @@
 package br.edu.ufcg.easyLabCorrection.managers.accessUser;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.AuthenticationException;
@@ -8,6 +12,7 @@ import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.managers.Manager;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
+import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.MsgErros;
@@ -209,6 +214,66 @@ public class AccessUserManager extends Manager {
 				userGroup.getUser());
 		userGroup.getUser().setUserId(id);
 		return userGroup;
+	}
+	
+	/**
+	 * Function used to creates users in the system ELC from a CSV file.<br>
+	 * @param fileName The path for the CSV file.<br>
+	 * @param g The group which you want to create users.<br>
+	 * @return The list of UserGroups from users created.<br> 
+	 * @throws IOException Exception that can be launched in an 
+	 * attempt to open the file whose path is passed as parameter.<br>
+	 * @throws EasyCorrectionException Exception can be thrown in an 
+	 * attempt to validate users to be registered.<br>
+	 */
+	public ArrayList<UserGroup> createUsersFromCsvFile(String fileName, Group g) throws IOException, EasyCorrectionException{
+		CSVFileFilter csv = new CSVFileFilter();
+		ArrayList<ArrayList<String>> listUsers = csv.checkCsvFile(fileName);
+		ArrayList<UserGroup> ug = new ArrayList<UserGroup>();
+				
+		for(int i = 0; i < listUsers.size(); i++){
+			User user = new User();
+			user.setLogin(listUsers.get(i).get(0));
+			user.setName(listUsers.get(i).get(1));
+			user.setEmail(listUsers.get(i).get(2));
+			String password = PasswordGenerator.generatePassword(6, user.getLogin());
+			password = MD5Generator.md5(password);
+			user.setPassword(password);
+			if(validateUser(user)){
+				UserGroup userGroup = new UserGroup();
+				userGroup.setGroup(g);
+				userGroup.setUser(user);
+				ug.add(userGroup);
+			}else{
+				throw new EasyCorrectionException("Usuário da linha "+i+"eh invalido");
+			}
+		}
+		for(int i = 0; i < ug.size(); i++){
+			saveUserGroup(ug.get(i));			
+		}
+		return ug;
+	}
+	
+	/**
+	 * Function used to validate a user in the system ELC.<br>
+	 * @param user The user that whether to validate the system.<br>
+	 * @return The boolean value indicating the validity of user.<br>
+	 */
+	private boolean validateUser(User user){
+		Pattern patEmail = Pattern.compile(".+@.+\\.[a-z]+");
+		Matcher pesqEmail = patEmail.matcher(user.getEmail());
+		
+		Pattern patName = Pattern.compile("[A-Za-z]+\\s[A-Za-z]+\\s[A-Za-z]+");
+		Matcher pesqName = patName.matcher(user.getName());
+		
+		Pattern patLogin = Pattern.compile("[a-zA-Z]+[0-9]+");
+		Matcher pesqLogin = patLogin.matcher(user.getLogin());
+		
+		if(pesqName.matches() && pesqEmail.matches() && pesqLogin.matches()){
+			return true;
+		} else{
+			return false;
+		}
 	}
 	
 	public UserGroup updateUser(UserGroup userGroup, User user) throws EasyCorrectionException{
