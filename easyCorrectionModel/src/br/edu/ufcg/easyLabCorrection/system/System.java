@@ -35,7 +35,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
-import br.edu.ufcg.easyLabCorrection.util.MsgErrors;
+import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 public class System {
@@ -120,41 +120,42 @@ public class System {
 	public Group saveGroup(Group group) throws EasyCorrectionException {
 		return accessPermissionManager.saveGroup(group);
 	}
-	
+
 	public UserGroup saveUserGroup(UserGroup userGroup)
-		throws EasyCorrectionException {
+			throws EasyCorrectionException {
 		return accessUserManager.saveUserGroup(userGroup);
 	}
 
 	/**
-	 * Function used to save a new user in the database 
-	 * of the system.<br>
-	 * @param userGroup The user group that contains the user 
-	 * to be saved.<br>
-	 * @return The user save in the system.<br> 
-	 * @throws EasyCorrectionException Exception can be thrown in an 
-	 * attempt to save a new User in the system.<br>
+	 * Function used to save a new user in the database of the system.<br>
+	 * 
+	 * @param userGroup
+	 *            The user group that contains the user to be saved.<br>
+	 * @return The user save in the system.<br>
+	 * @throws EasyCorrectionException
+	 *             Exception can be thrown in an attempt to save a new User in
+	 *             the system.<br>
 	 */
-	
+
 	public UserGroup saveUser(UserGroup userGroup)
 			throws EasyCorrectionException {
-		
+
 		userGroup.getUser().setPeriod(getCurrentStage().get(0));
-	
+
 		User u = new User();
 		User us = new User();
 		User use = new User();
-		
+
 		if (easyCorrectionUtil.isNull(userGroup)) {
-			throw new EasyCorrectionException(MsgErrors.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
 					.msg("O GrupoUsuario"));
 		}
 		if (easyCorrectionUtil.isNull(userGroup.getUser())) {
-			throw new EasyCorrectionException(MsgErrors.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
 					.msg("O Usuario"));
 		}
 		if (easyCorrectionUtil.isNull(userGroup.getGroup())) {
-			throw new EasyCorrectionException(MsgErrors.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
 					.msg("O Grupo"));
 		}
 
@@ -180,8 +181,9 @@ public class System {
 			}
 			// Create User
 			u = retrieveUserByLogin(userGroup.getUser().getLogin());
-			use = accessUserManager.getUserByEmail(userGroup.getUser().getEmail());
-			
+			use = accessUserManager.getUserByEmail(userGroup.getUser()
+					.getEmail());
+
 			// If login do not exist and user id is null
 			if (easyCorrectionUtil.isNull(u) && easyCorrectionUtil.isNull(use)) {
 				try {
@@ -197,26 +199,26 @@ public class System {
 					if (!easyCorrectionUtil.isNull(u)) {
 						if (!userGroup.getUser().getUserId().equals(
 								u.getUserId())) {
-							throw new ObjectNotFoundException(MsgErrors.LOGIN
-									.msg(""));
+							throw new ObjectNotFoundException(
+									"Nao eh possivel cadastrar o usuario, este login ja existe.");
 						}
 					}
 					if (!easyCorrectionUtil.isNull(use)) {
 						if (!userGroup.getUser().getUserId().equals(
 								use.getUserId())) {
-							throw new ObjectNotFoundException(MsgErrors.EMAIL
-									.msg(""));
+							throw new ObjectNotFoundException(
+									"Nao eh possivel cadastrar o usuario, este e-mail ja existe.");
 						}
 					}
 					userGroup = accessUserManager.updateUser(userGroup, us);
 				} catch (ObjectNotFoundException e) {
 					if (!easyCorrectionUtil.isNull(u)) {
-						throw new ObjectNotFoundException(MsgErrors.LOGIN
-								.msg(""));
+						throw new ObjectNotFoundException(
+								"Nao eh possivel cadastrar o usuario, este login ja existe.");
 					}
 					if (!easyCorrectionUtil.isNull(use)) {
-						throw new ObjectNotFoundException(MsgErrors.EMAIL
-								.msg(""));
+						throw new ObjectNotFoundException(
+								"Nao eh possivel cadastrar o usuario, este e-mail ja existe.");
 					}
 				}
 			}
@@ -225,7 +227,7 @@ public class System {
 		// Create User UserGroup
 		accessUserManager.saveUserGroup(userGroup);
 		return userGroup;
-		//urn accessUserManager.saveUserGroup(userGroup);
+		// urn accessUserManager.saveUserGroup(userGroup);
 	}
 
 	public Menu saveMenu(Menu menu) throws EasyCorrectionException {
@@ -339,9 +341,10 @@ public class System {
 	public User changePassword(User user, String newPassword) {
 		return accessUserManager.changePassword(user, newPassword);
 	}
-	
-	public ArrayList<UserGroup> saveUsersFromCsvFile(String path, Group group) throws IOException, EasyCorrectionException {
-		return accessUserManager.createUsersFromCsvFile(path, group);		
+
+	public ArrayList<UserGroup> saveUsersFromCsvFile(String path, Group group)
+			throws IOException, EasyCorrectionException {
+		return accessUserManager.createUsersFromCsvFile(path, group);
 	}
 
 	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
@@ -443,10 +446,10 @@ public class System {
 
 	public String runAutomaticTests(Submission submission)
 			throws EasyCorrectionException {
-		
+
 		TestResult testResult;
 		String result = "";
-		
+
 		String testsDirectory = ServletUpload.local
 				+ submission.getTeamHasUserHasAssignment().getAssignment()
 						.getTestsDirectory().replace("/", File.separator);
@@ -454,52 +457,56 @@ public class System {
 				+ submission.getUrl().replace("/", File.separator);
 		String libDirectory = (ServletUpload.local + "/").replace("/",
 				File.separator);
-		
+
 		if (submission.getTeamHasUserHasAssignment().getAssignment()
 				.getAutomaticTestsPercentage() > 0) {
-			
-			//Compilation
-			try{
+
+			// Compilation
+			try {
 				compilationUnit(sourceDirectory, testsDirectory, libDirectory);
-			}catch(CompilationException compilationError){
+			} catch (CompilationException compilationError) {
 				return "ERRO DE COMPILAÇÂO: \n" + compilationError.getMessage();
 			}
-			
-			//Running Tests
-			testResult = testManager.runAutomaticTests(submission, sourceDirectory, testsDirectory);
-			
-			if(testResult != null){
-				Object[] answer = testManager.getTestsExecutionOutput(testResult, submission);
-				double automaticTestsGrade = (Double)answer[0];
-				result = (String)answer[1];
-				assessmentManager.setAssessment(submission, automaticTestsGrade, result);
-			}
-			else{
+
+			// Running Tests
+			testResult = testManager.runAutomaticTests(submission,
+					sourceDirectory, testsDirectory);
+
+			if (testResult != null) {
+				Object[] answer = testManager.getTestsExecutionOutput(
+						testResult, submission);
+				double automaticTestsGrade = (Double) answer[0];
+				result = (String) answer[1];
+				assessmentManager.setAssessment(submission,
+						automaticTestsGrade, result);
+			} else {
 				submissionManager.deleteSubmission(submission);
 			}
-		} else{
+		} else {
 			result = "Este roteiro não possui testes automáticos.";
 			assessmentManager.setAssessment(submission, 0, result);
 			return "Resultado: " + result;
 		}
-		
+
 		return result;
 	}
-	
-	//This method should map the compilers.
-	private void compilationUnit(String sourceDirectory,
-			String testsDirectory, String libDirectory) throws CompilationException{
-		try{
-			compilationManager.runJavaCompiler(sourceDirectory,
-					testsDirectory, 
+
+	// This method should map the compilers.
+	private void compilationUnit(String sourceDirectory, String testsDirectory,
+			String libDirectory) throws CompilationException {
+		try {
+			compilationManager.runJavaCompiler(sourceDirectory, testsDirectory,
 					libDirectory);
-		} catch(CompilationException e){
+		} catch (CompilationException e) {
 			compilationManager.setCompilationError(false);
-			throw new CompilationException(deleteDirectory(compilationManager.getErrorResult(), testsDirectory, sourceDirectory, libDirectory));
+			throw new CompilationException(deleteDirectory(compilationManager
+					.getErrorResult(), testsDirectory, sourceDirectory,
+					libDirectory));
 		}
 	}
-	
-	private String deleteDirectory(String errorResult, String td, String sd, String id){
+
+	private String deleteDirectory(String errorResult, String td, String sd,
+			String id) {
 		String result = errorResult.replace(td, "");
 		result = result.replace(sd, "");
 		result = result.replace(id, "");
@@ -508,8 +515,8 @@ public class System {
 
 	public int getAllocatedTeams(Integer assignmentId) {
 		if (easyCorrectionUtil.isNull(assignmentId) || assignmentId < 1) {
-			throw new ObjectNotFoundException(MsgErrors.ID_ROTEIRO_INEXISTENTE
-					.msg(""));
+			throw new ObjectNotFoundException(
+					InternalErrorMsgs.ID_ROTEIRO_INEXISTENTE.msg(""));
 		}
 		Assignment assignment = assignmentManager.getAssignment(assignmentId);
 		return teamManager.getNumberOfAllocatedTeams(assignment);
@@ -519,8 +526,8 @@ public class System {
 			throws EasyCorrectionException {
 		UserGroup ug = getUserGroupByUser(tua.getUser().getUserId()).get(0);
 		if (!ug.getGroup().getName().equals("Aluno")) {
-			throw new EasyCorrectionException(MsgErrors.ALUNO_INEXISTENTE
-					.msg(""));
+			throw new EasyCorrectionException(
+					"Mudanca de equipe nao realizada! Aluno inexistente.");
 		}
 		return teamManager.changeTeam(tua);
 	}
@@ -703,8 +710,8 @@ public class System {
 			teamManager.saveTeamHasUserHasAssignment(eur);
 		}
 	}
-	
-	public List<AssignmentType> listAssignmentType(){
+
+	public List<AssignmentType> listAssignmentType() {
 		return assignmentManager.listAssignmentType();
 	}
 
