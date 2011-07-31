@@ -35,12 +35,12 @@ public class AccessPermissionManagerTest {
 		fOK = new MenuFunction(1, mOK, "OK", "FunctionOK");
 		gOK = new Group(1, "OK");
 		pOK = new Permission(1, gOK, fOK);
-		
-		access.rebootDataBase();
 	}
 	
 	@Test
 	public void menuCRUDBadParametersTest() {
+		
+		access.rebootDataBase();
 		
 		/*
 		 * RETRIEVE 
@@ -64,7 +64,11 @@ public class AccessPermissionManagerTest {
 		Menu m6 = new Menu(1, "kjlk", null);
 		Menu m7 = new Menu(1, "kjlk", "");
 		
-		
+		try {
+			access.saveMenu(mNULL);
+			Assert.assertTrue(false);
+		} catch (EasyCorrectionException e2) {
+		}
 		try {
 			access.saveMenu(mERROR1);
 			Assert.assertTrue(false);

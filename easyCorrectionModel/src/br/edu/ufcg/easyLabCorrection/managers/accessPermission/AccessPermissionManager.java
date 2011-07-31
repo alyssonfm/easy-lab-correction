@@ -73,21 +73,21 @@ public class AccessPermissionManager extends Manager {
 	 */
 	public Menu saveMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = new Menu();
-		if (!easyCorrectionUtil.isNull(menu)) {
+		if (menu == null){
+			throw new EasyCorrectionException(MsgErrors.ATRIBUTO_INVALIDO.msg("null"));
+		}else{
 			if (easyCorrectionUtil.isNull(menu.getMenuId())
 					|| menu.getMenuId().equals(new Integer(0))) {
-				// Verifica se o rotulo ou o nome ja existe
+
 				m = consultMenuByLabelAndName(menu.getName(), menu.getLabel());
-				// Se o rotulo/nome nao existe e o id é null
+
 				if (easyCorrectionUtil.isNull(m)) {
 					Integer id = DAOFactory.DEFAULT.buildMenuDAO().save(menu);
 					menu.setMenuId(id);
-					// Se o rótulo existe
-				} else if (!easyCorrectionUtil.isNull(m)) {
+				} else {
 					throw new DuplicatedValueException(
 							MsgErrors.VALOR_DUPLICADO.msg("nome ou rotulo"));
 				}
-				// Se o id eh diferente de null
 			} else {
 				throw new EasyCorrectionException(MsgErrors.ATRIBUTO_INVALIDO
 						.msg("id"));
@@ -129,9 +129,9 @@ public class AccessPermissionManager extends Manager {
 	 *             The exception that can launched in the removal.<br>
 	 */
 	public void deleteMenu(Menu menu) throws EasyCorrectionException {
-		if (menu == null){
-			throw new DuplicatedValueException(
-					MsgErrors.VALORINVALIDO.msg("null"));
+		if (menu == null) {
+			throw new EasyCorrectionException(MsgErrors.VALORINVALIDO
+					.msg("null"));
 		}
 		Menu m = getMenu(menu.getMenuId());
 		m = (Menu) SwapperAtributosReflect.swapObject(m, menu, Menu.class);
@@ -522,7 +522,7 @@ public class AccessPermissionManager extends Manager {
 						.findByGroupAndFunction(g.getGroupId(),
 								addPermission.getMenuFunction().getFunctionId());
 				addPermission = anotherP.get(0); // eh garantido que a lista
-													// não
+				// não
 				// é vazia
 			}
 		}
