@@ -11,7 +11,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.util.MsgErrors;
+import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
@@ -92,7 +92,7 @@ public class AssessmentManager extends Manager {
 	public Assessment getAssessmentByAssignmentAndTeam(int assignmentId, int teamId){
 		List<Assessment> list = DAOFactory.DEFAULT.buildAssessmentDAO().findByAssignmentAndTeam(assignmentId, teamId);
 		if(list.isEmpty()){
-			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND.msg("avaliacao"));
+			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND.msg("avaliacao"));
 		}
 		return list.get(0);
 	}
@@ -128,7 +128,7 @@ public class AssessmentManager extends Manager {
 			return updateAssessment(assess);
 		}
 		catch(Exception e){
-			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND.msg("avaliacao"));
+			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND.msg("avaliacao"));
 		}
 	}
 	

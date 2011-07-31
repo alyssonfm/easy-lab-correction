@@ -11,20 +11,19 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
-import br.edu.ufcg.easyLabCorrection.util.MsgErrors;
+import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 /**
- * Class responsible for managing of submissions in the system Easy 
- * Lab Correction.<br> 
+ * Class responsible for managing of submissions in the system Easy Lab
+ * Correction.<br>
+ * 
  * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
  * @version 1.0 14 of May of 2011.<br>
- *
+ * 
  */
 public class SubmissionManager {
-
-	
 
 	/**
 	 * Constructor default of class.<br>
@@ -34,10 +33,11 @@ public class SubmissionManager {
 	}
 
 	/**
-	 * Function used to retrieve the number of submission that is 
-	 * being held for a certain time, receives a submission as 
-	 * parameter.<br>
-	 * @param submission The submission that is being held.<br>
+	 * Function used to retrieve the number of submission that is being held for
+	 * a certain time, receives a submission as parameter.<br>
+	 * 
+	 * @param submission
+	 *            The submission that is being held.<br>
 	 * @return An integer, the number of submission.<br>
 	 */
 	public Integer getSubmissionNumber(Submission submission) {
@@ -51,12 +51,16 @@ public class SubmissionManager {
 	}
 
 	/**
-	 * Function used to retrieve all submissions performed in a specific assignment 
-	 * for a  certain time, receiving as parameters the team and the assignment.<br>
-	 * @param assign The assignment used in the recovery of submissions.<br>
-	 * @param team The team used in the recovery of submissions.<br>
-	 * @return All submissions whose assignment and team corresponds at the 
-	 * assignment and team passed as parameter.<br>
+	 * Function used to retrieve all submissions performed in a specific
+	 * assignment for a certain time, receiving as parameters the team and the
+	 * assignment.<br>
+	 * 
+	 * @param assign
+	 *            The assignment used in the recovery of submissions.<br>
+	 * @param team
+	 *            The team used in the recovery of submissions.<br>
+	 * @return All submissions whose assignment and team corresponds at the
+	 *         assignment and team passed as parameter.<br>
 	 */
 	public List<Submission> getSubmissionsByAssignmentAndTeam(
 			Assignment assign, Team team) {
@@ -66,12 +70,14 @@ public class SubmissionManager {
 	}
 
 	/**
-	 * Function used to retrieve the number of submission by a 
+	 * Function used to retrieve the number of submission by a
 	 * TeamHasUserHasAssignment.<br>
-	 * @param tua The TeamHasUserHasAssignment used to recovery a number 
-	 * of submission.<br>
-	 * @return The number of submission whose TeamHasUserHasAssignment corresponds 
-	 * at the TeamHasUserHasAssignment passed as parameter.<br>
+	 * 
+	 * @param tua
+	 *            The TeamHasUserHasAssignment used to recovery a number of
+	 *            submission.<br>
+	 * @return The number of submission whose TeamHasUserHasAssignment
+	 *         corresponds at the TeamHasUserHasAssignment passed as parameter.<br>
 	 */
 	public Integer getSubmissionNumberByTUA(TeamHasUserHasAssignment tua) {
 		return getSubmissionsByAssignmentAndTeam(tua.getAssignment(),
@@ -80,13 +86,15 @@ public class SubmissionManager {
 
 	/**
 	 * Function used to performs a submission in an assignment.<br>
-	 * @param submission The submission to be performed in the assignment 
-	 * passed as parameter.<br>
-	 * @param assignment The assignment in which the submission 
-	 * will be held.<br>
+	 * 
+	 * @param submission
+	 *            The submission to be performed in the assignment passed as
+	 *            parameter.<br>
+	 * @param assignment
+	 *            The assignment in which the submission will be held.<br>
 	 * @return The submission performed.<br>
-	 * @throws EasyCorrectionException An exception may be thrown in making 
-	 * the submission.<br>
+	 * @throws EasyCorrectionException
+	 *             An exception may be thrown in making the submission.<br>
 	 */
 	public Submission submitAssignment(Submission submission,
 			Assignment assignment) throws EasyCorrectionException {
@@ -103,25 +111,23 @@ public class SubmissionManager {
 					submission.setId(id);
 				} else {
 					throw new EasyCorrectionException(
-							MsgErrors.NUMERO_MAXIMO_SUBMISSOES_EXCEDIDO
-									.msg(submission
-											.getTeamHasUserHasAssignment()
-											.getAssignment().getName()));
+							"Erro no envio! A sua equipe ja alcancou o limite de submissoes do "
+									+ submission.getTeamHasUserHasAssignment()
+											.getAssignment().getName());
 				}
 			} else {
 				throw new EasyCorrectionException(
-						MsgErrors.TEMPO_MAXIMO_SUBMISSOES_EXCEDIDO
-								.msg(submission.getTeamHasUserHasAssignment()
-										.getAssignment().getName()));
-
+						"Erro no envio! Submissao fora do horario de liberacao para submissoes do "
+								+ submission.getTeamHasUserHasAssignment()
+										.getAssignment().getName());
 			}
 		}
 		return submission;
 	}
 
 	/*
-	 * BEGIN OF PRIVATE METHODS
-	 * This method is used to provide the environment, test and source downloads.
+	 * BEGIN OF PRIVATE METHODS This method is used to provide the environment,
+	 * test and source downloads.
 	 */
 	private String getZipFile(String[] fileList) {
 		try {
@@ -140,23 +146,27 @@ public class SubmissionManager {
 	}
 
 	/**
-	 * Funtion used to retrieve a submission by a submission identifier 
-	 * received as parameter.<br>
-	 * @param submissionId The identifier of submission who want to 
-	 * retrieve.<br>
-	 * @return The submission whose identifier corresponds at the 
-	 * identifier passed as parameter.<br>
+	 * Funtion used to retrieve a submission by a submission identifier received
+	 * as parameter.<br>
+	 * 
+	 * @param submissionId
+	 *            The identifier of submission who want to retrieve.<br>
+	 * @return The submission whose identifier corresponds at the identifier
+	 *         passed as parameter.<br>
 	 */
 	public Submission getSubmission(int submissionId) {
 		return DAOFactory.DEFAULT.buildSubmissionDAO().getById(submissionId);
 	}
 
 	/**
-	 * Procedure used to delete a submission of the system, receives a 
+	 * Procedure used to delete a submission of the system, receives a
 	 * submission as parameter.<br>
-	 * @param sub The submission who want to delete.<br>
-	 * @throws EasyCorrectionException Exception that can be launched in an 
-	 * attempt to delete a submission system.<br>
+	 * 
+	 * @param sub
+	 *            The submission who want to delete.<br>
+	 * @throws EasyCorrectionException
+	 *             Exception that can be launched in an attempt to delete a
+	 *             submission system.<br>
 	 */
 	public void deleteSubmission(Submission sub) throws EasyCorrectionException {
 		if (sub == null) {
@@ -169,12 +179,13 @@ public class SubmissionManager {
 	}
 
 	/**
-	 * Function used to retrieve the filename of interface of the assignment 
+	 * Function used to retrieve the filename of interface of the assignment
 	 * received as parameter.<br>
-	 * @param assignment The assignment who want to retrieve the interface 
-	 * filename.<br>
-	 * @return The string corresponding at the filename of interface of 
-	 * assignment passed as parameter.<br>
+	 * 
+	 * @param assignment
+	 *            The assignment who want to retrieve the interface filename.<br>
+	 * @return The string corresponding at the filename of interface of
+	 *         assignment passed as parameter.<br>
 	 */
 	public String getEnvironmentFileName(Assignment assignment) {
 		String environmentDirectory = ServletUpload.local
@@ -185,12 +196,13 @@ public class SubmissionManager {
 	}
 
 	/**
-	 * Function used to retrieve the filename of tests of the assignment 
+	 * Function used to retrieve the filename of tests of the assignment
 	 * received as parameter.<br>
-	 * @param assignment The assignment who want to retrieve the tests 
-	 * filename.<br>
-	 * @return The string corresponding at the filename of tests of 
-	 * assignment passed as parameter.<br>
+	 * 
+	 * @param assignment
+	 *            The assignment who want to retrieve the tests filename.<br>
+	 * @return The string corresponding at the filename of tests of assignment
+	 *         passed as parameter.<br>
 	 */
 	public String getTestsFileName(Assignment assignment) {
 		String testsDirectory = ServletUpload.local
@@ -200,12 +212,13 @@ public class SubmissionManager {
 	}
 
 	/**
-	 * Function used to retrieve the filename of source code of the assignment 
+	 * Function used to retrieve the filename of source code of the assignment
 	 * received as parameter.<br>
-	 * @param assignment The assignment who want to retrieve the source code 
-	 * filename.<br>
-	 * @return The string corresponding at the filename of source code of 
-	 * assignment passed as parameter.<br>
+	 * 
+	 * @param assignment
+	 *            The assignment who want to retrieve the source code filename.<br>
+	 * @return The string corresponding at the filename of source code of
+	 *         assignment passed as parameter.<br>
 	 */
 	public String getSourceFileName(Submission submission) {
 		String sourceDirectory = ServletUpload.local
