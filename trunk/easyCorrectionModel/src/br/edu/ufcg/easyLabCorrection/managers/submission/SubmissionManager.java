@@ -98,8 +98,8 @@ public class SubmissionManager {
 	 */
 	public Submission submitAssignment(Submission submission,
 			Assignment assignment) throws EasyCorrectionException {
-		if (!easyCorrectionUtil.isNull(submission)) {
-			if (!easyCorrectionUtil.isNull(assignment)) {
+		if (submission != null) {
+			if (assignment != null) {
 				if (getSubmissionNumber(submission) < (submission
 						.getTeamHasUserHasAssignment().getAssignment()
 						.getSendMaxNumber())) {

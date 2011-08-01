@@ -12,41 +12,9 @@ import br.edu.ufcg.easyLabCorrection.exceptions.NonexistantAttributeException;
 /**
  * Class that contains some functions that are used by several classes of system ELC.<br>
  * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
- * @version 1.0 14 of May of 2011.<br>
+ * @version 1.0 1-August-2011.<br>
  */
 public class easyCorrectionUtil {
-
-	/**
-	 * Checks if a string consists only of blank spaces or empty.<br>
-	 * By exemplor for string "or" Return therefore the true method.<br>
-	 * 
-	 * @param value The string to be verified if it is empty.<br>
-	 * @return A boolean: true - if the string is empty; false - otherwise.<br>
-	 */
-	public static boolean isEmpty(String value) {
-		value = value.trim();
-		return value.isEmpty();
-	}
-
-	/**
-	 * Checks if a value is null or empty.<br>
-	 * 
-	 * @param value The value to be checked.<br>
-	 * @return A boolean: true - if value is null or empty; false - otherwise.<br>
-	 */
-	public static boolean isNullOrEmpty(String value) {
-		return isNull(value) || isEmpty(value);
-	}
-
-	/**
-	 * Checks if a object is null.<br>
-	 * 
-	 * @param value The value to be checked.<br>
-	 * @return A boolean: true - if object is null; false - otherwise.<br>
-	 */
-	public static boolean isNull(Object value) {
-		return value == null;
-	}
 
 	/**
 	 * Function which retrieves the current date.<br>
@@ -123,7 +91,7 @@ public class easyCorrectionUtil {
 			Object valor = m.invoke(objectTemp);
 			return valor;
 		} catch (Exception e) {
-			throw new NonexistantAttributeException(InternalErrorMsgs.ATRIBUTO_INVALIDO
+			throw new NonexistantAttributeException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE
 					.msg(attribute));
 		}
 	}

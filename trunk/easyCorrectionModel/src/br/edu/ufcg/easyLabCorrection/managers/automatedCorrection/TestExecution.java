@@ -1,8 +1,6 @@
-package br.edu.ufcg.easyLabCorrection.managers.test;
+package br.edu.ufcg.easyLabCorrection.managers.automatedCorrection;
 
 import java.io.File;
-
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import org.junit.runner.JUnitCore;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
-import br.edu.ufcg.easyLabCorrection.managers.Manager;
 import br.edu.ufcg.easyLabCorrection.managers.compilation.CompilationFileFilter;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
@@ -30,12 +27,12 @@ import br.edu.ufcg.easyLabCorrection.util.Constants;
  * @version 1.0 14 of May of 2011.<br>
  *
  */
-public class TestManager extends Manager {
+public class TestExecution {
 
 	/**
 	 * Constructor default of class, creates a new object TestManager.<br>
 	 */
-	public TestManager() {
+	public TestExecution() {
 		super();
 	}
 	

@@ -42,7 +42,7 @@ public class TeamManager extends Manager {
 	 *             database system.<br>
 	 */
 	public Team saveTeam(Team t) throws EasyCorrectionException {
-		if (!easyCorrectionUtil.isNull(t)) {
+		if (t != null) {
 			List<Team> teams = getTeams();
 			if (teams.isEmpty()) {
 				t.setName("Team 1");
@@ -73,7 +73,7 @@ public class TeamManager extends Manager {
 	 */
 	public Team getTeam(int id) {
 		Team team = DAOFactory.DEFAULT.buildTeamDAO().getById(id);
-		if (easyCorrectionUtil.isNull(team)) {
+		if (team == null) {
 			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
 					.msg("Team"));
 		}
@@ -99,7 +99,7 @@ public class TeamManager extends Manager {
 	public Team getTeamByName(String name) {
 		List<Team> Teams = DAOFactory.DEFAULT.buildTeamDAO().findByName(name);
 		Team te = Teams.get(0);
-		if (easyCorrectionUtil.isNull(te)) {
+		if (te == null) {
 			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
 					.msg("Team"));
 		}
@@ -204,7 +204,7 @@ public class TeamManager extends Manager {
 
 		TeamHasUserHasAssignment teamUserAssignment = getTeamHasUserHasAssignmentByUserAndAssignment(
 				tua.getUser().getUserId(), tua.getAssignment().getId());
-		if (!easyCorrectionUtil.isNull(teamUserAssignment)) {
+		if (teamUserAssignment != null) {
 			deleteTeamHasUserHasAssignment(teamUserAssignment);
 			teamUserAssignment = saveTeamHasUserHasAssignment(tua);
 		} else {
@@ -309,7 +309,7 @@ public class TeamManager extends Manager {
 	 */
 	public TeamHasUserHasAssignment saveTeamHasUserHasAssignment(
 			TeamHasUserHasAssignment tua) throws EasyCorrectionException {
-		if (!easyCorrectionUtil.isNull(tua)) {
+		if (tua != null) {
 			isTeamFull(tua);
 			Integer id = DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO()
 					.save(tua);

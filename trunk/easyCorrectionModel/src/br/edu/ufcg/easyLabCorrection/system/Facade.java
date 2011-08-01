@@ -178,7 +178,7 @@ public class Facade {
 
 	public List<MenuFunction> validateUser(User user) throws Throwable {
 		try {
-			return system.validateUser(user);
+			return system.getFunctionsPerValidatedUser(user);
 		} catch (Throwable e) {
 			log.error("validateUser()", e);
 			throw e;
