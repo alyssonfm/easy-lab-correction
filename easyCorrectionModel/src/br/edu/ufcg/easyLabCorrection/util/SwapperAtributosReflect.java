@@ -53,7 +53,7 @@ public class SwapperAtributosReflect {
 	public static Object swapObject(Object objetoOriginal,
 			Object objAtributosACopiar, boolean classePai, Class classe)
 			throws EasyCorrectionException {
-		if (!easyCorrectionUtil.isNull(objAtributosACopiar)) {
+		if (objAtributosACopiar != null) {
 			List<String> restricoesAtributos = new LinkedList<String>();
 			restricoesAtributos.add("serialVersionUID");
 			restricoesAtributos.add("id");
@@ -131,7 +131,7 @@ public class SwapperAtributosReflect {
 			Object valor = m.invoke(objeto);
 			return valor;
 		} catch (Exception e) {
-			throw new NonexistantAttributeException(InternalErrorMsgs.ATRIBUTO_INVALIDO
+			throw new NonexistantAttributeException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE
 					.msg(atributo));
 		}
 	}
@@ -183,7 +183,7 @@ public class SwapperAtributosReflect {
 		} catch (InvocationTargetException e) {
 			throw new EasyCorrectionException(e.getCause().getMessage());
 		} catch (Exception e) {
-			throw new NonexistantAttributeException(InternalErrorMsgs.ATRIBUTO_INVALIDO
+			throw new NonexistantAttributeException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE
 					.msg(metodo.getName()));
 		}
 	}
@@ -210,7 +210,7 @@ public class SwapperAtributosReflect {
 		} catch (InvocationTargetException e) {
 			throw new EasyCorrectionException(e.getCause().getMessage());
 		} catch (Exception e) {
-			throw new NonexistantAttributeException(InternalErrorMsgs.ATRIBUTO_INVALIDO
+			throw new NonexistantAttributeException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE
 					.msg(atributo));
 		}
 	}

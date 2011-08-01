@@ -75,7 +75,7 @@ public class AccessUserManager extends Manager {
 	public UserGroup saveUserGroup(UserGroup userGroup)
 			throws EasyCorrectionException {
 		UserGroup ug = new UserGroup();
-		if (!easyCorrectionUtil.isNull(userGroup)) {
+		if (userGroup != null) {
 			try {
 				ug = updateUserGroup(userGroup);
 			} catch (ObjectNotFoundException e) {
@@ -320,7 +320,7 @@ public class AccessUserManager extends Manager {
 	 */
 	public User updateUser(User user) throws EasyCorrectionException {
 
-		if (easyCorrectionUtil.isNull(user)) {
+		if (user == null) {
 			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
 					.msg("O Usuario"));
 		}
@@ -352,7 +352,7 @@ public class AccessUserManager extends Manager {
 					"Exclusao nao realizada. Este Usuario ja esta alocado a uma das equipe.");
 		}
 
-		if (easyCorrectionUtil.isNull(userGroup)) {
+		if (userGroup == null) {
 			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
 					.msg("O GrupoUsuario"));
 		}
@@ -423,7 +423,7 @@ public class AccessUserManager extends Manager {
 		String password = MD5Generator.md5(newPassword);
 		User bdUser = getUserByLogin(user.getLogin());
 
-		if (!easyCorrectionUtil.isNull(bdUser)
+		if (bdUser != null
 				&& bdUser.getPassword().equals(user.getPassword())) {
 			bdUser.setPassword(password);
 			DAOFactory.DEFAULT.buildUserDAO().update(bdUser);

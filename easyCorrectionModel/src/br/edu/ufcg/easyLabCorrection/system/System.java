@@ -17,10 +17,10 @@ import br.edu.ufcg.easyLabCorrection.managers.accessUser.AccessUserManager;
 import br.edu.ufcg.easyLabCorrection.managers.accessUser.MD5Generator;
 import br.edu.ufcg.easyLabCorrection.managers.assessment.AssessmentManager;
 import br.edu.ufcg.easyLabCorrection.managers.assignment.AssignmentManager;
+import br.edu.ufcg.easyLabCorrection.managers.automatedCorrection.AutomatedCorrectionManager;
 import br.edu.ufcg.easyLabCorrection.managers.compilation.CompilationManager;
 import br.edu.ufcg.easyLabCorrection.managers.submission.SubmissionManager;
 import br.edu.ufcg.easyLabCorrection.managers.team.TeamManager;
-import br.edu.ufcg.easyLabCorrection.managers.test.TestManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.AssignmentType;
@@ -47,7 +47,7 @@ public class System {
 	private AssessmentManager assessmentManager;
 	private CompilationManager compilationManager;
 	private TeamManager teamManager;
-	private TestManager testManager;
+	private AutomatedCorrectionManager correctionManager;
 
 	public System() {
 		accessPermissionManager = new AccessPermissionManager();
@@ -57,7 +57,7 @@ public class System {
 		assessmentManager = new AssessmentManager();
 		compilationManager = new CompilationManager();
 		teamManager = new TeamManager();
-		testManager = new TestManager();
+		correctionManager = new AutomatedCorrectionManager();
 	}
 
 	public void rebootDataBase() {
@@ -146,20 +146,20 @@ public class System {
 		User us = new User();
 		User use = new User();
 
-		if (easyCorrectionUtil.isNull(userGroup)) {
+		if (userGroup == null) {
 			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
 					.msg("O GrupoUsuario"));
 		}
-		if (easyCorrectionUtil.isNull(userGroup.getUser())) {
+		if (userGroup.getUser() == null) {
 			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
 					.msg("O Usuario"));
 		}
-		if (easyCorrectionUtil.isNull(userGroup.getGroup())) {
+		if (userGroup.getGroup() == null) {
 			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
 					.msg("O Grupo"));
 		}
 
-		if (!easyCorrectionUtil.isNull(userGroup.getUser())) {
+		if (userGroup.getUser() != null) {
 			if (!userGroup.getUser().getUserId().equals(new Integer(0))) {
 				u = getUser(userGroup.getUser().getUserId());
 				if (!u.getPassword().equals(userGroup.getUser().getPassword())) {
@@ -185,7 +185,7 @@ public class System {
 					.getEmail());
 
 			// If login do not exist and user id is null
-			if (easyCorrectionUtil.isNull(u) && easyCorrectionUtil.isNull(use)) {
+			if (u == null && use == null) {
 				try {
 					us = getUser(userGroup.getUser().getUserId());
 					userGroup = accessUserManager.updateUser(userGroup, us);
@@ -196,14 +196,14 @@ public class System {
 			} else {
 				try {
 					us = getUser(userGroup.getUser().getUserId());
-					if (!easyCorrectionUtil.isNull(u)) {
+					if (u != null) {
 						if (!userGroup.getUser().getUserId().equals(
 								u.getUserId())) {
 							throw new ObjectNotFoundException(
 									"Nao eh possivel cadastrar o usuario, este login ja existe.");
 						}
 					}
-					if (!easyCorrectionUtil.isNull(use)) {
+					if (use  != null) {
 						if (!userGroup.getUser().getUserId().equals(
 								use.getUserId())) {
 							throw new ObjectNotFoundException(
@@ -212,11 +212,11 @@ public class System {
 					}
 					userGroup = accessUserManager.updateUser(userGroup, us);
 				} catch (ObjectNotFoundException e) {
-					if (!easyCorrectionUtil.isNull(u)) {
+					if (u != null) {
 						throw new ObjectNotFoundException(
 								"Nao eh possivel cadastrar o usuario, este login ja existe.");
 					}
-					if (!easyCorrectionUtil.isNull(use)) {
+					if (use != null) {
 						throw new ObjectNotFoundException(
 								"Nao eh possivel cadastrar o usuario, este e-mail ja existe.");
 					}
@@ -273,7 +273,7 @@ public class System {
 		return accessPermissionManager.listMenus();
 	}
 
-	public List<MenuFunction> validateUser(User user) {
+	public List<MenuFunction> getFunctionsPerValidatedUser(User user) {
 
 		List<MenuFunction> functions = new LinkedList<MenuFunction>();
 
@@ -283,7 +283,7 @@ public class System {
 
 		// Checks if login and password is valid
 		User u = accessUserManager.verifyLoginAndPassword(user);
-		if (!easyCorrectionUtil.isNull(u)) {
+		if (u != null) {
 			// Checks the user permissions and returns a set of functions
 			functions = accessPermissionManager
 					.verifyPermissions(u.getUserId());
@@ -469,11 +469,11 @@ public class System {
 			}
 
 			// Running Tests
-			testResult = testManager.runAutomaticTests(submission,
+			testResult = correctionManager.runAutomaticTests(submission,
 					sourceDirectory, testsDirectory);
 
 			if (testResult != null) {
-				Object[] answer = testManager.getTestsExecutionOutput(
+				Object[] answer = correctionManager.getTestsExecutionOutput(
 						testResult, submission);
 				double automaticTestsGrade = (Double) answer[0];
 				result = (String) answer[1];
@@ -514,9 +514,9 @@ public class System {
 	}
 
 	public int getAllocatedTeams(Integer assignmentId) {
-		if (easyCorrectionUtil.isNull(assignmentId) || assignmentId < 1) {
+		if (assignmentId == null || assignmentId < 1) {
 			throw new ObjectNotFoundException(
-					InternalErrorMsgs.ID_ROTEIRO_INEXISTENTE.msg(""));
+					InternalErrorMsgs.EMPTY_QUERY_RESULT.msg(""));
 		}
 		Assignment assignment = assignmentManager.getAssignment(assignmentId);
 		return teamManager.getNumberOfAllocatedTeams(assignment);

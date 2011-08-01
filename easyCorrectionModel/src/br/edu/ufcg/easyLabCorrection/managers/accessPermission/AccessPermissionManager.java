@@ -8,14 +8,13 @@ import br.edu.ufcg.easyLabCorrection.exceptions.DuplicatedValueException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.managers.Manager;
-import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
+import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
-import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 /**
  * Class responsible for managing access and setting permissions on the system
@@ -74,22 +73,22 @@ public class AccessPermissionManager extends Manager {
 	public Menu saveMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = new Menu();
 		if (menu == null){
-			throw new EasyCorrectionException(InternalErrorMsgs.ATRIBUTO_INVALIDO.msg("null"));
+			throw new EasyCorrectionException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE.msg("null"));
 		}else{
-			if (easyCorrectionUtil.isNull(menu.getMenuId())
+			if (menu.getMenuId() == null
 					|| menu.getMenuId().equals(new Integer(0))) {
 
 				m = consultMenuByLabelAndName(menu.getName(), menu.getLabel());
 
-				if (easyCorrectionUtil.isNull(m)) {
+				if (m == null) {
 					Integer id = DAOFactory.DEFAULT.buildMenuDAO().save(menu);
 					menu.setMenuId(id);
 				} else {
 					throw new DuplicatedValueException(
-							InternalErrorMsgs.VALOR_DUPLICADO.msg("nome ou rotulo"));
+							InternalErrorMsgs.DUPLICATED_VALUE.msg("nome ou rotulo"));
 				}
 			} else {
-				throw new EasyCorrectionException(InternalErrorMsgs.ATRIBUTO_INVALIDO
+				throw new EasyCorrectionException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE
 						.msg("id"));
 			}
 		}
@@ -98,11 +97,11 @@ public class AccessPermissionManager extends Manager {
 
 	public Menu updateMenu(Menu menu) throws EasyCorrectionException {
 		Menu men = new Menu();
-		if (!easyCorrectionUtil.isNull(menu)) {
-			if (!(easyCorrectionUtil.isNull(menu.getMenuId()) || menu
+		if (menu != null) {
+			if (!(menu.getMenuId() == null || menu
 					.getMenuId().equals(new Integer(0)))) {
 				men = consultMenuByLabelAndName(menu.getName(), menu.getLabel());
-				if (easyCorrectionUtil.isNull(men)) {
+				if (men == null) {
 					men = getMenu(menu.getMenuId());
 					men = (Menu) SwapperAtributosReflect.swapObject(men, menu,
 							Menu.class);
@@ -113,7 +112,7 @@ public class AccessPermissionManager extends Manager {
 					DAOFactory.DEFAULT.buildMenuDAO().update(men);
 				} else {
 					throw new DuplicatedValueException(
-							InternalErrorMsgs.VALOR_DUPLICADO.msg("nome ou rotulo"));
+							InternalErrorMsgs.DUPLICATED_VALUE.msg("nome ou rotulo"));
 				}
 			}
 		}
@@ -130,7 +129,7 @@ public class AccessPermissionManager extends Manager {
 	 */
 	public void deleteMenu(Menu menu) throws EasyCorrectionException {
 		if (menu == null) {
-			throw new EasyCorrectionException(InternalErrorMsgs.VALORINVALIDO
+			throw new EasyCorrectionException(InternalErrorMsgs.INVALID_VALUE
 					.msg("null"));
 		}
 		Menu m = getMenu(menu.getMenuId());
@@ -166,21 +165,21 @@ public class AccessPermissionManager extends Manager {
 	 */
 	public MenuFunction saveFunction(MenuFunction function)
 			throws EasyCorrectionException {
-		if (!easyCorrectionUtil.isNull(function)) {
-			if (easyCorrectionUtil.isNull(function.getFunctionId())
+		if (function != null) {
+			if (function.getFunctionId() == null
 					|| function.getFunctionId().equals(new Integer(0))) {
 				
 				MenuFunction f = consultFunctionByNameAndLabel(function
 						.getName(), function.getLabel());
 				
-				if (easyCorrectionUtil.isNull(f)) {
+				if (f == null) {
 					Integer id = DAOFactory.DEFAULT.buildFunctionDAO().save(
 							function);
 					function.setFunctionId(id);
 					
-				} else if (!easyCorrectionUtil.isNull(f)) {
+				} else if (f != null) {
 					throw new DuplicatedValueException(
-							InternalErrorMsgs.VALOR_DUPLICADO.msg("nome ou rotulo"));
+							InternalErrorMsgs.DUPLICATED_VALUE.msg("nome ou rotulo"));
 				}
 			}
 		}
@@ -190,12 +189,12 @@ public class AccessPermissionManager extends Manager {
 	public MenuFunction updateFunction(MenuFunction function)
 			throws EasyCorrectionException {
 
-		if (!easyCorrectionUtil.isNull(function)) {
-			if (!(easyCorrectionUtil.isNull(function.getFunctionId()) || function
+		if (function != null) {
+			if (!(function.getFunctionId() == null || function
 					.getFunctionId().equals(new Integer(0)))) {
 				MenuFunction fun = consultFunctionByNameAndLabel(function
 						.getName(), function.getLabel());
-				if (easyCorrectionUtil.isNull(fun)) {
+				if (fun == null) {
 					fun = getFunction(function.getFunctionId());
 					fun = (MenuFunction) SwapperAtributosReflect.swapObject(
 							fun, function, MenuFunction.class);
@@ -206,7 +205,7 @@ public class AccessPermissionManager extends Manager {
 					DAOFactory.DEFAULT.buildFunctionDAO().update(fun);
 				} else {
 					throw new DuplicatedValueException(
-							InternalErrorMsgs.VALOR_DUPLICADO.msg("nome ou rotulo"));
+							InternalErrorMsgs.DUPLICATED_VALUE.msg("nome ou rotulo"));
 				}
 			}
 		}
@@ -318,14 +317,14 @@ public class AccessPermissionManager extends Manager {
 	 */
 	public Group saveGroup(Group group) throws EasyCorrectionException {
 
-		if (easyCorrectionUtil.isNull(group.getGroupId())
+		if (group.getGroupId() == null
 				|| group.getGroupId().equals(new Integer(0))) {
 
 			if (!containsGroupByName(group.getName())) {
 				Integer id = DAOFactory.DEFAULT.buildGroupDAO().save(group);
 				group.setGroupId(id);
 			} else {
-				throw new DuplicatedValueException(InternalErrorMsgs.VALOR_DUPLICADO
+				throw new DuplicatedValueException(InternalErrorMsgs.DUPLICATED_VALUE
 						.msg("nome"));
 			}
 		}
@@ -347,7 +346,7 @@ public class AccessPermissionManager extends Manager {
 						Group.class);
 				DAOFactory.DEFAULT.buildGroupDAO().update(gr);
 			} else {
-				throw new DuplicatedValueException(InternalErrorMsgs.VALOR_DUPLICADO
+				throw new DuplicatedValueException(InternalErrorMsgs.DUPLICATED_VALUE
 						.msg("nome"));
 			}
 		}
@@ -438,8 +437,8 @@ public class AccessPermissionManager extends Manager {
 		Permission p = new Permission();
 		List<Permission> list = new LinkedList<Permission>();
 		for (Permission permission : permissions) {
-			if (!easyCorrectionUtil.isNull(permission)
-					&& easyCorrectionUtil.isNull(permission.getPermissionId())) {
+			if (permission != null
+					&& permission.getPermissionId() == null) {
 				Integer id = DAOFactory.DEFAULT.buildPermissionDAO().save(
 						permission);
 				permission.setPermissionId(id);
@@ -468,8 +467,8 @@ public class AccessPermissionManager extends Manager {
 		Permission p = new Permission();
 		List<Permission> list = new LinkedList<Permission>();
 		for (Permission permission : permissions) {
-			if (!easyCorrectionUtil.isNull(permission)
-					&& !easyCorrectionUtil.isNull(permission.getPermissionId())) {
+			if (permission != null
+					&& permission.getPermissionId() != null) {
 				try {
 					p = getPermission(permission.getPermissionId());
 					p = (Permission) SwapperAtributosReflect.swapObject(p,
