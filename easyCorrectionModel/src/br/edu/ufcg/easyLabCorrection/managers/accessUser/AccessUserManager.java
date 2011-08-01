@@ -1,7 +1,6 @@
 package br.edu.ufcg.easyLabCorrection.managers.accessUser;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -18,7 +17,6 @@ import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
-import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 /**
  * Class responsible for managing of acess of the users in the system Easy Lab
@@ -57,7 +55,7 @@ public class AccessUserManager extends Manager {
 				.findById(id);
 		if (userGroup.isEmpty()) {
 			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
-					.msg("usuario grupo"));
+					.msg("UserGroup"));
 		}
 		return userGroup.get(0);
 	}
@@ -136,7 +134,7 @@ public class AccessUserManager extends Manager {
 		List<User> users = DAOFactory.DEFAULT.buildUserDAO().findById(id);
 		if (users.isEmpty()) {
 			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
-					.msg("usuario"));
+					.msg("User"));
 		}
 		return users.get(0);
 	}
@@ -153,7 +151,7 @@ public class AccessUserManager extends Manager {
 		List<User> users = DAOFactory.DEFAULT.buildUserDAO().findByLogin(login);
 		if (users.isEmpty()) {
 			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
-					.msg("usuario"));
+					.msg("User"));
 		}
 		return users.get(0);
 	}
@@ -174,7 +172,7 @@ public class AccessUserManager extends Manager {
 				.findByUserAndGroup(groupId, userId);
 		if (list.isEmpty()) {
 			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
-					.msg("grupo usuario"));
+					.msg("UserGroup"));
 		}
 		return list.get(0);
 	}
