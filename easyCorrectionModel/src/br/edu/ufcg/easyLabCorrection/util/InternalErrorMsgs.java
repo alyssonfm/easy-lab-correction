@@ -28,7 +28,17 @@ public enum InternalErrorMsgs {
 			return "The object " + args[0] + " was not found!";
 		}
 	},
+	NULL_OBJECT {
+		public String msg(String... args) {
+			return "The object " + args[0] + " is null!";
+		}
+	},
 	EMPTY_QUERY_RESULT {
+		public String msg(String... args) {
+			return "There is no " + args[0] + " in the database!";
+		}
+	},
+	DEVELOPMENT_ERROR{
 		public String msg(String... args) {
 			return "There is no " + args[0] + " in the database!";
 		}
