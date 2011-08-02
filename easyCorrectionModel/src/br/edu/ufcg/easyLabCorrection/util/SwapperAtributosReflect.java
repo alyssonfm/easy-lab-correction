@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import br.edu.ufcg.easyLabCorrection.exceptions.NonexistantAttributeException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
+import br.edu.ufcg.easyLabCorrection.exceptions.NonexistantAttributeException;
 
 /**
  * Class responsible for the reflection and exchange of attributes.<br>
