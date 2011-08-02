@@ -326,4 +326,14 @@ public class TeamManager extends Manager {
 				.swapObject(localTua, tua, TeamHasUserHasAssignment.class);
 		DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO().delete(localTua);
 	}
+
+	public void deleteAllTeamHasUserHasAssignmentByAssignment(Integer assignmentId) {
+		DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO().deleteAllTeamHasUserHasAssignmentByAssignment(assignmentId);
+	}
+
+	public void deleteAllTeamHasUserHasAssignmentByUserId(Integer userId) {
+		DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO().deleteAllTeamHasUserHasAssignmentByUserId(userId);
+		
+	}
+	
 }
