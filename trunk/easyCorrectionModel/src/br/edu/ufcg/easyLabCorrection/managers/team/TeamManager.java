@@ -12,7 +12,6 @@ import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
-import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 /**
  * Class responsible for managing of teams in the system Easy Lab Correction.<br>
