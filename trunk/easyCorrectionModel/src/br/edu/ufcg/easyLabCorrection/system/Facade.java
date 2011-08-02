@@ -490,7 +490,7 @@ public class Facade {
 		}
 	}
 
-	public void excluirRoteiro(Assignment assignment) throws Throwable {
+	public void deleteAssignment(Assignment assignment) throws Throwable {
 		try {
 			system.deleteAssignment(assignment);
 		} catch (Throwable e) {
@@ -845,4 +845,5 @@ public class Facade {
 			throw e;
 		}
 	}
+
 }
