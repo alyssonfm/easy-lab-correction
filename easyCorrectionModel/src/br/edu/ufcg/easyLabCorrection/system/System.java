@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import flex.messaging.FlexContext;
+import flex.messaging.FlexSession;
+
 import junit.framework.TestResult;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.AssignmentException;
@@ -66,6 +69,8 @@ public class System {
 	}
 	
 	public void setSystemStage(int systemStage){
+		FlexSession session = FlexContext.getFlexSession();
+		session.setAttribute("stage", systemStage);
 		this.systemStage = getStage(systemStage);
 	}
 
