@@ -14,6 +14,7 @@ import br.edu.ufcg.easyLabCorrection.managers.Manager;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
+import br.edu.ufcg.easyLabCorrection.util.ExternalErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 
@@ -262,8 +263,9 @@ public class AccessUserManager extends Manager {
 				userGroup.setUser(user);
 				ug.add(userGroup);
 			} else {
-				throw new EasyCorrectionException("Usuário da linha " + i
-						+ "eh invalido");
+				throw new EasyCorrectionException(
+						ExternalErrorMsgs.CSV_INVALID_USER.msg(String
+								.valueOf(i)));
 			}
 		}
 		for (int i = 0; i < ug.size(); i++) {
@@ -319,7 +321,7 @@ public class AccessUserManager extends Manager {
 
 		if (user == null) {
 			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
-					.msg("O Usuario"));
+					.msg("User"));
 		}
 		// Gera o md5 da senha
 		String password = MD5Generator.md5(user.getPassword());
@@ -340,12 +342,11 @@ public class AccessUserManager extends Manager {
 	 *             Exception can be thrown in an attempt to delete user in the
 	 *             system.<br>
 	 */
-	public void deleteUser(UserGroup userGroup)
-			throws EasyCorrectionException {
+	public void deleteUser(UserGroup userGroup) throws EasyCorrectionException {
 
 		if (userGroup == null) {
 			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
-					.msg("O GrupoUsuario"));
+					.msg("UserGroup"));
 		}
 
 		// Remove User Group
@@ -382,7 +383,8 @@ public class AccessUserManager extends Manager {
 		List<User> list = DAOFactory.DEFAULT.buildUserDAO()
 				.findByLoginAndPassword(user.getLogin(), user.getPassword());
 		if (list.isEmpty()) {
-			throw new AuthenticationException("Senha ou login invalido");
+			throw new AuthenticationException(
+					ExternalErrorMsgs.INVALID_AUTHENTICATION.msg());
 		}
 		return list.get(0);
 
@@ -410,16 +412,16 @@ public class AccessUserManager extends Manager {
 	 * @return The user with password modified.<br>
 	 */
 	public User changePassword(User user, String newPassword) {
-		// Generetes the md5 of the password.<br>
+		// Generates the md5 of the password.<br>
 		String password = MD5Generator.md5(newPassword);
 		User bdUser = getUserByLogin(user.getLogin());
 
-		if (bdUser != null
-				&& bdUser.getPassword().equals(user.getPassword())) {
+		if (bdUser != null && bdUser.getPassword().equals(user.getPassword())) {
 			bdUser.setPassword(password);
 			DAOFactory.DEFAULT.buildUserDAO().update(bdUser);
 		} else {
-			throw new ObjectNotFoundException("Senha ou login invalido");
+			throw new ObjectNotFoundException(
+					ExternalErrorMsgs.INVALID_AUTHENTICATION.msg());
 		}
 		return bdUser;
 	}
