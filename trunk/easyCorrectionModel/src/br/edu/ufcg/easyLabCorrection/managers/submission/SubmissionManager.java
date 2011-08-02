@@ -11,6 +11,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
+import br.edu.ufcg.easyLabCorrection.util.ExternalErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
@@ -110,15 +111,13 @@ public class SubmissionManager {
 					submission.setId(id);
 				} else {
 					throw new EasyCorrectionException(
-							"Erro no envio! A sua equipe ja alcancou o limite de submissoes do "
-									+ submission.getTeamHasUserHasAssignment()
-											.getAssignment().getName());
+							ExternalErrorMsgs.SUBMISSION_LIMIT_ALREADY_REACHED
+									.msg());
 				}
 			} else {
 				throw new EasyCorrectionException(
-						"Erro no envio! Submissao fora do horario de liberacao para submissoes do "
-								+ submission.getTeamHasUserHasAssignment()
-										.getAssignment().getName());
+						ExternalErrorMsgs.SUBMISSION_DEADLINE_ALREADY_FINISHED
+								.msg());
 			}
 		}
 		return submission;
@@ -176,13 +175,15 @@ public class SubmissionManager {
 				submission, sub, Submission.class);
 		DAOFactory.DEFAULT.buildSubmissionDAO().delete(submission);
 	}
-	
+
 	public void deleteAllSubmissionsByAssignment(Integer assignmentId) {
-		DAOFactory.DEFAULT.buildSubmissionDAO().deleteAllSubmissionsByAssignment(assignmentId);	
+		DAOFactory.DEFAULT.buildSubmissionDAO()
+				.deleteAllSubmissionsByAssignment(assignmentId);
 	}
-	
+
 	public void deleteAllSubmissionsByUserId(Integer userId) {
-		DAOFactory.DEFAULT.buildSubmissionDAO().deleteAllSubmissionsByUserId(userId);
+		DAOFactory.DEFAULT.buildSubmissionDAO().deleteAllSubmissionsByUserId(
+				userId);
 	}
 
 	/**
