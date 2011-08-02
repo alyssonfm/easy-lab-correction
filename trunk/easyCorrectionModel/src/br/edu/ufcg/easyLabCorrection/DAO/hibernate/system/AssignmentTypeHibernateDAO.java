@@ -1,6 +1,5 @@
 package br.edu.ufcg.easyLabCorrection.DAO.hibernate.system;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -11,7 +10,6 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.MyPersistenceLayer;
 import br.edu.ufcg.easyLabCorrection.exceptions.ConstraintViolationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EmptyFieldException;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.AssignmentType;
 
 /**
