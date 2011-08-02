@@ -37,6 +37,22 @@ public class SubmissionHibernateDAO extends
 		return instantiatesList(list);
 	}
 	
+	public void deleteAllSubmissionsByAssignment(Integer assignmentId) {
+		HibernateUtil.beginTransaction();
+		Query q = getSession().createQuery("delete from Submission where teamHasUserHasAssignment.assignment.id = :assignmentId");
+		q.setParameter("assignmentId",assignmentId);
+		q.executeUpdate();
+		HibernateUtil.commitTransactionCloseSession();
+	}
+	
+	public void deleteAllSubmissionsByUserId(Integer userId) {
+		HibernateUtil.beginTransaction();
+		Query q = getSession().createQuery("delete from Submission where teamHasUserHasAssignment.user.userId = :userId");
+		q.setParameter("userId",userId);
+		q.executeUpdate();
+		HibernateUtil.commitTransactionCloseSession();
+	}
+	
 	@Override
 	public List<Submission> instantiatesList(List<Submission> list) {
 		try {

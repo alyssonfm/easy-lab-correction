@@ -91,4 +91,20 @@ public class TeamHasUserHasAssignmentHibernateDAO extends
 		return tua;
 	}
 
+	public void deleteAllTeamHasUserHasAssignmentByAssignment(Integer assignmentId) {
+		HibernateUtil.beginTransaction();
+		Query q = getSession().createQuery("delete from TeamHasUserHasAssignment where assignment.id = :assignmentId");
+		q.setParameter("assignmentId",assignmentId);
+		q.executeUpdate();
+		HibernateUtil.commitTransactionCloseSession();
+	}
+
+	public void deleteAllTeamHasUserHasAssignmentByUserId(Integer userId) {
+		HibernateUtil.beginTransaction();
+		Query q = getSession().createQuery("delete from TeamHasUserHasAssignment where user.userId = :userId");
+		q.setParameter("userId",userId);
+		q.executeUpdate();
+		HibernateUtil.commitTransactionCloseSession();
+	}
+
 }

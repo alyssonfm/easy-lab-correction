@@ -86,6 +86,15 @@ public class AssessmentHibernateDAO extends
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Assessment> findByAssessmentByCorrector(Integer correctorId) {
+		Query q = getSession().createQuery("from Assessment where corrector.userId = :correctorId");
+		q.setParameter("correctorId",correctorId);
+		q.setCacheable(true);
+		List <Assessment> list = q.list();
+		return instantiatesList(list);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Assessment> findByAssignment(int assignmentId) {
 		Query q = getSession().createQuery("from Assessment where submission.teamHasUserHasAssignment.assignment.id = :assignmentId");
 		q.setParameter("assignmentId", assignmentId);
@@ -105,6 +114,22 @@ public class AssessmentHibernateDAO extends
 		List <Assessment> list = q.list();
 		instantiatesList(list);
 		return list;
+	}
+	
+	public void deleteAllAssessmentsByAssignment(Integer assignmentId) {
+		HibernateUtil.beginTransaction();
+		Query q = getSession().createQuery("delete from Assessment where submission.teamHasUserHasAssignment.assignment.id = :assignmentId");
+		q.setParameter("assignmentId", assignmentId);
+		q.executeUpdate();
+		HibernateUtil.commitTransactionCloseSession();
+	}
+	
+	public void deleteAllAssessmentsByUserId(Integer userId) {
+		HibernateUtil.beginTransaction();
+		Query q = getSession().createQuery("delete from Assessment where submission.teamHasUserHasAssignment.user.userId = :userId");
+		q.setParameter("userId", userId);
+		q.executeUpdate();
+		HibernateUtil.commitTransactionCloseSession();
 	}
 
 	@Override
