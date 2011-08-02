@@ -8,11 +8,8 @@ import java.util.ArrayList;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import com.sun.corba.se.impl.orbutil.closure.Constant;
-
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
 import br.edu.ufcg.easyLabCorrection.managers.Manager;
-import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**
  * Class responsible for managing of compilation in the system Easy 
