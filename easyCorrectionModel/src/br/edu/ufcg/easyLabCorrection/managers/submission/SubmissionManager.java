@@ -177,6 +177,14 @@ public class SubmissionManager {
 				submission, sub, Submission.class);
 		DAOFactory.DEFAULT.buildSubmissionDAO().delete(submission);
 	}
+	
+	public void deleteAllSubmissionsByAssignment(Integer assignmentId) {
+		DAOFactory.DEFAULT.buildSubmissionDAO().deleteAllSubmissionsByAssignment(assignmentId);	
+	}
+	
+	public void deleteAllSubmissionsByUserId(Integer userId) {
+		DAOFactory.DEFAULT.buildSubmissionDAO().deleteAllSubmissionsByUserId(userId);
+	}
 
 	/**
 	 * Function used to retrieve the filename of interface of the assignment
