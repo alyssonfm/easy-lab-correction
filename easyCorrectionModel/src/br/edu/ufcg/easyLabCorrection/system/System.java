@@ -47,6 +47,7 @@ public class System {
 	private CompilationManager compilationManager;
 	private TeamManager teamManager;
 	private AutomatedCorrectionManager correctionManager;
+	private SystemStage systemStage;
 
 	public System() {
 		accessPermissionManager = new AccessPermissionManager();
@@ -57,10 +58,15 @@ public class System {
 		compilationManager = new CompilationManager();
 		teamManager = new TeamManager();
 		correctionManager = new AutomatedCorrectionManager();
+		systemStage = new SystemStage();
 	}
 
 	public void rebootDataBase() {
 		accessPermissionManager.rebootDataBase();
+	}
+	
+	public void setSystemStage(int systemStage){
+		this.systemStage = getStage(systemStage);
 	}
 
 	public void deleteMenu(Menu menu) throws EasyCorrectionException {

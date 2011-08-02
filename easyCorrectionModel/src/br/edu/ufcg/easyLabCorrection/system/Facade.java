@@ -36,6 +36,10 @@ public class Facade {
 	public void rebootDataBase() {
 		system.rebootDataBase();
 	}
+	
+	public void setSystemStage(int systemStage){
+		system.setSystemStage(systemStage);
+	}
 
 	/*******************************************************************
 	 * Controle de Acesso
