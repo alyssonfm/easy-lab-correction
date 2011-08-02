@@ -137,19 +137,45 @@ public enum ExternalErrorMsgs {
 		}
 	},
 
-	;
-
 	/*
 	 * Compilation Manager
 	 */
 
+	INVALID_TEST_SUITE_NAME {
+		public String msg(String... args) {
+			return "The test suite name should be MainTest.java";
+		}
+	},
+
 	/*
 	 * Submission Manager
 	 */
+	SUBMISSION_LIMIT_ALREADY_REACHED {
+		public String msg(String... args) {
+			return "The team has already reached the submission limit of the assignment. The submission was aborted!";
+		}
+	},
+	SUBMISSION_DEADLINE_ALREADY_FINISHED {
+		public String msg(String... args) {
+			return "The submission deadline of the assignment has already passed. The submission was aborted!";
+		}
+	},
 
 	/*
 	 * Team Manager
 	 */
+	TEAM_MEMBERS_QUANTITY_IS_FULL {
+		public String msg(String... args) {
+			return "This team (" + args[0]
+					+ ")already reached the max number of members(" + args[1]
+					+ "). Please register in another team!";
+		}
+	},
+	TEAM_FOR_INDIVIDUAL_ASSIGNMENTS {
+		public String msg(String... args) {
+			return "The teams cannot be chaged. The assignment is individual!";
+		}
+	};
 
 	/*
 	 * Automated Correction Manager
