@@ -155,9 +155,10 @@ public class TeamManager extends Manager {
 	 */
 	public int getNumberOfAllocatedTeams(Assignment assignment) {
 		if (assignment == null) {
-//			throw new ObjectNotFoundException(
-//					"Nao ha equipes alocadas pois o roteiro ainda nao foi criado!");
-			throw new ObjectNotFoundException(InternalErrorMsgs.NULL_OBJECT.msg("Assignment"));
+			// throw new ObjectNotFoundException(
+			// "Nao ha equipes alocadas pois o roteiro ainda nao foi criado!");
+			throw new ObjectNotFoundException(InternalErrorMsgs.NULL_OBJECT
+					.msg("Assignment"));
 		}
 		List<TeamHasUserHasAssignment> list = DAOFactory.DEFAULT
 				.buildTeamHasUserHasAssignmentDAO().findByAssignment(
@@ -180,29 +181,33 @@ public class TeamManager extends Manager {
 
 		if (tua.getAssignment().getParticipantsMaxNumber() == 1) {
 			throw new EasyCorrectionException(
-					ExternalErrorMsgs.TEAM_FOR_INDIVIDUAL_ASSIGNMENTS.msg(tua.getTeam().getName(), tua.getAssignment().getParticipantsMaxNumber()
-							.toString()));
+					ExternalErrorMsgs.TEAM_FOR_INDIVIDUAL_ASSIGNMENTS.msg(tua
+							.getTeam().getName(), tua.getAssignment()
+							.getParticipantsMaxNumber().toString()));
 		}
-		if (isTeamFull(tua)){
-			throw new EasyCorrectionException(ExternalErrorMsgs.TEAM_MEMBERS_QUANTITY_IS_FULL.msg(tua.getTeam().getName(), tua.getAssignment().getParticipantsMaxNumber()
-					.toString()));
+		if (isTeamFull(tua)) {
+			throw new EasyCorrectionException(
+					ExternalErrorMsgs.TEAM_MEMBERS_QUANTITY_IS_FULL.msg(tua
+							.getTeam().getName(), tua.getAssignment()
+							.getParticipantsMaxNumber().toString()));
 		}
-		
-//		if (tua.getAssignment().getParticipantsMaxNumber() == getTeamHasUserHasAssignmentByTeamAndAssignment(
-//				tua.getTeam().getId(), tua.getAssignment().getId()).size()) {
-//
-//			throw new EasyCorrectionException(
-//					"Nao foi possivel mudar de equipe! Limite de integrantes da "
-//							+ tua.getTeam().getName()
-//							+ " ja alcancado (maximo de "
-//							+ tua.getAssignment().getParticipantsMaxNumber()
-//									.toString() + " integrante(s) por equipe).");
-//		}
+
+		// if (tua.getAssignment().getParticipantsMaxNumber() ==
+		// getTeamHasUserHasAssignmentByTeamAndAssignment(
+		// tua.getTeam().getId(), tua.getAssignment().getId()).size()) {
+		//
+		// throw new EasyCorrectionException(
+		// "Nao foi possivel mudar de equipe! Limite de integrantes da "
+		// + tua.getTeam().getName()
+		// + " ja alcancado (maximo de "
+		// + tua.getAssignment().getParticipantsMaxNumber()
+		// .toString() + " integrante(s) por equipe).");
+		// }
 		try {
 			getTeam(tua.getTeam().getId());
 		} catch (Exception e) {
-			throw new ObjectNotFoundException(
-					"Mudanca nao realizada! Equipe inexistente.");
+			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+					.msg("Team"));
 		}
 
 		TeamHasUserHasAssignment teamUserAssignment = getTeamHasUserHasAssignmentByUserAndAssignment(
@@ -330,13 +335,16 @@ public class TeamManager extends Manager {
 		DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO().delete(localTua);
 	}
 
-	public void deleteAllTeamHasUserHasAssignmentByAssignment(Integer assignmentId) {
-		DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO().deleteAllTeamHasUserHasAssignmentByAssignment(assignmentId);
+	public void deleteAllTeamHasUserHasAssignmentByAssignment(
+			Integer assignmentId) {
+		DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO()
+				.deleteAllTeamHasUserHasAssignmentByAssignment(assignmentId);
 	}
 
 	public void deleteAllTeamHasUserHasAssignmentByUserId(Integer userId) {
-		DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO().deleteAllTeamHasUserHasAssignmentByUserId(userId);
-		
+		DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO()
+				.deleteAllTeamHasUserHasAssignmentByUserId(userId);
+
 	}
-	
+
 }

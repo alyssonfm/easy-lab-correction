@@ -103,24 +103,6 @@ public class TestExecution {
 		return result;
 	}
 	
-	/*
-	 * PRIVATE METHODS.
-	 */
-	/*private URL[] mountSourceDirectories(ArrayList<String> listSource) throws MalformedURLException{
-		ArrayList<String> pathList = new ArrayList<String>();
-		for (String sourcePath: listSource){
-			String path = sourcePath.substring(0, sourcePath.lastIndexOf("\\") + 1);
-			if(!pathList.contains(path)){
-				pathList.add(path);
-			}
-		}
-		URL[] urlList = new URL[pathList.size()];
-		for (int i = 0; i < pathList.size(); i++){
-			urlList[i] = new File(pathList.get(i)).toURI().toURL();
-		}
-		return urlList;
-	}*/
-
 	/**
 	 * Function used to retrieve the output of tests execution, receives a test 
 	 * result and a submission as parameter.<br>
@@ -143,22 +125,28 @@ public class TestExecution {
 		double automaticTestsGrade = (itemsPercent * tua.getAssignment()
 				.getAutomaticTestsPercentage()) / 1000;
 		
-		report = "Relatório de Avaliação: \n\n"
-				+ "Total de Testes: "
+		report = "Assessment Report: \n\n"
+				+ "Total of Test Cases Executed = "
 				+ testsRunnedNumber
 				+ "\n"
-				+ "Total de Erros: "
+				+ "Error Verdict(s) = "
 				+ errors
 				+ "\n"
-				+ "Porcentagem de Acertos: "
+//				+ "Failures Verdict(s) = "
+//				+ result.failureCount()
+//				+ "\n"
+				+ "Success Verdict(s) = "
+				+ errors
+				+ "\n"
+				+ "Success percentage = "
 				+ itemsPercent
 				+ " %\n"
-				+ "Nota dos Testes Automáticos: "
+				+ "Automatic Execution Grade: "
 				+ automaticTestsGrade
-				+ "\n\nConsole:\n";
+				+ "\n\nConsole: \n";
 
 		if (result.wasSuccessful()) {
-			report += "SUCESSO!";
+			report += "SUCESS!";
 		} else {
 			Enumeration<TestFailure> failures = result.errors();
 			for (int i = 0; i < result.errorCount(); i++) {
