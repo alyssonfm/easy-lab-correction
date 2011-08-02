@@ -78,8 +78,21 @@ public class System {
 	}
 
 	public void deleteUser(UserGroup userGroup) throws EasyCorrectionException {
-		List<Assignment> assigns = assignmentManager.getAssignments();
-		accessUserManager.deleteUser(userGroup, assigns);
+		
+		assessmentManager.deleteAllAssessmentsByUserId(userGroup.getUser().getUserId());
+		submissionManager.deleteAllSubmissionsByUserId(userGroup.getUser().getUserId());
+		teamManager.deleteAllTeamHasUserHasAssignmentByUserId(userGroup.getUser().getUserId());
+		assessmentManager.getAssessmentByCorrector(userGroup.getUser().getUserId());
+		deallocateAll(assessmentManager.getAssessmentByCorrector(userGroup.getUser().getUserId()));
+		accessUserManager.deleteUser(userGroup);
+		
+	}
+	
+	private void deallocateAll(List<Assessment> AssessmentList) throws EasyCorrectionException{
+		for (Assessment assessment : AssessmentList) {
+			assessment.setCorrector(null);
+			allocateCorrector(assessment);
+		}
 	}
 
 	/******************************************** Controle de Acesso EasyCorrection *********************************************/
@@ -139,7 +152,7 @@ public class System {
 
 	public UserGroup saveUser(UserGroup userGroup)
 			throws EasyCorrectionException {
-
+		
 		userGroup.getUser().setPeriod(getCurrentStage().get(0));
 
 		User u = new User();
@@ -377,6 +390,9 @@ public class System {
 
 	public void deleteAssignment(Assignment assignment)
 			throws AssignmentException {
+		assessmentManager.deleteAllAssessmentsByAssignment(assignment.getId());
+		submissionManager.deleteAllSubmissionsByAssignment(assignment.getId());
+		teamManager.deleteAllTeamHasUserHasAssignmentByAssignment(assignment.getId());
 		assignmentManager.deleteAssignment(assignment);
 	}
 
@@ -388,7 +404,7 @@ public class System {
 		return assignmentManager.getReleasedAssignments();
 	}
 
-	/******************************************** Controle de Submiss√£o de Roteiros EasyLabCorrection *********************************************/
+	/******************************************** Controle de Submiss„o de Roteiros EasyLabCorrection *********************************************/
 
 	public TeamHasUserHasAssignment getTeamHasUserHasAssignmentByUserAndAssignment(
 			Integer idUsuario, Integer idRoteiro) {
