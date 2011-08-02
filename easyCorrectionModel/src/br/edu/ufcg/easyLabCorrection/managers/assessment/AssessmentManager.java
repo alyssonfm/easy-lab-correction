@@ -109,7 +109,13 @@ public class AssessmentManager extends Manager {
 		List<Assessment> list = DAOFactory.DEFAULT.buildAssessmentDAO()
 				.findByTeamAndAssignmentByCorrector(assign.getId(), us);
 		return list;
-	} 
+	}
+	
+	public List<Assessment> getAssessmentByCorrector(Integer userId) {
+		List<Assessment> list = DAOFactory.DEFAULT.buildAssessmentDAO()
+				.findByAssessmentByCorrector(userId);
+		return list;
+	}
 	
 	/**
 	 * Function used to save an assessment in the database of the system.<br>
@@ -174,6 +180,15 @@ public class AssessmentManager extends Manager {
 		assess= (Assessment) SwapperAtributosReflect.swapObject(assess, assessment,
 				Assessment.class);
 		DAOFactory.DEFAULT.buildAssessmentDAO().delete(assess);
+	}
+	
+
+	public void deleteAllAssessmentsByAssignment(int assignmentId) {
+		DAOFactory.DEFAULT.buildAssessmentDAO().deleteAllAssessmentsByAssignment(assignmentId);
+	}
+	
+	public void deleteAllAssessmentsByUserId(Integer userId) {
+		DAOFactory.DEFAULT.buildAssessmentDAO().deleteAllAssessmentsByUserId(userId);
 	}
 	
 	/**
