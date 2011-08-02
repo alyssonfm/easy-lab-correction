@@ -11,7 +11,6 @@ import br.edu.ufcg.easyLabCorrection.exceptions.AuthenticationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.managers.Manager;
-import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
@@ -341,14 +340,8 @@ public class AccessUserManager extends Manager {
 	 *             Exception can be thrown in an attempt to delete user in the
 	 *             system.<br>
 	 */
-	public void deleteUser(UserGroup userGroup, List<Assignment> assigns)
+	public void deleteUser(UserGroup userGroup)
 			throws EasyCorrectionException {
-
-		if (userGroup.getGroup().getName().equals("Aluno")
-				&& assigns.size() > 0) {
-			throw new EasyCorrectionException(
-					"Exclusao nao realizada. Este Usuario ja esta alocado a uma das equipe.");
-		}
 
 		if (userGroup == null) {
 			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
