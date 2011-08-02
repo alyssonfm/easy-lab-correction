@@ -214,51 +214,50 @@
 		<mx:method name="getAssessmentsByTeamAndAssignment" result="getAssessmentsByTeamAndAssignment_result(event)" fault="failure(event)"/>
 	</mx:RemoteObject>
 		
-	<mx:Canvas label="Roteiros" id="assignmentCanvas">
+	<mx:Canvas label="Assignment" id="assignmentCanvas">
 	
-		<mx:Label x="331" y="12" text="Detalhes do Roteiro" fontWeight="bold" fontStyle="normal" fontSize="14"/>
+		<mx:Label x="331" y="12" text="Assignment details" fontWeight="bold" fontStyle="normal" fontSize="14"/>
 		<mx:Label x="14" y="552" text="Total de Projetos Inscritos:" id="labelTotalProjetosInscritos" visible="false"/>
 		<mx:Label x="198" y="552" width="85" id="totalProjetosInscritos" visible="false"/>
-		<mx:Label x="10" y="457" text="Equipe:"/>
-		<mx:LinkButton x="330.95" y="420" id="downloadEnvironmentButton" icon="@Embed(source='../../image/entradaDeProduto.png')" label="   Baixar Ambiente" click="downloadEnvironment()"/>
-		<mx:LinkButton x="500.6" y="420" id="checkCorrectionButton" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Correção" click="checkCorrection()"/>
-		<mx:LinkButton x="688.8" y="420" id="buttonVisualizarNotas" icon="@Embed(source='../../image/relatorio.png')" label="   Visualizar Planilha de Notas" click="checkGrades()"/>
+		<mx:Label x="10" y="457" text="Team Members:"/>
+		<mx:LinkButton x="523.75" y="400" id="downloadEnvironmentButton" icon="@Embed(source='../../image/entradaDeProduto.png')" label="  Download Environment" click="downloadEnvironment()"/>
+		<mx:LinkButton x="433.8" y="431" id="checkCorrectionButton" icon="@Embed(source='../../image/relatorio.png')" label="   Open Correction" click="checkCorrection()"/>
+		<mx:LinkButton x="643.95" y="431" id="buttonVisualizarNotas" icon="@Embed(source='../../image/relatorio.png')" label="   Open Grade Table" click="checkGrades()"/>
 		<mx:LinkButton x="626" y="10" visible="false" icon="@Embed(source='../../image/help2.png')" label="  Instruções para Avaliação dos Projetos" id="linkInstrucao"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Atualizar Projeto" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAtualizaOrientador"/>
 		<mx:Button x="546.05" y="565" visible="false" label="   Avaliar" width="183.9" height="28" icon="@Embed(source='../../image/lapis.png')" id="botaoAvaliacao"/>
 		<mx:List x="10" y="70" visible="false" fontSize="12" width="315" height="95" cornerRadius="20" alpha="0.5" id="projetoAvaliacaoList"/>
 		<mx:List x="10" y="404" visible="false" fontSize="12" width="315" height="137" cornerRadius="20" alpha="0.5" id="projetoList"/>
 		<mx:List x="10" y="202" visible="false" fontSize="12" width="315" height="155" cornerRadius="20" alpha="0.5" id="projetoCotaList"/>
-		<mx:Label x="331" y="96" text="Descrição:" id="labelDescRoteiro"/>
-		<mx:Label x="333" y="70" text="Título:" id="labelDescRoteiro0"/>
-		<mx:Label x="745" y="38" text="Nota do Corretor:"/>
-		<mx:Label y="10" text="Nota Automática:" x="748"/>
-		<mx:Label x="587.95" y="481" text="Data de Liberação:"/>
-		<mx:Label x="587.95" y="511" text="Data de Entrega:"/>
-		<mx:Label x="587.95" y="542" text="Data Final para Discussão:"/>
-		<mx:Label x="330.95" y="480" text="Número máximo de envios:"/>
-		<mx:Label x="330.95" y="511" text="Máximo de Integrantes por Equipe:"/>
-		<mx:Label x="330.95" y="542" text="Penalidade por dia de atraso:"/>
+		<mx:Label x="331" y="71" text="Description:" id="labelDescRoteiro"/>
+		<mx:Label x="331" y="45" text="Name:" id="labelDescRoteiro0"/>
+		<mx:Label x="745" y="71" text="Manual Grade:"/>
+		<mx:Label y="45" text="Automatic Grade:" x="745"/>
+		<mx:Label x="643.95" y="481" text="Release date:"/>
+		<mx:Label x="643.95" y="511" text="Deadline date:"/>
+		<mx:Label x="643.95" y="542" text="Final Discussion date:"/>
+		<mx:Label x="331" y="480" text="Max submission number:"/>
+		<mx:Label x="331" y="511" text="Max team members:"/>
+		<mx:Label x="331" y="542" text="Penalty per day late:"/>
 		<mx:Label x="10" y="46" text="Projetos para Avaliação:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetoAvaliacaoLabel" visible="false"/>
 		<mx:Label x="10" y="378" text="Meus Projetos:" fontStyle="normal" fontWeight="bold" fontSize="14" id="meusProjetosLabel" visible="false"/>
 		<mx:Label x="10" y="176" text="Projetos da Cota Atual:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetosCotaLabel" visible="false"/>
 		<mx:VRule x="302" y="13" height="552"  width="1"/>
-		<mx:Label x="556.95" y="542" width="16" id="inputPenalty" color="#1B7A0F" text="0" textAlign="right"/>
-		<mx:Label x="556.95" y="511" width="16" id="inputMembersByTeam" color="#1B7A0F" text="0" textAlign="right"/>
-		<mx:Label x="556.95" y="480" width="16" id="inputMaxNumberSends" color="#1B7A0F" text="0" textAlign="right"/>
-		<mx:Label x="768.95" y="480" width="93" id="inputReleaseDate" color="#1B7A0F"/>
-		<mx:Label x="768.95" y="511" width="93" id="inputDeliveryDate" color="#1B7A0F"/>
-		<mx:Label x="768.95" y="542" width="93" id="inputDiscussionDate" color="#1B7A0F"/>
-		<mx:Label x="863.95" y="480" width="54" id="inputReleaseTime" color="#1B7A0F"/>
-		<mx:Label x="863.95" y="511" width="54" id="inputDeliveryTime" color="#1B7A0F"/>
-		<mx:Label x="863.95" y="542" width="54" id="inputDiscussionTime" color="#1B7A0F"/>
-		<mx:TextArea x="331" y="124" width="587" height="282" backgroundAlpha="0.0" id="resumeText" editable="false" alpha="0.5" cornerRadius="10"/>
-		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
-		<mx:Label x="10" y="14" text="Roteiros:" height="22"/>
+		<mx:Label x="546" y="542" width="27" id="inputPenalty" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="546" y="511" width="27" id="inputMembersByTeam" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="546" y="480" width="27" id="inputMaxNumberSends" color="#1B7A0F" text="0" textAlign="right"/>
+		<mx:Label x="824.95" y="480" width="93" id="inputReleaseDate" color="#1B7A0F"/>
+		<mx:Label x="824.95" y="483" width="93" id="inputDeliveryDate" color="#1B7A0F"/>
+		<mx:Label x="824.95" y="514" width="93" id="inputDiscussionDate" color="#1B7A0F"/>
+		<mx:Label x="863.95" y="508" width="54" id="inputReleaseTime" color="#1B7A0F"/>
+		<mx:Label x="863.95" y="539" width="54" id="inputDeliveryTime" color="#1B7A0F"/>
+		<mx:Label x="824.95" y="542" width="93" id="inputDiscussionTime" color="#1B7A0F"/>
+		<mx:TextArea x="331" y="108" width="587" height="270" backgroundAlpha="0.0" id="resumeText" editable="false" alpha="0.5" cornerRadius="10"/>
+		<mx:Label x="10" y="14" text="Released Assignments:" height="22"/>
 		<mx:List x="10" y="44" scroll="true" width="264" height="399" id="assignmentList" labelField="name" itemClick="updateAssignmentData()" fontSize="14"/>
 		<mx:List x="10" y="480" width="267" height="85" labelFunction="labelTeamAssignmentMembers" id="teamAssignmentMembers"></mx:List>
-		<mx:Label x="386" y="70" width="532" id="inputAssignmentTitle" color="#1B7A0F" text="..."/>
-		<mx:Label x="870" y="38" width="48" id="inputCorrectionGrade" color="#1B7A0F" text="0,0"/>
-		<mx:Label x="870" y="10" width="48" id="inputAutomaticGrade" color="#1B7A0F" text="0,0"/>
+		<mx:Label x="382" y="45" width="355" id="inputAssignmentTitle" color="#1B7A0F" text="..."/>
+		<mx:Label x="870" y="71" width="48" id="inputCorrectionGrade" color="#1B7A0F" text="0,0"/>
+		<mx:Label x="870" y="43" width="48" id="inputAutomaticGrade" color="#1B7A0F" text="0,0"/>
 	</mx:Canvas>
 </mx:TabNavigator>
