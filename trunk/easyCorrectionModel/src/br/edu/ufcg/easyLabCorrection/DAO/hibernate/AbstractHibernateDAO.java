@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
 import org.hibernate.LockMode;
@@ -14,6 +15,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
+
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionRunTimeException;
 
 /**
