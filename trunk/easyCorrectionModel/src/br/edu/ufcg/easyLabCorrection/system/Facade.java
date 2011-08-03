@@ -850,9 +850,4 @@ public class Facade {
 		}
 	}
 	
-	public static void main(String[] args) throws Throwable {
-		Facade facade = new Facade();
-		Group group = facade.getGroup(4);
-		facade.saveUsersFromCsvFile("D:/teste.csv", group);
-	}
 }
