@@ -275,9 +275,6 @@ public class AccessUserManager extends Manager {
 								.valueOf(i)));
 			}
 		}
-		for (int i = 0; i < ug.size(); i++) {
-			saveUserGroup(ug.get(i));
-		}
 		return ug;
 	}
 
