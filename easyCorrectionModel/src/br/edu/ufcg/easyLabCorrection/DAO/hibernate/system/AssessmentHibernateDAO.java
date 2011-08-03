@@ -118,7 +118,10 @@ public class AssessmentHibernateDAO extends
 	
 	public void deleteAllAssessmentsByAssignment(Integer assignmentId) {
 		HibernateUtil.beginTransaction();
-		Query q = getSession().createQuery("delete from Assessment where submission.teamHasUserHasAssignment.assignment.id = :assignmentId");
+		Query q = getSession().createSQLQuery("DELETE FROM avaliacao WHERE submissao_id IN ( "+
+				"SELECT s.id FROM submissao s JOIN equipe_has_usuario_has_roteiro eur "+
+				"ON (s.equipe_has_usuario_has_roteiro_id = eur.id) "+
+				"JOIN roteiro r ON (r.id = eur.roteiro_id) WHERE r.id = :assignmentId) ");
 		q.setParameter("assignmentId", assignmentId);
 		q.executeUpdate();
 		HibernateUtil.commitTransactionCloseSession();
@@ -126,7 +129,10 @@ public class AssessmentHibernateDAO extends
 	
 	public void deleteAllAssessmentsByUserId(Integer userId) {
 		HibernateUtil.beginTransaction();
-		Query q = getSession().createQuery("delete from Assessment where submission.teamHasUserHasAssignment.user.userId = :userId");
+		Query q = getSession().createSQLQuery("DELETE FROM avaliacao WHERE submissao_id IN ( "+
+				"SELECT s.id FROM submissao s JOIN equipe_has_usuario_has_roteiro eur "+
+				"ON (s.equipe_has_usuario_has_roteiro_id = eur.id) "+
+				"JOIN usuario u ON (u.id = eur.usuario_id) WHERE u.id = :userId) ");
 		q.setParameter("userId", userId);
 		q.executeUpdate();
 		HibernateUtil.commitTransactionCloseSession();
