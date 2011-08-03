@@ -12,6 +12,7 @@ import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.managers.Manager;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
+import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.ExternalErrorMsgs;
@@ -75,9 +76,9 @@ public class AccessUserManager extends Manager {
 		UserGroup ug = new UserGroup();
 		if (userGroup != null) {
 			try {
-				ug = updateUserGroup(userGroup);
-			} catch (ObjectNotFoundException e) {
 				ug = createUserGroup(userGroup);
+			} catch (ObjectNotFoundException e) {
+				System.out.println("Erro!");
 			}
 		}
 		return ug;
@@ -250,15 +251,21 @@ public class AccessUserManager extends Manager {
 
 		for (int i = 0; i < listUsers.size(); i++) {
 			User user = new User();
+			user.setUserId(new Integer(0));
 			user.setLogin(listUsers.get(i).get(0));
 			user.setName(listUsers.get(i).get(1));
 			user.setEmail(listUsers.get(i).get(2));
+			SystemStage sysStage = new SystemStage();
+			sysStage.setId(new Integer(0));
+			sysStage.setSemester(listUsers.get(i).get(3));
+			user.setPeriod(sysStage);
 			String password = PasswordGenerator.generatePassword(6, user
 					.getLogin());
 			password = MD5Generator.md5(password);
 			user.setPassword(password);
 			if (validateUser(user)) {
 				UserGroup userGroup = new UserGroup();
+				userGroup.setUserGroupId(new Integer(0));
 				userGroup.setGroup(g);
 				userGroup.setUser(user);
 				ug.add(userGroup);
@@ -288,7 +295,7 @@ public class AccessUserManager extends Manager {
 		Pattern patName = Pattern.compile("[A-Za-z]+\\s[A-Za-z]+\\s[A-Za-z]+");
 		Matcher pesqName = patName.matcher(user.getName());
 
-		Pattern patLogin = Pattern.compile("[a-zA-Z]+[0-9]+");
+		Pattern patLogin = Pattern.compile("[a-zA-Z0-9]+");
 		Matcher pesqLogin = patLogin.matcher(user.getLogin());
 
 		if (pesqName.matches() && pesqEmail.matches() && pesqLogin.matches()) {
