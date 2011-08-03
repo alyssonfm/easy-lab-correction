@@ -91,17 +91,6 @@ public class AccessUserManager extends Manager {
 		return userGroup;
 	}
 
-	private UserGroup updateUserGroup(UserGroup userGroup)
-			throws EasyCorrectionException {
-		UserGroup ugs = new UserGroup();
-		ugs = getUserGroupByGroupAndUser(userGroup.getGroup().getGroupId(),
-				userGroup.getUser().getUserId());
-		ugs = (UserGroup) SwapperAtributosReflect.swapObject(ugs, userGroup,
-				UserGroup.class);
-		DAOFactory.DEFAULT.buildUserGroupDAO().update(ugs);
-		return userGroup;
-	}
-
 	/**
 	 * Function used to list all user groups of the system.<br>
 	 * 
