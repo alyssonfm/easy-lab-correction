@@ -366,7 +366,12 @@ public class System {
 
 	public ArrayList<UserGroup> saveUsersFromCsvFile(String path, Group group)
 			throws IOException, EasyCorrectionException {
-		return accessUserManager.createUsersFromCsvFile(path, group);
+		ArrayList<UserGroup> ug = new ArrayList<UserGroup>();
+		ug = accessUserManager.createUsersFromCsvFile(path, group);
+		for (int i = 0; i < ug.size(); i++) {
+			saveUser(ug.get(i));
+		}
+		return ug;
 	}
 
 	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
