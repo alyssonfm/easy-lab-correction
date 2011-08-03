@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import flex.messaging.FlexContext;
-import flex.messaging.FlexSession;
-
 import junit.framework.TestResult;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.AssignmentException;
@@ -39,6 +36,8 @@ import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
 import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
+import flex.messaging.FlexContext;
+import flex.messaging.FlexSession;
 
 public class System {
 
