@@ -35,7 +35,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
-import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
+import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 import flex.messaging.FlexContext;
 import flex.messaging.FlexSession;
 
@@ -169,15 +169,15 @@ public class System {
 		User use = new User();
 
 		if (userGroup == null) {
-			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("O GrupoUsuario"));
 		}
 		if (userGroup.getUser() == null) {
-			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("O Usuario"));
 		}
 		if (userGroup.getGroup() == null) {
-			throw new EasyCorrectionException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new EasyCorrectionException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("O Grupo"));
 		}
 
@@ -546,7 +546,7 @@ public class System {
 	public int getAllocatedTeams(Integer assignmentId) {
 		if (assignmentId == null || assignmentId < 1) {
 			throw new ObjectNotFoundException(
-					InternalErrorMsgs.EMPTY_QUERY_RESULT.msg(""));
+					ErrorMsgs.EMPTY_QUERY_RESULT.msg(""));
 		}
 		Assignment assignment = assignmentManager.getAssignment(assignmentId);
 		return teamManager.getNumberOfAllocatedTeams(assignment);

@@ -13,7 +13,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.permission.Menu;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.MenuFunction;
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Permission;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
+import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 
 /**
@@ -35,11 +35,12 @@ public class AccessPermissionManager extends Manager {
 	 * @param id
 	 *            The identifier used for search a menu in the system.<br>
 	 * @return The menu with the identifier passed as parameter.<br>
+	 * @throws EasyCorrectionException
 	 */
 	public Menu getMenu(Integer id) {
 		List<Menu> menu = DAOFactory.DEFAULT.buildMenuDAO().findById(id);
 		if (menu.isEmpty()) {
-			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("Menu"));
 		}
 		return menu.get(0);
@@ -72,11 +73,13 @@ public class AccessPermissionManager extends Manager {
 	 */
 	public Menu saveMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = new Menu();
-		if (menu == null){
-			throw new EasyCorrectionException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE.msg("null"));
-		}else{
+		if (menu == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT.msg("Menu"));
+		} else {
 			if (menu.getMenuId() == null
 					|| menu.getMenuId().equals(new Integer(0))) {
+
+				validateMenu(menu);
 
 				m = consultMenuByLabelAndName(menu.getName(), menu.getLabel());
 
@@ -85,11 +88,14 @@ public class AccessPermissionManager extends Manager {
 					menu.setMenuId(id);
 				} else {
 					throw new DuplicatedValueException(
-							InternalErrorMsgs.DUPLICATED_VALUE.msg("name or label"));
+							ErrorMsgs.DUPLICATED_VALUE
+									.msg("Menu name or label(" + menu.getName()
+											+ " or " + menu.getLabel() + ")"));
 				}
 			} else {
-				throw new EasyCorrectionException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE
-						.msg("id"));
+				throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+						.msg("Menu id(" + String.valueOf(menu.getMenuId()))
+						+ ")");
 			}
 		}
 		return menu;
@@ -98,8 +104,12 @@ public class AccessPermissionManager extends Manager {
 	public Menu updateMenu(Menu menu) throws EasyCorrectionException {
 		Menu men = new Menu();
 		if (menu != null) {
-			if (!(menu.getMenuId() == null || menu
-					.getMenuId().equals(new Integer(0)))) {
+			if (!(menu.getMenuId() == null
+					|| menu.getMenuId().equals(new Integer(0)) || menu
+					.getMenuId() < 0)) {
+
+				validateMenu(menu);
+
 				men = consultMenuByLabelAndName(menu.getName(), menu.getLabel());
 				if (men == null) {
 					men = getMenu(menu.getMenuId());
@@ -112,11 +122,33 @@ public class AccessPermissionManager extends Manager {
 					DAOFactory.DEFAULT.buildMenuDAO().update(men);
 				} else {
 					throw new DuplicatedValueException(
-							InternalErrorMsgs.DUPLICATED_VALUE.msg("name or label"));
+							ErrorMsgs.DUPLICATED_VALUE
+									.msg("Menu name or label(" + menu.getName()
+											+ " or " + menu.getLabel() + ")"));
 				}
+			} else {
+				throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+						.msg("Menu id(" + String.valueOf(menu.getMenuId()))
+						+ ")");
 			}
+		} else {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT.msg("Menu"));
 		}
 		return menu;
+	}
+
+	private void validateMenu(Menu menu) throws EasyCorrectionException {
+		if (menu == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT.msg("Menu"));
+		}
+		if (menu.getName() == null || menu.getName().equals("")) {
+			throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+					.msg("Menu name"));
+		}
+		if (menu.getLabel() == null || menu.getLabel().equals("")) {
+			throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+					.msg("Menu label"));
+		}
 	}
 
 	/**
@@ -129,8 +161,11 @@ public class AccessPermissionManager extends Manager {
 	 */
 	public void deleteMenu(Menu menu) throws EasyCorrectionException {
 		if (menu == null) {
-			throw new EasyCorrectionException(InternalErrorMsgs.INVALID_VALUE
-					.msg("null"));
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT.msg("Menu"));
+		}
+		if (menu.getMenuId() == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Menu id"));
 		}
 		Menu m = getMenu(menu.getMenuId());
 		m = (Menu) SwapperAtributosReflect.swapObject(m, menu, Menu.class);
@@ -168,20 +203,32 @@ public class AccessPermissionManager extends Manager {
 		if (function != null) {
 			if (function.getFunctionId() == null
 					|| function.getFunctionId().equals(new Integer(0))) {
-				
+
+				validateFunction(function);
+
 				MenuFunction f = consultFunctionByNameAndLabel(function
 						.getName(), function.getLabel());
-				
+
 				if (f == null) {
 					Integer id = DAOFactory.DEFAULT.buildFunctionDAO().save(
 							function);
 					function.setFunctionId(id);
-					
-				} else if (f != null) {
+				} else {
 					throw new DuplicatedValueException(
-							InternalErrorMsgs.DUPLICATED_VALUE.msg("name or label"));
+							ErrorMsgs.DUPLICATED_VALUE
+									.msg("Function name or label("
+											+ function.getName() + " or "
+											+ function.getLabel() + ")"));
 				}
+			} else {
+				throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+						.msg("Function id("
+								+ String.valueOf(function.getFunctionId()))
+						+ ")");
 			}
+		} else {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Function"));
 		}
 		return function;
 	}
@@ -190,8 +237,11 @@ public class AccessPermissionManager extends Manager {
 			throws EasyCorrectionException {
 
 		if (function != null) {
-			if (!(function.getFunctionId() == null || function
-					.getFunctionId().equals(new Integer(0)))) {
+			if (!(function.getFunctionId() == null || function.getFunctionId()
+					.equals(new Integer(0)))) {
+
+				validateFunction(function);
+
 				MenuFunction fun = consultFunctionByNameAndLabel(function
 						.getName(), function.getLabel());
 				if (fun == null) {
@@ -205,11 +255,63 @@ public class AccessPermissionManager extends Manager {
 					DAOFactory.DEFAULT.buildFunctionDAO().update(fun);
 				} else {
 					throw new DuplicatedValueException(
-							InternalErrorMsgs.DUPLICATED_VALUE.msg("name or label"));
+							ErrorMsgs.DUPLICATED_VALUE
+									.msg("Function name or label("
+											+ function.getName() + " or "
+											+ function.getLabel() + ")"));
 				}
+			} else {
+				throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+						.msg("Function id("
+								+ String.valueOf(function.getFunctionId()))
+						+ ")");
 			}
+		} else {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Function"));
 		}
 		return function;
+	}
+
+	private void validateFunction(MenuFunction function)
+			throws EasyCorrectionException {
+		if (function.getMenu() == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Function"));
+		}
+		validateMenu(function.getMenu());
+
+		if (function.getName() == null || function.getName().equals("")) {
+			throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+					.msg("Function name"));
+		}
+		if (function.getLabel() == null || function.getLabel().equals("")) {
+			throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+					.msg("Function label"));
+		}
+
+	}
+
+	/**
+	 * Procedure used to remove a function of the system Easy Lab Correction.<br>
+	 * 
+	 * @param function
+	 *            The function to be removed.<br>
+	 */
+	public void deleteFunction(MenuFunction function)
+			throws EasyCorrectionException {
+		if (function == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Function"));
+		}
+		if (function.getFunctionId() == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Function id"));
+		}
+		MenuFunction f = getFunction(function.getFunctionId());
+		f = (MenuFunction) SwapperAtributosReflect.swapObject(f, function,
+				MenuFunction.class);
+		DAOFactory.DEFAULT.buildFunctionDAO().delete(f);
 	}
 
 	/**
@@ -223,7 +325,7 @@ public class AccessPermissionManager extends Manager {
 		List<MenuFunction> functions = DAOFactory.DEFAULT.buildFunctionDAO()
 				.findById(id);
 		if (functions.isEmpty()) {
-			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("MenuFunction"));
 		}
 		return functions.get(0);
@@ -279,20 +381,6 @@ public class AccessPermissionManager extends Manager {
 	}
 
 	/**
-	 * Procedure used to remove a function of the system Easy Lab Correction.<br>
-	 * 
-	 * @param function
-	 *            The function to be removed.<br>
-	 */
-	public void deleteFunction(MenuFunction function)
-			throws EasyCorrectionException {
-		MenuFunction f = getFunction(function.getFunctionId());
-		f = (MenuFunction) SwapperAtributosReflect.swapObject(f, function,
-				MenuFunction.class);
-		DAOFactory.DEFAULT.buildFunctionDAO().delete(f);
-	}
-
-	/**
 	 * Function used to search through a list of function system via a
 	 * identifier of menu.<br>
 	 * 
@@ -317,40 +405,102 @@ public class AccessPermissionManager extends Manager {
 	 */
 	public Group saveGroup(Group group) throws EasyCorrectionException {
 
-		if (group.getGroupId() == null
-				|| group.getGroupId().equals(new Integer(0))) {
+		if (group != null) {
+			if (group.getGroupId() == null
+					|| group.getGroupId().equals(new Integer(0))) {
 
-			if (!containsGroupByName(group.getName())) {
-				Integer id = DAOFactory.DEFAULT.buildGroupDAO().save(group);
-				group.setGroupId(id);
+				validateGroup(group);
+
+				if (!containsGroupByName(group.getName())) {
+					Integer id = DAOFactory.DEFAULT.buildGroupDAO().save(group);
+					group.setGroupId(id);
+				} else {
+					throw new DuplicatedValueException(
+							ErrorMsgs.DUPLICATED_VALUE.msg("Group name("
+									+ group.getName() + ")"));
+				}
 			} else {
-				throw new DuplicatedValueException(InternalErrorMsgs.DUPLICATED_VALUE
-						.msg("name"));
+				throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+						.msg("Group id(" + String.valueOf(group.getGroupId()))
+						+ ")");
 			}
+		} else {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Group"));
 		}
 		return group;
 	}
 
 	public Group updateGroup(Group group) throws EasyCorrectionException {
 		Group gr;
-		if (!containsGroupByName(group.getName())) {
-			gr = getGroup(group.getGroupId());
-			gr = (Group) SwapperAtributosReflect.swapObject(gr, group,
-					Group.class);
-			DAOFactory.DEFAULT.buildGroupDAO().update(gr);
 
-		} else {
-			gr = getGroupByName(group.getName());
-			if (group.getGroupId().equals(gr.getGroupId())) {
-				gr = (Group) SwapperAtributosReflect.swapObject(gr, group,
-						Group.class);
-				DAOFactory.DEFAULT.buildGroupDAO().update(gr);
+		if (group != null) {
+			if (!(group.getGroupId() == null || group.getGroupId().equals(
+					new Integer(0)))) {
+
+				validateGroup(group);
+
+				if (!containsGroupByName(group.getName())) {
+					gr = getGroup(group.getGroupId());
+					gr = (Group) SwapperAtributosReflect.swapObject(gr, group,
+							Group.class);
+					DAOFactory.DEFAULT.buildGroupDAO().update(gr);
+
+				} else {
+					gr = getGroupByName(group.getName());
+					if (group.getGroupId().equals(gr.getGroupId())) {
+						gr = (Group) SwapperAtributosReflect.swapObject(gr,
+								group, Group.class);
+						DAOFactory.DEFAULT.buildGroupDAO().update(gr);
+					} else {
+						throw new DuplicatedValueException(
+								ErrorMsgs.DUPLICATED_VALUE.msg("Group name("
+										+ group.getName() + ")"));
+					}
+				}
 			} else {
-				throw new DuplicatedValueException(InternalErrorMsgs.DUPLICATED_VALUE
-						.msg("name"));
+				throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+						.msg("Group id(" + String.valueOf(group.getGroupId()))
+						+ ")");
 			}
+		} else {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Group"));
 		}
 		return group;
+	}
+
+	private void validateGroup(Group group) throws EasyCorrectionException {
+		if (group == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Group"));
+		}
+		if (group.getName() == null || group.getName().equals("")) {
+			throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+					.msg("Group name"));
+		}
+	}
+
+	/**
+	 * Procedure used to delete a group of system.<br>
+	 * 
+	 * @param group
+	 *            The group to be deleted.<br>
+	 * @throws EasyCorrectionException
+	 *             The exception to be launched in the removal of group.<br>
+	 */
+	public void deleteGroup(Group group) throws EasyCorrectionException {
+		if (group == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Group"));
+		}
+		if (group.getGroupId() == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Group id"));
+		}
+		Group g = getGroup(group.getGroupId());
+		g = (Group) SwapperAtributosReflect.swapObject(g, group, Group.class);
+		DAOFactory.DEFAULT.buildGroupDAO().delete(g);
 	}
 
 	/**
@@ -364,7 +514,7 @@ public class AccessPermissionManager extends Manager {
 	public Group getGroup(Integer id) {
 		List<Group> group = DAOFactory.DEFAULT.buildGroupDAO().findById(id);
 		if (group.isEmpty()) {
-			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("Group"));
 		}
 		return group.get(0);
@@ -380,20 +530,6 @@ public class AccessPermissionManager extends Manager {
 	}
 
 	/**
-	 * Procedure used to delete a group of system.<br>
-	 * 
-	 * @param group
-	 *            The group to be deleted.<br>
-	 * @throws EasyCorrectionException
-	 *             The exception to be launched in the removal of group.<br>
-	 */
-	public void deleteGroup(Group group) throws EasyCorrectionException {
-		Group g = getGroup(group.getGroupId());
-		g = (Group) SwapperAtributosReflect.swapObject(g, group, Group.class);
-		DAOFactory.DEFAULT.buildGroupDAO().delete(g);
-	}
-
-	/**
 	 * Function used to retrieve a group in the system, that receive a name as
 	 * parameter.<br>
 	 * 
@@ -404,7 +540,7 @@ public class AccessPermissionManager extends Manager {
 	public Group getGroupByName(String name) {
 		List<Group> list = DAOFactory.DEFAULT.buildGroupDAO().findByName(name);
 		if (list.isEmpty()) {
-			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("Group"));
 		}
 		return list.get(0);
@@ -417,7 +553,7 @@ public class AccessPermissionManager extends Manager {
 	 * @return true, if there is, or false, otherwise
 	 */
 	private boolean containsGroupByName(String name) {
-		return (DAOFactory.DEFAULT.buildGroupDAO().findByName(name).isEmpty());
+		return !(DAOFactory.DEFAULT.buildGroupDAO().findByName(name).isEmpty());
 	}
 
 	/*
@@ -434,29 +570,24 @@ public class AccessPermissionManager extends Manager {
 	 */
 	public List<Permission> savePermissions(List<Permission> permissions)
 			throws EasyCorrectionException {
-		Permission p = new Permission();
+		if (permissions == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Permissions list"));
+		}
 		List<Permission> list = new LinkedList<Permission>();
 		for (Permission permission : permissions) {
 			if (permission != null
-					&& permission.getPermissionId() == null) {
+					&& (permission.getPermissionId() == null || permission
+							.getPermissionId() == 0)) {
 				Integer id = DAOFactory.DEFAULT.buildPermissionDAO().save(
 						permission);
 				permission.setPermissionId(id);
 				list.add(permission);
 			} else {
-				try {
-					p = getPermission(permission.getPermissionId());
-					p = (Permission) SwapperAtributosReflect.swapObject(p,
-							permission, Permission.class);
-					DAOFactory.DEFAULT.buildPermissionDAO().update(p);
-					list.add(p);
-
-				} catch (ObjectNotFoundException e) {
-					Integer id = DAOFactory.DEFAULT.buildPermissionDAO().save(
-							permission);
-					permission.setPermissionId(id);
-					list.add(permission);
-				}
+				throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+						.msg("Permission id("
+								+ String.valueOf(permission.getPermissionId()))
+						+ ")");
 			}
 		}
 		return list;
@@ -464,11 +595,15 @@ public class AccessPermissionManager extends Manager {
 
 	public List<Permission> updatePermissions(List<Permission> permissions)
 			throws EasyCorrectionException {
+		
+		if (permissions == null) {
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
+					.msg("Permissions list"));
+		}
 		Permission p = new Permission();
 		List<Permission> list = new LinkedList<Permission>();
 		for (Permission permission : permissions) {
-			if (permission != null
-					&& permission.getPermissionId() != null) {
+			if (permission != null && permission.getPermissionId() != null) {
 				try {
 					p = getPermission(permission.getPermissionId());
 					p = (Permission) SwapperAtributosReflect.swapObject(p,
@@ -482,6 +617,11 @@ public class AccessPermissionManager extends Manager {
 					permission.setPermissionId(id);
 					list.add(permission);
 				}
+			}else{
+				throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
+						.msg("Permission id("
+								+ String.valueOf(permission.getPermissionId()))
+						+ ")");
 			}
 		}
 		return list;
@@ -546,7 +686,7 @@ public class AccessPermissionManager extends Manager {
 		List<Permission> permissions = DAOFactory.DEFAULT.buildPermissionDAO()
 				.findById(id);
 		if (permissions.isEmpty()) {
-			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("Permission"));
 		}
 		return permissions.get(0);

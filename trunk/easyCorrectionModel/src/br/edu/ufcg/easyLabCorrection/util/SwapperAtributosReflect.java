@@ -131,7 +131,7 @@ public class SwapperAtributosReflect {
 			Object valor = m.invoke(objeto);
 			return valor;
 		} catch (Exception e) {
-			throw new NonexistantAttributeException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE
+			throw new NonexistantAttributeException(ErrorMsgs.INEXISTENT_ATTRIBUTE
 					.msg(atributo));
 		}
 	}
@@ -183,7 +183,7 @@ public class SwapperAtributosReflect {
 		} catch (InvocationTargetException e) {
 			throw new EasyCorrectionException(e.getCause().getMessage());
 		} catch (Exception e) {
-			throw new NonexistantAttributeException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE
+			throw new NonexistantAttributeException(ErrorMsgs.INEXISTENT_ATTRIBUTE
 					.msg(metodo.getName()));
 		}
 	}
@@ -210,7 +210,7 @@ public class SwapperAtributosReflect {
 		} catch (InvocationTargetException e) {
 			throw new EasyCorrectionException(e.getCause().getMessage());
 		} catch (Exception e) {
-			throw new NonexistantAttributeException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE
+			throw new NonexistantAttributeException(ErrorMsgs.INEXISTENT_ATTRIBUTE
 					.msg(atributo));
 		}
 	}
