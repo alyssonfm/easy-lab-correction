@@ -6,7 +6,7 @@
 <hibernate-configuration>
 	<session-factory>
 		
-		<property name="connection.url">jdbc:mysql://localhost/easylabcorrectiontest?autoReconnect=true</property>
+		<property name="connection.url">jdbc:mysql://localhost/easylabcorrection?autoReconnect=true</property>
 		<!-- <property name="connection.url">jdbc:mysql://les.dsc.ufcg.edu.br/easylabcorrectiontest?autoReconnect=true</property> -->
  		
 	  	<property name="connection.username">elc</property>
