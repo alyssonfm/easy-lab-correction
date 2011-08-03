@@ -11,7 +11,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
-import br.edu.ufcg.easyLabCorrection.util.ExternalErrorMsgs;
+import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
@@ -111,12 +111,12 @@ public class SubmissionManager {
 					submission.setId(id);
 				} else {
 					throw new EasyCorrectionException(
-							ExternalErrorMsgs.SUBMISSION_LIMIT_ALREADY_REACHED
+							ErrorMsgs.SUBMISSION_LIMIT_ALREADY_REACHED
 									.msg());
 				}
 			} else {
 				throw new EasyCorrectionException(
-						ExternalErrorMsgs.SUBMISSION_DEADLINE_ALREADY_FINISHED
+						ErrorMsgs.SUBMISSION_DEADLINE_ALREADY_FINISHED
 								.msg());
 			}
 		}

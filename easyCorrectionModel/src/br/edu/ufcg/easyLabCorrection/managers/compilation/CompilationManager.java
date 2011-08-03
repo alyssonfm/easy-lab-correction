@@ -10,7 +10,7 @@ import javax.tools.ToolProvider;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
 import br.edu.ufcg.easyLabCorrection.managers.Manager;
-import br.edu.ufcg.easyLabCorrection.util.ExternalErrorMsgs;
+import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 
 /**
  * Class responsible for managing of compilation in the system Easy 
@@ -99,8 +99,8 @@ public class CompilationManager extends Manager{
 			javaCompiler.run(null, out, error, arguments);
 
 		} catch (Exception e) {
-			System.err.println(ExternalErrorMsgs.INVALID_TEST_SUITE_NAME.msg());
-			throw new CompilationException(ExternalErrorMsgs.INVALID_TEST_SUITE_NAME.msg());
+			System.err.println(ErrorMsgs.INVALID_TEST_SUITE_NAME.msg());
+			throw new CompilationException(ErrorMsgs.INVALID_TEST_SUITE_NAME.msg());
 		}
 		
 		if (compilationError) {

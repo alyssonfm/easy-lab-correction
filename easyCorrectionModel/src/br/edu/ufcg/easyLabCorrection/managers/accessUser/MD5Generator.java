@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
+import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 
 /**
  * Class responsible for generating the MD5 in the system.<br>
@@ -30,7 +30,7 @@ public class MD5Generator {
 			pass = hash.toString(16);
 			return pass;
 		} catch (NoSuchAlgorithmException e) {
-			System.err.println(InternalErrorMsgs.DEVELOPMENT_ERROR.msg(e
+			System.err.println(ErrorMsgs.DEVELOPMENT_ERROR.msg(e
 					.getMessage()));
 		}
 		return null;

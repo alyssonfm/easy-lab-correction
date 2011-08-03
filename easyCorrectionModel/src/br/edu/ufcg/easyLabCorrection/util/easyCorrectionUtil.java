@@ -91,7 +91,7 @@ public class easyCorrectionUtil {
 			Object valor = m.invoke(objectTemp);
 			return valor;
 		} catch (Exception e) {
-			throw new NonexistantAttributeException(InternalErrorMsgs.INEXISTENT_ATTRIBUTE
+			throw new NonexistantAttributeException(ErrorMsgs.INEXISTENT_ATTRIBUTE
 					.msg(attribute));
 		}
 	}

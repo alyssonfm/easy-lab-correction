@@ -2,6 +2,7 @@ package br.edu.ufcg.easyLabCorrection.managers.assessment;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
@@ -11,7 +12,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
+import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
@@ -102,7 +103,7 @@ public class AssessmentManager extends Manager {
 		List<Assessment> list = DAOFactory.DEFAULT.buildAssessmentDAO()
 				.findByAssignmentAndTeam(assignmentId, teamId);
 		if (list.isEmpty()) {
-			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("Assessment"));
 		}
 		return list.get(0);
@@ -156,7 +157,7 @@ public class AssessmentManager extends Manager {
 			assess.setCorrected(assessment.isCorrected());
 			return updateAssessment(assess);
 		} catch (Exception e) {
-			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("Assessment"));
 		}
 	}

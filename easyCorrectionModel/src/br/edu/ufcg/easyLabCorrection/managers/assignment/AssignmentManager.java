@@ -10,8 +10,7 @@ import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.managers.Manager;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.AssignmentType;
-import br.edu.ufcg.easyLabCorrection.util.ExternalErrorMsgs;
-import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
+import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
@@ -183,7 +182,7 @@ public class AssignmentManager extends Manager {
 			throws AssignmentException {
 
 		if (assignmentTemp == null) {
-			throw new AssignmentException(InternalErrorMsgs.NULL_OBJECT
+			throw new AssignmentException(ErrorMsgs.NULL_OBJECT
 					.msg("Assignment"));
 		}
 
@@ -213,7 +212,7 @@ public class AssignmentManager extends Manager {
 			throws AssignmentException {
 
 		if (assignmentTemp == null) {
-			throw new AssignmentException(InternalErrorMsgs.NULL_OBJECT
+			throw new AssignmentException(ErrorMsgs.NULL_OBJECT
 					.msg("Assignment"));
 		}
 
@@ -246,7 +245,7 @@ public class AssignmentManager extends Manager {
 
 		default:
 			throw new AssignmentException(
-					ExternalErrorMsgs.UNKNOWN_ASSIGNMENT_STATE.msg());
+					ErrorMsgs.UNKNOWN_ASSIGNMENT_STATE.msg());
 		}
 
 		// OK, passou pelos casos de excecao, pode seguir em frente! =)
@@ -259,7 +258,7 @@ public class AssignmentManager extends Manager {
 			DAOFactory.DEFAULT.buildAssignmentDAO().update(a);
 
 		} catch (EasyCorrectionException e) {
-			throw new AssignmentException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new AssignmentException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("Assignment"));
 		}
 		return a;
@@ -281,7 +280,7 @@ public class AssignmentManager extends Manager {
 			throws AssignmentException {
 
 		if (assignment == null) {
-			throw new AssignmentException(InternalErrorMsgs.NULL_OBJECT
+			throw new AssignmentException(ErrorMsgs.NULL_OBJECT
 					.msg("Assignment"));
 		}
 		DAOFactory.DEFAULT.buildAssignmentDAO().delete(assignment);
@@ -298,7 +297,7 @@ public class AssignmentManager extends Manager {
 		// alguma modificacao com relacao ao antigo estado e aplicar as devidas
 		// restricoes
 		if (assignmentTemp == null) {
-			throw new AssignmentException(InternalErrorMsgs.NULL_OBJECT
+			throw new AssignmentException(ErrorMsgs.NULL_OBJECT
 					.msg("Assignment"));
 		}
 
@@ -324,19 +323,19 @@ public class AssignmentManager extends Manager {
 			if (newAssignment.getReleaseDate() == null
 					|| newAssignment.getReleaseDate().before(currentDate)) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_RELEASE_DATE
+						ErrorMsgs.INVALID_RELEASE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDeliveryDate() != null
 					&& newAssignment.getDeliveryDate().before(currentDate)) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_DEADLINE_DATE
+						ErrorMsgs.INVALID_DEADLINE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDiscussionDate() != null
 					&& newAssignment.getDiscussionDate().before(currentDate)) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_DISCUSSION_DATE
+						ErrorMsgs.INVALID_DISCUSSION_DATE
 								.msg(assignmentNextState));
 
 			}
@@ -354,19 +353,19 @@ public class AssignmentManager extends Manager {
 							.getReleaseDate().equals(
 									oldAssignment.getReleaseDate())))) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_RELEASE_DATE
+						ErrorMsgs.INVALID_RELEASE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDeliveryDate() != null
 					&& newAssignment.getDeliveryDate().before(currentDate)) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_DEADLINE_DATE
+						ErrorMsgs.INVALID_DEADLINE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDiscussionDate() != null
 					&& newAssignment.getDiscussionDate().before(currentDate)) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_DISCUSSION_DATE
+						ErrorMsgs.INVALID_DISCUSSION_DATE
 								.msg(assignmentNextState));
 
 			}
@@ -384,7 +383,7 @@ public class AssignmentManager extends Manager {
 							.getReleaseDate().equals(
 									oldAssignment.getReleaseDate())))) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_RELEASE_DATE
+						ErrorMsgs.INVALID_RELEASE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDeliveryDate() == null
@@ -392,13 +391,13 @@ public class AssignmentManager extends Manager {
 							.getDeliveryDate().equals(
 									oldAssignment.getDeliveryDate())))) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_DEADLINE_DATE
+						ErrorMsgs.INVALID_DEADLINE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDiscussionDate() != null
 					&& newAssignment.getDiscussionDate().before(currentDate)) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_DISCUSSION_DATE
+						ErrorMsgs.INVALID_DISCUSSION_DATE
 								.msg(assignmentNextState));
 
 			}
@@ -414,7 +413,7 @@ public class AssignmentManager extends Manager {
 							.getReleaseDate().equals(
 									oldAssignment.getReleaseDate())))) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_RELEASE_DATE
+						ErrorMsgs.INVALID_RELEASE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDeliveryDate() == null
@@ -422,7 +421,7 @@ public class AssignmentManager extends Manager {
 							.getDeliveryDate().equals(
 									oldAssignment.getDeliveryDate())))) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_DEADLINE_DATE
+						ErrorMsgs.INVALID_DEADLINE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDiscussionDate() == null
@@ -430,7 +429,7 @@ public class AssignmentManager extends Manager {
 							.getDiscussionDate().equals(
 									oldAssignment.getDiscussionDate())))) {
 				throw new AssignmentException(
-						ExternalErrorMsgs.INVALID_DISCUSSION_DATE
+						ErrorMsgs.INVALID_DISCUSSION_DATE
 								.msg(assignmentNextState));
 
 			}
@@ -515,14 +514,14 @@ public class AssignmentManager extends Manager {
 				.getTestsDirectory().equals(""))
 				&& !assignment.getTestsDirectory().endsWith(testsDirDefault)) {
 			throw new AssignmentException(
-					ExternalErrorMsgs.WRONG_SERVER_TEST_DIR_HIERARCHY
+					ErrorMsgs.WRONG_SERVER_TEST_DIR_HIERARCHY
 							.msg("atualizado"));
 		} else if ((assignment.getInterfaceDirectory() != null && !assignment
 				.getInterfaceDirectory().equals(""))
 				&& !assignment.getInterfaceDirectory().endsWith(
 						environmentDirDefault)) {
 			throw new AssignmentException(
-					ExternalErrorMsgs.WRONG_SERVER_INTERFACE_DIR_HIERARCHY
+					ErrorMsgs.WRONG_SERVER_INTERFACE_DIR_HIERARCHY
 							.msg("atualizado"));
 		}
 	}
@@ -541,7 +540,7 @@ public class AssignmentManager extends Manager {
 						.getAutomaticTestsPercentage() <= 100) && assignment
 						.getTestsDirectory() == null)) {
 			throw new AssignmentException(
-					ExternalErrorMsgs.RELEASED_ASSIGNMENT_FIELDS_CHANGED
+					ErrorMsgs.RELEASED_ASSIGNMENT_FIELDS_CHANGED
 							.msg(assignment.getName()));
 		}
 	}
@@ -569,33 +568,33 @@ public class AssignmentManager extends Manager {
 
 		if (assignment.getName() == null || assignment.getName().equals("")) {
 			throw new AssignmentException(
-					ExternalErrorMsgs.INVALID_ASSIGNMENT_NAME
+					ErrorMsgs.INVALID_ASSIGNMENT_NAME
 							.msg(assignmentNextState));
 
 		} else if (assignment.getParticipantsMaxNumber() != null
 				&& assignment.getParticipantsMaxNumber() <= 0) {
 			throw new AssignmentException(
-					ExternalErrorMsgs.INVALID_PARTICIPANTS_MAX_NUMBER
+					ErrorMsgs.INVALID_PARTICIPANTS_MAX_NUMBER
 							.msg(assignmentNextState));
 
 		} else if (assignment.getSendMaxNumber() != null
 				&& assignment.getSendMaxNumber() <= 0) {
 			throw new AssignmentException(
-					ExternalErrorMsgs.INVALID_SUBMISSION_MAX_NUMBER
+					ErrorMsgs.INVALID_SUBMISSION_MAX_NUMBER
 							.msg(assignmentNextState));
 
 		} else if (assignment.getPenaltyPerDaysLate() != PENALTY_DAY_LATE_DEFAULT
 				&& assignment.getPenaltyPerDaysLate() < 0.0
 				|| assignment.getPenaltyPerDaysLate() > 10.0) {
 			throw new AssignmentException(
-					ExternalErrorMsgs.INVALID_PENALTY_PER_DAY_LATE
+					ErrorMsgs.INVALID_PENALTY_PER_DAY_LATE
 							.msg(assignmentNextState));
 
 		} else if (assignment.getAutomaticTestsPercentage() != AUTOMATIC_TESTS_PERCENTAGE_DEFAULT
 				&& (assignment.getAutomaticTestsPercentage() < 0 || assignment
 						.getAutomaticTestsPercentage() > 100)) {
 			throw new AssignmentException(
-					ExternalErrorMsgs.INVALID_AUTOMATIC_ASSESSMENT_PERCENTAGE
+					ErrorMsgs.INVALID_AUTOMATIC_ASSESSMENT_PERCENTAGE
 							.msg(assignmentNextState));
 
 		} else if ((assignment.getTestTimeLimit() != null && assignment
@@ -604,7 +603,7 @@ public class AssignmentManager extends Manager {
 						.getAutomaticTestsPercentage() <= 100) && assignment
 						.getTestTimeLimit() <= 0)) {
 			throw new AssignmentException(
-					ExternalErrorMsgs.INVALID_EXECUTION_TIME_LIMIT_NOT_ZERO
+					ErrorMsgs.INVALID_EXECUTION_TIME_LIMIT_NOT_ZERO
 							.msg(assignmentNextState));
 
 		} else if ((assignment.getAutomaticTestsPercentage() != AUTOMATIC_TESTS_PERCENTAGE_DEFAULT && assignment
@@ -612,7 +611,7 @@ public class AssignmentManager extends Manager {
 				&& (assignment.getAutomaticTestsPercentage() == 0 && assignment
 						.getTestTimeLimit() != 0)) {
 			throw new AssignmentException(
-					ExternalErrorMsgs.INVALID_EXECUTION_TIME_LIMIT_ZERO
+					ErrorMsgs.INVALID_EXECUTION_TIME_LIMIT_ZERO
 							.msg(assignmentNextState));
 		} else {
 			return true;

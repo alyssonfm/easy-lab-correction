@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
-import br.edu.ufcg.easyLabCorrection.util.ExternalErrorMsgs;
+import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 
 /**
  * Class responsible for checking the consistency of CSV files.<br>
@@ -59,7 +59,7 @@ public class CSVFileFilter {
 				lineNumber++;
 				if (linhas.length != 4) {
 					throw new EasyCorrectionException(
-							ExternalErrorMsgs.INVALID_FIELDS_NUMBER.msg(String
+							ErrorMsgs.INVALID_FIELDS_NUMBER.msg(String
 									.valueOf(lineNumber)));
 				} else {
 					for (int i = 0; i < linhas.length; i++) {

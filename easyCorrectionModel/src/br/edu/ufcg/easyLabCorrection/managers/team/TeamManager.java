@@ -10,8 +10,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Assignment;
 import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.util.ExternalErrorMsgs;
-import br.edu.ufcg.easyLabCorrection.util.InternalErrorMsgs;
+import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 
 /**
@@ -74,7 +73,7 @@ public class TeamManager extends Manager {
 	public Team getTeam(int id) {
 		Team team = DAOFactory.DEFAULT.buildTeamDAO().getById(id);
 		if (team == null) {
-			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("Team"));
 		}
 		return team;
@@ -100,7 +99,7 @@ public class TeamManager extends Manager {
 		List<Team> Teams = DAOFactory.DEFAULT.buildTeamDAO().findByName(name);
 		Team te = Teams.get(0);
 		if (te == null) {
-			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("Team"));
 		}
 		return te;
@@ -157,7 +156,7 @@ public class TeamManager extends Manager {
 		if (assignment == null) {
 			// throw new ObjectNotFoundException(
 			// "Nao ha equipes alocadas pois o roteiro ainda nao foi criado!");
-			throw new ObjectNotFoundException(InternalErrorMsgs.NULL_OBJECT
+			throw new ObjectNotFoundException(ErrorMsgs.NULL_OBJECT
 					.msg("Assignment"));
 		}
 		List<TeamHasUserHasAssignment> list = DAOFactory.DEFAULT
@@ -181,13 +180,13 @@ public class TeamManager extends Manager {
 
 		if (tua.getAssignment().getParticipantsMaxNumber() == 1) {
 			throw new EasyCorrectionException(
-					ExternalErrorMsgs.TEAM_FOR_INDIVIDUAL_ASSIGNMENTS.msg(tua
+					ErrorMsgs.TEAM_FOR_INDIVIDUAL_ASSIGNMENTS.msg(tua
 							.getTeam().getName(), tua.getAssignment()
 							.getParticipantsMaxNumber().toString()));
 		}
 		if (isTeamFull(tua)) {
 			throw new EasyCorrectionException(
-					ExternalErrorMsgs.TEAM_MEMBERS_QUANTITY_IS_FULL.msg(tua
+					ErrorMsgs.TEAM_MEMBERS_QUANTITY_IS_FULL.msg(tua
 							.getTeam().getName(), tua.getAssignment()
 							.getParticipantsMaxNumber().toString()));
 		}
@@ -206,7 +205,7 @@ public class TeamManager extends Manager {
 		try {
 			getTeam(tua.getTeam().getId());
 		} catch (Exception e) {
-			throw new ObjectNotFoundException(InternalErrorMsgs.OBJ_NOT_FOUND
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("Team"));
 		}
 
