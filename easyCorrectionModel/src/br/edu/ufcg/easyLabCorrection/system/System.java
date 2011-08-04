@@ -8,6 +8,7 @@ import java.util.List;
 
 import junit.framework.TestResult;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
+import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.ufcg.easyLabCorrection.exceptions.AssignmentException;
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
@@ -49,7 +50,6 @@ public class System {
 	private CompilationManager compilationManager;
 	private TeamManager teamManager;
 	private AutomatedCorrectionManager correctionManager;
-	private SystemStage systemStage;
 
 	public System() {
 		accessPermissionManager = new AccessPermissionManager();
@@ -60,7 +60,6 @@ public class System {
 		compilationManager = new CompilationManager();
 		teamManager = new TeamManager();
 		correctionManager = new AutomatedCorrectionManager();
-		systemStage = new SystemStage();
 	}
 
 	public void rebootDataBase() {
@@ -68,9 +67,7 @@ public class System {
 	}
 	
 	public void setSystemStage(int systemStage){
-		FlexSession session = FlexContext.getFlexSession();
-		session.setAttribute("stage", systemStage);
-		this.systemStage = getStage(systemStage);
+		HibernateUtil.setCurrentStageId(systemStage);
 	}
 
 	public void deleteMenu(Menu menu) throws EasyCorrectionException {
