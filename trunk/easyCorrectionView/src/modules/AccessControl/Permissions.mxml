@@ -3,7 +3,7 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	layout="absolute" width="644" height="446" title="Definir Permissões"
+	layout="absolute" width="644" height="446" title="Set Permissions"
 	creationComplete="init()" showCloseButton="true" close="closeWindow()">
 	
 	<mx:Script>
@@ -109,7 +109,7 @@
 			
 			private function saveGroupPermission_result(event:ResultEvent):void{
 				permissions = event.result as ArrayCollection;
-				var param:Array = new Array(false, "Permissões Modificadas com Sucesso.");
+				var param:Array = new Array(false, "The Permissions were successfuly updated.");
 				ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 			}
 	
@@ -123,7 +123,7 @@
 					}
 				}
 				catch(e:Error){
-					message = "Serviço indisponível, reinicie a operação.";
+					message = "Service unavailable, please restart the operation.";
 				}
 				ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 			}
@@ -152,12 +152,12 @@
 		<mx:method name="saveGroupPermission" result="saveGroupPermission_result(event)" fault="failure(event)"/>
 	</mx:RemoteObject>
 	
-	<mx:Label x="10" y="21" text="Selecione o Grupo:" id="labelGroup"/>
-	<mx:Label x="10" y="70" text="Funções:" id="labelGroup0"/>
+	<mx:Label x="10" y="21" text="Select the group:" id="labelGroup"/>
+	<mx:Label x="10" y="70" text="Functions:" id="labelGroup0"/>
 	<comp:ComboBoxAC labelField="name" x="142" y="20" width="472" change="getPermissionsByGroup()" id="cbGroup" enter="getPermissionsByGroup()"/>
 	<mx:DataGrid x="10" y="98" width="604" height="249" id="dgFunctions" labelFunction="labelGridFunctions">
 		<mx:columns>
-			<mx:DataGridColumn headerText="P" width="30">
+			<mx:DataGridColumn headerText="Has Permission" width="30">
 				<mx:itemRenderer>
 					<mx:Component>
 						<mx:Canvas width="100%" height="100%">
@@ -187,9 +187,9 @@
 					</mx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Nome" width="150"/>
+			<mx:DataGridColumn headerText="Function Name" width="150"/>
 		</mx:columns>
 	</mx:DataGrid>
-	<mx:Button x="252.5" y="360" click="savePermission()" label="   Salvar" icon="@Embed(source='../../image/disquete.png')" width="119" id="savePermissionsButton" height="28"/>
+	<mx:Button x="252.5" y="360" click="savePermission()" label="   Save" icon="@Embed(source='../../image/disquete.png')" width="119" id="savePermissionsButton" height="28"/>
 	
 </les:ModuleTitleWindow>
