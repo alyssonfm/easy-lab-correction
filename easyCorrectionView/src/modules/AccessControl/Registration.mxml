@@ -3,12 +3,12 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	layout="absolute" width="644" height="446" title="Cadastros" creationComplete="init()" showCloseButton="true" close="closeWindow()">
+	layout="absolute" width="644" height="446" title="Registration" creationComplete="init()" showCloseButton="true" close="closeWindow()">
 	<les:states>
 		<mx:State name="teacherState">
 			<mx:RemoveChild target="{tabNav}"/>
 			<mx:AddChild position="lastChild">
-				<mx:ComboBox prompt="selecione..." x="66" y="10" width="548" labelField="name" id="cbUserGroupState" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
+				<mx:ComboBox prompt="select..." x="66" y="10" width="548" labelField="name" id="cbUserGroupState" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:TextInput x="65" y="41" width="548" id="inputUserNameState" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
@@ -20,22 +20,22 @@
 				<mx:TextInput x="479" y="70.5" width="134" id="inputUserPasswordState" displayAsPassword="true"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="244.5" y="132.5" label="   Salvar" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButtonState" height="28" enabled="false"/>
+				<mx:Button x="244.5" y="132.5" label="   Save" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButtonState" height="28" enabled="false"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="101.5" y="132.5" label="   Novo" width="135" height="28" id="newUserButtonState" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
+				<mx:Button x="101.5" y="132.5" label="   New" width="135" height="28" id="newUserButtonState" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="387.5" y="132.5" label="   Remover" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButtonState" height="28"/>
+				<mx:Button x="387.5" y="132.5" label="   Delete" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButtonState" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="244.5" y="132.5" label="   Atualizar" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButtonState" height="28"/>
+				<mx:Button x="244.5" y="132.5" label="   Update" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButtonState" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="12" y="11.5" text="Grupo:" id="labelUserGroupState"/>
+				<mx:Label x="12" y="11.5" text="Group:" id="labelUserGroupState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="11" y="43" text="Nome:" id="labelUserNameState"/>
+				<mx:Label x="11" y="43" text="Name:" id="labelUserNameState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="13" y="72.5" text="Login:" id="labelUserLoginState"/>
@@ -47,14 +47,14 @@
 				<mx:Label x="13" y="102.5" text="Email:" id="labelUserEmailState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="421" y="72.5" text="Senha:" id="labelUserPasswordState"/>
+				<mx:Label x="421" y="72.5" text="Password:" id="labelUserPasswordState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:DataGrid x="11" y="168.5" width="602" height="223.5" draggableColumns="false" change="selectUser()" itemClick="selectUser()"
 						 labelFunction="labelGridUsers" id="dgUsersState">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Login" dataField="id" width="200"/>
-						<mx:DataGridColumn headerText="Usuário"/>
+						<mx:DataGridColumn headerText="Username"/>
 					</mx:columns>
 				</mx:DataGrid>
 			</mx:AddChild>
@@ -153,7 +153,7 @@
 			private var userName:String;
 			
 			[Bindable]
-			private var subject: String = "[ELC] Cadastro no Easy Lab Correction";			
+			private var subject: String = "[ELC] Easy Lab Correction Registration";			
 			
 			
 			
@@ -169,9 +169,9 @@
 			
 			private function getUserGroupByUser_result(event:ResultEvent):void {
 				var userGroupList: * = event.result as ArrayCollection;
-				if (userGroupList.getItemAt(0).group.name.toUpperCase() == "PROFESSOR"
-					|| userGroupList.getItemAt(0).group.name.toUpperCase() == "MONITOR"){
-					if(userGroupList.getItemAt(0).group.name.toUpperCase() == "MONITOR") loggedAssistant = true;
+				if (userGroupList.getItemAt(0).group.name.toUpperCase() == "INSTRUCTOR"
+					|| userGroupList.getItemAt(0).group.name.toUpperCase() == "ASSISTANT"){
+					if(userGroupList.getItemAt(0).group.name.toUpperCase() == "ASSISTANT") loggedAssistant = true;
 					currentState = "teacherState";
 					tabNav.visible = true;
 					emailValidator.source = inputUserEmailState;
@@ -211,18 +211,18 @@
 					}
 				}
 				catch(e:Error){
-					message = "Serviço indisponível, reinicie a operação.";
+					message = "Service unavailable, please restart the operation.";
 				}
 				ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 			}
 			
 			private function menuFailure(event:FaultEvent):void {
-				var message:String = "Não é possível realizar a exclusão. Pois existem funções cadastradas nesse Menu.";
+				var message:String = "It is not possible to finish this operation. There are Functions registered to this Menu.";
 				launchException(new Array(true, message));
 			}
 			
 			private function groupFailure(event:FaultEvent):void {
-				var message:String = "Não é possível realizar a operação. Pois existem usuários cadastrados nesse Grupo.";
+				var message:String = "It is not possible to finish this operation. There are Users registered to this Group.";
 				launchException(new Array(true, message));
 			}
 			
@@ -267,12 +267,12 @@
 				var auxGroup: ArrayCollection = new ArrayCollection();
 				if (currentState == "teacherState"){
 					for(var i: int = 0; i < groups.length; i++){
-						if(groups.getItemAt(i).name.toUpperCase() != "PROFESSOR" && groups.getItemAt(i).name.toUpperCase() != "ADMINISTRADOR"){
+						if(groups.getItemAt(i).name.toUpperCase() != "INSTRUCTOR" && groups.getItemAt(i).name.toUpperCase() != "ADMINISTRADOR"){
 							if(!loggedAssistant){
 								auxGroup.addItem(groups.getItemAt(i));	 
 							}
 							else{
-								if(groups.getItemAt(i).name.toUpperCase() != "MONITOR"){
+								if(groups.getItemAt(i).name.toUpperCase() != "ASSISTANT"){
 									auxGroup.addItem(groups.getItemAt(i));
 								}
 							}
@@ -312,10 +312,10 @@
 				var sLabel:String = "";
 				var sHeaderText:String = column.headerText;
 				switch (sHeaderText)  {
-					case "Nome":
+					case "Name":
 						sLabel = item.name;
 						break;
-					case "Rótulo":
+					case "Label":
 						sLabel = item.label;
 						break;
 				}
@@ -326,10 +326,10 @@
 				var sLabel:String = "";
 				var sHeaderText:String = column.headerText;
 				switch (sHeaderText)  {
-					case "Rótulo":
+					case "Label":
 						sLabel = item.label;
 						break;
-					case "Nome":
+					case "Name":
 						sLabel = item.name;
 						break;
 				}
@@ -354,7 +354,7 @@
 					case "Login":
 						sLabel = item.user.login;
 						break;
-					case "Usuário":
+					case "Name":
 						sLabel = item.user.name;
 						break;
 				}
@@ -393,7 +393,7 @@
 					inputMenuLabel.text = "";
 				}
 				else{
-					var paramError:Array = new Array(true, "Falha ao cadastrar este Menu.");
+					var paramError:Array = new Array(true, "Menu registration failure.");
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, paramError);
 				} 	
 			}
@@ -459,7 +459,7 @@
 					inputFunctionLabel.text = "";
 				}
 				else{
-					var paramError:Array = new Array(true, "Falha ao cadastrar esta Função.");
+					var paramError:Array = new Array(true, "Function registration failure.");
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, paramError);
 				} 	
 			}
@@ -511,7 +511,7 @@
 					inputGroup.text = "";
 				}
 				else{
-					var paramError:Array = new Array(true, "Falha ao cadastrar este Grupo.");
+					var paramError:Array = new Array(true, "Group registration failure.");
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, paramError);
 				} 	
 			}
@@ -535,7 +535,7 @@
 			}
 			
 			private function getUserByLogin_result(event:ResultEvent): void{
-				var localMessage:Array = new Array(true, "Login já existente, alteração não realizada.");
+				var localMessage:Array = new Array(true, "The Login is duplicated. The update was aborted.");
 				launchException(localMessage);
 			}
 			
@@ -604,7 +604,7 @@
 				var localMessage:Array;
 				if (currentState != "teacherState"){
 					if(inputUserPassword.text.length != 0 && inputUserPassword.text.length < 6){
-						localMessage = new Array(true, "Senha muito pequena, cadastro não realizado.");
+						localMessage = new Array(true, "Too short password. The Registration was not completed.");
 						launchException(localMessage);
 					}
 					else{
@@ -637,7 +637,7 @@
 				}
 				else{
 					if(inputUserPasswordState.text.length != 0 && inputUserPasswordState.text.length < 6){
-						localMessage = new Array(true, "Senha muito pequena, cadastro não realizado.");
+						localMessage = new Array(true, "Too short password. The Registration was not completed.");
 						launchException(localMessage);
 					}
 					else{
@@ -677,7 +677,7 @@
 			private function removeUserGroup_result(): void{
 				filtrateUserByGroup();
 				clearFieldsByTab();
-				var mens: Array = new Array(false, "Usuário removido com sucesso!");
+				var mens: Array = new Array(false, "The User was successfuly deleted!");
 				launchException(mens);
 			}
 			
@@ -711,7 +711,7 @@
 						sendEmails(userGroup);
 						emailChanged = false;
 					} else{
-						localMessage = new Array(false, "Dados atualizados com sucesso!");
+						localMessage = new Array(false, "The data was sucessfully updated!");
 						launchException(localMessage);
 					}
 				}
@@ -721,17 +721,19 @@
 				if(passwordSaved == ""){
 					passwordSaved = generatedPassword;
 				}
-				message = "<BR>Parabéns, você foi cadastrado no sistema Easy Lab Correction da disciplina Laboratório de Estrutura de Dados.</BR>" +
+				message = "<BR>Congratulations, you were registered in the Easy Lab Correction system from (SUBJECT) .</BR>" +
 						"<BR></BR>" +				
-						"<BR>Informamos que o envio de roteiros será realizado através do sistema mediante os seguintes dados de acesso:</BR>" +
+						"<BR>We inform you that the programming assignments are going to be submitted </BR>" +
+						"<BR>at the system with the following access data:</BR>" +
 						"<BR></BR>" +
 						"Login:<BR>" + pUserGroup.user.login + "</BR>" + 
-						"<BR>Senha:</BR><BR>"+ passwordSaved +"</br><p>Obs.:\nLembre-se! Sua senha é pessoal e intransferível, " +
-						"sugerimos sua alteração imediata.</p>" + 
-						"<BR>Clique <a href=http://les.dsc.ufcg.edu.br:8080/EasyLabCorrection/>aqui</a> para acessar o sistema.</BR>" +
+						"<BR>Password:</BR><BR>"+ passwordSaved +"</br>" + 
+						"<p>Obs.:Please remember! Your password was randomly generated and it unstraferable, " +
+						"so we suggest you to update it imediatelly.</p>" + 
+						"<BR>Click <a href=http://les.dsc.ufcg.edu.br:8080/EasyLabCorrection/>here</a> to access the system.</BR>" +
 						"<BR></BR>" +
-						"<BR>Atenciosamente,</BR>" +
-						"<BR>Easy Lab Correction</BR>";
+						"<BR>Graciously,</BR>" +
+						"<BR>Easy Lab Correction Team</BR>";
 				
 				message = Util.generateHTMLCode(message);
 				contact = pUserGroup.user.email;
@@ -974,11 +976,11 @@
 					type = cbUserGroupState.selectedItem.name;
 				}
 				ModulesController.createModule("modules/System/MessageStatus.swf", this,
-					[false, type + " cadastrado com sucesso! Email já enviado."]);
+					[false, type + " successful registration! Email sent."]);
 			}
             
             private function removeFail(event:FaultEvent):void{
-				var mens:Array = new Array(true, "Não é possível realizar a operação.");
+				var mens:Array = new Array(true, "It was not possible to finish the operation.");
 				launchException(mens);
 			}
 			
@@ -1116,37 +1118,37 @@
 	
 	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="false">	
 		
-		<mx:Canvas label="Usuário" width="100%" height="100%" id="canvas4">
-			<mx:ComboBox prompt="selecione..." x="64" y="10" width="548" labelField="name" id="cbUserGroup" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
+		<mx:Canvas label="User" width="100%" height="100%" id="canvas4">
+			<mx:ComboBox prompt="select..." x="64" y="10" width="548" labelField="name" id="cbUserGroup" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
 			<mx:TextInput x="64" y="41" width="548" id="inputUserName" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="64" y="70.5" width="348" id="inputUserLogin" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="478" y="70.5" width="134" id="inputUserPassword" displayAsPassword="true"/>
 			<mx:TextInput x="64" y="100.5" width="548" id="inpuUserEmail" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
-			<mx:Button x="243.5" y="132.5" label="   Salvar" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButton" height="28" enabled="false"/>
-			<mx:Button x="100.5" y="132.5" label="   Novo" width="135" height="28" id="newUserButton" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
-			<mx:Button x="386.5" y="132.5" label="   Remover" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButton" height="28"/>
-			<mx:Button x="243.5" y="132.5" label="   Atualizar" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButton" height="28"/>
-			<mx:Label x="10" y="11.5" text="Grupo:" id="labelGrupoUsuario"/>
-			<mx:Label x="10" y="43" text="Nome:" id="labelNomeUsuario"/>
+			<mx:Button x="243.5" y="132.5" label="   Save" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButton" height="28" enabled="false"/>
+			<mx:Button x="100.5" y="132.5" label="   New" width="135" height="28" id="newUserButton" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
+			<mx:Button x="386.5" y="132.5" label="   Delete" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButton" height="28"/>
+			<mx:Button x="243.5" y="132.5" label="   Update" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButton" height="28"/>
+			<mx:Label x="10" y="11.5" text="Group:" id="labelGrupoUsuario"/>
+			<mx:Label x="10" y="43" text="Name:" id="labelNomeUsuario"/>
 			<mx:Label x="12" y="72.5" text="Login:" id="labelLoginUsuario"/>
 			<mx:Label x="12" y="102.5" text="Email:" id="labelEmailUsuario"/>
-			<mx:Label x="420" y="72.5" text="Senha:" id="labelSenhaUsuario"/>
+			<mx:Label x="420" y="72.5" text="Password:" id="labelSenhaUsuario"/>
 			<mx:DataGrid x="10" y="168.5" width="602" height="188.5" draggableColumns="false" change="selectUser()" itemClick="selectUser()"
 					 labelFunction="labelGridUsers" id="dgUsers">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Login" width="200" sortCompareFunction="loginCompare"/>
-					<mx:DataGridColumn headerText="Usuário" sortCompareFunction="nameCompare"/>
+					<mx:DataGridColumn headerText="Name" sortCompareFunction="nameCompare"/>
 				</mx:columns>
 			</mx:DataGrid>
 		</mx:Canvas>
 		
-		<mx:Canvas label="Grupo" width="100%" height="100%" id="canvas3">
+		<mx:Canvas label="Group" width="100%" height="100%" id="canvas3">
 			<mx:TextInput x="74" y="45" width="538" id="inputGroup" toolTip="{toolTipGroupName}" change="handleValidaGrupo(null)"/>
-			<mx:Label x="18" y="45.5" text="Grupo:" id="labelGrupo"/>
-			<mx:Button x="243.5" y="90" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" click="saveGroup()" id="saveGroupButton" height="28" enabled="false"/>
-			<mx:Button x="548" y="23" label="Novo" width="63" id="botaoNovoGrupo" height="23" click="changeSaver()"/>
-			<mx:Button x="315" y="90" label="   Remover" click="removeGroup()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeGroupButton" height="28" visible="false" enabled="false"/>
-			<mx:Button x="172" y="90" label="   Atualizar" click="updateGroup()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateGroupButton" height="28" visible="false" enabled="false"/>
+			<mx:Label x="18" y="45.5" text="Group:" id="labelGrupo"/>
+			<mx:Button x="243.5" y="90" label="   Register" icon="@Embed(source='../../image/disquete.png')" width="135" click="saveGroup()" id="saveGroupButton" height="28" enabled="false"/>
+			<mx:Button x="548" y="23" label="New" width="63" id="botaoNovoGrupo" height="23" click="changeSaver()"/>
+			<mx:Button x="315" y="90" label="   Delete" click="removeGroup()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeGroupButton" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="90" label="   Update" click="updateGroup()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateGroupButton" height="28" visible="false" enabled="false"/>
 			<mx:DataGrid x="10" y="141" width="602" height="216" change="selectGroup()" itemClick="selectGroup()"
 					draggableColumns="false" labelFunction="labelGridGroups" id="dgGroups">
 				<mx:columns>
@@ -1159,37 +1161,37 @@
 			<mx:TextInput x="64" y="45" width="548" id="inputMenuName" toolTip="{toolTipMenuName}" change="handleValidaMenu(null)"/>
 			<mx:TextInput x="64" y="73" width="548" id="inputMenuLabel" toolTip="{toolTipLabelMenu}" change="handleValidaMenu(null)"/>
 			<mx:Button x="243.5" y="111" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" click="saveMenu()" width="135" id="createMenuButton" height="28" enabled="false"/>
-			<mx:Button x="548" y="23" label="Novo" width="63" click="changeSaver()" id="botaoNovoMenu" height="23"/>
-			<mx:Label x="10" y="47" text="Nome:" id="labelNomeMenu"/>
-			<mx:Label x="10" y="75" text="Rótulo:" id="labelRotuloMenu"/>
-			<mx:Button x="315" y="111" label="   Remover" click="removeMenu()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeMenuButton" height="28" visible="false" enabled="false"/>
-			<mx:Button x="172" y="111" label="   Atualizar" click="updateMenu()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateMenuButton" height="28" enabled="false" visible="false"/>
+			<mx:Button x="548" y="23" label="New" width="63" click="changeSaver()" id="botaoNovoMenu" height="23"/>
+			<mx:Label x="10" y="47" text="Name:" id="labelNomeMenu"/>
+			<mx:Label x="10" y="75" text="Label:" id="labelRotuloMenu"/>
+			<mx:Button x="315" y="111" label="   Delete" click="removeMenu()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeMenuButton" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="111" label="   Update" click="updateMenu()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateMenuButton" height="28" enabled="false" visible="false"/>
 			<mx:DataGrid x="10" y="155" width="602" change="selectMenu()" itemClick="selectMenu()" 
 					height="204" labelFunction="labelGridMenus" draggableColumns="false" id="dgMenus">
 				<mx:columns>
-					<mx:DataGridColumn headerText="Rótulo" width="100"/>
-					<mx:DataGridColumn headerText="Nome"/>
+					<mx:DataGridColumn headerText="Label" width="100"/>
+					<mx:DataGridColumn headerText="Name"/>
 				</mx:columns>
 			</mx:DataGrid>
 		</mx:Canvas>
 		
-		<mx:Canvas label="Função" width="100%" height="100%" id="canvas2">
+		<mx:Canvas label="Function" width="100%" height="100%" id="canvas2">
 			<comp:ComboBoxAC labelField="name" x="62" y="15.5" width="550" id="cbMenu" toolTip="{toolTipMenuFunction}" change="filtrateFunctionsByMenu()"/>
 			<mx:TextInput x="62" y="76" width="550" id="inputFunctionName" toolTip="{toolTipNameFunction}" change="handleValidateFunction(null)"/>
 			<mx:TextInput x="62" y="104" width="550" id="inputFunctionLabel" toolTip="{toolTipNameFunction}" change="handleValidateFunction(null)"/>
-			<mx:Button x="243.5" y="144" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" width="135" 
+			<mx:Button x="243.5" y="144" label="   Register" icon="@Embed(source='../../image/disquete.png')" width="135" 
 				id="saveFunctionButton" click="saveFunction()" height="28" enabled="false"/>
-			<mx:Button x="548" y="54" label="Novo" width="63" id="botaoNovaFuncao" height="23" click="changeSaver()"/>
-			<mx:Button x="315" y="143" label="   Remover" click="removeFunction()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeFunctionButton" height="28" visible="false" enabled="false"/>
-			<mx:Button x="172" y="143" label="   Atualizar" click="updateFunction()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateFunctionButton" height="28" visible="false" enabled="false"/>
+			<mx:Button x="548" y="54" label="New" width="63" id="botaoNovaFuncao" height="23" click="changeSaver()"/>
+			<mx:Button x="315" y="143" label="   Delete" click="removeFunction()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeFunctionButton" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="143" label="   Update" click="updateFunction()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateFunctionButton" height="28" visible="false" enabled="false"/>
 			<mx:Label x="10" y="16.5" text="Menu:" id="labelCbMenu"/>
-			<mx:Label x="10" y="78" text="Nome:" id="labelNomeFuncao"/>
-			<mx:Label x="10" y="106" text="Rótulo:" id="labelRotuloFuncao"/>
+			<mx:Label x="10" y="78" text="Name:" id="labelNomeFuncao"/>
+			<mx:Label x="10" y="106" text="Label:" id="labelRotuloFuncao"/>
 			<mx:DataGrid x="10" y="189" width="602" height="168" change="selectFunction()" itemClick="selectFunction()"
 					draggableColumns="false" labelFunction="labelGridFunctions" id="dgFunctions">
 				<mx:columns>
-					<mx:DataGridColumn headerText="Rótulo" width="100"/>
-					<mx:DataGridColumn headerText="Nome"/>
+					<mx:DataGridColumn headerText="Label" width="100"/>
+					<mx:DataGridColumn headerText="Name"/>
 				</mx:columns>
 			</mx:DataGrid>
 		</mx:Canvas>
