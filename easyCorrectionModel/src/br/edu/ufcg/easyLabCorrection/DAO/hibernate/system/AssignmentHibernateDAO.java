@@ -27,13 +27,26 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 	public AssignmentHibernateDAO(Session s) {
 		super(s);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Assignment> findAllByStage() {
+		Query q = getSession()
+				.createQuery(
+						"from Assignment where stage.id = :stageId");
+		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
+		q.setCacheable(true);
+		List<Assignment> list = q.list();
+		return instantiatesList(list);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Assignment> findByReleasedAssignments(Date currentDate) {
 		Query q = getSession()
 				.createQuery(
-						"from Assignment where releaseDate <= :currentDate and deliveryDate > :currentDate");
+						"from Assignment where releaseDate <= :currentDate and deliveryDate > :currentDate " +
+						"and stage.id = :stageId");
 		q.setParameter("currentDate", currentDate);
+		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
 		q.setCacheable(true);
 		List<Assignment> list = q.list();
 		return instantiatesList(list);
@@ -54,10 +67,12 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 		Query q = getSession()
 				.createQuery(
 						"from Assignment where releaseDate <= :currentDate and " +
-						"deliveryDate > :currentDate and " +
-						"id = :idAssignment");
+						"deliveryDate > :currentDate " +
+						"and id = :idAssignment " +
+						"and stage.id = :stageId");
 		q.setParameter("currentDate", currentDate);
 		q.setParameter("idAssignment", assignmentId);
+		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
 		q.setCacheable(true);
 		List<Assignment> list = q.list();
 		return instantiatesList(list);
@@ -71,8 +86,10 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 	 */
 	public List<Assignment> findByClosedAssignments(Date currentDate) {
 		Query q = getSession().createQuery(
-				"from Assignment where deliveryDate <= :currentDate");
+				"from Assignment where deliveryDate <= :currentDate " +
+				"and stage.id = :stageId");
 		q.setParameter("currentDate", currentDate);
+		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
 		q.setCacheable(true);
 		List<Assignment> list = q.list();
 		return instantiatesList(list);
@@ -86,8 +103,10 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 	 */
 	public List<Assignment> findByInCorrectionAssignments(Date currentDate) {
 		Query q = getSession().createQuery(
-				"from Assignment where releaseDate <= :currentDate");
+				"from Assignment where releaseDate <= :currentDate " +
+				"and stage.id = :stageId");
 		q.setParameter("currentDate", currentDate);
+		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
 		q.setCacheable(true);
 		List<Assignment> list = q.list();
 		return instantiatesList(list);
@@ -101,8 +120,10 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 	 */
 	public List<Assignment> findByInCreationAssignments(Date currentDate) {
 		Query q = getSession().createQuery(
-				"from Assignment where releaseDate > :currentDate");
+				"from Assignment where releaseDate > :currentDate " +
+				"and stage.id = :stageId");
 		q.setParameter("currentDate", currentDate);
+		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
 		q.setCacheable(true);
 		List<Assignment> list = q.list();
 		return instantiatesList(list);
