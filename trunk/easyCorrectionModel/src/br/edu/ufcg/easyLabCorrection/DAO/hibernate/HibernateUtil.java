@@ -13,6 +13,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import flex.messaging.FlexContext;
+import flex.messaging.FlexSession;
+
+import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**
@@ -193,6 +197,16 @@ public final class HibernateUtil {
 
 	public static void main(String[] args) throws IOException {
 		HibernateUtil.executeSQL(Constants.bdTestBackupFile);
+	}
+	
+	public static void setCurrentStageId(int systemStage){ 
+		FlexSession session = FlexContext.getFlexSession();
+		session.setAttribute("stage", systemStage);
+	}
+	
+	public static int getCurrentStageId(){ 
+		FlexSession session = FlexContext.getFlexSession();
+		return (Integer) session.getAttribute("stage");
 	}
 
 }
