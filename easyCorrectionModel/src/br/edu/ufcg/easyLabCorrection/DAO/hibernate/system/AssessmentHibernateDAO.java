@@ -106,8 +106,8 @@ public class AssessmentHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<Assessment> findByTeamAndAssignment(Integer teamId, Integer assignmentId) {
-		Query q = getSession().createQuery("from Assessment where submission.teamHasUserHasAssignment.assignment.id = :assignmentId" +
-				" and submission.teamHasUserHasAssignment.team.id = :teamId");
+		Query q = getSession().createQuery("from Assessment where submission.teamHasUserHasAssignment.assignment.id = :assignmentId " +
+				"and submission.teamHasUserHasAssignment.team.id = :teamId");
 		q.setParameter("teamId", teamId);
 		q.setParameter("assignmentId", assignmentId);
 		q.setCacheable(true);
