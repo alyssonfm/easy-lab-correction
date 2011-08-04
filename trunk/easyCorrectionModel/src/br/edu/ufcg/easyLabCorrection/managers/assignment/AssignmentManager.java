@@ -83,7 +83,7 @@ public class AssignmentManager extends Manager {
 	 * @return A list of all assignments of the system.<br>
 	 */
 	public List<Assignment> getAssignments() {
-		return DAOFactory.DEFAULT.buildAssignmentDAO().findAll();
+		return DAOFactory.DEFAULT.buildAssignmentDAO().findAllByStage();
 	}
 
 	/**
