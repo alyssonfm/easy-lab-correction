@@ -99,13 +99,13 @@
 				}
 				
 				private function getUser_result(event:ResultEvent):void{
+					dispatchEvent(new UserEvent(event.result));
 					facade.getOperation("setSystemStage").send(event.result.period.id);
 				}
 				
 				private function setSystemStage_result(event:ResultEvent):void{
-					dispatchEvent(new UserEvent(event.result));
 					dispatchEvent(new EventLogResponse(func));
-					dispatchEvent(new ClosePopupEvent(this));
+					dispatchEvent(new ClosePopupEvent(this));	
 				}
 				
 				private function validateUser_result(event:ResultEvent): void{
