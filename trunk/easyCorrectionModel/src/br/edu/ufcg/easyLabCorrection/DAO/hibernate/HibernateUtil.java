@@ -201,12 +201,12 @@ public final class HibernateUtil {
 	
 	public static void setCurrentStageId(int systemStage){ 
 		FlexSession session = FlexContext.getFlexSession();
-		session.setAttribute("stage", systemStage);
+		session.setAttribute("stageId", systemStage);
 	}
 	
 	public static int getCurrentStageId(){ 
 		FlexSession session = FlexContext.getFlexSession();
-		return (Integer) session.getAttribute("stage");
+		return (Integer) session.getAttribute("stageId");
 	}
 
 }
