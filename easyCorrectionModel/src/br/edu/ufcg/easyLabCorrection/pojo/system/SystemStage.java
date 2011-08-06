@@ -4,6 +4,8 @@ public class SystemStage {
 	
 	private Integer id;
 	private String semester;
+	private String course;
+	private String courseClass;
 	
 	public SystemStage() {
 		super();
@@ -31,10 +33,29 @@ public class SystemStage {
 		this.semester = semester;
 	}
 
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	public String getCourseClass() {
+		return courseClass;
+	}
+
+	public void setCourseClass(String courseClass) {
+		this.courseClass = courseClass;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((course == null) ? 0 : course.hashCode());
+		result = prime * result
+				+ ((courseClass == null) ? 0 : courseClass.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((semester == null) ? 0 : semester.hashCode());
@@ -50,6 +71,16 @@ public class SystemStage {
 		if (getClass() != obj.getClass())
 			return false;
 		SystemStage other = (SystemStage) obj;
+		if (course == null) {
+			if (other.course != null)
+				return false;
+		} else if (!course.equals(other.course))
+			return false;
+		if (courseClass == null) {
+			if (other.courseClass != null)
+				return false;
+		} else if (!courseClass.equals(other.courseClass))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
