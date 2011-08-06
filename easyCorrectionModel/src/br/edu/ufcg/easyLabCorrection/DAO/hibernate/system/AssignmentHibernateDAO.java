@@ -128,6 +128,16 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 		List<Assignment> list = q.list();
 		return instantiatesList(list);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Assignment> findByStageId(int stageId) {
+		Query q = getSession().createQuery(
+				"from Assignment where stage.id = :stageId");
+		q.setParameter("stageId", stageId);
+		q.setCacheable(true);
+		List<Assignment> list = q.list();
+		return instantiatesList(list);
+	}
 
 	@Override
 	public List<Assignment> instantiatesList(List<Assignment> list) {
