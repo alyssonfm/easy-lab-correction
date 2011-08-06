@@ -850,4 +850,41 @@ public class Facade {
 		}
 	}
 	
+	
+	public List<SystemStage> listSystemStage() throws Throwable {
+		try{
+			return system.listSystemStage();
+		}catch (Throwable e) {
+			log.error("listSystemStage()", e);
+			throw e;
+		}
+	}
+
+	public SystemStage createSystemStage(SystemStage stage) throws Throwable{
+		try{
+			return system.createSystemStage(stage);
+		}catch (Throwable e) {
+			log.error("createSystemStage()", e);
+			throw e;
+		}
+	}
+	
+	public SystemStage updateSystemStage(SystemStage stage) throws Throwable{
+		try{
+			return system.updateSystemStage(stage);
+		}catch (Throwable e) {
+			log.error("updateSystemStage()", e);
+			throw e;
+		}
+	}
+	
+	public void deleteStage(SystemStage stage) throws Throwable {
+		try{
+			system.deleteStage(stage);
+		}catch (Throwable e) {
+			log.error("deleteStage()", e);
+			throw e;
+		}
+	}
+	
 }
