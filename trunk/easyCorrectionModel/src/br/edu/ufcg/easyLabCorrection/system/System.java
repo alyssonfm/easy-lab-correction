@@ -20,6 +20,7 @@ import br.edu.ufcg.easyLabCorrection.managers.assessment.AssessmentManager;
 import br.edu.ufcg.easyLabCorrection.managers.assignment.AssignmentManager;
 import br.edu.ufcg.easyLabCorrection.managers.automatedCorrection.AutomatedCorrectionManager;
 import br.edu.ufcg.easyLabCorrection.managers.compilation.CompilationManager;
+import br.edu.ufcg.easyLabCorrection.managers.stage.StageManager;
 import br.edu.ufcg.easyLabCorrection.managers.submission.SubmissionManager;
 import br.edu.ufcg.easyLabCorrection.managers.team.TeamManager;
 import br.edu.ufcg.easyLabCorrection.pojo.assessments.Assessment;
@@ -50,6 +51,7 @@ public class System {
 	private CompilationManager compilationManager;
 	private TeamManager teamManager;
 	private AutomatedCorrectionManager correctionManager;
+	private StageManager stageManager;
 
 	public System() {
 		accessPermissionManager = new AccessPermissionManager();
@@ -60,6 +62,7 @@ public class System {
 		compilationManager = new CompilationManager();
 		teamManager = new TeamManager();
 		correctionManager = new AutomatedCorrectionManager();
+		stageManager = new StageManager();
 	}
 
 	public void rebootDataBase() {
@@ -741,5 +744,21 @@ public class System {
 	public List<AssignmentType> listAssignmentType() {
 		return assignmentManager.listAssignmentType();
 	}
+	
+	public List<SystemStage> listSystemStage() {
+		return stageManager.listSystemStage();
+	}
 
+	public SystemStage createSystemStage(SystemStage stage) throws EasyCorrectionException{
+		return stageManager.createSystemStage(stage);
+	}
+	
+	public SystemStage updateSystemStage(SystemStage stage) throws EasyCorrectionException{
+		return stageManager.updateSystemStage(stage);
+	}
+	
+	public void deleteStage(SystemStage stage) throws EasyCorrectionException {
+		stageManager.deleteStage(stage);
+	}
+	
 }
