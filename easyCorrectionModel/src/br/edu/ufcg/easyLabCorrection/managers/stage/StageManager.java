@@ -2,13 +2,13 @@ package br.edu.ufcg.easyLabCorrection.managers.stage;
 
 import java.util.List;
 
+
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.ObjectNotFoundException;
 import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
-import br.edu.ufcg.easyLabCorrection.util.MsgErrors;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
-import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
+import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 
 public class StageManager {
 	
@@ -19,8 +19,8 @@ public class StageManager {
 	
 	public SystemStage getStage(Integer id) {
 		SystemStage stage = DAOFactory.DEFAULT.buildSystemStage().getById(id);
-		if (easyCorrectionUtil.isNull(stage)) {
-			throw new ObjectNotFoundException(MsgErrors.OBJ_NOT_FOUND
+		if (stage == null) {
+			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("período"));
 		}
 		return stage;
