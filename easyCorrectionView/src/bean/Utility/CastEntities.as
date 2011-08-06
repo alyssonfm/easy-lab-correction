@@ -88,6 +88,8 @@ package bean.Utility {
 					var s:SystemStage = new SystemStage();
 					s.id = object.id;
 					s.semester = object.semester;
+					s.course = object.course;
+					s.courseClass = object.courseClass;  
 					return s;
 				}
 			}
