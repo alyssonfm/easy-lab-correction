@@ -9,7 +9,9 @@ package bean.system{
 	public class SystemStage{
 		
 		public var id:int;
-		public var semester:String;
+		public var semester: String;
+		public var course: String;
+		public var courseClass: String;
 		
 	}
 }
