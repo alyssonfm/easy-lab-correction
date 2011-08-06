@@ -12,5 +12,9 @@
 
 		<property name="semester" column="semestre"/>
 		
+		<property name="course" column="disciplina"/>
+		
+		<property name="courseClass" column="turma"/>
+		
 	</class>
 </hibernate-mapping>
