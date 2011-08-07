@@ -111,13 +111,11 @@ public class SubmissionManager {
 					submission.setId(id);
 				} else {
 					throw new EasyCorrectionException(
-							ErrorMsgs.SUBMISSION_LIMIT_ALREADY_REACHED
-									.msg());
+							ErrorMsgs.SUBMISSION_LIMIT_ALREADY_REACHED.msg());
 				}
 			} else {
 				throw new EasyCorrectionException(
-						ErrorMsgs.SUBMISSION_DEADLINE_ALREADY_FINISHED
-								.msg());
+						ErrorMsgs.SUBMISSION_DEADLINE_ALREADY_FINISHED.msg());
 			}
 		}
 		return submission;
@@ -144,8 +142,8 @@ public class SubmissionManager {
 	}
 
 	/**
-	 * Function used to retrieve a submission by a submission identifier received
-	 * as parameter.<br>
+	 * Function used to retrieve a submission by a submission identifier
+	 * received as parameter.<br>
 	 * 
 	 * @param submissionId
 	 *            The identifier of submission who want to retrieve.<br>
@@ -168,7 +166,8 @@ public class SubmissionManager {
 	 */
 	public void deleteSubmission(Submission sub) throws EasyCorrectionException {
 		if (sub == null) {
-			throw new SubmissionException("Submission inexistent!");
+			throw new SubmissionException(ErrorMsgs.NULL_OBJECT
+					.msg("Submission"));
 		}
 		Submission submission = getSubmission(sub.getId());
 		submission = (Submission) SwapperAtributosReflect.swapObject(
@@ -185,10 +184,10 @@ public class SubmissionManager {
 		DAOFactory.DEFAULT.buildSubmissionDAO().deleteAllSubmissionsByUserId(
 				userId);
 	}
-	
+
 	public void deleteAllSubmissionsByStage(Integer stageId) {
-		DAOFactory.DEFAULT.buildSubmissionDAO()
-				.deleteAllSubmissionsByStage(stageId);	
+		DAOFactory.DEFAULT.buildSubmissionDAO().deleteAllSubmissionsByStage(
+				stageId);
 	}
 
 	/**
