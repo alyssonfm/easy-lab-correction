@@ -1291,7 +1291,7 @@
 	    tooManyAtSignsError="Seu endereço de email contém muitos caracteres @."
 	/>
 	
-	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="false">	
+	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="true">	
 		
 		<mx:Canvas label="User" width="100%" height="100%" id="canvas4">
 			<mx:ComboBox prompt="select..." x="64" y="10" width="548" labelField="name" id="cbUserGroup" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
@@ -1374,22 +1374,22 @@
 		</mx:Canvas>
 		
 		<mx:Canvas label="Stage" width="100%" height="100%" id="canvas5">		
-			<mx:TextInput x="74" y="32" width="538" maxChars="50" id="inputStageCourse" toolTip="{toolTipStageCourse}" change="handleValidateStage(null)"/>
-			<mx:TextInput x="74" y="60" width="235" maxChars="50" id="inputStageClass" toolTip="{toolTipStageClass}" change="handleValidateStage(null)"/>
-			<mx:TextInput x="406" y="60" width="206" maxChars="50" id="inputStagePeriod" toolTip="{toolTipStagePeriod}" change="handleValidateStage(null)"/>
+			<mx:TextInput x="90" y="32" width="522" maxChars="50" id="inputStageCourse" toolTip="{toolTipStageCourse}" change="handleValidateStage(null)"/>
+			<mx:TextInput x="377" y="64" width="235" maxChars="50" id="inputStageClass" toolTip="{toolTipStageClass}" change="handleValidateStage(null)"/>
+			<mx:TextInput x="90" y="62" width="215" maxChars="50" id="inputStagePeriod" toolTip="{toolTipStagePeriod}" change="handleValidateStage(null)"/>
 			<mx:Button x="243.5" y="107" label="   Register" icon="@Embed(source='../../image/disquete.png')" click="createSystemStage()" width="135" id="saveStageButton" height="28" enabled="false"/>
 			<mx:Button x="548" y="10" label="New" width="63" click="changeSaver()" id="newStageButton" height="23"/>
-			<mx:Label x="317" y="62" text="semester:" id="labelStagePeriod" width="81" textAlign="right"/>
+			<mx:Label x="10" y="64" text="Semester:" id="labelStagePeriod" width="72" textAlign="left"/>
 			<mx:Label x="10" y="34" text="Course:" id="labelStageCourse" width="56" textAlign="right"/>
-			<mx:Label x="10" y="62" text="Class:" id="labelStageClass" width="56" textAlign="right"/>
+			<mx:Label x="313" y="66" text="Class:" id="labelStageClass" width="56" textAlign="right"/>
 			<mx:Button x="315" y="107" label="   Delete" click="deleteSystemStage()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeStageButton" height="28" visible="false" enabled="false"/>
 			<mx:Button x="172" y="107" label="   Update" click="updateSystemStage()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateStageButton" height="28" enabled="false" visible="false"/>
 			<mx:DataGrid x="10" y="143" width="602" change="selectStage()" itemClick="selectStage()" 
 					height="244" labelFunction="labelGridStages" draggableColumns="false" id="dgStages">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Course" width="400"/>
+					<mx:DataGridColumn headerText="Semester"/>
 					<mx:DataGridColumn headerText="Class"/>
-					<mx:DataGridColumn headerText="Period"/>
 				</mx:columns>
 			</mx:DataGrid>
 		</mx:Canvas>
