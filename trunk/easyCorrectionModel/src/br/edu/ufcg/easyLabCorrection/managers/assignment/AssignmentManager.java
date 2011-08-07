@@ -285,6 +285,12 @@ public class AssignmentManager extends Manager {
 		}
 		DAOFactory.DEFAULT.buildAssignmentDAO().delete(assignment);
 	}
+	
+	public void deleteAssignmentByStage(Integer stageId) {
+		
+		DAOFactory.DEFAULT.buildAssignmentDAO().deleteByStage(stageId);
+		
+	}
 
 	/* ************************************************************
 	 * METODOS PRIVADOS
@@ -617,4 +623,5 @@ public class AssignmentManager extends Manager {
 			return true;
 		}
 	}
+	
 }

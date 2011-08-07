@@ -346,4 +346,10 @@ public class TeamManager extends Manager {
 
 	}
 
+	public void deleteAllTeamHasUserHasAssignmentByStage(Integer stageId) {
+		DAOFactory.DEFAULT.buildTeamHasUserHasAssignmentDAO()
+				.deleteAllTeamHasUserHasAssignmentByStage(stageId);
+		
+	}
+
 }

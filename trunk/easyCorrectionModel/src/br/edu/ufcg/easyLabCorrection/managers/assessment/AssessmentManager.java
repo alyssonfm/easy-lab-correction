@@ -227,7 +227,12 @@ public class AssessmentManager extends Manager {
 		DAOFactory.DEFAULT.buildAssessmentDAO().deleteAllAssessmentsByUserId(
 				userId);
 	}
-
+	
+	public void deleteAllAssessmentsByStage(Integer stageId) {
+		DAOFactory.DEFAULT.buildAssessmentDAO()
+			.deleteAllAssessmentsByStage(stageId);
+	}
+	
 	/**
 	 * Function used to retrieve the assessments of the system that receives a
 	 * submission identifier as parameter.<br>

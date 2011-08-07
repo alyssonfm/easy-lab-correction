@@ -13,7 +13,7 @@ import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 public class StageManager {
 	
 	
-	public List<SystemStage> listSystemStage() {
+	public List<SystemStage> systemStageList() {
 		return DAOFactory.DEFAULT.buildSystemStage().findAll();
 	}
 	
@@ -43,7 +43,7 @@ public class StageManager {
 		return stage;
 	}
 	
-	public void deleteStage(SystemStage stage) throws EasyCorrectionException {
+	public void deleteSystemStage(SystemStage stage) throws EasyCorrectionException {
 
 		SystemStage stg = getStage(stage.getId());
 		stg = (SystemStage) SwapperAtributosReflect.swapObject(stg, stage,

@@ -851,11 +851,11 @@ public class Facade {
 	}
 	
 	
-	public List<SystemStage> listSystemStage() throws Throwable {
+	public List<SystemStage> systemStageList() throws Throwable {
 		try{
-			return system.listSystemStage();
+			return system.systemStageList();
 		}catch (Throwable e) {
-			log.error("listSystemStage()", e);
+			log.error("systemStageList()", e);
 			throw e;
 		}
 	}
@@ -878,11 +878,11 @@ public class Facade {
 		}
 	}
 	
-	public void deleteStage(SystemStage stage) throws Throwable {
+	public void deleteSystemStage(SystemStage stage) throws Throwable {
 		try{
-			system.deleteStage(stage);
+			system.deleteSystemStage(stage);
 		}catch (Throwable e) {
-			log.error("deleteStage()", e);
+			log.error("deleteSystemStage()", e);
 			throw e;
 		}
 	}

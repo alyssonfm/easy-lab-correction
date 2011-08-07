@@ -90,6 +90,15 @@ public class TeamHasUserHasAssignmentHibernateDAO extends
 		tua = MyPersistenceLayer.deproxy(tua, TeamHasUserHasAssignment.class);
 		return tua;
 	}
+	
+	public void deleteAllTeamHasUserHasAssignmentByStage(Integer stageId) {
+		HibernateUtil.beginTransaction();
+		Query q = getSession().createQuery("DELETE FROM TeamHasUserHasAssignment WHERE assignment.id IN ( " +
+				"SELECT id FROM roteiro r WHERE r.stage.id = :stageId");
+		q.setParameter("stageId",stageId);
+		q.executeUpdate();
+		HibernateUtil.commitTransactionCloseSession();
+	}
 
 	public void deleteAllTeamHasUserHasAssignmentByAssignment(Integer assignmentId) {
 		HibernateUtil.beginTransaction();

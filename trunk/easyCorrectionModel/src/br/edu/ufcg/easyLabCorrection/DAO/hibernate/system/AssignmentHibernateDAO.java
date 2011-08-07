@@ -161,4 +161,12 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 		return a;
 	}
 
+	public void deleteByStage(Integer stageId) {
+		HibernateUtil.beginTransaction();
+		Query q = getSession().createQuery("DELETE FROM Assignment WHERE stage.id = :stageId");
+		q.setParameter("stageId",stageId);
+		q.executeUpdate();
+		HibernateUtil.commitTransactionCloseSession();		
+	}
+
 }

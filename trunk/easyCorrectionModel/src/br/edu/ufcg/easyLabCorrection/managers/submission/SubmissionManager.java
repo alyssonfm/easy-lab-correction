@@ -185,6 +185,11 @@ public class SubmissionManager {
 		DAOFactory.DEFAULT.buildSubmissionDAO().deleteAllSubmissionsByUserId(
 				userId);
 	}
+	
+	public void deleteAllSubmissionsByStage(Integer stageId) {
+		DAOFactory.DEFAULT.buildSubmissionDAO()
+				.deleteAllSubmissionsByStage(stageId);	
+	}
 
 	/**
 	 * Function used to retrieve the filename of interface of the assignment

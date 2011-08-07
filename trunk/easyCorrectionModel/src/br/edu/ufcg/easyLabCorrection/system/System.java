@@ -38,8 +38,6 @@ import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
 import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
-import flex.messaging.FlexContext;
-import flex.messaging.FlexSession;
 
 public class System {
 
@@ -91,7 +89,6 @@ public class System {
 		assessmentManager.deleteAllAssessmentsByUserId(userGroup.getUser().getUserId());
 		submissionManager.deleteAllSubmissionsByUserId(userGroup.getUser().getUserId());
 		teamManager.deleteAllTeamHasUserHasAssignmentByUserId(userGroup.getUser().getUserId());
-		assessmentManager.getAssessmentByCorrector(userGroup.getUser().getUserId());
 		deallocateAll(assessmentManager.getAssessmentByCorrector(userGroup.getUser().getUserId()));
 		accessUserManager.deleteUser(userGroup);
 		
@@ -161,8 +158,6 @@ public class System {
 
 	public UserGroup saveUser(UserGroup userGroup)
 			throws EasyCorrectionException {
-		
-		userGroup.getUser().setPeriod(getCurrentStage().get(0));
 
 		User u = new User();
 		User us = new User();
@@ -745,8 +740,8 @@ public class System {
 		return assignmentManager.listAssignmentType();
 	}
 	
-	public List<SystemStage> listSystemStage() {
-		return stageManager.listSystemStage();
+	public List<SystemStage> systemStageList() {
+		return stageManager.systemStageList();
 	}
 
 	public SystemStage createSystemStage(SystemStage stage) throws EasyCorrectionException{
@@ -757,8 +752,24 @@ public class System {
 		return stageManager.updateSystemStage(stage);
 	}
 	
-	public void deleteStage(SystemStage stage) throws EasyCorrectionException {
-		stageManager.deleteStage(stage);
+	public void deleteSystemStage(SystemStage stage) throws EasyCorrectionException {
+		stageManager.deleteSystemStage(stage);
+	}
+	
+	public void deleteForcedSystemStage(SystemStage stage) throws EasyCorrectionException {
+		assessmentManager.deleteAllAssessmentsByStage(stage.getId());
+		submissionManager.deleteAllSubmissionsByStage(stage.getId());
+		teamManager.deleteAllTeamHasUserHasAssignmentByStage(stage.getId());
+		assignmentManager.deleteAssignmentByStage(stage.getId());
+		deleteForcedUsersByStage(stage.getId());
+		stageManager.deleteSystemStage(stage);
+	}
+	
+	private void deleteForcedUsersByStage(Integer stageId) throws EasyCorrectionException{
+		List<UserGroup> userGroupList = accessUserManager.getUserGroupByStage(stageId);
+		for (UserGroup userGroup : userGroupList) {
+			deleteUser(userGroup);
+		}
 	}
 	
 }
