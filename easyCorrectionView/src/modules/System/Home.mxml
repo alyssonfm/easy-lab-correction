@@ -237,8 +237,8 @@
 		<mx:Label x="643.95" y="511" text="Deadline date:"/>
 		<mx:Label x="643.95" y="542" text="Final Discussion date:"/>
 		<mx:Label x="331" y="480" text="Max submission number:"/>
-		<mx:Label x="331" y="511" text="Max team members:"/>
-		<mx:Label x="331" y="542" text="Penalty per day late:"/>
+		<mx:Label x="359" y="511" text="Max team members:"/>
+		<mx:Label x="355" y="542" text="Penalty per day late:"/>
 		<mx:Label x="10" y="46" text="Projetos para Avaliação:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetoAvaliacaoLabel" visible="false"/>
 		<mx:Label x="10" y="378" text="Meus Projetos:" fontStyle="normal" fontWeight="bold" fontSize="14" id="meusProjetosLabel" visible="false"/>
 		<mx:Label x="10" y="176" text="Projetos da Cota Atual:" fontStyle="normal" fontWeight="bold" fontSize="14" id="projetosCotaLabel" visible="false"/>
