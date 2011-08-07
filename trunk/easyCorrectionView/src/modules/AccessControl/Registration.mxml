@@ -3,7 +3,7 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	layout="absolute" width="644" height="446" title="Registration" creationComplete="init()" showCloseButton="true" close="closeWindow()">
+	layout="absolute" width="644" height="476" title="Registration" creationComplete="init()" showCloseButton="true" close="closeWindow()">
 	<les:states>
 		<mx:State name="teacherState">
 			<mx:RemoveChild target="{tabNav}"/>
@@ -11,46 +11,46 @@
 				<mx:ComboBox prompt="select..." x="66" y="10" width="548" labelField="name" id="cbUserGroupState" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="65" y="41" width="548" id="inputUserNameState" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="64" y="71" width="548" id="inputUserNameState" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="65" y="70.5" width="348" id="inputUserLoginState" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="64" y="100.5" width="348" id="inputUserLoginState" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="479" y="70.5" width="134" id="inputUserPasswordState" displayAsPassword="true"/>
+				<mx:TextInput x="500" y="100.5" width="112" id="inputUserPasswordState" displayAsPassword="true"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="244.5" y="132.5" label="   Save" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButtonState" height="28" enabled="false"/>
+				<mx:Button x="243.5" y="162.5" label="   Save" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButtonState" height="28" enabled="false"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="101.5" y="132.5" label="   New" width="135" height="28" id="newUserButtonState" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
+				<mx:Button x="100.5" y="162.5" label="   New" width="135" height="28" id="newUserButtonState" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="387.5" y="132.5" label="   Delete" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButtonState" height="28"/>
+				<mx:Button x="386.5" y="162.5" label="   Delete" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButtonState" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="244.5" y="132.5" label="   Update" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButtonState" height="28"/>
+				<mx:Button x="243.5" y="162.5" label="   Update" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButtonState" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="12" y="11.5" text="Group:" id="labelUserGroupState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="11" y="43" text="Name:" id="labelUserNameState"/>
+				<mx:Label x="10" y="73" text="Name:" id="labelUserNameState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="13" y="72.5" text="Login:" id="labelUserLoginState"/>
+				<mx:Label x="12" y="102.5" text="Login:" id="labelUserLoginState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="65" y="100.5" width="548" id="inputUserEmailState" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="64" y="130.5" width="548" id="inputUserEmailState" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="13" y="102.5" text="Email:" id="labelUserEmailState"/>
+				<mx:Label x="12" y="132.5" text="Email:" id="labelUserEmailState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="421" y="72.5" text="Password:" id="labelUserPasswordState"/>
+				<mx:Label x="420" y="102.5" text="Password:" id="labelUserPasswordState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:DataGrid x="11" y="168.5" width="602" height="223.5" draggableColumns="false" change="selectUser()" itemClick="selectUser()"
+				<mx:DataGrid x="10" y="198.5" width="602" height="223.5" draggableColumns="false" change="selectUser()" itemClick="selectUser()"
 						 labelFunction="labelGridUsers" id="dgUsersState">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Login" dataField="id" width="200"/>
@@ -58,11 +58,18 @@
 					</mx:columns>
 				</mx:DataGrid>
 			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:ComboBox prompt="select..." x="64" y="40" width="550" labelFunction="showStage" id="cbSystemStageState" toolTip="{toolTipSystemStage}"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="12" y="41.5" text="Class:" id="labelClassState"/>
+			</mx:AddChild>
 		</mx:State>
 	</les:states>
 	
 	<mx:Script>
 		<![CDATA[
+			import bean.system.SystemStage;
 			import events.ClosePopupEvent;
 			import bean.permission.Menu;
 			import bean.permission.MenuFunction;
@@ -91,6 +98,18 @@
 			[Bindable]
 			private var toolTipMenuFunction:String = 
 				"(Obrigatório) Informe o menu da função.";
+				
+			[Bindable]
+			private var toolTipStageCourse:String = 
+				"(Obrigatório) Informe a disciplina da turma.";
+				
+			[Bindable]
+			private var toolTipStageClass:String = 
+				"(Obrigatório) Informe a turma.";
+				
+			[Bindable]
+			private var toolTipStagePeriod:String = 
+				"(Obrigatório) Informe o período da turma.";
 			
 			[Bindable]
 			private var toolTipNameFunction:String = 
@@ -103,6 +122,10 @@
 			[Bindable]
 			private var toolTipGroupName:String = 
 				"(Obrigatório) Informe um nome para Grupo.";
+				
+			[Bindable]
+			private var toolTipSystemStage:String = 
+				"(Obrigatório) Informe uma turma para o Usuário.";
 				
 			[Bindable]
 			private var toolTipUserName:String = 
@@ -128,8 +151,10 @@
 			
 			private var menus: ArrayCollection = new ArrayCollection();
 			private var groups: ArrayCollection = new ArrayCollection();
+			private var stages: ArrayCollection = new ArrayCollection();
 			
 			private var menu: Menu = new Menu();
+			private var systemStage: SystemStage = new SystemStage();
 			private var func: MenuFunction = new MenuFunction();
 			private var group: Group = new Group();
 			private var user: User = new User();
@@ -161,6 +186,22 @@
 				facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 				loggedUser = ModulesController.getParam();
 				getUserGroup();
+				getSystemStageList();
+			}
+			
+			private function getSystemStageList(): void{
+				facade.getOperation("systemStageList").send();
+			}
+			
+			private function systemStageList_result(event:ResultEvent):void {
+				stages = event.result as ArrayCollection;
+				if (tabNav.selectedIndex == 0){
+					cbSystemStage.dataProvider = stages;
+					cbSystemStage.selectedIndex = -1;
+				}
+				if (tabNav.selectedIndex == 4){
+					dgStages.dataProvider = stages;
+				}
 			}
 			
 			private function getUserGroup(): void{
@@ -198,7 +239,12 @@
 					if (tabNav.selectedIndex == 0) {
 						groupList();
 					}
-					else menuList();	
+					else {
+						if(tabNav.selectedIndex == 4){
+							getSystemStageList();
+						}
+						else menuList();
+					}	
 			}
 			
 			private function failure(event:FaultEvent):void {
@@ -249,6 +295,7 @@
 					functionList();
 				}
 			}
+			
 			
 			private function functionList():void{
 				facade.getOperation("functionList").send()
@@ -322,6 +369,23 @@
 				return sLabel;
 			}
 			
+			private function labelGridStages(item:*, column:DataGridColumn):String {
+				var sLabel:String = "";
+				var sHeaderText:String = column.headerText;
+				switch (sHeaderText)  {
+					case "Course":
+						sLabel = item.course;
+						break;
+					case "Class":
+						sLabel = item.courseClass;
+						break;
+					case "Period":
+						sLabel = item.semester;
+						break;
+				}
+				return sLabel;
+			}
+			
 			private function labelGridFunctions(item:*, column:DataGridColumn):String {
 				var sLabel:String = "";
 				var sHeaderText:String = column.headerText;
@@ -361,6 +425,10 @@
 				return sLabel;
 			}
 			
+			private function showStage(item:*):String {
+				return item.course + " - " + item.semester + " (" + item.courseClass + ")";
+			}
+			
 			private function saveMenu(): void{
 				menu = new Menu();
 				updateMenu();
@@ -389,8 +457,8 @@
 				var menuP: Menu = CastEntities.castMenu(event.result);
 				if (menuP != null && menuP.menuId != 0){
 					menuList();	
-					inputMenuName.text = "";
 					inputMenuLabel.text = "";
+					inputMenuName.text = "";
 				}
 				else{
 					var paramError:Array = new Array(true, "Menu registration failure.");
@@ -408,6 +476,61 @@
 					createMenuButton.visible = false;
 					updateMenuButton.visible = true;
 					removeMenuButton.visible = true;
+				}
+			}
+			
+			private function createSystemStage(): void{
+				systemStage = new SystemStage();
+				updateSystemStage();
+			}
+			
+			private function updateSystemStage():void {
+				systemStage.course = StringUtil.trim(inputStageCourse.text);
+				systemStage.courseClass = StringUtil.trim(inputStageClass.text);
+				systemStage.semester = StringUtil.trim(inputStagePeriod.text);
+				if(systemStage.id == 0){
+					facade.getOperation("createSystemStage").send(systemStage);
+				}else{
+					facade.getOperation("updateSystemStage").send(systemStage);
+				}
+			}
+			
+			private function deleteSystemStage():void {
+				facade.getOperation("deleteSystemStage").send(systemStage);
+			}
+			
+			private function deleteSystemStage_result(): void{
+				getSystemStageList();
+				clearFieldsByTab();
+			}
+			
+			private function saveSystemStage_result(event:ResultEvent): void{
+				var stageP: SystemStage = CastEntities.castStage(event.result);
+				if (stageP != null && stageP.id != 0){
+					getSystemStageList();	
+					inputStageClass.text = "";
+					inputStageCourse.text = "";
+					inputStagePeriod.text = "";
+				}
+				else{
+					var paramError:Array = new Array(true, "Stage registration failure.");
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, paramError);
+				} 	
+			}
+			
+			private function selectStage(): void{
+				if (dgStages.selectedItem != null) {
+					systemStage.id = dgStages.selectedItem.id;
+					systemStage.course = dgStages.selectedItem.course;
+					systemStage.courseClass = dgStages.selectedItem.courseClass;
+					systemStage.semester = dgStages.selectedItem.semester;
+					inputStageClass.text = systemStage.courseClass;
+					inputStageCourse.text = systemStage.course;
+					inputStagePeriod.text = systemStage.semester;
+					saveStageButton.visible = false;
+					newStageButton.visible = true;
+					updateStageButton.visible = true;
+					removeStageButton.visible = true;
 				}
 			}
 			
@@ -627,6 +750,7 @@
 						user.login = StringUtil.trim(inputUserLogin.text);
 						user.name = StringUtil.trim(inputUserName.text);
 						user.email = StringUtil.trim(inpuUserEmail.text);
+						user.period = CastEntities.castStage(cbSystemStage.selectedItem);
 						if(!firstEntry && userGroup.user.email != user.email){
 							emailChanged = true;
 						}
@@ -660,6 +784,7 @@
 						user.login = StringUtil.trim(inputUserLoginState.text);
 						user.name = StringUtil.trim(inputUserNameState.text);
 						user.email = StringUtil.trim(inputUserEmailState.text);
+						user.period = CastEntities.castStage(cbSystemStageState.selectedItem);
 						if(!firstEntry && userGroup.user.email != user.email){
 							emailChanged = true;
 						}
@@ -749,6 +874,7 @@
 						userGroup.user = CastEntities.castUser(dgUsers.selectedItem.user);
 						userGroup.group = dgUsers.selectedItem.group;
 						cbUserGroup.selectedIndex = Util.objectTakesPost("groupId", ArrayCollection(cbUserGroup.dataProvider), userGroup.group);
+						cbSystemStage.selectedIndex = Util.objectTakesPost("id", ArrayCollection(cbSystemStage.dataProvider), userGroup.user.period);
 						inputUserName.text = userGroup.user.name;
 						inputUserLogin.text = userGroup.user.login;
 						inpuUserEmail.text = userGroup.user.email;
@@ -764,6 +890,7 @@
 						userGroup.user = CastEntities.castUser(dgUsersState.selectedItem.user);
 						userGroup.group = dgUsersState.selectedItem.group;
 						cbUserGroupState.selectedIndex = Util.objectTakesPost("groupId", ArrayCollection(cbUserGroupState.dataProvider), userGroup.group);
+						cbSystemStageState.selectedIndex = Util.objectTakesPost("id", ArrayCollection(cbSystemStageState.dataProvider), userGroup.user.period);
 						inputUserNameState.text = userGroup.user.name;
 						inputUserLoginState.text = userGroup.user.login;
 						inputUserEmailState.text = userGroup.user.email;
@@ -807,6 +934,13 @@
 						newUserButton.visible = false;
 						removeUserButton.visible = false;
 					}
+					if (tabNav.selectedIndex == 4){
+						clearFieldsStage();
+						saveStageButton.visible = true;
+						updateStageButton.visible = false;
+						newStageButton.visible = false;
+						removeStageButton.visible = false;
+					}
 				}
 				else{
 					clearFieldsUser();
@@ -818,8 +952,8 @@
 			}
 			
 			private function clearFieldsMenu(): void{
-				inputMenuName.text = "";
-				inputMenuLabel.text = "";	
+				inputMenuLabel.text = "";
+				inputMenuName.text = "";	
 			}
 			
 			private function clearFieldsFunction(): void{
@@ -849,6 +983,12 @@
 					//scbGrupoUsuarioAlt.selectedIndex = -1;
 					//dgUsuariosAlt.dataProvider = new ArrayCollection;
 				}
+			}
+			
+			private function clearFieldsStage(): void{
+				inputStageCourse.text = "";
+				inputStageClass.text = "";
+				inputStagePeriod.text = "";	
 			}
 			
 			private function filtrateUserByGroup(): void{
@@ -900,6 +1040,21 @@
                		createMenuButton.enabled = false;
             		updateMenuButton.enabled = false;
             	    removeMenuButton.enabled = false;
+        		}
+            }
+            
+            private function handleValidateStage(eventObj:ValidationResultEvent):void {
+				if (StringUtil.trim(inputStageCourse.text) != "" && 
+					StringUtil.trim(inputStageClass.text) != "" &&
+					StringUtil.trim(inputStagePeriod.text) != ""){     
+               		saveStageButton.enabled = true;
+            		updateStageButton.enabled = true;
+            	    removeStageButton.enabled = true;
+        		}
+        		else{        
+               		saveStageButton.enabled = false;
+            		updateStageButton.enabled = false;
+            	    removeStageButton.enabled = false;
         		}
             }
             
@@ -1035,15 +1190,19 @@
 		<mx:method name="updateFunction" result="saveFunction_result(event)" fault="failure(event)"/>
 		<mx:method name="getFunctionByMenu" result="getFunctionByMenu_result(event)" fault="failure(event)"/>
 		<mx:method name="saveGroup" result="saveGroup_result(event)" fault="failure(event)"/>
+		<mx:method name="createSystemStage" result="saveSystemStage_result(event)" fault="failure(event)"/>
+		<mx:method name="updateSystemStage" result="saveSystemStage_result(event)" fault="failure(event)"/>
 		<mx:method name="updateGroup" result="saveGroup_result(event)" fault="failure(event)"/>
 		<mx:method name="saveUser" result="saveUser_result(event)" fault="failure(event)"/>
 		<mx:method name="getUserByGroup" result="getUserByGroup_result(event)" fault="failure(event)"/>
 		<mx:method name="getUserGroupByUser" result="getUserGroupByUser_result(event)" fault="failure(event)"/>
 		<mx:method name="getUserByLogin" result="getUserByLogin_result(event)" fault="ExistingUserFailure(event)"/>
+		<mx:method name="systemStageList" result="systemStageList_result(event)" fault="failure(event)"/>
 		<mx:method name="removeMenu" result="removeMenu_result()" fault="menuFailure(event)"/>
 		<mx:method name="removeFunction" result="removeFunction_result()" fault="failure(event)"/>
 		<mx:method name="removeGroup" result="removeGroup_result()" fault="groupFailure(event)"/>
 		<mx:method name="removeUserGroup" result="removeUserGroup_result()" fault="removeFail(event)"/>
+		<mx:method name="deleteSystemStage" result="deleteSystemStage_result()" fault="failure(event)"/>
 		<mx:method name="generatePassword" result="generatePassword_result(event)" fault="failure(event)"/>
 		
 	</mx:RemoteObject>
@@ -1071,6 +1230,18 @@
     	property="text" valid="handleValidaMenu(event)" invalid="handleValidaMenu(event)"
     	requiredFieldError="Informe o rótulo do menu."/>
     	
+    <mx:Validator required="true" id="courseStageValidator" source="{inputStageCourse}"
+    	property="text" valid="handleValidateStage(event)" invalid="handleValidateStage(event)"
+    	requiredFieldError="Informe a disciplina da turma."/>
+    	
+    <mx:Validator required="true" id="courseClassStageValidator" source="{inputStageClass}"
+    	property="text" valid="handleValidateStage(event)" invalid="handleValidateStage(event)"
+    	requiredFieldError="Informe a turma."/>
+    	
+    <mx:Validator required="true" id="periodStageValidator" source="{inputStagePeriod}"
+    	property="text" valid="handleValidateStage(event)" invalid="handleValidateStage(event)"
+    	requiredFieldError="Informe a periodo da turma."/>
+    	
     <mx:Validator required="true" id="functionNameValidator" source="{inputFunctionName}"
     	property="text" valid="handleValidateFunction(event)" invalid="handleValidateFunction(event)"
     	requiredFieldError="Informe o nome da função."/>
@@ -1090,6 +1261,10 @@
     <mx:Validator required="true" id="loginUserValidator" source="{inputUserLogin}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
     	requiredFieldError="Informe o login do usuário."/>
+    	
+    <mx:Validator required="true" id="systemStageValidator" source="{cbSystemStage}"
+    	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
+    	requiredFieldError="Informe a turma do usuário."/>
     	
     <mx:Validator required="true" id="userNameValidator" source="{inputUserName}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
@@ -1120,20 +1295,22 @@
 		
 		<mx:Canvas label="User" width="100%" height="100%" id="canvas4">
 			<mx:ComboBox prompt="select..." x="64" y="10" width="548" labelField="name" id="cbUserGroup" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
-			<mx:TextInput x="64" y="41" width="548" id="inputUserName" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="64" y="70.5" width="348" id="inputUserLogin" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="478" y="70.5" width="134" id="inputUserPassword" displayAsPassword="true"/>
-			<mx:TextInput x="64" y="100.5" width="548" id="inpuUserEmail" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
-			<mx:Button x="243.5" y="132.5" label="   Save" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButton" height="28" enabled="false"/>
-			<mx:Button x="100.5" y="132.5" label="   New" width="135" height="28" id="newUserButton" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
-			<mx:Button x="386.5" y="132.5" label="   Delete" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButton" height="28"/>
-			<mx:Button x="243.5" y="132.5" label="   Update" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButton" height="28"/>
-			<mx:Label x="10" y="11.5" text="Group:" id="labelGrupoUsuario"/>
-			<mx:Label x="10" y="43" text="Name:" id="labelNomeUsuario"/>
-			<mx:Label x="12" y="72.5" text="Login:" id="labelLoginUsuario"/>
-			<mx:Label x="12" y="102.5" text="Email:" id="labelEmailUsuario"/>
-			<mx:Label x="420" y="72.5" text="Password:" id="labelSenhaUsuario"/>
-			<mx:DataGrid x="10" y="168.5" width="602" height="188.5" draggableColumns="false" change="selectUser()" itemClick="selectUser()"
+			<mx:ComboBox prompt="select..." x="62" y="39.5" width="550" labelFunction="showStage" id="cbSystemStage" toolTip="{toolTipSystemStage}"/>
+			<mx:TextInput x="64" y="69" width="548" id="inputUserName" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="64" y="98.5" width="252.5" id="inputUserLogin" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="404.5" y="98.5" width="207.5" id="inputUserPassword" displayAsPassword="true"/>
+			<mx:TextInput x="64" y="128.5" width="548" id="inpuUserEmail" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
+			<mx:Button x="243.5" y="160.5" label="   Save" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButton" height="28" enabled="false"/>
+			<mx:Button x="100.5" y="160.5" label="   New" width="135" height="28" id="newUserButton" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
+			<mx:Button x="386.5" y="160.5" label="   Delete" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButton" height="28"/>
+			<mx:Button x="243.5" y="160.5" label="   Update" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButton" height="28"/>
+			<mx:Label x="9" y="11.5" text="Group:" id="labelGrupoUsuario"/>
+			<mx:Label x="12" y="41" text="Class:" id="labelClass"/>
+			<mx:Label x="10" y="71" text="Name:" id="labelNomeUsuario"/>
+			<mx:Label x="12" y="100.5" text="Login:" id="labelLoginUsuario"/>
+			<mx:Label x="12" y="130.5" text="Email:" id="labelEmailUsuario"/>
+			<mx:Label x="327.5" y="100.5" text="Password:" id="labelSenhaUsuario"/>
+			<mx:DataGrid x="10" y="196.5" width="602" height="190.5" draggableColumns="false" change="selectUser()" itemClick="selectUser()"
 					 labelFunction="labelGridUsers" id="dgUsers">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Login" width="200" sortCompareFunction="loginCompare"/>
@@ -1149,7 +1326,7 @@
 			<mx:Button x="548" y="23" label="New" width="63" id="botaoNovoGrupo" height="23" click="changeSaver()"/>
 			<mx:Button x="315" y="90" label="   Delete" click="removeGroup()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeGroupButton" height="28" visible="false" enabled="false"/>
 			<mx:Button x="172" y="90" label="   Update" click="updateGroup()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateGroupButton" height="28" visible="false" enabled="false"/>
-			<mx:DataGrid x="10" y="141" width="602" height="216" change="selectGroup()" itemClick="selectGroup()"
+			<mx:DataGrid x="10" y="141" width="602" height="246" change="selectGroup()" itemClick="selectGroup()"
 					draggableColumns="false" labelFunction="labelGridGroups" id="dgGroups">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Grupo"/>
@@ -1162,12 +1339,12 @@
 			<mx:TextInput x="64" y="73" width="548" id="inputMenuLabel" toolTip="{toolTipLabelMenu}" change="handleValidaMenu(null)"/>
 			<mx:Button x="243.5" y="111" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" click="saveMenu()" width="135" id="createMenuButton" height="28" enabled="false"/>
 			<mx:Button x="548" y="23" label="New" width="63" click="changeSaver()" id="botaoNovoMenu" height="23"/>
-			<mx:Label x="10" y="47" text="Name:" id="labelNomeMenu"/>
-			<mx:Label x="10" y="75" text="Label:" id="labelRotuloMenu"/>
+			<mx:Label x="10" y="47" text="Name:" id="labelMenuCourse"/>
+			<mx:Label x="10" y="75" text="Label:" id="labelMenuClass"/>
 			<mx:Button x="315" y="111" label="   Delete" click="removeMenu()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeMenuButton" height="28" visible="false" enabled="false"/>
 			<mx:Button x="172" y="111" label="   Update" click="updateMenu()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateMenuButton" height="28" enabled="false" visible="false"/>
 			<mx:DataGrid x="10" y="155" width="602" change="selectMenu()" itemClick="selectMenu()" 
-					height="204" labelFunction="labelGridMenus" draggableColumns="false" id="dgMenus">
+					height="232" labelFunction="labelGridMenus" draggableColumns="false" id="dgMenus">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Label" width="100"/>
 					<mx:DataGridColumn headerText="Name"/>
@@ -1187,11 +1364,32 @@
 			<mx:Label x="10" y="16.5" text="Menu:" id="labelCbMenu"/>
 			<mx:Label x="10" y="78" text="Name:" id="labelNomeFuncao"/>
 			<mx:Label x="10" y="106" text="Label:" id="labelRotuloFuncao"/>
-			<mx:DataGrid x="10" y="189" width="602" height="168" change="selectFunction()" itemClick="selectFunction()"
+			<mx:DataGrid x="10" y="189" width="602" height="198" change="selectFunction()" itemClick="selectFunction()"
 					draggableColumns="false" labelFunction="labelGridFunctions" id="dgFunctions">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Label" width="100"/>
 					<mx:DataGridColumn headerText="Name"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Canvas>
+		
+		<mx:Canvas label="Stage" width="100%" height="100%" id="canvas5">		
+			<mx:TextInput x="74" y="32" width="538" id="inputStageCourse" toolTip="{toolTipStageCourse}" change="handleValidateStage(null)"/>
+			<mx:TextInput x="74" y="60" width="235" id="inputStageClass" toolTip="{toolTipStageClass}" change="handleValidateStage(null)"/>
+			<mx:TextInput x="406" y="60" width="206" id="inputStagePeriod" toolTip="{toolTipStagePeriod}" change="handleValidateStage(null)"/>
+			<mx:Button x="243.5" y="107" label="   Register" icon="@Embed(source='../../image/disquete.png')" click="createSystemStage()" width="135" id="saveStageButton" height="28" enabled="false"/>
+			<mx:Button x="548" y="10" label="New" width="63" click="changeSaver()" id="newStageButton" height="23"/>
+			<mx:Label x="317" y="62" text="semester:" id="labelStagePeriod" width="81" textAlign="right"/>
+			<mx:Label x="10" y="34" text="Course:" id="labelStageCourse" width="56" textAlign="right"/>
+			<mx:Label x="10" y="62" text="Class:" id="labelStageClass" width="56" textAlign="right"/>
+			<mx:Button x="315" y="107" label="   Delete" click="deleteSystemStage()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeStageButton" height="28" visible="false" enabled="false"/>
+			<mx:Button x="172" y="107" label="   Update" click="updateSystemStage()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateStageButton" height="28" enabled="false" visible="false"/>
+			<mx:DataGrid x="10" y="143" width="602" change="selectStage()" itemClick="selectStage()" 
+					height="244" labelFunction="labelGridStages" draggableColumns="false" id="dgStages">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Course" width="400"/>
+					<mx:DataGridColumn headerText="Class"/>
+					<mx:DataGridColumn headerText="Period"/>
 				</mx:columns>
 			</mx:DataGrid>
 		</mx:Canvas>
