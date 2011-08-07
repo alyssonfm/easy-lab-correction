@@ -55,13 +55,6 @@ public class AssignmentManager extends Manager {
 	private final double PENALTY_DAY_LATE_DEFAULT = -1;
 	private final double AUTOMATIC_TESTS_PERCENTAGE_DEFAULT = -1;
 
-	/*
-	 * String a qual receberá o nome do metodo chamado: - Se foi
-	 * cadastraassignment, recebe "criado" - Se foi editaassignment, recebe
-	 * "atualizado"
-	 * 
-	 * Isso permite-nos reusar o codigo de validacao dos assignments
-	 */
 	private String assignmentNextState = "NULL";
 
 	/**
@@ -186,7 +179,7 @@ public class AssignmentManager extends Manager {
 					.msg("Assignment"));
 		}
 
-		this.assignmentNextState = "criado";
+		this.assignmentNextState = "created";
 
 		assignmentTemp.setTestsDirectory("");
 		assignmentTemp.setInterfaceDirectory("");
@@ -216,14 +209,14 @@ public class AssignmentManager extends Manager {
 					.msg("Assignment"));
 		}
 
-		this.assignmentNextState = "atualizado";
+		this.assignmentNextState = "updated";
 
 		int currentAssignmentState = computesNewAssignmentState(assignmentTemp);
 
 		switch (currentAssignmentState) {
 		case (ASSIGNMENT_IN_CREATION):
-			// Esse caso nunca deve ocorrer, pois nesse estado deve haver o
-			// cadastro de assignments e nao a edicao
+			// This case should never occur, since this state should be the 
+			// registration of assignments rather than editing.
 			validateAssignmentInCreation(assignmentTemp);
 			break;
 
@@ -248,7 +241,7 @@ public class AssignmentManager extends Manager {
 					ErrorMsgs.UNKNOWN_ASSIGNMENT_STATE.msg());
 		}
 
-		// OK, passou pelos casos de excecao, pode seguir em frente! =)
+		// OK, passed by the cases of exception, can move on! =)
 		Assignment a;
 
 		try {
@@ -265,7 +258,7 @@ public class AssignmentManager extends Manager {
 	}
 
 	/*
-	 * Nao estah sendo usado ainda... E nao estah em nossos planos usa-lo...
+	 * Not being used yet ... And is not in our plans to use it ...
 	 */
 	/**
 	 * Procedure used to delete an assignment of system.<br>
@@ -293,15 +286,17 @@ public class AssignmentManager extends Manager {
 	}
 
 	/* ************************************************************
-	 * METODOS PRIVADOS
+	 * PRIVATE METHODS
 	 * ************************************************************
 	 */
 	private int computesNewAssignmentState(Assignment assignmentTemp)
 			throws AssignmentException {
 
-		// Antes de Computar o estado do novo assignment, vamos checar se houve
-		// alguma modificacao com relacao ao antigo estado e aplicar as devidas
-		// restricoes
+		/*
+		 * Compute the state before the new assignment, 
+		 * we check if there is any change with respect to 
+		 * the former state and apply the appropriate restrictions.
+		 */
 		if (assignmentTemp == null) {
 			throw new AssignmentException(ErrorMsgs.NULL_OBJECT
 					.msg("Assignment"));
@@ -314,7 +309,7 @@ public class AssignmentManager extends Manager {
 	private void checksDatesModification(Assignment newAssignment)
 			throws AssignmentException {
 
-		// Tempo nesse instante
+		// Time in the instant
 		Date currentDate = easyCorrectionUtil.getDataNow();
 		Assignment oldAssignment = this.getAssignment(newAssignment.getId());
 
@@ -325,7 +320,7 @@ public class AssignmentManager extends Manager {
 		case (ASSIGNMENT_IN_CREATION):
 		case (ASSIGNMENT_CREATED):
 			// LIBERAR, ENTREGA E DISCUSSAO PODEM SER MUDADAS
-			// Mas soh para o dia atual ou depois
+			// But only for the current day or after.
 			if (newAssignment.getReleaseDate() == null
 					|| newAssignment.getReleaseDate().before(currentDate)) {
 				throw new AssignmentException(
@@ -453,7 +448,7 @@ public class AssignmentManager extends Manager {
 						.getDeliveryDate().equals(
 								newAssignment.getReleaseDate()))) {
 			throw new AssignmentException(
-					"Data Limite para Entrega anterior/igual a Data de Liberacao. O roteiro nao pode ser "
+					"Deadline for delivery before/same release date. The assignment can not be "
 							+ assignmentNextState + "!");
 
 		} else if (newAssignment.getDiscussionDate() != null
@@ -463,7 +458,7 @@ public class AssignmentManager extends Manager {
 						.getDiscussionDate().equals(
 								newAssignment.getDeliveryDate()))) {
 			throw new AssignmentException(
-					"Data Limite para Discussao anterior/igual a Data Limite para Entrega. O roteiro nao pode ser "
+					"Deadline for discussion previous/equal to deadline for submission. The assignment can not be "
 							+ assignmentNextState + "!");
 
 		}
@@ -521,14 +516,14 @@ public class AssignmentManager extends Manager {
 				&& !assignment.getTestsDirectory().endsWith(testsDirDefault)) {
 			throw new AssignmentException(
 					ErrorMsgs.WRONG_SERVER_TEST_DIR_HIERARCHY
-							.msg("atualizado"));
+							.msg("updated"));
 		} else if ((assignment.getInterfaceDirectory() != null && !assignment
 				.getInterfaceDirectory().equals(""))
 				&& !assignment.getInterfaceDirectory().endsWith(
 						environmentDirDefault)) {
 			throw new AssignmentException(
 					ErrorMsgs.WRONG_SERVER_INTERFACE_DIR_HIERARCHY
-							.msg("atualizado"));
+							.msg("updated"));
 		}
 	}
 

@@ -165,15 +165,15 @@ public class System {
 
 		if (userGroup == null) {
 			throw new EasyCorrectionException(ErrorMsgs.OBJ_NOT_FOUND
-					.msg("O GrupoUsuario"));
+					.msg("The UserGroup"));
 		}
 		if (userGroup.getUser() == null) {
 			throw new EasyCorrectionException(ErrorMsgs.OBJ_NOT_FOUND
-					.msg("O Usuario"));
+					.msg("The User"));
 		}
 		if (userGroup.getGroup() == null) {
 			throw new EasyCorrectionException(ErrorMsgs.OBJ_NOT_FOUND
-					.msg("O Grupo"));
+					.msg("The Group"));
 		}
 
 		if (userGroup.getUser() != null) {
@@ -208,7 +208,7 @@ public class System {
 					userGroup = accessUserManager.updateUser(userGroup, us);
 				} catch (ObjectNotFoundException e) {
 					userGroup = accessUserManager.createUser(userGroup);
-					createTeamForIncomingAluno(userGroup);
+					createTeamForIncomingStudent(userGroup);
 				}
 			} else {
 				try {
@@ -217,25 +217,25 @@ public class System {
 						if (!userGroup.getUser().getUserId().equals(
 								u.getUserId())) {
 							throw new ObjectNotFoundException(
-									"Nao eh possivel cadastrar o usuario, este login ja existe.");
+									"It is not possible to register the User, this login already exists.");
 						}
 					}
 					if (use  != null) {
 						if (!userGroup.getUser().getUserId().equals(
 								use.getUserId())) {
 							throw new ObjectNotFoundException(
-									"Nao eh possivel cadastrar o usuario, este e-mail ja existe.");
+									"It is not possible to register the User, this e-mail already exists.");
 						}
 					}
 					userGroup = accessUserManager.updateUser(userGroup, us);
 				} catch (ObjectNotFoundException e) {
 					if (u != null) {
 						throw new ObjectNotFoundException(
-								"Nao eh possivel cadastrar o usuario, este login ja existe.");
+								"It is not possible to register the User, this login already exists.");
 					}
 					if (use != null) {
 						throw new ObjectNotFoundException(
-								"Nao eh possivel cadastrar o usuario, este e-mail ja existe.");
+								"It is not possible to register the User, this e-mail already exists.");
 					}
 				}
 			}
@@ -278,7 +278,7 @@ public class System {
 		return accessUserManager.listUsers();
 	}
 
-	public List<Group> groupList() {
+	public List<Group> listGroups() {
 		return accessPermissionManager.listGroups();
 	}
 
@@ -387,7 +387,7 @@ public class System {
 		Assignment assign = assignmentManager.saveAssignment(tempAssignment);
 		List<Team> teams = teamManager.getTeams();
 		List<UserGroup> users = accessUserManager
-				.listUserGroupsByGroup("Aluno");
+				.listUserGroupsByGroup("Student");
 		teamManager.allocateTeamsForUsers(assign, teams, users);
 		return assign;
 	}
@@ -490,7 +490,7 @@ public class System {
 			try {
 				compilationUnit(sourceDirectory, testsDirectory, libDirectory);
 			} catch (CompilationException compilationError) {
-				return "ERRO DE COMPILAÇÂO: \n" + compilationError.getMessage();
+				return "COMPILATION ERROR: \n" + compilationError.getMessage();
 			}
 
 			// Running Tests
@@ -508,9 +508,9 @@ public class System {
 				submissionManager.deleteSubmission(submission);
 			}
 		} else {
-			result = "Este roteiro não possui testes automáticos.";
+			result = "This assessment not has automatic tests.";
 			assessmentManager.setAssessment(submission, 0, result);
-			return "Resultado: " + result;
+			return "Result: " + result;
 		}
 
 		return result;
@@ -550,9 +550,9 @@ public class System {
 	public TeamHasUserHasAssignment changeTeam(TeamHasUserHasAssignment tua)
 			throws EasyCorrectionException {
 		UserGroup ug = getUserGroupByUser(tua.getUser().getUserId()).get(0);
-		if (!ug.getGroup().getName().equals("Aluno")) {
+		if (!ug.getGroup().getName().equals("Student")) {
 			throw new EasyCorrectionException(
-					"Mudanca de equipe nao realizada! Aluno inexistente.");
+					"Change of team not held! Student inexistent.");
 		}
 		return teamManager.changeTeam(tua);
 	}
@@ -676,12 +676,12 @@ public class System {
 	 */
 
 	// It came from AccessUserPermission
-	public void createTeamForIncomingAluno(UserGroup userGroup)
+	public void createTeamForIncomingStudent(UserGroup userGroup)
 			throws EasyCorrectionException {
 		Team team = new Team();
-		if (userGroup.getGroup().getName().equalsIgnoreCase("Aluno")) {
+		if (userGroup.getGroup().getName().equalsIgnoreCase("Student")) {
 			List<UserGroup> gu = DAOFactory.DEFAULT.buildUserGroupDAO()
-					.findByGroup("Aluno");
+					.findByGroup("Student");
 			List<Team> teams = teamManager.getTeams();
 			int userNumber = gu.size() + 1;
 			if (userNumber > teams.size()) {

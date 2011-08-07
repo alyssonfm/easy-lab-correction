@@ -144,7 +144,7 @@ public class SubmissionManager {
 	}
 
 	/**
-	 * Funtion used to retrieve a submission by a submission identifier received
+	 * Function used to retrieve a submission by a submission identifier received
 	 * as parameter.<br>
 	 * 
 	 * @param submissionId
@@ -168,7 +168,7 @@ public class SubmissionManager {
 	 */
 	public void deleteSubmission(Submission sub) throws EasyCorrectionException {
 		if (sub == null) {
-			throw new SubmissionException("Submissão inexistente!");
+			throw new SubmissionException("Submission inexistent!");
 		}
 		Submission submission = getSubmission(sub.getId());
 		submission = (Submission) SwapperAtributosReflect.swapObject(

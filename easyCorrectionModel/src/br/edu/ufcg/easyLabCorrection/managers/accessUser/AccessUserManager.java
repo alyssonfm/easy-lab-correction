@@ -77,7 +77,7 @@ public class AccessUserManager extends Manager {
 			try {
 				ug = createUserGroup(userGroup);
 			} catch (ObjectNotFoundException e) {
-				System.out.println("Erro!");
+				System.out.println("Error!");
 			}
 		}
 		return ug;
@@ -319,7 +319,7 @@ public class AccessUserManager extends Manager {
 			throw new EasyCorrectionException(ErrorMsgs.OBJ_NOT_FOUND
 					.msg("User"));
 		}
-		// Gera o md5 da senha
+		// Generates the password's MD5.
 		String password = MD5Generator.md5(user.getPassword());
 		user.setPassword(password);
 
