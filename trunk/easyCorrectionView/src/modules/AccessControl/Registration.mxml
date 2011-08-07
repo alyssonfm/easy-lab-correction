@@ -8,13 +8,13 @@
 		<mx:State name="teacherState">
 			<mx:RemoveChild target="{tabNav}"/>
 			<mx:AddChild position="lastChild">
-				<mx:ComboBox prompt="select..." x="66" y="10" width="548" labelField="name" id="cbUserGroupState" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
+				<mx:ComboBox prompt="select..." x="66" y="10" width="548" labelField="name" id="cbUserGroupState" change="filtrateUserByGroup()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="64" y="71" width="548" id="inputUserNameState" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="64" y="71" width="548" id="inputUserNameState" change="handleValidaUsuario(null)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="64" y="100.5" width="348" id="inputUserLoginState" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="64" y="100.5" width="348" id="inputUserLoginState" change="handleValidaUsuario(null)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:TextInput x="500" y="100.5" width="112" id="inputUserPasswordState" displayAsPassword="true"/>
@@ -41,7 +41,7 @@
 				<mx:Label x="12" y="102.5" text="Login:" id="labelUserLoginState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="64" y="130.5" width="548" id="inputUserEmailState" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="64" y="130.5" width="548" id="inputUserEmailState" change="handleValidaUsuario(null)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="12" y="132.5" text="Email:" id="labelUserEmailState"/>
@@ -59,7 +59,7 @@
 				</mx:DataGrid>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:ComboBox prompt="select..." x="64" y="40" width="550" labelFunction="showStage" id="cbSystemStageState" toolTip="{toolTipSystemStage}"/>
+				<mx:ComboBox prompt="select..." x="64" y="40" width="550" labelFunction="showStage" id="cbSystemStageState" />
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="12" y="41.5" text="Class:" id="labelClassState"/>
@@ -86,7 +86,7 @@
 			import mx.rpc.events.ResultEvent;
 			import mx.validators.EmailValidator;
 			import Scripts.ModulesController;
-			
+	/*		
 			[Bindable]
 			private var toolTipMenuName:String = 
 				"(Obrigatório) Informe o nome do menu.";
@@ -147,7 +147,7 @@
 			[Bindable]
 			private var toolTipUserGroup:String = 
 				"(Obrigatório) Informe um grupo para o Usuário.";
-			
+		*/	
 			
 			private var menus: ArrayCollection = new ArrayCollection();
 			private var groups: ArrayCollection = new ArrayCollection();
@@ -379,7 +379,7 @@
 					case "Class":
 						sLabel = item.courseClass;
 						break;
-					case "Period":
+					case "Semester":
 						sLabel = item.semester;
 						break;
 				}
@@ -846,16 +846,20 @@
 				if(passwordSaved == ""){
 					passwordSaved = generatedPassword;
 				}
-				message = "<BR>Congratulations, you were registered in the Easy Lab Correction system from (SUBJECT) .</BR>" +
+				message = "<BR>Dear "+ pUserGroup.user.name +",</BR>" +
+						"<BR></BR>" +  
+						"<BR>Congratulations, an ELC student account has been created for you.</BR>" +
 						"<BR></BR>" +				
-						"<BR>We inform you that the programming assignments are going to be submitted </BR>" +
-						"<BR>at the system with the following access data:</BR>" +
+						"<BR>Enjoy the most from the system assignment submission facilities.</BR>" + 
+						"<BR>Your access data are the following:</BR>" +
 						"<BR></BR>" +
-						"Login:<BR>" + pUserGroup.user.login + "</BR>" + 
+						"<BR>Login:</BR>" + 
+						"<BR>"+pUserGroup.user.login + "</BR>" + 
 						"<BR>Password:</BR><BR>"+ passwordSaved +"</br>" + 
-						"<p>Obs.:Please remember! Your password was randomly generated and it unstraferable, " +
+						"<p>Obs.: Please remember! Your password was randomly generated and it unstraferable, " +
 						"so we suggest you to update it imediatelly.</p>" + 
-						"<BR>Click <a href=http://les.dsc.ufcg.edu.br:8080/EasyLabCorrection/>here</a> to access the system.</BR>" +
+						"<BR>You can log in at</BR>"
+						"<BR><a href=https://les.dsc.ufcg.edu.br:8443/EasyLabCorrection/>https://les.dsc.ufcg.edu.br:8443/EasyLabCorrection/</a></BR>" +
 						"<BR></BR>" +
 						"<BR>Graciously,</BR>" +
 						"<BR>Easy Lab Correction Team</BR>";
@@ -1030,7 +1034,7 @@
 				}
 			}
 						
-			private function handleValidaMenu(eventObj:ValidationResultEvent):void {
+			private function handleValidateMenu(eventObj:ValidationResultEvent):void {
 				if (StringUtil.trim(inputMenuName.text) != "" && StringUtil.trim(inputMenuLabel.text) != ""){     
                		createMenuButton.enabled = true;
             		updateMenuButton.enabled = true;
@@ -1223,83 +1227,83 @@
 	</mx:HTTPService>
 	
 	<mx:Validator required="true" id="menuNameValidator" source="{inputMenuName}"
-    	property="text" valid="handleValidaMenu(event)" invalid="handleValidaMenu(event)"
-    	requiredFieldError="Informe o nome do menu."/>
+    	property="text" valid="handleValidateMenu(event)" invalid="handleValidateMenu(event)"
+    	requiredFieldError="Please, write the Menu name."/>
     	
     <mx:Validator required="true" id="labelMenuValidator" source="{inputMenuLabel}"
-    	property="text" valid="handleValidaMenu(event)" invalid="handleValidaMenu(event)"
-    	requiredFieldError="Informe o rótulo do menu."/>
+    	property="text" valid="handleValidateMenu(event)" invalid="handleValidateMenu(event)"
+    	requiredFieldError="Please, write the Menu label."/>
     	
     <mx:Validator required="true" id="courseStageValidator" source="{inputStageCourse}"
     	property="text" valid="handleValidateStage(event)" invalid="handleValidateStage(event)"
-    	requiredFieldError="Informe a disciplina da turma."/>
+    	requiredFieldError="Please, write the Course name."/>
     	
     <mx:Validator required="true" id="courseClassStageValidator" source="{inputStageClass}"
     	property="text" valid="handleValidateStage(event)" invalid="handleValidateStage(event)"
-    	requiredFieldError="Informe a turma."/>
+    	requiredFieldError="Please, write the Course class name."/>
     	
     <mx:Validator required="true" id="periodStageValidator" source="{inputStagePeriod}"
     	property="text" valid="handleValidateStage(event)" invalid="handleValidateStage(event)"
-    	requiredFieldError="Informe a periodo da turma."/>
+    	requiredFieldError="Please, write the Course semester."/>
     	
     <mx:Validator required="true" id="functionNameValidator" source="{inputFunctionName}"
     	property="text" valid="handleValidateFunction(event)" invalid="handleValidateFunction(event)"
-    	requiredFieldError="Informe o nome da função."/>
+    	requiredFieldError="Please, write the Function name."/>
     	
     <mx:Validator required="true" id="labelFunctionValidator" source="{inputFunctionLabel}"
     	property="text" valid="handleValidateFunction(event)" invalid="handleValidateFunction(event)"
-    	requiredFieldError="Informe o rótulo da função."/>
+    	requiredFieldError="Please, write the Function label."/>
     	
     <mx:Validator required="true" id="menuFunctionValidtator" source="{cbMenu}"
     	property="text" valid="handleValidateFunction(event)" invalid="handleValidateFunction(event)"
-    	requiredFieldError="Informe o menu da função."/>
+    	requiredFieldError="Please, write the Function menu."/>
     	
     <mx:Validator required="true" id="groupValidator" source="{inputGroup}"
     	property="text" valid="handleValidaGrupo(event)" invalid="handleValidaGrupo(event)"
-    	requiredFieldError="Informe o nome de grupo."/>
+    	requiredFieldError="Please, write the Group name."/>
     	
     <mx:Validator required="true" id="loginUserValidator" source="{inputUserLogin}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
-    	requiredFieldError="Informe o login do usuário."/>
+    	requiredFieldError="Please, write the login."/>
     	
     <mx:Validator required="true" id="systemStageValidator" source="{cbSystemStage}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
-    	requiredFieldError="Informe a turma do usuário."/>
+    	requiredFieldError="Please, write the User class."/>
     	
     <mx:Validator required="true" id="userNameValidator" source="{inputUserName}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
-    	requiredFieldError="Informe o nome do usuário."/>
+    	requiredFieldError="Please, write the username."/>
     	
     <mx:Validator required="true" id="userEmailValidator" source="{inpuUserEmail}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
-    	requiredFieldError="Informe o email do usuário."/>
+    	requiredFieldError="Please, write the User email."/>
     	
     <mx:Validator required="true" id="userGroupValidator" source="{cbUserGroup}"
     	property="text" valid="handleValidaUsuario(event)" invalid="handleValidaUsuario(event)"
-    	requiredFieldError="Informe o grupo do usuário."/>
+    	requiredFieldError="Please, write the user Group."/>
     
     <mx:EmailValidator id="emailValidator" invalid="invalidateEmail(event)" valid="validateEmail(event)"
 		source="{inpuUserEmail}" property="text" trigger="{inpuUserEmail}" 
 		triggerEvent="change"
-		invalidCharError="Seu endereço de email contém caracteres inválidos."
-	    invalidDomainError= "O dominio de seu endereço de email está formatado incorretamente." 
-	    invalidIPDomainError="The endereço IP do dominio de seu email está formatado incorretamente." 
-	    invalidPeriodsInDomainError="O domínio do seu endereço de email possui pontos consecutivos." 
-	    missingAtSignError="Um caracter @ está faltando no seu endereço de email."
-	    missingPeriodInDomainError="Está faltando um ponto (.) no seu endereço de email." 
-	    missingUsernameError="O nome de usuário está faltando no seu endereço de email." 
-	    tooManyAtSignsError="Seu endereço de email contém muitos caracteres @."
+		invalidCharError="The email address contains invalid characters values."
+	    invalidDomainError= "The email address domain is incorrectly formatted." 
+	    invalidIPDomainError="The IP address of the email domain is incorrectly formatted." 
+	    invalidPeriodsInDomainError="The email address domain contains consecutive dots." 
+	    missingAtSignError="The email miss the at (@) character."
+	    missingPeriodInDomainError="The email address miss a dot (.)" 
+	    missingUsernameError="The username is missing." 
+	    tooManyAtSignsError="The email address contains too many at (@) signs."
 	/>
 	
 	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="true">	
 		
 		<mx:Canvas label="User" width="100%" height="100%" id="canvas4">
-			<mx:ComboBox prompt="select..." x="64" y="10" width="548" labelField="name" id="cbUserGroup" toolTip="{toolTipUserGroup}" change="filtrateUserByGroup()"/>
-			<mx:ComboBox prompt="select..." x="62" y="39.5" width="550" labelFunction="showStage" id="cbSystemStage" toolTip="{toolTipSystemStage}"/>
-			<mx:TextInput x="64" y="69" width="548" id="inputUserName" toolTip="{toolTipUserName}" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="64" y="98.5" width="252.5" id="inputUserLogin" toolTip="{toolTipUserLogin}" change="handleValidaUsuario(null)"/>
+			<mx:ComboBox prompt="select..." x="64" y="10" width="548" labelField="name" id="cbUserGroup" change="filtrateUserByGroup()"/>
+			<mx:ComboBox prompt="select..." x="62" y="39.5" width="550" labelFunction="showStage" id="cbSystemStage" />
+			<mx:TextInput x="64" y="69" width="548" id="inputUserName" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="64" y="98.5" width="252.5" id="inputUserLogin" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="404.5" y="98.5" width="207.5" id="inputUserPassword" displayAsPassword="true"/>
-			<mx:TextInput x="64" y="128.5" width="548" id="inpuUserEmail" toolTip="{toolTipUserEmail}" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="64" y="128.5" width="548" id="inpuUserEmail" change="handleValidaUsuario(null)"/>
 			<mx:Button x="243.5" y="160.5" label="   Save" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButton" height="28" enabled="false"/>
 			<mx:Button x="100.5" y="160.5" label="   New" width="135" height="28" id="newUserButton" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
 			<mx:Button x="386.5" y="160.5" label="   Delete" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButton" height="28"/>
@@ -1320,7 +1324,7 @@
 		</mx:Canvas>
 		
 		<mx:Canvas label="Group" width="100%" height="100%" id="canvas3">
-			<mx:TextInput x="74" y="45" width="538" id="inputGroup" toolTip="{toolTipGroupName}" change="handleValidaGrupo(null)"/>
+			<mx:TextInput x="74" y="45" width="538" id="inputGroup" change="handleValidaGrupo(null)"/>
 			<mx:Label x="18" y="45.5" text="Group:" id="labelGrupo"/>
 			<mx:Button x="243.5" y="90" label="   Register" icon="@Embed(source='../../image/disquete.png')" width="135" click="saveGroup()" id="saveGroupButton" height="28" enabled="false"/>
 			<mx:Button x="548" y="23" label="New" width="63" id="botaoNovoGrupo" height="23" click="changeSaver()"/>
@@ -1335,8 +1339,8 @@
 		</mx:Canvas>
 		
 		<mx:Canvas label="Menu" width="100%" height="100%" id="canvas1">		
-			<mx:TextInput x="64" y="45" width="548" id="inputMenuName" toolTip="{toolTipMenuName}" change="handleValidaMenu(null)"/>
-			<mx:TextInput x="64" y="73" width="548" id="inputMenuLabel" toolTip="{toolTipLabelMenu}" change="handleValidaMenu(null)"/>
+			<mx:TextInput x="64" y="45" width="548" id="inputMenuName"  change="handleValidateMenu(null)"/>
+			<mx:TextInput x="64" y="73" width="548" id="inputMenuLabel"  change="handleValidateMenu(null)"/>
 			<mx:Button x="243.5" y="111" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" click="saveMenu()" width="135" id="createMenuButton" height="28" enabled="false"/>
 			<mx:Button x="548" y="23" label="New" width="63" click="changeSaver()" id="botaoNovoMenu" height="23"/>
 			<mx:Label x="10" y="47" text="Name:" id="labelMenuCourse"/>
@@ -1353,9 +1357,9 @@
 		</mx:Canvas>
 		
 		<mx:Canvas label="Function" width="100%" height="100%" id="canvas2">
-			<comp:ComboBoxAC labelField="name" x="62" y="15.5" width="550" id="cbMenu" toolTip="{toolTipMenuFunction}" change="filtrateFunctionsByMenu()"/>
-			<mx:TextInput x="62" y="76" width="550" id="inputFunctionName" toolTip="{toolTipNameFunction}" change="handleValidateFunction(null)"/>
-			<mx:TextInput x="62" y="104" width="550" id="inputFunctionLabel" toolTip="{toolTipNameFunction}" change="handleValidateFunction(null)"/>
+			<comp:ComboBoxAC labelField="name" x="62" y="15.5" width="550" id="cbMenu" change="filtrateFunctionsByMenu()"/>
+			<mx:TextInput x="62" y="76" width="550" id="inputFunctionName"  change="handleValidateFunction(null)"/>
+			<mx:TextInput x="62" y="104" width="550" id="inputFunctionLabel" change="handleValidateFunction(null)"/>
 			<mx:Button x="243.5" y="144" label="   Register" icon="@Embed(source='../../image/disquete.png')" width="135" 
 				id="saveFunctionButton" click="saveFunction()" height="28" enabled="false"/>
 			<mx:Button x="548" y="54" label="New" width="63" id="botaoNovaFuncao" height="23" click="changeSaver()"/>
@@ -1367,16 +1371,16 @@
 			<mx:DataGrid x="10" y="189" width="602" height="198" change="selectFunction()" itemClick="selectFunction()"
 					draggableColumns="false" labelFunction="labelGridFunctions" id="dgFunctions">
 				<mx:columns>
-					<mx:DataGridColumn headerText="Label" width="100"/>
+					<mx:DataGridColumn headerText="Label" width="200"/>
 					<mx:DataGridColumn headerText="Name"/>
 				</mx:columns>
 			</mx:DataGrid>
 		</mx:Canvas>
 		
 		<mx:Canvas label="Stage" width="100%" height="100%" id="canvas5">		
-			<mx:TextInput x="90" y="32" width="522" maxChars="50" id="inputStageCourse" toolTip="{toolTipStageCourse}" change="handleValidateStage(null)"/>
-			<mx:TextInput x="377" y="64" width="235" maxChars="50" id="inputStageClass" toolTip="{toolTipStageClass}" change="handleValidateStage(null)"/>
-			<mx:TextInput x="90" y="62" width="215" maxChars="50" id="inputStagePeriod" toolTip="{toolTipStagePeriod}" change="handleValidateStage(null)"/>
+			<mx:TextInput x="90" y="32" width="522" maxChars="50" id="inputStageCourse" change="handleValidateStage(null)"/>
+			<mx:TextInput x="377" y="64" width="235" maxChars="50" id="inputStageClass" change="handleValidateStage(null)"/>
+			<mx:TextInput x="90" y="62" width="215" maxChars="50" id="inputStagePeriod" change="handleValidateStage(null)"/>
 			<mx:Button x="243.5" y="107" label="   Register" icon="@Embed(source='../../image/disquete.png')" click="createSystemStage()" width="135" id="saveStageButton" height="28" enabled="false"/>
 			<mx:Button x="548" y="10" label="New" width="63" click="changeSaver()" id="newStageButton" height="23"/>
 			<mx:Label x="10" y="64" text="Semester:" id="labelStagePeriod" width="72" textAlign="left"/>
