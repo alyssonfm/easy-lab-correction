@@ -659,12 +659,10 @@ public class AccessPermissionManager extends Manager {
 						.buildPermissionDAO()
 						.findByGroupAndFunction(g.getGroupId(),
 								addPermission.getMenuFunction().getFunctionId());
-				addPermission = anotherP.get(0); // eh garantido que a lista
-				// não
-				// é vazia
+				addPermission = anotherP.get(0); 
 			}
 		}
-		// removendo as permissoes não passada na lista
+		// removendo as permissoes nao passada na lista
 		for (Permission delPermissao : permissaoDoGrupoBanco) {
 			if (!containsFunction(newList, delPermissao.getMenuFunction())) {
 				DAOFactory.DEFAULT.buildPermissionDAO().delete(delPermissao);

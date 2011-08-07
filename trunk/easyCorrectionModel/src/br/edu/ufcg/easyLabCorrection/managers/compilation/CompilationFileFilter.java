@@ -146,7 +146,7 @@ public class CompilationFileFilter {
 	 * Procedure used to scan all directories and all files.<br>
 	 * 
 	 * @param dir
-	 *            The directy which will be verified.<br>
+	 *            The directory which will be verified.<br>
 	 */
 	public ArrayList<String> visitAllDirsAndFilesFindingJars(File dir) {
 		processDirectoryFindingJars(dir);

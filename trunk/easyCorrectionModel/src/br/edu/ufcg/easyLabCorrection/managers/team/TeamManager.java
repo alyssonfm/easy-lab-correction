@@ -154,8 +154,6 @@ public class TeamManager extends Manager {
 	 */
 	public int getNumberOfAllocatedTeams(Assignment assignment) {
 		if (assignment == null) {
-			// throw new ObjectNotFoundException(
-			// "Nao ha equipes alocadas pois o roteiro ainda nao foi criado!");
 			throw new ObjectNotFoundException(ErrorMsgs.NULL_OBJECT
 					.msg("Assignment"));
 		}
@@ -191,17 +189,6 @@ public class TeamManager extends Manager {
 							.getParticipantsMaxNumber().toString()));
 		}
 
-		// if (tua.getAssignment().getParticipantsMaxNumber() ==
-		// getTeamHasUserHasAssignmentByTeamAndAssignment(
-		// tua.getTeam().getId(), tua.getAssignment().getId()).size()) {
-		//
-		// throw new EasyCorrectionException(
-		// "Nao foi possivel mudar de equipe! Limite de integrantes da "
-		// + tua.getTeam().getName()
-		// + " ja alcancado (maximo de "
-		// + tua.getAssignment().getParticipantsMaxNumber()
-		// .toString() + " integrante(s) por equipe).");
-		// }
 		try {
 			getTeam(tua.getTeam().getId());
 		} catch (Exception e) {

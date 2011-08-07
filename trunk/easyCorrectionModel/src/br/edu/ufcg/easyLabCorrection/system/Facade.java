@@ -152,7 +152,7 @@ public class Facade {
 		try {
 			return system.savePermissions(permissions);
 		} catch (Throwable e) {
-			log.error("savePermission()", e);
+			log.error("savePermissions()", e);
 			throw e;
 		}
 	}
@@ -200,7 +200,7 @@ public class Facade {
 
 	public List<Group> groupList() throws Throwable {
 		try {
-			return system.groupList();
+			return system.listGroups();
 		} catch (Throwable e) {
 			log.error("groupList()", e);
 			throw e;
@@ -256,7 +256,7 @@ public class Facade {
 		try {
 			system.deleteUser(userGroup);
 		} catch (Throwable e) {
-			log.error("deleteUser()", e);
+			log.error("deleteUserGroup()", e);
 			throw e;
 		}
 	}
@@ -415,7 +415,7 @@ public class Facade {
 		try {
 			return PasswordGenerator.generatePassword(digitsNumber, userName);
 		} catch (Throwable e) {
-			log.error("gerarSenha()", e);
+			log.error("generatePassword()", e);
 			throw e;
 		}
 	}
@@ -439,7 +439,7 @@ public class Facade {
 		try {
 			return system.getStage(stageId);
 		} catch (Throwable e) {
-			log.error("getPeriod()", e);
+			log.error("getStage()", e);
 			throw e;
 		}
 	}
@@ -448,7 +448,7 @@ public class Facade {
 		try {
 			return system.getCurrentStage();
 		} catch (Throwable e) {
-			log.error("getCurrentPeriod()", e);
+			log.error("getCurrentStage()", e);
 			throw e;
 		}
 	}
@@ -717,12 +717,12 @@ public class Facade {
 	}
 
 	/*******************************************************************
-	 * Facade Avaliacoes
+	 * Facade Assignments
 	 * **********************************************************************
 	 */
 
 	/**
-	 * Retorna todas as equipes
+	 * Return all teams
 	 */
 	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignment(
 			Integer assignmentId, Integer correctorId) throws Throwable {
@@ -754,9 +754,8 @@ public class Facade {
 	}
 
 	/**
-	 * Retorna os usuarios que sao considerados professores, ou seja, checa se
-	 * no grupoUsuario o id_grupo eh 2 ou 3 (ver script do banco para maiores
-	 * informacoes)
+	 * Return the users that be considered instructors - check if
+	 * in userGroup the id_grupo is 2 or 3.
 	 * 
 	 */
 	public List<User> getCorrectors() throws Throwable {

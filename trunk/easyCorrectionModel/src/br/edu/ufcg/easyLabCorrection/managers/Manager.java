@@ -45,7 +45,7 @@ public abstract class Manager {
 		try{
 			HibernateUtil.executeSQL(Constants.bdTestBackupFile);
 		} catch(Exception e){
-			System.out.println("Erro no script do banco.");
+			System.out.println("Error in the database script.");
 		}
 	}
 	
