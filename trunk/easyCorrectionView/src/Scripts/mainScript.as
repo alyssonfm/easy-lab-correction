@@ -225,34 +225,34 @@ private function generateLoginScreen():void {
 private function PressedMenuItem(event: MenuEvent):void  {
      
      //Caso o evento tenha sido num item de menu 'Setor' -> 'Cadastrar'
-     if (event.item.@data == "acesso") {
+     if (event.item.@data == "registrations") {
      	ModulesController.createModule("modules/AccessControl/Registration.swf", this, user);
      }
-     if (event.item.@data == "defPerm") {
+     if (event.item.@data == "permissions") {
      	ModulesController.createModule("modules/AccessControl/Permissions.swf", this, "");
      }
-     if (event.item.@data == "agendaRoteiros") {
+     if (event.item.@data == "assignmentCreation") {
      	ModulesController.createModule("modules/Views/AssignmentSchedule.swf", this, "");
      }
-     if (event.item.@data == "penalidades") {
-     	ModulesController.createModule("modules/Views/Penalidades.swf", this, "");
-     }
-     if (event.item.@data == "atribuicaoDeRoteiros") {
+//     if (event.item.@data == "penalidades") {
+//     	ModulesController.createModule("modules/Views/Penalidades.swf", this, "");
+//     }
+     if (event.item.@data == "evaluatorAllocation") {
      	ModulesController.createModule("modules/Views/AssignmentAllocator.swf", this, "");
      }
-     if (event.item.@data == "notas") {
+     if (event.item.@data == "gradingTables") {
      	ModulesController.createModule("modules/Views/GradeViewer.swf", this, "");
      }
-     if (event.item.@data == "avaliacaoDeRoteiros") {
+     if (event.item.@data == "assignmentAssessment") {
      	ModulesController.createModule("modules/Views/AssingmentCorrector.swf", this, "");
      }
-     if (event.item.@data == "submissaoDeRoteiros") {
+     if (event.item.@data == "assignmentSubmission") {
      	ModulesController.createModule("modules/Views/AssignmentSubmission.swf", this, "");
      }
-     if (event.item.@data == "chat") {
+     if (event.item.@data == "chats") {
      	ModulesController.createModule("modules/Views/Chat.swf", this, "");
      }
-     if (event.item.@data == "criaEquipe") {
+     if (event.item.@data == "createTem") {
      	ModulesController.createModule("modules/Views/TeamManagement.swf", this, "");
      }
      if (event.item.@data == "reinicializaBD") {
