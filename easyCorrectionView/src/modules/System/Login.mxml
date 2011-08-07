@@ -4,7 +4,7 @@
 -->
 
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:les="modules.System.*"
-	width="556" height="446" creationComplete="init()" title="Easy Lab Correction" layout="absolute">
+	width="556" height="420" creationComplete="init()" title="Easy Lab Correction" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -26,7 +26,7 @@
 				import mx.rpc.events.ResultEvent;
 				import mx.rpc.events.FaultEvent;
 				
-				//Mensagems tooltip for information about the empty fields
+				/*Mensagems tooltip for information about the empty fields
 				[Bindable]
 				private var tooltipLogin:String = 
 					"Informe seu nome de usuário neste campo";
@@ -34,7 +34,7 @@
 				[Bindable]
 				private var tooltipPassword:String = 
 					"Informe sua senha neste campo";
-					
+				*/
 				private var func:*;
 					
 		        /*
@@ -70,7 +70,7 @@
 						} 
 					}
 					catch(e:Error){
-						msg = "Serviço indisponível, reinicie a operação.";
+						msg = "Service Unavailable, please restart the operation.";
 					}
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, msg));
 				}
@@ -144,7 +144,7 @@
 					var state: String = String(ModulesController.getParam());
 				
 					var img:Image = new Image();
-					img.source = "Logo projeto LES.jpg";
+					img.source = "ELC_java_logo.jpg";
 					img.x = 210;
 					img.y = 20;
 	                img.width = 140;
@@ -173,9 +173,6 @@
 				
 			]]>
 		</mx:Script>
-				
-		<mx:Label text="Informe seu login e senha para acessar o sistema" fontWeight="bold"
-			textAlign="center" width="379" x="78.5" y="205"/>
 		<mx:Label fontWeight="bold"
 			textAlign="center" width="379" x="78.5" y="173" text="Easy Lab Correction" fontSize="16" height="29" fontStyle="normal"/>
 			
@@ -185,22 +182,22 @@
 			<mx:method name="setSystemStage" result="setSystemStage_result(event)" fault="fail(event)"/>
 		</mx:RemoteObject>
 	
-		<mx:Form width="439" y="223" x="48.5">
-			<mx:FormItem label="Login:" width="100%" required="true">
+		<mx:Form width="439" y="205" x="48.5">
+			<mx:FormItem label="Username:" width="100%" required="true">
 				<mx:TextInput id="input_login" maxChars="100" width="100%" enter="if (button_login.enabled) loginToSend();"
-					toolTip="{tooltipLogin}" change="validatesFields()"/>
+					change="validatesFields()"/>
 			</mx:FormItem>
-			<mx:FormItem label="Senha:" width="100%" required="true">
+			<mx:FormItem label="Password:" width="100%" required="true">
 				<mx:TextInput id="input_password" maxChars="50" width="100%" displayAsPassword="true"
 					enter="if (button_login.enabled) loginToSend();"
-					toolTip="{tooltipPassword}" change="validatesFields()"/>
+					change="validatesFields()"/>
 			</mx:FormItem>
 		</mx:Form>
-		<mx:LinkButton id="changePasswordButton" label="Alterar Senha" x="212.5" y="311" click="changePassword()"/>
-		<mx:HBox width="100%" horizontalAlign="center" verticalAlign="middle" horizontalGap="20" y="359">
-			<mx:Button label="Entrar" id="button_login" click="loginToSend()" 
+		<mx:LinkButton id="changePasswordButton" label="Change Password" x="201" y="299" click="changePassword()"/>
+		<mx:HBox width="100%" horizontalAlign="center" verticalAlign="middle" horizontalGap="20" y="334">
+			<mx:Button label="Log in" id="button_login" click="loginToSend()" 
 				icon="@Embed(source='../../image/login.png')"/>
-			<mx:Button label="Limpar" id="button_clean" click="clearFields()"
+			<mx:Button label="Clean" id="button_clean" click="clearFields()"
 				icon="@Embed(source='../../image/limpar.png')"/>
 		</mx:HBox>
 		

@@ -38,7 +38,7 @@ package modules.System {
 	     */
 	    public function ModuleTitleWindow() {
 	        super();
-	        toolTip = "Segure e arraste a janela pela barra de títulos (onde encontra-se o nome da janela).";
+	        toolTip = "Hold and drag the window title bar.";
 	    }
 	}
 }

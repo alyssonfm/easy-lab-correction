@@ -7,7 +7,7 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="800" height="590" creationComplete="init()" title="Atribuição de Corretores" showCloseButton="true" close="closeWindow()" layout="absolute">
+	width="800" height="590" creationComplete="init()" title="Evaluator-Team Allocation" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -51,7 +51,7 @@
 						}
 					}
 					catch(e:Error){
-						message = "Serviço indisponível, reinicie a operação.";
+						message = "Service Unavailable, please restart the operation.";
 					}
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 				}
@@ -125,7 +125,7 @@
 						}
 					}
 					else{
-						param = new Array(true, "Selecione também o roteiro.");
+						param = new Array(true, "Please, select the Assignment.");
 						ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 					}
 					
@@ -148,11 +148,11 @@
 							facade.getOperation("allocateCorrector").send(assessm);		
 						}
 						else{
-							messageDisplays("Selecione também o corretor.");
+							messageDisplays("Please, select the Evaluator.");
 						}
 					}
 					else{
-						messageDisplays("Selecione uma equipe.");
+						messageDisplays("Now select the Team.");
 					}
 				}
 				
@@ -165,11 +165,11 @@
 							facade.getOperation("allocateCorrector").send(assessm);		
 						}
 						else{
-							messageDisplays("Selecione também o corretor.");
+							messageDisplays("Please, select the Evaluator.");
 						}
 					}
 					else{
-						messageDisplays("Selecione uma equipe para desalocar.");
+						messageDisplays("Please, select the Team to be unallocated.");
 					}
 				}
 				
@@ -221,30 +221,30 @@
 			
 		</mx:RemoteObject>
 		
-		<mx:Label text="Corretor:" fontWeight="bold"
-			textAlign="left" width="74" x="394" y="22"/>
-		<mx:Label text="Roteiro:" fontWeight="bold"
-			textAlign="left" width="64" x="10" y="22"/>
-		<mx:Label text="Equipes:" fontWeight="bold"
-			textAlign="left" width="63" x="10" y="72"/>
-		<comp:ComboBoxAC labelField="name" x="73" y="21" width="304" change="getTeamsNoCorretorList()" id="comboAssignment"/>
-		<comp:ComboBoxAC labelField="name" x="476" y="21" width="294" change="getWithCorretorTeamsList()" id="comboCorrectors" enabled="false"/>
+		<mx:Label text="Evaluator:" fontWeight="bold"
+			textAlign="left" width="74" x="418" y="22"/>
+		<mx:Label text="Assignment:" fontWeight="bold"
+			textAlign="left" width="93" x="10" y="22"/>
+		<mx:Label text="Non-allocated teams:" fontWeight="bold"
+			textAlign="left" width="158" x="10" y="72"/>
+		<comp:ComboBoxAC labelField="name" x="101" y="21" width="309" change="getTeamsNoCorretorList()" id="comboAssignment"/>
+		<comp:ComboBoxAC labelField="name" x="492" y="21" width="278" change="getWithCorretorTeamsList()" id="comboCorrectors" enabled="false"/>
 		<mx:HRule x="10" y="61" width="760" height="3"/>
 		<mx:List id="teamListByAssignmentWithoutCorrector" x="10" y="100" width="352" height="295" labelFunction="exposesEvaluationTeam" itemClick="teamSelectsDeallocated()"/>
-		<mx:Label text="Equipes Selecionadas:" fontWeight="bold" textAlign="left" width="155" x="418" y="72"/>
+		<mx:Label text="Allocated teams:" fontWeight="bold" textAlign="left" width="155" x="418" y="72"/>
 		<mx:List id="teamListByAssignmentCorrector" x="418" y="100" width="352" height="295" labelFunction="exposesEvaluationTeam" itemClick="teamSelectsAllocated()"></mx:List>
 		<mx:Button x="370" y="201" width="40" click="allocatesTheCorretorTeam()" height="40" icon="@Embed(source='../../image/right.png')" fontStyle="normal" fontWeight="bold" fillAlphas="[0.0, 0.0, 0.0, 0.0]" fillColors="[#FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF]" borderColor="#FFFFFF" cornerRadius="20" themeColor="#37612B"/>
 		<mx:Button x="370" y="249" width="40" click="deallocatesTheCorretorTeam()" height="40" icon="@Embed(source='../../image/left.png')" fontStyle="normal" fontWeight="bold" fillAlphas="[0.0, 0.0, 0.0, 0.0]" fillColors="[#FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF]" borderColor="#FFFFFF" cornerRadius="20" themeColor="#37612B"/>
-		<mx:Label text="Total de Equipes sem Avaliador:" fontWeight="bold"
+		<mx:Label text="Total of non-allocated teams:" fontWeight="bold"
 			textAlign="left" width="219" x="10" y="516"/>
-		<mx:Label text="Total de Equipes alocadas por corretor:" fontWeight="bold"
+		<mx:Label text="Total of allocated teams per evaluator:" fontWeight="bold"
 			textAlign="left" width="266" x="418" y="516" id="labelTitulo5"/>
 		<mx:Label text="{teamListByAssignmentCorrector.dataProvider.length}" fontWeight="bold"
 			textAlign="left" width="78" x="692" y="516" id="labelTitle6"/>
 		<mx:Label text="{teamListByAssignmentWithoutCorrector.dataProvider.length}" fontWeight="bold"
-			textAlign="left" width="63" x="237" y="516" id="labelTitle4"/>
-		<mx:Label text="Integrantes: " fontWeight="bold"
-			textAlign="left" width="93.04999" x="10" y="403" height="20"/>
+			textAlign="left" width="82" x="224" y="516" id="labelTitle4"/>
+		<mx:Label text="Team members: " fontWeight="bold"
+			textAlign="left" width="115" x="10" y="403" height="20"/>
 		<mx:List id="membresList" x="10" y="424" width="760" height="84" labelFunction="selecaoLabelIntegrantes"/>
 		
 		
