@@ -283,8 +283,12 @@ public class AccessUserManager extends Manager {
 
 		Pattern patLogin = Pattern.compile("[a-zA-Z0-9]+");
 		Matcher pesqLogin = patLogin.matcher(user.getLogin());
+		
+		Pattern patStage = Pattern.compile("[a-zA-Z0-9]");
+		Matcher pesqStage = patStage.matcher(user.getPeriod().toString());
 
-		if (pesqName.matches() && pesqEmail.matches() && pesqLogin.matches()) {
+		if (pesqName.matches() && pesqEmail.matches() 
+				&& pesqLogin.matches() && pesqStage.matches()) {
 			return true;
 		} else {
 			return false;
