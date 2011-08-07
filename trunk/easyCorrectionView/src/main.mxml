@@ -9,7 +9,7 @@
 	<mx:Style source="style/app_style.css"/>
 	<mx:Script source="Scripts/mainScript.as"/>
 	
-	<mx:Image id="imageELC" x="46" y="15" width="88" height="106" source="Logo projeto LES.jpg" />
+	<mx:Image id="imageELC" x="46" y="15" width="88" height="106" source="ELC_java_logo.jpg" />
     <mx:MenuBar id="menuBar" labelField="@label" menuStyleName="#042E8E" dataProvider="{menuBarCollection}" x="164" y="94" alpha="0.5" cornerRadius="10" color="#042E8E" height="27"/>
     <mx:ViewStack x="0" y="164" id="mainView" width="1034" height="329"/>
     <mx:HRule id="hr" x="28" y="129" width="934.95" height="11"/>

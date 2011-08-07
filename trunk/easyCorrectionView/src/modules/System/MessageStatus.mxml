@@ -38,11 +38,11 @@
 				//Se a mensagem é de erro então exibe uma imagem do X vermelho
 				if (error) {
 					imageError.visible = true;
-					this.title = "Erro";
+					this.title = "Error";
 				//Se a mensagem é de sucesso então exibe uma imagem do V verde
 				}else{
 					successfulImage.visible = true;
-					this.title = "Sucesso";
+					this.title = "Success";
 				}
 			}
 			
