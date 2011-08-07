@@ -116,6 +116,17 @@ public class AssessmentHibernateDAO extends
 		return list;
 	}
 	
+	public void deleteAllAssessmentsByStage(Integer stageId) {
+		HibernateUtil.beginTransaction();
+		Query q = getSession().createSQLQuery("DELETE FROM avaliacao WHERE submissao_id IN ( "+
+				"SELECT s.id FROM submissao s JOIN equipe_has_usuario_has_roteiro eur "+
+				"ON (s.equipe_has_usuario_has_roteiro_id = eur.id) "+
+				"JOIN roteiro r ON (r.id = eur.roteiro_id) WHERE r.stage.id = :stageId) ");
+		q.setParameter("stageId", stageId);
+		q.executeUpdate();
+		HibernateUtil.commitTransactionCloseSession();
+	}
+	
 	public void deleteAllAssessmentsByAssignment(Integer assignmentId) {
 		HibernateUtil.beginTransaction();
 		Query q = getSession().createSQLQuery("DELETE FROM avaliacao WHERE submissao_id IN ( "+

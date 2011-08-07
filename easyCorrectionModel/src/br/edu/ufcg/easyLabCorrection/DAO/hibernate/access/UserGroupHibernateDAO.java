@@ -47,6 +47,16 @@ public class UserGroupHibernateDAO extends
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<UserGroup> findByStage(int stageId) {
+		Query q = getSession().createQuery("from UserGroup where user.period.id = :stageId");
+		q.setParameter("stageId", stageId);
+		q.setCacheable(true);
+		List <UserGroup> list = q.list();
+		instantiatesList(list);
+		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByGroup(String name) {
 		Query q = getSession().createQuery("from UserGroup where group.name like :name " +
 				"and user.period.id = :stageId");

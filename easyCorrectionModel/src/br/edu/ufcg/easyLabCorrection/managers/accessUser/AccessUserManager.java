@@ -16,7 +16,6 @@ import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
-import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 
 /**
@@ -421,6 +420,15 @@ public class AccessUserManager extends Manager {
 					ErrorMsgs.INVALID_AUTHENTICATION.msg());
 		}
 		return bdUser;
+	}
+	
+	/**
+	 * Function used to list all users of the system Easy Lab Correction.<br>
+	 * 
+	 * @return A list with all users of the system.<br>
+	 */
+	public List<UserGroup> getUserGroupByStage(Integer stageId) {
+		return DAOFactory.DEFAULT.buildUserGroupDAO().findByStage(stageId);
 	}
 
 }
