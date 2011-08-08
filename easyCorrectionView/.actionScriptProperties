@@ -28,6 +28,7 @@
     <module application="src/main.mxml" destPath="modules/Views/AssignmentAllocator.swf" optimize="true" sourcePath="src/modules/Views/AssignmentAllocator.mxml"/>
     <module application="src/main.mxml" destPath="modules/Views/TeamManagement.swf" optimize="true" sourcePath="src/modules/Views/TeamManagement.mxml"/>
     <module application="src/main.mxml" destPath="modules/System/RecoverPassword.swf" optimize="true" sourcePath="src/modules/System/RecoverPassword.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/AssignmentImporter.swf" optimize="true" sourcePath="src/modules/Views/AssignmentImporter.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>
