@@ -6,7 +6,7 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="718" height="418" creationComplete="init()" title="Submissão de Roteiro" showCloseButton="true" close="closeWindow()" layout="absolute">
+	width="718" height="418" creationComplete="init()" title="Assignment Submission" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -49,7 +49,7 @@
 						}
 					}
 					catch(e:Error){
-						message = "Serviço indisponível, reinicie a operação.";
+						message = "Service Unavailable, please restart the operation.";
 					}
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 				}
@@ -79,7 +79,7 @@
 			   	 	fileRef.addEventListener(Event.SELECT, selectFile);
 			   	 	fileRef.addEventListener(Event.COMPLETE, completeSend);
 			   	 	fileRef.addEventListener(IOErrorEvent.IO_ERROR, errorSending);
-			    	fileRef.browse(new Array(new FileFilter("Roteiro (*.zip)","*.zip;")));
+			    	fileRef.browse(new Array(new FileFilter("Assignment (*.zip)","*.zip;")));
 				}
 				
 				public function errorSending(evt:Event):void {
@@ -89,7 +89,7 @@
 				}
 				
 				public function deleteSubmission_result(event:ResultEvent):void{
-					var param:Array = new Array(true, "Erro no envio! O pacote zip submetido possui arquivos que não são tipo JAVA.");
+					var param:Array = new Array(true, "Submission Error! The .zip package should contain only .java files.");
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);	
 				}
 				
@@ -108,7 +108,8 @@
 					var result: String = event.result as String;
 					inputDescription.text = result;
 					inputDescription.editable = false;
-					var param:Array = new Array(false, "Roteiro submetido com sucesso. Esperando resposta...");
+					var param:Array = new Array(false, "Successful assignment submission.\n" + 
+														"Waiting the answer...");
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 					facade.getOperation("submissionNumber").send(CastEntities.castSubmission(submission));
 				}
@@ -129,7 +130,7 @@
 						}
 					}
 					catch(e: Error){
-						param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+						param = new Array(true, "Before submit an assignment solution you should be registered in a team.");
 						ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 					}
 				}
@@ -144,7 +145,7 @@
 						facade.getOperation("getSubmissionNumberByTua").send(tua);
 					}
 					catch(e: Error){
-						param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+						param = new Array(true, "Before submit a solution you should be registered in a team.");
 						ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 					
 					}
@@ -154,11 +155,11 @@
 					try{
 						var param:Array;
 						if (comboAssignment.selectedItem == null){
-							param = new Array(true, "Para submeter um roteiro você tem que escolher um roteiro.");
+							param = new Array(true, "Before submit a solution you should choose the assignment.");
 							ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 						}
 						else if (fileRef == null){
-							param = new Array(true, "Para submeter um roteiro você tem que escolher um arquivo zip contendo o código.");
+							param = new Array(true, "Before submit the solution you should attach the .zip file with it.");
 							ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 						}
 						else if(fileRef != null && tua.id != 0){
@@ -168,11 +169,11 @@
 							submission.url = "/periodo" + tua.assignment.stage.semester + "/submissoes/roteiro_" + tua.assignment.id + "/" + tua.team.name + "/";
 							facade.getOperation("submitAssignment").send(CastEntities.castSubmission(submission));
 						}else{
-							param = new Array(true, "Para submeter um roteiro você tem que se cadastrar em uma equipe.");
+							param = new Array(true, "Before submit an solution you should be registered in a team.");
 							ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 						}
 					}catch(e: Error){	
-						var param2: Array = new Array(true, "Falha técnica. Tente mais tarde...");					
+						var param2: Array = new Array(true, "Technical failures. Try later...");					
 						ModulesController.createModule("modules/System/MessageStatus.swf", this, param2);
 					}
 				}
@@ -214,10 +215,10 @@
 			<mx:method name="getSubmissionNumberByTua" result="submissionNumber_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
-		<mx:Label text="Resultados:" fontWeight="bold"
-			textAlign="left" width="121" x="21" y="209"/>
-		<mx:Label text="Submissões (Efetuadas/Máximo):" fontWeight="bold"
-			textAlign="left" width="236.15" x="387.85" y="214"/>
+		<mx:Label text="Automatic Results:" fontWeight="bold"
+			textAlign="left" width="144" x="21" y="209"/>
+		<mx:Label text="Submissions (Sent/Max):" fontWeight="bold"
+			textAlign="left" width="181.15" x="454.85" y="214"/>
 		<mx:Label text="/" fontWeight="bold"
 			textAlign="left" width="20.149994" x="644" y="214" id="labelDescricao1"/>
 		<mx:Label text="0" fontWeight="bold"
@@ -225,15 +226,15 @@
 		<mx:Label text="0" fontWeight="bold"
 			textAlign="right" width="31" x="646" y="214" id="maxNumberSubmission" color="#048E14"/>
 		<mx:TextArea x="21" y="237" width="656" height="127" id="inputDescription"/>
-		<mx:LinkButton x="222.55" y="88" label="   Anexar Solução" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTest" click="fileSelect()"/>
+		<mx:LinkButton x="222.55" y="88" label="   Attach Solution" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTest" click="fileSelect()"/>
 		<mx:Label x="21" y="126" width="656" id="path" textAlign="center"/>
-		<mx:Label x="16" y="10" width="69" textAlign="left" text="Roteiro:" fontWeight="bold"/>
-		<mx:Label x="18" y="38" width="69" textAlign="left" text="Equipe:" fontWeight="bold"/>
-		<mx:Label x="89" y="38" width="237" id="nameTeam" textAlign="left" text="..." fontWeight="bold" color="#048E2B"/>
-		<mx:Button x="257" y="156" label="   Submeter Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="submitButtonAssignment" click="submitAssignment()"/>
+		<mx:Label x="16" y="10" width="90" textAlign="left" text="Assignment:" fontWeight="bold"/>
+		<mx:Label x="18" y="38" width="88" textAlign="left" text="Team:" fontWeight="bold"/>
+		<mx:Label x="114" y="38" width="237" id="nameTeam" textAlign="left" text="..." fontWeight="bold" color="#048E2B"/>
+		<mx:Button x="257" y="156" label="   Submit Solution" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="submitButtonAssignment" click="submitAssignment()"/>
 		<mx:HRule x="21" y="192" width="656" height="9"/>
 		<mx:HRule x="21" y="70" width="656" height="10"/>
-		<mx:ComboBox x="89" y="8" width="590" id="comboAssignment" change="getTeamHasUserHasAssignmentByUserAndAssignment()" enter="getTeamHasUserHasAssignmentByUserAndAssignment()" labelField="name"></mx:ComboBox>
+		<mx:ComboBox x="114" y="8" width="565" id="comboAssignment" change="getTeamHasUserHasAssignmentByUserAndAssignment()" enter="getTeamHasUserHasAssignmentByUserAndAssignment()" labelField="name"></mx:ComboBox>
 		
 		
 </les:ModuleTitleWindow>

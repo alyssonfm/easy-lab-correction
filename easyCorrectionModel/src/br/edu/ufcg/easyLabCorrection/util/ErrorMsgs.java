@@ -104,7 +104,7 @@ public enum ErrorMsgs {
 					+ args[0] + "!";
 		}
 	},
-	INVALID_DEADLINE_DATE {
+	INVALID_DELIVERY_DEADLINE_DATE {
 		public String msg(String... args) {
 			return "Invalid deadline date. The Assignment could not be "
 					+ args[0] + "!";
@@ -141,7 +141,7 @@ public enum ErrorMsgs {
 					+ "!";
 		}
 	},
-	INVALID_PARTICIPANTS_MAX_NUMBER {
+	INVALID_TEAM_MEMBERS_MAX_NUMBER {
 		public String msg(String... args) {
 			return "The participants max number should be greater than -1. The assignment could not be "
 					+ args[0] + "!";

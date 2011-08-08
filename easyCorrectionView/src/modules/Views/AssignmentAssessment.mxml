@@ -3,7 +3,7 @@
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
-	width="800" height="450" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="closeWindow()" layout="absolute">
+	width="800" height="450" creationComplete="init()" title="Assignment Assessment" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -54,7 +54,7 @@
 						}
 					}
 					catch(e:Error){
-						message = "Serviço indisponível, reinicie a operação.";
+						message = "Service Unavailable, please restart the operation.";
 					}
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 				}
@@ -151,7 +151,7 @@
 						fileRef.download(request, codeNameFile);		
 					}
 					catch(e: Error){
-						var message:String = "Selecione Uma Equipe.";
+						var message:String = "Choose a Team.";
 						ModulesController.createModule("modules/System/MenssageStatus.swf", this, new Array(true, message));
 					}
 				}
@@ -163,13 +163,13 @@
 						facade.getOperation("saveAssessment").send(assessment);
 					}
 					else{
-						var message:String = "A nota deve ser menor ou igual a 10.";
+						var message:String = "The grade should be less than or equal to 10.";
 						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
 					}
 				}
 				
 				private function saveAssessment_result(event:ResultEvent):void{
-					var message:String = "Equipe Avaliada Com Sucesso.";
+					var message:String = "The team solution was successful assessed.";
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(false, message));
 					getAssingmentTeamByAssingment();	
 				}
@@ -195,26 +195,26 @@
 			<mx:method name="saveAssessment" result="saveAssessment_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
-		<mx:Label text="Roteiro:" fontWeight="bold"
-			textAlign="left" width="64" x="10" y="22" id="labelAssignment"/>
-		<mx:Label text="Equipes:" fontWeight="bold"
+		<mx:Label text="Assignment:" fontWeight="bold"
+			textAlign="left" width="96" x="10" y="22" id="labelAssignment"/>
+		<mx:Label text="Teams:" fontWeight="bold"
 			textAlign="left" width="72" x="10" y="72" id="labelGroups"/>
-		<mx:Label text="Integrantes: " fontWeight="bold"
+		<mx:Label text="Members: " fontWeight="bold"
 			textAlign="left" width="93.04999" x="265.95" y="72" id="labelMembers" height="20"/>
-		<comp:ComboBoxAC labelField="name" x="72" y="21" width="698" id="comboAssignment" change="getAssingmentTeamByAssingment()"/>
+		<comp:ComboBoxAC labelField="name" x="114" y="21" width="656" id="comboAssignment" change="getAssingmentTeamByAssingment()"/>
 		<mx:HRule x="10" y="62" width="760" height="2"/>
 		<mx:HRule x="251" y="234" width="518" height="2"/>
 		<mx:List id="teamList" x="10" y="94" width="226" height="302" labelFunction="labelSelectionTeams" itemClick="selectTeam()" iconFunction="defIcone" fontSize="12" color="#042E8E"/>
 		<mx:List id="membersList" x="265.95" y="94" width="504.05" height="66" labelFunction="selecaoLabelIntegrantes"/>
 		<mx:VRule x="244" y="62" height="334" width="13.95"/>
-		<mx:Button x="398" y="179" label="Baixar Implementação" click="codeDownload()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="downloadImplementation" enabled="false"/>
-		<mx:Button x="398" y="329" label="Salvar Nota" click="saveGradeCorrector()" width="239" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" enabled="false" id="buttonSave"/>
-		<mx:Label text="Nota:" fontWeight="bold"
-			textAlign="left" width="58" x="398" y="275" id="labelGrade" fontSize="16"/>
-		<mx:Label text="Peso:" fontWeight="bold"
-			textAlign="left" width="49" x="541" y="278" id="labelWeight"/>
+		<mx:Button x="383" y="182" label="Download Solution" click="codeDownload()" width="254" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="downloadImplementation" enabled="false"/>
+		<mx:Button x="383" y="329" label="Save Grade" click="saveGradeCorrector()" width="254" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" enabled="false" id="buttonSave"/>
+		<mx:Label text="Grade:" fontWeight="bold"
+			textAlign="left" width="69" x="383" y="275" id="labelGrade" fontSize="16"/>
+		<mx:Label text="Weigth:" fontWeight="bold"
+			textAlign="left" width="64" x="526" y="278" id="labelWeight"/>
 		<mx:Label fontWeight="bold" textAlign="left" width="49" x="588" y="278" id="inputWeight" height="23"/>
-		<comp:MaskedTextInput x="464" y="276" inputMask="##,##" width="69" id="inputGrade" color="#1B7A0F" text="0"/>
+		<comp:MaskedTextInput x="460" y="276" inputMask="##,##" width="58" id="inputGrade" color="#1B7A0F" text="0"/>
 		
 		
 </les:ModuleTitleWindow>

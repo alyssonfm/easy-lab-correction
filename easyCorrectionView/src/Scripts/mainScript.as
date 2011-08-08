@@ -79,7 +79,7 @@ private function geraTabBar(): TabBar {
 	userLabel.id = "labelUsuario";
 	userLabel.x = 170;
 	userLabel.y = 10;
-	userLabel.text = "Bem vindo(a) ";
+	userLabel.text = "Welcome ";
 	this.addChild(userLabel);
 
 	loggedUser = new Label();
@@ -122,11 +122,11 @@ private function generateBLinks(): void {
 
 	var usuarioSetorOutros:Boolean = false;
 	var sButton:LinkButton = new LinkButton();
-	sButton.label = "Sair";
+	sButton.label = "Exit";
 	sButton.setStyle("icon", icone);
 	sButton.styleName = "linkColor";
 	sButton.addEventListener(MouseEvent.CLICK, view);
-	sButton.toolTip = "O usuário sai do sistema (realizar logout).";
+	sButton.toolTip = "The user logs out.";
 	lbar.addChild(sButton);
 	
 	this.addChild(geraTabBar());
@@ -231,20 +231,20 @@ private function PressedMenuItem(event: MenuEvent):void  {
      if (event.item.@data == "permissions") {
      	ModulesController.createModule("modules/AccessControl/Permissions.swf", this, "");
      }
-     if (event.item.@data == "assignmentCreation") {
+     if (event.item.@data == "assignmentRegistration") {
      	ModulesController.createModule("modules/Views/AssignmentSchedule.swf", this, "");
      }
 //     if (event.item.@data == "penalidades") {
 //     	ModulesController.createModule("modules/Views/Penalidades.swf", this, "");
 //     }
      if (event.item.@data == "evaluatorAllocation") {
-     	ModulesController.createModule("modules/Views/AssignmentAllocator.swf", this, "");
+     	ModulesController.createModule("modules/Views/EvaluatorTeamAllocation.swf", this, "");
      }
      if (event.item.@data == "gradingTables") {
      	ModulesController.createModule("modules/Views/GradeViewer.swf", this, "");
      }
      if (event.item.@data == "assignmentAssessment") {
-     	ModulesController.createModule("modules/Views/AssingmentCorrector.swf", this, "");
+     	ModulesController.createModule("modules/Views/AssignmentAssessment.swf", this, "");
      }
      if (event.item.@data == "assignmentSubmission") {
      	ModulesController.createModule("modules/Views/AssignmentSubmission.swf", this, "");
@@ -280,7 +280,7 @@ private function falha(event:FaultEvent):void {
 		}
 	}
 	catch(e:Error){
-		message = "Serviço indisponível, reinicie a operação.";
+		message = "Service Unavailable, please restart the operation.";
 	}
 	ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 }
