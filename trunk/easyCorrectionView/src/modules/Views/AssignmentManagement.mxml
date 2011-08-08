@@ -7,6 +7,7 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import events.AssignmentEvent;
 				import bean.Utility.Constant;
 				import events.ObjectEvent;
 				import bean.Utility.Util;
@@ -84,9 +85,15 @@
 					
 					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 					stat = ModulesController.getParam();
+					systemManager.addEventListener(AssignmentEvent.AssignmentEventConst, updateFields);
 					dfMaximumDate.selectedDate = new Date(new Date().getTime()+(7*millisecondsPerDay));
 					dfDiscussionDate.selectedDate = new Date(new Date().getTime()+(21*millisecondsPerDay));
 					listAssignmentType();
+				}
+				
+				private function updateFields(event:AssignmentEvent):void{
+					var tempAssignment: Assignment = event.assignment;
+					setAssignmentsAttributes(tempAssignment);
 				}
 				
 				private function listAssignmentType():void{
@@ -129,16 +136,21 @@
 					dfReleaseDate.selectedDate = releaseTime;
 					dfReleaseDate.text = Util.formatsDate(assignment.releaseDate);
 					
-					inputDescription.text = assignment.description;
-					pathEnvironment.text = assignment.interfaceDirectory;
-					pathTests.text = assignment.testsDirectory;
-					inputTitle.text = assignment.name;
-					inputMaxNumberSent.text = String(assignment.sendMaxNumber);
-					inputMaxTeam.text = String(assignment.participantsMaxNumber);
-					inputPenalty.text = String(assignment.penaltyPerDaysLate);
-					inputPercentage.text = String(assignment.automaticTestsPercentage);
-					inputTimeout.text = String(assignment.testTimeLimit);
-					comboType.selectedIndex = Util.objectTakesPost("id", ArrayCollection(comboType.dataProvider), assignment.assignmentType);
+					setAssignmentsAttributes(assignment);
+					
+				}
+				
+				private function setAssignmentsAttributes(assign: Assignment): void{
+					inputDescription.text = assign.description;
+					pathEnvironment.text = assign.interfaceDirectory;
+					pathTests.text = assign.testsDirectory;
+					inputTitle.text = assign.name;
+					inputMaxNumberSent.text = String(assign.sendMaxNumber);
+					inputMaxTeam.text = String(assign.participantsMaxNumber);
+					inputPenalty.text = String(assign.penaltyPerDaysLate);
+					inputPercentage.text = String(assign.automaticTestsPercentage);
+					inputTimeout.text = String(assign.testTimeLimit);
+					comboType.selectedIndex = Util.objectTakesPost("id", ArrayCollection(comboType.dataProvider), assign.assignmentType);	
 				}
 				
 				private function chooseFileTests(): void{
@@ -305,10 +317,22 @@
 					dfDiscussionDate.selectedDate = new Date(dfReleaseDate.selectedDate.getTime()+(21*millisecondsPerDay));
 				}
 				
+				private function openAssignmentImporter():void{
+					var userId: int = SharedObject.getLocal("sistema", "/").data.idUsuario;
+					facade.getOperation("getUser").send(userId);
+					
+				}
+				
+				private function getUser_result(event:ResultEvent):void{
+					var course: String = CastEntities.castUser(event.result).period.course; 
+					ModulesController.createModule("modules/Views/AssignmentImporter.swf", this, course);
+				}
+				
 			]]>
 		</mx:Script>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			<mx:method name="getUser" result="getUser_result(event)" fault="failure(event)"/>
 			<mx:method name="getCurrentStage" result="getCurrentStage_result(event)" fault="failure(event)"/>
 			<mx:method name="saveAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="updateAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
@@ -325,7 +349,7 @@
 			textAlign="left" width="20" x="384" y="363"/>
 		<mx:Label text="Descrição:" fontWeight="bold"
 			textAlign="left" width="79" x="10" y="83" id="labelDescription"/>
-		<mx:TextInput x="62" y="10" id="inputTitle" width="708" maxChars="250"/>
+		<mx:TextInput x="62" y="10" id="inputTitle" width="605" maxChars="250"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
 		monthNames="['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -393,6 +417,7 @@
 		<mx:Label text="M" fontWeight="bold"
 			textAlign="left" width="17" x="753" y="43" id="labelAutomatica10"/>
 		<mx:ComboBox x="62" y="41" width="329" id="comboType" labelField="name"></mx:ComboBox>
+		<mx:Button x="675" y="11" label="Importar" width="95" click="openAssignmentImporter()"/>
 		
 		
 		

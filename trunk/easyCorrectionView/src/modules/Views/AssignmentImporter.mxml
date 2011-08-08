@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modules.System.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+		width="800" height="350" creationComplete="init()" title="Assignment Importer" showCloseButton="true" close="closeWindow()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import bean.system.SystemStage;
+				import events.AssignmentEvent;
+				import bean.Utility.CastEntities;
+				import bean.assignments.Assignment;
+				import events.ObjectEvent;
+				import mx.managers.SystemManager;
+				import bean.Utility.Util;
+				import mx.collections.ArrayCollection;
+				import events.UserEvent;
+				import bean.permission.*;
+				import events.EventLogResponse;
+				import events.ClosePopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ModulesController;
+				import mx.binding.utils.BindingUtils;
+				//import eventos.RespostaLoginEvent;
+				//import eventos.FechaPopupEvent;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+				
+				private var assignment: Assignment;
+	            
+	            private function failure(event:FaultEvent):void {
+					var msg:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							msg = event.fault.faultString;
+						} else {
+							msg = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						msg = "Serviço indisponível, reinicie a operação.";
+					}
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, msg));
+				}
+				
+				private function closeWindow():void {
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function eventLaunches(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					var courseName: String = String(ModulesController.getParam());
+					listAssignments(courseName);
+					
+				}
+				
+				private function listAssignments(courseName: String):void{
+					facade.getOperation("getAssignmentByCourse").send(courseName);
+				}
+				
+				private function getAssignmentByCourse_result(event:ResultEvent):void{
+					dg_assignments.dataProvider = new ArrayCollection();
+					dg_assignments.dataProvider = event.result;
+				}
+				
+				private function labelGrid(item:*, column:DataGridColumn):String {
+					var sLabel:String = "";
+					var sHeaderText:String = column.headerText;
+					switch (sHeaderText)  {
+						case "Assignment":
+							sLabel = item.name;
+							break;
+						case "Period":
+							sLabel = item.stage.semester;
+							break;
+						case "Class":
+							sLabel = item.stage.courseClass;
+							break;
+					}
+					return sLabel;
+				}
+				
+				private function importAssignment():void{
+					if(assignment != null){
+						dispatchEvent(new AssignmentEvent(assignment));
+						dispatchEvent(new ClosePopupEvent(this));
+					}
+				}
+				
+				private function selectAssignment():void{
+					try{
+						assignment = CastEntities.castAssignment(dg_assignments.selectedItem);
+						importButton.enabled = true;
+					}catch(e: Error){}
+				}
+
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			<mx:method name="getAssignmentByCourse" result="getAssignmentByCourse_result(event)" fault="failure(event)"/>
+		</mx:RemoteObject>
+		
+		<mx:DataGrid x="10" y="10" width="760" height="248" id="dg_assignments" labelFunction="labelGrid" itemClick="selectAssignment()">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Assignment" width="200"/>
+				<mx:DataGridColumn headerText="Period" width="80"/>
+				<mx:DataGridColumn headerText="Class" width="80"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:Button x="287.5" y="268" label="   import Assignment" width="204.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="importButton" click="importAssignment()" enabled="false"/>
+		
+		
+</les:ModuleTitleWindow>
+

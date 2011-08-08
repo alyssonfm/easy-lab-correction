@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-	Componente para a tela de login do sistema
--->
-
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
