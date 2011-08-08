@@ -3,7 +3,7 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="800" height="538" creationComplete="init()" title="Agendamento de Roteiros" showCloseButton="true" close="closeWindow()" layout="absolute">
+	width="878" height="538" creationComplete="init()" title="Assignment Schedule" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -37,7 +37,7 @@
 						}
 					}
 					catch(e:Error){
-						msg = "Serviço indisponível, reinicie a operação.";
+						msg = "Service Unavailable, please restart the operation.";
 					}
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, msg));
 				}
@@ -82,15 +82,15 @@
 					dg_agenda.dataProvider = new ArrayCollection();
 					dg_agenda.dataProvider = event.result;
 					var paramMenssage: Array = new Array();
-					if(AssignmentManagement.edited){
-						paramMenssage = new Array(false, "Roteiro Atualizado com sucesso.");
+					if(AssignmentRegistration.edited){
+						paramMenssage = new Array(false, "Successful Assignment Update.");
 						ModulesController.createModule("modules/System/MessageStatus.swf", this, paramMenssage);
-						AssignmentManagement.edited = false;
+						AssignmentRegistration.edited = false;
 					}
-					else if(AssignmentManagement.save){
-						paramMenssage = new Array(false, "Roteiro Cadastrado com sucesso.");
+					else if(AssignmentRegistration.save){
+						paramMenssage = new Array(false, "Successful Assignment Registration.");
 						ModulesController.createModule("modules/System/MessageStatus.swf", this, paramMenssage);
-						AssignmentManagement.save = false;	
+						AssignmentRegistration.save = false;	
 					}
 				}
 				
@@ -98,27 +98,27 @@
 					var sLabel:String = "";
 					var sHeaderText:String = column.headerText;
 					switch (sHeaderText)  {
-						case "Roteiro":
+						case "Assignment":
 							sLabel = item.name;
 							break;
-						case "Data da Liberação":
+						case "Release Date":
 							sLabel = Util.formatsDate(item.releaseDate);
 							break;
-						case "Hor. da Liberação":
+						case "Release Time":
 							sLabel = Util.unitOrganizesTime(String(item.releaseDate.getHours())) + ":" + 
 								Util.unitOrganizesTime(String(item.releaseDate.getMinutes()));
 							break;
-						case "Data da Entrega":
+						case "Delivery Date":
 							sLabel = Util.formatsDate(item.deliveryDate);
 							break;
-						case "Hor. da Entrega":
+						case "Delivery Time":
 							sLabel = Util.unitOrganizesTime(String(item.deliveryDate.getHours())) + ":" + 
 							Util.unitOrganizesTime(String(item.deliveryDate.getMinutes()));
 							break;
 						case "Status":
 							
 							break;
-						case "Submissões":
+						case "Submissions":
 							break;
 					}
 					return sLabel;
@@ -143,16 +143,16 @@
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="listAssignments" result="listAssignments_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
-		<mx:Button x="298.05" y="10" click="createsAssignment()" label="   Novo Roteiro" width="183.9" icon="@Embed(source='../../image/novo.png')" height="28" id="buttonNewAssignment" cornerRadius="20"/>
-		<mx:DataGrid x="10" y="46" width="760" height="438" id="dg_agenda" labelFunction="labelGrid" itemClick="editAssignmentCalls()">
+		<mx:Button x="337" y="10" click="createsAssignment()" label="   New Assignment" width="183.9" icon="@Embed(source='../../image/novo.png')" height="28" id="buttonNewAssignment" cornerRadius="20"/>
+		<mx:DataGrid x="10" y="46" width="838" height="438" id="dg_agenda" labelFunction="labelGrid" itemClick="editAssignmentCalls()">
 			<mx:columns>
-				<mx:DataGridColumn headerText="Roteiro" width="80"/>
-				<mx:DataGridColumn headerText="Data da Liberação" width="50"/>
-				<mx:DataGridColumn headerText="Hor. da Liberação" width="50"/>
-				<mx:DataGridColumn headerText="Data da Entrega" width="50"/>
-				<mx:DataGridColumn headerText="Hor. da Entrega" width="50"/>
+				<mx:DataGridColumn headerText="Assignment" width="80"/>
+				<mx:DataGridColumn headerText="Release Date" width="50"/>
+				<mx:DataGridColumn headerText="Release Time" width="50"/>
+				<mx:DataGridColumn headerText="Delivery Date" width="50"/>
+				<mx:DataGridColumn headerText="Delivery Time" width="50"/>
 				<mx:DataGridColumn headerText="Status" width="50"/>
-				<mx:DataGridColumn headerText="Submissões" width="50"/>
+				<mx:DataGridColumn headerText="Submissions" width="50"/>
 			</mx:columns>
 		</mx:DataGrid>
 		

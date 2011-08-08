@@ -330,7 +330,7 @@ public class AssignmentManager extends Manager {
 			} else if (newAssignment.getDeliveryDate() != null
 					&& newAssignment.getDeliveryDate().before(currentDate)) {
 				throw new AssignmentException(
-						ErrorMsgs.INVALID_DEADLINE_DATE
+						ErrorMsgs.INVALID_DELIVERY_DEADLINE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDiscussionDate() != null
@@ -360,7 +360,7 @@ public class AssignmentManager extends Manager {
 			} else if (newAssignment.getDeliveryDate() != null
 					&& newAssignment.getDeliveryDate().before(currentDate)) {
 				throw new AssignmentException(
-						ErrorMsgs.INVALID_DEADLINE_DATE
+						ErrorMsgs.INVALID_DELIVERY_DEADLINE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDiscussionDate() != null
@@ -392,7 +392,7 @@ public class AssignmentManager extends Manager {
 							.getDeliveryDate().equals(
 									oldAssignment.getDeliveryDate())))) {
 				throw new AssignmentException(
-						ErrorMsgs.INVALID_DEADLINE_DATE
+						ErrorMsgs.INVALID_DELIVERY_DEADLINE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDiscussionDate() != null
@@ -422,7 +422,7 @@ public class AssignmentManager extends Manager {
 							.getDeliveryDate().equals(
 									oldAssignment.getDeliveryDate())))) {
 				throw new AssignmentException(
-						ErrorMsgs.INVALID_DEADLINE_DATE
+						ErrorMsgs.INVALID_DELIVERY_DEADLINE_DATE
 								.msg(assignmentNextState));
 
 			} else if (newAssignment.getDiscussionDate() == null
@@ -580,7 +580,7 @@ public class AssignmentManager extends Manager {
 		} else if (assignment.getParticipantsMaxNumber() != null
 				&& assignment.getParticipantsMaxNumber() <= 0) {
 			throw new AssignmentException(
-					ErrorMsgs.INVALID_PARTICIPANTS_MAX_NUMBER
+					ErrorMsgs.INVALID_TEAM_MEMBERS_MAX_NUMBER
 							.msg(assignmentNextState));
 
 		} else if (assignment.getSendMaxNumber() != null

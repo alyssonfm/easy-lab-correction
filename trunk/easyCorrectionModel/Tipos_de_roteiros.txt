@@ -1,0 +1,42 @@
+>>>>> TIPOS DE ROTEIROS: 
+ - COMPILAÇÃO
+ - COMPILAÇÃO E TESTE DE UNIDADE
+ - COMPILAÇÃO E COMPARAÇÃO DE ARQUIVOS
+ - COMPILAÇÃO E NOTA AUTOMÁTICA
+ - COMPILAÇÃO E TESTE DE UNIDADE E NOTA AUTOMÁTICA
+ - COMPILAÇÃO E COMPARAÇÃO DE ARQUIVOS E NOTA AUTOMÁTICA
+ 
+>>>>> CAMPOS DAS TELAS:
+ 
+CARACTERÍSTICAS GERAIS:
+	* Título
+	* Tipo de Roteiro (Esse tipo de roteiro pode ficar em uma tela anterior)
+	* Data de Liberação
+	* Descrição
+	
+CARACTERÍSTICAS DO ROTEIRO:
+	* Número máximo de envios
+	* Máximo Integrantes por Equipe
+	* Data Máxima para entrega
+	* Data Máxima para discussão (desabilitado por enquanto)
+	* Penalidade por dia de atraso (Checkbox para marcar se terá penalidade)
+ 
+COMPILAÇÃO:
+	* ...
+ 
+TESTE DE UNIDADE:
+	* Tempo-limite de execução
+	* Anexar Testes Automáticos
+	* Anexar Ambiente
+
+COMPARAÇÃO DE ARQUIVOS:
+	* Tempo-limite de execução
+	* Anexar Arquivo de Saída(um arquivo TXT) - Gabarito
+	* Anexar Ambiente
+
+	* OBS.: O aluno deve ter uma classe chamada Main
+	
+NOTA AUTOMÁTICA (Checkbox):
+	* Porcentagem Automática de Avaliação 
+	
+	

@@ -3,7 +3,7 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="800" height="640" creationComplete="init()" title="Cadastro de Roteiro" showCloseButton="true" close="closeWindow()" layout="absolute">
+	width="800" height="640" creationComplete="init()" title="Register Assignment" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -61,7 +61,7 @@
 						}
 					}
 					catch(e:Error){
-						message = "Serviço indisponível, reinicie a operação.";
+						message = "Service Unavailable, please restart the operation.";
 					}
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 				}
@@ -158,13 +158,13 @@
 			   	 	fileRefTests.addEventListener(Event.SELECT, selectedFileTests);
 			   	 	fileRefTests.addEventListener(Event.COMPLETE, fullSendingTests);
 			   	 	fileRefTests.addEventListener(IOErrorEvent.IO_ERROR, sendErrorTests);
-			    	fileRefTests.browse(new Array(new FileFilter("Testes (*.zip)","*.zip")));
+			    	fileRefTests.browse(new Array(new FileFilter("Tests (*.zip)","*.zip")));
 				}
 				
 				public function sendErrorTests(evt:Event):void {
-			       	var param:Array = new Array(true, "Ocorreu um erro de transmissão. O arquivo(s) de teste não foi(foram) enviado(s)." +
-														"\n\nTente novamente! Caso este erro persista..." + 
-														"\n\nVerifique se sua conexão com a internet está ativada.");
+			       	var param:Array = new Array(true, "An error ocurred during the file transmission. The test files were not sent." +
+														"\n\nPlease, try again." + 
+														"\n\nIf this error persists verify your internet connection.");
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 				}
 				
@@ -195,9 +195,9 @@
 				}
 				
 				public function errorSendingEnvironment(evt:Event):void {
-			       	var param:Array = new Array(true, "Ocorreu um erro de transmissão. O arquivo de Interface não foi enviado." +
-														"\n\nTente novamente! Caso este erro persista..." + 
-														"\n\nVerifique se sua conexão com a internet está ativada.");
+			       	var param:Array = new Array(true, "An error ocurred during the file transmission. The test files were not sent." +
+														"\n\nPlease, try again." + 
+														"\n\nIf this error persists verify your internet connection.");
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 				}
 				
@@ -265,7 +265,7 @@
 							facade.getOperation("updateAssignment").send(CastEntities.castAssignment(assignment));
 						}
 						else{
-							var param:Array = new Array(true, "Horário limite para entrega inválido. (Intervalo: 00:00 ~ 23:59)");
+							var param:Array = new Array(true, "Invalid Delivery deadline time (interval: 00:00 ~ 23:59)");
 							ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 						}	
 					}					
@@ -280,7 +280,7 @@
 						facade.getOperation("saveAssignment").send(CastEntities.castAssignment(assignment));
 					}
 					else{
-						var param:Array = new Array(true, "Horário limite para entrega inválido. (Intervalo: 00:00 ~ 23:59)");
+						var param:Array = new Array(true, "Invalid Delivery deadline time (interval: 00:00 ~ 23:59)");
 						ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 					}
 				}
@@ -339,16 +339,16 @@
 			<mx:method name="listAssignmentType" result="listAssignmentType_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
-		<mx:Label text="Título:" fontWeight="bold"
+		<mx:Label text="Name:" fontWeight="bold"
 			textAlign="left" width="54" x="10" y="12" id="labelTitle"/>
-		<mx:Label text="Tipo:" fontWeight="bold"
+		<mx:Label text="Type:" fontWeight="bold"
 			textAlign="left" width="44" x="10" y="43" id="labelTitle0"/>
-		<mx:Label text="Porcentagem Automática da Avaliação:" fontWeight="bold"
+		<mx:Label text="Automatic assessment percentage:" fontWeight="bold"
 			textAlign="left" width="270" x="10" y="363"/>
 		<mx:Label text="%" fontWeight="bold"
 			textAlign="left" width="20" x="384" y="363"/>
-		<mx:Label text="Descrição:" fontWeight="bold"
-			textAlign="left" width="79" x="10" y="83" id="labelDescription"/>
+		<mx:Label text="Text Description:" fontWeight="bold"
+			textAlign="left" width="130" x="10" y="83" id="labelDescription"/>
 		<mx:TextInput x="62" y="10" id="inputTitle" width="605" maxChars="250"/>
 		<mx:DateField  yearNavigationEnabled="true" showToday="true" restrict="{['0-9']}"
 		formatString="DD/MM/YYYY" dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
@@ -378,13 +378,13 @@
 		<extra:DecimalInput x="219" y="318"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalty" width="113" text="0.5"/>
 		<extra:DecimalInput x="285" y="361"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPercentage" width="91" text="100"/>
 		<mx:TextInput x="641" y="363" id="inputTimeout" width="95" restrict="[0-9]" maxChars="2" text="10"/>
-		<mx:Label text="Máximo de integrantes por equipe:" fontWeight="bold"
+		<mx:Label text="Team Members max number:" fontWeight="bold"
 			textAlign="left" width="239" x="476" y="288" id="labelAutomatic0"/>
-		<mx:Label text="Penalidade por dia de atraso:" fontWeight="bold"
+		<mx:Label text="Penalty per day late:" fontWeight="bold"
 			textAlign="left" width="201" x="10" y="320"/>
-		<mx:Label text="Número máximo de envios:" fontWeight="bold"
+		<mx:Label text="Submission max number:" fontWeight="bold"
 			textAlign="left" width="191" x="476" y="258" id="labelAutomatic3"/>
-		<mx:Label text="Time-limit dos teste por método:" fontWeight="bold"
+		<mx:Label text="Execution time-limit:" fontWeight="bold"
 			textAlign="left" width="224" x="415" y="365" id="labelAutomatic5"/>
 		<mx:Label text="ms" fontWeight="bold"
 			textAlign="left" width="27" x="744" y="365"/>
@@ -396,28 +396,28 @@
 			textAlign="left" width="17" x="387" y="288" id="labelAutomatica11"/>
 		<mx:Label text="M" fontWeight="bold"
 			textAlign="left" width="17" x="434" y="288" id="labelAutomatica12"/>
-		<mx:Label text="Data Máxima para entrega:" fontWeight="bold"
+		<mx:Label text="Delivery deadline date:" fontWeight="bold"
 			textAlign="left" width="201" x="10" y="258" id="labelAutomatic1"/>
-		<mx:Label text="Data Máxima para discussão:" fontWeight="bold"
+		<mx:Label text="Discussion deadline date:" fontWeight="bold"
 			textAlign="left" width="201" x="10" y="288" id="labelAutomatic2"/>
-		<mx:Label text="Data da liberação:" fontWeight="bold"
+		<mx:Label text="Release Date:" fontWeight="bold"
 			textAlign="left" width="131" x="399" y="43" id="labelAutomatic4"/>
 		<mx:HRule x="10" y="397" width="760"/>
 		<mx:HRule x="10" y="241" width="760"/>
 		<mx:HRule x="10" y="350" width="760"/>
 		<mx:HRule x="10" y="73" width="760"/>
-		<mx:LinkButton x="263.55" y="407" label="   Anexar Testes Automáticos" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="chooseFileTests()"/>
+		<mx:LinkButton x="263.55" y="407" label="   Attach Automatic Tests" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="chooseFileTests()"/>
 		<mx:Label x="10" y="439" width="760" id="pathTests" textAlign="center"/>
-		<mx:LinkButton x="273.05" y="471" label="   Anexar Ambiente" width="233.9" icon="@Embed(source='../../image/estonar.png')" height="28" id="attachEnvironment" click="selectFileEnvironment()"/>
+		<mx:LinkButton x="250.5" y="467" label="   Attach Development Environment" width="279.5" icon="@Embed(source='../../image/estonar.png')" height="28" id="attachEnvironment" click="selectFileEnvironment()"/>
 		<mx:Label x="10" y="503" width="760" id="pathEnvironment" textAlign="center"/>
-		<mx:Button x="298.05" y="543" label="Atualizar Roteiro" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="updateAssignmentButton" click="updateAssignment()"/>
-		<mx:Button x="298.05" y="543" label="   Cadastrar Roteiro" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="createAssignmentButton" click="saveAssignments()"/>
+		<mx:Button x="298.05" y="543" label="Update Assignment" width="183.9" icon="@Embed(source='../../image/atualiza.png')" height="28" id="updateAssignmentButton" click="updateAssignment()"/>
+		<mx:Button x="298.05" y="543" label="   Save Assignment" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="createAssignmentButton" click="saveAssignments()"/>
 		<mx:Label text="H" fontWeight="bold"
 			textAlign="left" width="17" x="706" y="43" id="labelAutomatica20"/>
 		<mx:Label text="M" fontWeight="bold"
 			textAlign="left" width="17" x="753" y="43" id="labelAutomatica10"/>
 		<mx:ComboBox x="62" y="41" width="329" id="comboType" labelField="name"></mx:ComboBox>
-		<mx:Button x="675" y="11" label="Importar" width="95" click="openAssignmentImporter()"/>
+		<mx:Button x="675" y="11" label="Import" width="95" click="openAssignmentImporter()"/>
 		
 		
 		

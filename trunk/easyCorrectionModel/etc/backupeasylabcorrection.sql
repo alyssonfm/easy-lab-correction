@@ -544,7 +544,7 @@ CREATE TABLE `funcao` (
 INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES 
  (1,'Registrations','registrations',1),
  (2,'Permissions','permissions',1),
- (4,'Assignment Creation','assignmentCreation',4),
+ (4,'Assignment Registration','assignmentRegistration',4),
  (5,'Evaluator-Team Allocation','evaluatorAllocation',3),
  (7,'Grading Tables','gradingTables',3),
  (8,'Submissions','assignmentSubmission',4),

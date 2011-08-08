@@ -3,7 +3,7 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="800" height="538" creationComplete="init()" title="Notas" showCloseButton="true" close="closeWindow()" layout="absolute">
+	width="800" height="538" creationComplete="init()" title="Grade Table" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -62,7 +62,7 @@
 						}
 					}
 					catch(e:Error){
-						message = "Serviço indisponível, reinicie a operação.";
+						message = "Service Unavailable, please restart the operation.";
 					}
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, message));
 				}
@@ -75,22 +75,22 @@
 					var sLabel:String = "";
 					var sHeaderText:String = column.headerText;
 					switch (sHeaderText)  {
-						case "Matrícula":
+						case "Login":
 							sLabel = item.submission.teamHasUserHasAssignment.user.login;
 							break;
-						case "Nome do aluno":
+						case "Student Name":
 							sLabel = item.submission.teamHasUserHasAssignment.user.name;
 							break;
-						case "Porcentagem (Testes Automáticos)":
+						case "Automatic Execution Percentage":
 							sLabel = item.submission.teamHasUserHasAssignment.assignment.automaticTestsPercentage;
 							break;
-						case "Nota1 (Testes Automáticos)":
+						case "Grade 1 (Automatic Assessment)":
 							sLabel = item.automaticGrade;
 							break;
-						case "Nota2 (Corretor)":
+						case "Grade 2(Manual Assessment)":
 							sLabel = item.correctionGrade;
 							break;
-						case "Nota":
+						case "Final Grade":
 							sLabel = (item.automaticGrade + item.correctionGrade); 
 							break;
 					}
@@ -121,18 +121,18 @@
 			<mx:method name="getAssessmentsByAssignment" result="getAssessmentsByAssignment_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
-		<mx:ComboBox x="73" y="10" width="697" id="comboAssignment" change="getAssessmentsByAssignment()" enter="getAssessmentsByAssignment()" labelField="name"></mx:ComboBox>
+		<mx:ComboBox x="111" y="10" width="659" id="comboAssignment" change="getAssessmentsByAssignment()" enter="getAssessmentsByAssignment()" labelField="name"></mx:ComboBox>
 		<mx:HRule x="10" y="40" width="760" height="10"/>
 		<mx:DataGrid x="10" y="58" width="760" height="426" wordWrap="true" id="dgNotes" labelFunction="labelGrid">
 			<mx:columns>
-				<mx:DataGridColumn headerText="Matrícula" width="50" sortCompareFunction="compareLogin"/>
-				<mx:DataGridColumn headerText="Nome do aluno"  width="150" sortable="true" sortCompareFunction="compareName"/>
-				<mx:DataGridColumn headerText="Porcentagem (Testes Automáticos)" width="50"/>
-				<mx:DataGridColumn headerText="Nota1 (Testes Automáticos)"  width="50"/>
-				<mx:DataGridColumn headerText="Nota2 (Corretor)" width="50"/>
-				<mx:DataGridColumn headerText="Nota" width="50"/>
+				<mx:DataGridColumn headerText="Login" width="50" sortCompareFunction="compareLogin"/>
+				<mx:DataGridColumn headerText="Student Name"  width="150" sortable="true" sortCompareFunction="compareName"/>
+				<mx:DataGridColumn headerText="Automatic Execution Percentage" width="50"/>
+				<mx:DataGridColumn headerText="Grade 1 (Automatic Assessment)"  width="50"/>
+				<mx:DataGridColumn headerText="Grade 2(Manual Assessment)" width="50"/>
+				<mx:DataGridColumn headerText="Final Grade" width="50"/>
 			</mx:columns>
 		</mx:DataGrid>
-		<mx:Label x="10" y="11.5" width="65" textAlign="left" text="Roteiro:" fontWeight="bold"/>
+		<mx:Label x="10" y="11.5" width="93" textAlign="left" text="Assignment:" fontWeight="bold"/>
 					
 </les:ModuleTitleWindow>

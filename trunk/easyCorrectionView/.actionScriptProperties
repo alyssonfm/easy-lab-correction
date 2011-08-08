@@ -12,23 +12,23 @@
     <application path="main.mxml"/>
   </applications>
   <modules>
-    <module application="src/main.mxml" destPath="modules/Views/GradeViewer.swf" optimize="true" sourcePath="src/modules/Views/GradeViewer.mxml"/>
-    <module application="src/main.mxml" destPath="modules/Views/RebootsDatabase.swf" optimize="true" sourcePath="src/modules/Views/RebootsDatabase.mxml"/>
-    <module application="src/main.mxml" destPath="modules/System/Login.swf" optimize="true" sourcePath="src/modules/System/Login.mxml"/>
-    <module application="src/main.mxml" destPath="modules/System/MessageStatus.swf" optimize="true" sourcePath="src/modules/System/MessageStatus.mxml"/>
-    <module application="src/main.mxml" destPath="modules/Views/Chat.swf" optimize="true" sourcePath="src/modules/Views/Chat.mxml"/>
-    <module application="src/main.mxml" destPath="modules/Views/AssignmentSchedule.swf" optimize="true" sourcePath="src/modules/Views/AssignmentSchedule.mxml"/>
-    <module application="src/main.mxml" destPath="modules/AccessControl/Registration.swf" optimize="true" sourcePath="src/modules/AccessControl/Registration.mxml"/>
     <module application="src/main.mxml" destPath="modules/Views/AssignmentSubmission.swf" optimize="true" sourcePath="src/modules/Views/AssignmentSubmission.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/AssignmentAssessment.swf" optimize="true" sourcePath="src/modules/Views/AssignmentAssessment.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/RebootsDatabase.swf" optimize="true" sourcePath="src/modules/Views/RebootsDatabase.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/Chat.swf" optimize="true" sourcePath="src/modules/Views/Chat.mxml"/>
+    <module application="src/main.mxml" destPath="modules/System/MessageStatus.swf" optimize="true" sourcePath="src/modules/System/MessageStatus.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/AssignmentSchedule.swf" optimize="true" sourcePath="src/modules/Views/AssignmentSchedule.mxml"/>
     <module application="src/main.mxml" destPath="modules/Views/CorrectionModule.swf" optimize="true" sourcePath="src/modules/Views/CorrectionModule.mxml"/>
-    <module application="src/main.mxml" destPath="modules/AccessControl/Permissions.swf" optimize="true" sourcePath="src/modules/AccessControl/Permissions.mxml"/>
-    <module application="src/main.mxml" destPath="modules/System/ChangePassword.swf" optimize="true" sourcePath="src/modules/System/ChangePassword.mxml"/>
-    <module application="src/main.mxml" destPath="modules/Views/AssignmentManagement.swf" optimize="true" sourcePath="src/modules/Views/AssignmentManagement.mxml"/>
-    <module application="src/main.mxml" destPath="modules/Views/AssingmentCorrector.swf" optimize="true" sourcePath="src/modules/Views/AssingmentCorrector.mxml"/>
-    <module application="src/main.mxml" destPath="modules/Views/AssignmentAllocator.swf" optimize="true" sourcePath="src/modules/Views/AssignmentAllocator.mxml"/>
-    <module application="src/main.mxml" destPath="modules/Views/TeamManagement.swf" optimize="true" sourcePath="src/modules/Views/TeamManagement.mxml"/>
-    <module application="src/main.mxml" destPath="modules/System/RecoverPassword.swf" optimize="true" sourcePath="src/modules/System/RecoverPassword.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/EvaluatorTeamAllocation.swf" optimize="true" sourcePath="src/modules/Views/EvaluatorTeamAllocation.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/GradeViewer.swf" optimize="true" sourcePath="src/modules/Views/GradeViewer.mxml"/>
+    <module application="src/main.mxml" destPath="modules/AccessControl/Registration.swf" optimize="true" sourcePath="src/modules/AccessControl/Registration.mxml"/>
     <module application="src/main.mxml" destPath="modules/Views/AssignmentImporter.swf" optimize="true" sourcePath="src/modules/Views/AssignmentImporter.mxml"/>
+    <module application="src/main.mxml" destPath="modules/System/Login.swf" optimize="true" sourcePath="src/modules/System/Login.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/TeamManagement.swf" optimize="true" sourcePath="src/modules/Views/TeamManagement.mxml"/>
+    <module application="src/main.mxml" destPath="modules/System/ChangePassword.swf" optimize="true" sourcePath="src/modules/System/ChangePassword.mxml"/>
+    <module application="src/main.mxml" destPath="modules/Views/AssignmentRegistration.swf" optimize="true" sourcePath="src/modules/Views/AssignmentRegistration.mxml"/>
+    <module application="src/main.mxml" destPath="modules/System/RecoverPassword.swf" optimize="true" sourcePath="src/modules/System/RecoverPassword.mxml"/>
+    <module application="src/main.mxml" destPath="modules/AccessControl/Permissions.swf" optimize="true" sourcePath="src/modules/AccessControl/Permissions.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>
