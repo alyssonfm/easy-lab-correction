@@ -511,6 +511,15 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public List<Assignment> getAssignmentByCourse(String course) throws Throwable {
+		try {
+			return system.getAssignmentByCourse(course);
+		} catch (Throwable e) {
+			log.error("getAssignmentByCourse()", e);
+			throw e;
+		}
+	}
 
 	/*******************************************************************
 	 * Facade Submissoes
