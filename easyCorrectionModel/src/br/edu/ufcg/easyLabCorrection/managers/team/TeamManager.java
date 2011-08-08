@@ -40,7 +40,7 @@ public class TeamManager extends Manager {
 	 *             Exception can be thrown in an attempt to save the team in the
 	 *             database system.<br>
 	 */
-	public Team saveTeam(Team t) throws EasyCorrectionException {
+	public Team createTeam(Team t) throws EasyCorrectionException {
 		if (t != null) {
 			List<Team> teams = getTeams();
 			if (teams.isEmpty()) {

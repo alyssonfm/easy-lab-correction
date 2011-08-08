@@ -286,7 +286,7 @@ public class AssignmentManagerTest {
 
 	private void saveBadAssignment(Assignment a) {
 		try {
-			assignment.saveAssignment(a);
+			assignment.createAssignment(a);
 			Assert.assertTrue(false);
 		} catch (AssignmentException e) {
 		}

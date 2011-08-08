@@ -99,23 +99,23 @@ public class TeamManagerTest {
 		Team tOK = new Team(-1, nameOK);
 
 		try {
-			team.saveTeam(t1);
+			team.createTeam(t1);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 		try {
-			team.saveTeam(t2);
+			team.createTeam(t2);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 		try {
-			team.saveTeam(t3);
+			team.createTeam(t3);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 
 		try {
-			team.saveTeam(tOK);
+			team.createTeam(tOK);
 		} catch (EasyCorrectionException e) {
 			Assert.assertTrue(false);
 		}
@@ -155,13 +155,13 @@ public class TeamManagerTest {
 		Team t5 = new Team(idOK, "");
 
 		try {
-			team.saveTeam(t4);
+			team.createTeam(t4);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 
 		try {
-			team.saveTeam(t5);
+			team.createTeam(t5);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}

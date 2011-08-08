@@ -112,7 +112,7 @@ public class Facade {
 
 	public MenuFunction saveFunction(MenuFunction function) throws Throwable {
 		try {
-			return system.saveFunction(function);
+			return system.createFunction(function);
 		} catch (Throwable e) {
 			log.error("saveFunction()", e);
 			throw e;
@@ -121,7 +121,7 @@ public class Facade {
 
 	public Group saveGroup(Group group) throws Throwable {
 		try {
-			return system.saveGroup(group);
+			return system.createGroup(group);
 		} catch (Throwable e) {
 			log.error("saveGroup()", e);
 			throw e;
@@ -131,7 +131,7 @@ public class Facade {
 	public UserGroup saveUserGroup(UserGroup userGroup)
 			throws Throwable {
 		try {
-			return system.saveUserGroup(userGroup);
+			return system.createUserGroup(userGroup);
 		} catch (Throwable e) {
 			log.error("saveUserGroup()", e);
 			throw e;
@@ -140,7 +140,7 @@ public class Facade {
 
 	public Menu saveMenu(Menu menu) throws Throwable {
 		try {
-			return system.saveMenu(menu);
+			return system.createMenu(menu);
 		} catch (Throwable e) {
 			log.error("saveMenu()", e);
 			throw e;
@@ -150,7 +150,7 @@ public class Facade {
 	public List<Permission> savePermissions(List<Permission> permissions)
 			throws Throwable {
 		try {
-			return system.savePermissions(permissions);
+			return system.createPermissions(permissions);
 		} catch (Throwable e) {
 			log.error("savePermissions()", e);
 			throw e;
@@ -160,7 +160,7 @@ public class Facade {
 	public UserGroup saveUser(UserGroup userGroup)
 			throws Throwable {
 		try {
-			return system.saveUser(userGroup);
+			return system.createUser(userGroup);
 		} catch (Throwable e) {
 			log.error("saveUser()", e);
 			throw e;
@@ -170,7 +170,7 @@ public class Facade {
 	public ArrayList<UserGroup> saveUsersFromCsvFile(String path, Group group) 
 		throws IOException, EasyCorrectionException {
 		try {
-			return system.saveUsersFromCsvFile(path, group);
+			return system.createUsersFromCsvFile(path, group);
 		} catch (IOException e) {
 			log.error("saveUsersFromCsvFile", e);
 			throw e;
@@ -283,7 +283,7 @@ public class Facade {
 	public List<Permission> retrievePermissionsByGroup(Integer groupId)
 			throws Throwable {
 		try {
-			return system.retrievePermissionsByGroup(groupId);
+			return system.listPermissionsByGroup(groupId);
 		} catch (Throwable e) {
 			log.error("retrievePermissionsByGroup()", e);
 			throw e;
@@ -293,7 +293,7 @@ public class Facade {
 	public List<Permission> saveGroupPermission(Group g, List<MenuFunction> list)
 			throws Throwable {
 		try {
-			return system.saveGroupPermission(g, list);
+			return system.createGroupPermission(g, list);
 		} catch (Throwable e) {
 			log.error("saveGroupPermission()", e);
 			throw e;
@@ -311,7 +311,7 @@ public class Facade {
 
 	public List<MenuFunction> getFunctionByMenu(Integer menuId) throws Throwable {
 		try {
-			return system.consultFunctionByMenu(menuId);
+			return system.listFunctionByMenu(menuId);
 		} catch (Throwable e) {
 			log.error("consultFunctionByMenu()", e);
 			throw e;
@@ -460,7 +460,7 @@ public class Facade {
 
 	public Assignment saveAssignment(Assignment assignment) throws Throwable {
 		try {
-			return system.saveAssignment(assignment);
+			return system.createAssignment(assignment);
 		} catch (Throwable e) {
 			log.error("saveAssignment()", e);
 			throw e;
@@ -539,7 +539,7 @@ public class Facade {
 
 	public Team saveTeam(Team team) throws Throwable {
 		try {
-			return system.saveTeam(team);
+			return system.createTeam(team);
 		} catch (Throwable e) {
 			log.error("saveTeam()", e);
 			throw e;
@@ -606,7 +606,7 @@ public class Facade {
 	public TeamHasUserHasAssignment saveTeamHasUserHasAssignment(
 			TeamHasUserHasAssignment tua) throws Throwable {
 		try {
-			return system.saveTeamHasUserHasAssignment(tua);
+			return system.createTeamHasUserHasAssignment(tua);
 		} catch (Throwable e) {
 			log.error("saveTeamHasUserHasAssignment()", e);
 			throw e;
@@ -796,7 +796,7 @@ public class Facade {
 	
 	public Assessment saveAssessment(Assessment assessment) throws Throwable{
 		try{
-			return system.saveAssessment(assessment);
+			return system.createAssessment(assessment);
 		} catch (Throwable e) {
 			log.error("saveAssessment()", e);
 			throw e;

@@ -65,39 +65,39 @@ public class AccessPermissionManagerTest {
 		Menu m7 = new Menu(1, "kjlk", "");
 
 		try {
-			access.saveMenu(mNULL);
+			access.createMenu(mNULL);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e2) {
 		}
 		try {
-			access.saveMenu(mERROR1);
+			access.createMenu(mERROR1);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e2) {
 		}
 		try {
-			access.saveMenu(m4);
+			access.createMenu(m4);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e2) {
 		}
 		try {
-			access.saveMenu(m5);
+			access.createMenu(m5);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e2) {
 		}
 		try {
-			access.saveMenu(m6);
+			access.createMenu(m6);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e2) {
 		}
 		try {
-			access.saveMenu(m7);
+			access.createMenu(m7);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e2) {
 		}
 
 		// MENU OK
 		try {
-			access.saveMenu(mOK);
+			access.createMenu(mOK);
 		} catch (EasyCorrectionException e2) {
 			e2.printStackTrace();
 			Assert.assertTrue(false);
@@ -188,7 +188,7 @@ public class AccessPermissionManagerTest {
 
 		MenuFunction fNULL1 = null; // NULL
 		List<MenuFunction> list1 = access.listFunctions(); // EMPTY
-		List<MenuFunction> list3 = access.consultFunctionsByMenu(1); // EMPTY
+		List<MenuFunction> list3 = access.listFunctionsByMenu(1); // EMPTY
 
 		Assert.assertSame(list1.size(), 0);
 		Assert.assertEquals(list3.size(), 0);
@@ -205,43 +205,43 @@ public class AccessPermissionManagerTest {
 		MenuFunction f6 = new MenuFunction(0, mOK, "90909", "");
 
 		try {
-			access.saveFunction(fNULL1);
+			access.createFunction(fNULL1);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e7) {
 		}
 		try {
-			access.saveFunction(f1);
+			access.createFunction(f1);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e7) {
 		}
 		try {
-			access.saveFunction(f2);
+			access.createFunction(f2);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e6) {
 		}
 		try {
-			access.saveFunction(f3);
+			access.createFunction(f3);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e5) {
 		}
 		try {
-			access.saveFunction(f4);
+			access.createFunction(f4);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e4) {
 		}
 		try {
-			access.saveFunction(f5);
+			access.createFunction(f5);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e3) {
 		}
 		try {
-			access.saveFunction(f6);
+			access.createFunction(f6);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e2) {
 		}
 
 		try {
-			access.saveFunction(fOK);
+			access.createFunction(fOK);
 		} catch (EasyCorrectionException e1) {
 			e1.printStackTrace();
 			Assert.assertTrue(false);
@@ -268,8 +268,8 @@ public class AccessPermissionManagerTest {
 		}
 
 		List<MenuFunction> list4 = access.listFunctions(); // NOT EMPTY
-		List<MenuFunction> list5 = access.consultFunctionsByMenu(-1); // EMPTY
-		List<MenuFunction> list6 = access.consultFunctionsByMenu(2); // EMPTY
+		List<MenuFunction> list5 = access.listFunctionsByMenu(-1); // EMPTY
+		List<MenuFunction> list6 = access.listFunctionsByMenu(2); // EMPTY
 
 		Assert.assertNotSame(list4.size(), 0);
 		Assert.assertEquals(list5.size(), 0);
@@ -381,23 +381,23 @@ public class AccessPermissionManagerTest {
 		Group g3 = new Group(0, "");
 
 		try {
-			access.saveGroup(g1);
+			access.createGroup(g1);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 		try {
-			access.saveGroup(g2);
+			access.createGroup(g2);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 		try {
-			access.saveGroup(g3);
+			access.createGroup(g3);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 
 		try {
-			access.saveGroup(gOK);
+			access.createGroup(gOK);
 		} catch (EasyCorrectionException e) {
 			e.printStackTrace();
 			Assert.assertTrue(false);
@@ -491,7 +491,7 @@ public class AccessPermissionManagerTest {
 	@Test
 	public void permissionCRUDBadParametersTest() {
 
-		List<Permission> list1 = access.consultPermissionsByGroup(1);// EMPTY
+		List<Permission> list1 = access.listPermissionsByGroup(1);// EMPTY
 
 		Assert.assertEquals(list1.size(), 0);
 
@@ -527,7 +527,7 @@ public class AccessPermissionManagerTest {
 				-1, "OK", ""), "OK", ""));
 
 		try {
-			access.savePermissions(null);
+			access.createPermissions(null);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -536,7 +536,7 @@ public class AccessPermissionManagerTest {
 		list.add(p1);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -544,7 +544,7 @@ public class AccessPermissionManagerTest {
 		list.add(p2);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -553,7 +553,7 @@ public class AccessPermissionManagerTest {
 		list.add(p3);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -562,7 +562,7 @@ public class AccessPermissionManagerTest {
 		list.add(p4);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -571,7 +571,7 @@ public class AccessPermissionManagerTest {
 		list.add(p5);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -580,7 +580,7 @@ public class AccessPermissionManagerTest {
 		list.add(p6);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -589,7 +589,7 @@ public class AccessPermissionManagerTest {
 		list.add(p7);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -598,7 +598,7 @@ public class AccessPermissionManagerTest {
 		list.add(p8);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -607,7 +607,7 @@ public class AccessPermissionManagerTest {
 		list.add(p9);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -616,7 +616,7 @@ public class AccessPermissionManagerTest {
 		list.add(p10);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -625,7 +625,7 @@ public class AccessPermissionManagerTest {
 		list.add(p11);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -634,7 +634,7 @@ public class AccessPermissionManagerTest {
 		list.add(p12);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -643,7 +643,7 @@ public class AccessPermissionManagerTest {
 		list.add(p13);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -652,7 +652,7 @@ public class AccessPermissionManagerTest {
 		list.add(p14);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -661,7 +661,7 @@ public class AccessPermissionManagerTest {
 		list.add(p15);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -670,7 +670,7 @@ public class AccessPermissionManagerTest {
 		list.add(p16);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -679,7 +679,7 @@ public class AccessPermissionManagerTest {
 		list.add(pOK);
 
 		try {
-			access.savePermissions(list);
+			access.createPermissions(list);
 		} catch (EasyCorrectionException e) {
 			e.printStackTrace();
 			Assert.assertTrue(false);
@@ -705,8 +705,8 @@ public class AccessPermissionManagerTest {
 		} catch (ObjectNotFoundException e) {
 		}
 		
-		List<Permission> list4 = access.consultPermissionsByGroup(-1); // EMPTY
-		List<Permission> list5 = access.consultPermissionsByGroup(0); // EMPTY
+		List<Permission> list4 = access.listPermissionsByGroup(-1); // EMPTY
+		List<Permission> list5 = access.listPermissionsByGroup(0); // EMPTY
 
 		Assert.assertNotSame(list4.size(), 0);
 		Assert.assertNotSame(list5.size(), 0);

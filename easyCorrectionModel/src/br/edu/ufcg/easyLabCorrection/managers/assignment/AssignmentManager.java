@@ -171,7 +171,7 @@ public class AssignmentManager extends Manager {
 	 *             The exception that can be launched in an attempt to save the
 	 *             assignment system.<br>
 	 */
-	public Assignment saveAssignment(Assignment assignmentTemp)
+	public Assignment createAssignment(Assignment assignmentTemp)
 			throws AssignmentException {
 
 		if (assignmentTemp == null) {
@@ -306,6 +306,7 @@ public class AssignmentManager extends Manager {
 		return getCurrentAssignmentState(assignmentTemp);
 	}
 
+	//TODO: REDO!
 	private void checksDatesModification(Assignment newAssignment)
 			throws AssignmentException {
 
