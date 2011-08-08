@@ -865,6 +865,7 @@
 						"<BR>Easy Lab Correction Team</BR>";
 				
 				message = Util.generateHTMLCode(message);
+				subject = "Welcome to EasyLabCorrection!";
 				contact = pUserGroup.user.email;
 				userName = pUserGroup.user.name;
 				sendEmailService.send();
@@ -1341,7 +1342,7 @@
 		<mx:Canvas label="Menu" width="100%" height="100%" id="canvas1">		
 			<mx:TextInput x="64" y="45" width="548" id="inputMenuName"  change="handleValidateMenu(null)"/>
 			<mx:TextInput x="64" y="73" width="548" id="inputMenuLabel"  change="handleValidateMenu(null)"/>
-			<mx:Button x="243.5" y="111" label="   Cadastrar" icon="@Embed(source='../../image/disquete.png')" click="saveMenu()" width="135" id="createMenuButton" height="28" enabled="false"/>
+			<mx:Button x="243.5" y="111" label="   Register" icon="@Embed(source='../../image/disquete.png')" click="saveMenu()" width="135" id="createMenuButton" height="28" enabled="false"/>
 			<mx:Button x="548" y="23" label="New" width="63" click="changeSaver()" id="botaoNovoMenu" height="23"/>
 			<mx:Label x="10" y="47" text="Name:" id="labelMenuCourse"/>
 			<mx:Label x="10" y="75" text="Label:" id="labelMenuClass"/>

@@ -13,11 +13,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import br.edu.ufcg.easyLabCorrection.util.Constants;
 import flex.messaging.FlexContext;
 import flex.messaging.FlexSession;
-
-import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
-import br.edu.ufcg.easyLabCorrection.util.Constants;
 
 /**
  * Generated at Wed Apr 30 16:34:10 GMT-03:00 2008
