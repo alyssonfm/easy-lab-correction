@@ -21,7 +21,7 @@ public class StageManager {
 		SystemStage stage = DAOFactory.DEFAULT.buildSystemStage().getById(id);
 		if (stage == null) {
 			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
-					.msg("período"));
+					.msg("SystemStage"));
 		}
 		return stage;
 	}

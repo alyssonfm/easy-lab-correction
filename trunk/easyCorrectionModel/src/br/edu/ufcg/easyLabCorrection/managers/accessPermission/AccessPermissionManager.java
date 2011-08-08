@@ -71,7 +71,7 @@ public class AccessPermissionManager extends Manager {
 	 * 
 	 * @return menu The new menu stored in the system.<br>
 	 */
-	public Menu saveMenu(Menu menu) throws EasyCorrectionException {
+	public Menu createMenu(Menu menu) throws EasyCorrectionException {
 		Menu m = new Menu();
 		if (menu == null) {
 			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT.msg("Menu"));
@@ -198,7 +198,7 @@ public class AccessPermissionManager extends Manager {
 	 * 
 	 * @return menu The new function stored in the system.<br>
 	 */
-	public MenuFunction saveFunction(MenuFunction function)
+	public MenuFunction createFunction(MenuFunction function)
 			throws EasyCorrectionException {
 		if (function != null) {
 			if (function.getFunctionId() == null
@@ -206,8 +206,8 @@ public class AccessPermissionManager extends Manager {
 
 				validateFunction(function);
 
-				MenuFunction f = consultFunctionByNameAndLabel(function
-						.getName(), function.getLabel());
+				MenuFunction f = getFunctionByNameAndLabel(function.getName(),
+						function.getLabel());
 
 				if (f == null) {
 					Integer id = DAOFactory.DEFAULT.buildFunctionDAO().save(
@@ -242,8 +242,8 @@ public class AccessPermissionManager extends Manager {
 
 				validateFunction(function);
 
-				MenuFunction fun = consultFunctionByNameAndLabel(function
-						.getName(), function.getLabel());
+				MenuFunction fun = getFunctionByNameAndLabel(
+						function.getName(), function.getLabel());
 				if (fun == null) {
 					fun = getFunction(function.getFunctionId());
 					fun = (MenuFunction) SwapperAtributosReflect.swapObject(
@@ -341,7 +341,7 @@ public class AccessPermissionManager extends Manager {
 	 * @return A menu if any one function system that has the same label and
 	 *         name passed as parameter, null otherwise.<br>
 	 */
-	private MenuFunction consultFunctionByNameAndLabel(String name, String label) {
+	private MenuFunction getFunctionByNameAndLabel(String name, String label) {
 		List<MenuFunction> list = DAOFactory.DEFAULT.buildFunctionDAO()
 				.findByNameAndLabel(name, label);
 		if (!list.isEmpty()) {
@@ -389,7 +389,7 @@ public class AccessPermissionManager extends Manager {
 	 *            system.<br>
 	 * @return The function list with the identifier passed as parameter.<br>
 	 */
-	public List<MenuFunction> consultFunctionsByMenu(Integer menuId) {
+	public List<MenuFunction> listFunctionsByMenu(Integer menuId) {
 		return DAOFactory.DEFAULT.buildFunctionDAO().findByMenu(menuId);
 	}
 
@@ -403,7 +403,7 @@ public class AccessPermissionManager extends Manager {
 	 *            The new group to be stored.<br>
 	 * @return The new group stored in the system.<br>
 	 */
-	public Group saveGroup(Group group) throws EasyCorrectionException {
+	public Group createGroup(Group group) throws EasyCorrectionException {
 
 		if (group != null) {
 			if (group.getGroupId() == null
@@ -568,7 +568,7 @@ public class AccessPermissionManager extends Manager {
 	 *            The permission list which will be saved.<br>
 	 * @return The permission list save in the system.<br>
 	 */
-	public List<Permission> savePermissions(List<Permission> permissions)
+	public List<Permission> createPermissions(List<Permission> permissions)
 			throws EasyCorrectionException {
 		if (permissions == null) {
 			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
@@ -595,7 +595,7 @@ public class AccessPermissionManager extends Manager {
 
 	public List<Permission> updatePermissions(List<Permission> permissions)
 			throws EasyCorrectionException {
-		
+
 		if (permissions == null) {
 			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT
 					.msg("Permissions list"));
@@ -617,7 +617,7 @@ public class AccessPermissionManager extends Manager {
 					permission.setPermissionId(id);
 					list.add(permission);
 				}
-			}else{
+			} else {
 				throw new EasyCorrectionException(ErrorMsgs.INVALID_VALUE
 						.msg("Permission id("
 								+ String.valueOf(permission.getPermissionId()))
@@ -628,7 +628,7 @@ public class AccessPermissionManager extends Manager {
 	}
 
 	/**
-	 * Function that saves a list of permissions for a group.<br>
+	 * Function that creates a list of permissions for a group.<br>
 	 * 
 	 * @param g
 	 *            The group that saved the list of permissions.<br>
@@ -636,7 +636,8 @@ public class AccessPermissionManager extends Manager {
 	 *            The list of permissions that saved.<br>
 	 * @return The list of permissions save for a group.<br>
 	 */
-	public List<Permission> saveGroupPermission(Group g, List<MenuFunction> list) {
+	public List<Permission> createGroupPermission(Group g,
+			List<MenuFunction> list) {
 		List<Permission> permissaoDoGrupoBanco = DAOFactory.DEFAULT
 				.buildPermissionDAO().findByGroupId(g.getGroupId());
 		List<Permission> newList = new LinkedList<Permission>();
@@ -648,18 +649,19 @@ public class AccessPermissionManager extends Manager {
 			newList.add(p);
 		}
 		// gravando as novas permissoes
-		for (Permission addPermission : newList) {
-			if (!containsFunction(permissaoDoGrupoBanco, addPermission
+		for (Permission addedPermission : newList) {
+			if (!containsFunction(permissaoDoGrupoBanco, addedPermission
 					.getMenuFunction())) {
 				Integer id = DAOFactory.DEFAULT.buildPermissionDAO().save(
-						addPermission);
-				addPermission.setPermissionId(id);
+						addedPermission);
+				addedPermission.setPermissionId(id);
 			} else {
 				List<Permission> anotherP = DAOFactory.DEFAULT
-						.buildPermissionDAO()
-						.findByGroupAndFunction(g.getGroupId(),
-								addPermission.getMenuFunction().getFunctionId());
-				addPermission = anotherP.get(0); 
+						.buildPermissionDAO().findByGroupAndFunction(
+								g.getGroupId(),
+								addedPermission.getMenuFunction()
+										.getFunctionId());
+				addedPermission = anotherP.get(0);
 			}
 		}
 		// removendo as permissoes nao passada na lista
@@ -691,6 +693,19 @@ public class AccessPermissionManager extends Manager {
 	}
 
 	/**
+	 * Function used to consult the permissions of group whose identifier is
+	 * passed as parameter.<br>
+	 * 
+	 * @param idGrupo
+	 *            The group identifier which the permissions will be consulted.<br>
+	 * @return The list of permissions of group whose identifier was passed as
+	 *         parameter.<br>
+	 */
+	public List<Permission> listPermissionsByGroup(Integer idGrupo) {
+		return DAOFactory.DEFAULT.buildPermissionDAO().findByGroupId(idGrupo);
+	}
+
+	/**
 	 * Function used to verify the permissions of user whose identifier is
 	 * passed as parameter.<br>
 	 * 
@@ -719,19 +734,6 @@ public class AccessPermissionManager extends Manager {
 			}
 		}
 		return functionsList;
-	}
-
-	/**
-	 * Function used to consult the permissions of group whose identifier is
-	 * passed as parameter.<br>
-	 * 
-	 * @param idGrupo
-	 *            The group identifier which the permissions will be consulted.<br>
-	 * @return The list of permissions of group whose identifier was passed as
-	 *         parameter.<br>
-	 */
-	public List<Permission> consultPermissionsByGroup(Integer idGrupo) {
-		return DAOFactory.DEFAULT.buildPermissionDAO().findByGroupId(idGrupo);
 	}
 
 	/**

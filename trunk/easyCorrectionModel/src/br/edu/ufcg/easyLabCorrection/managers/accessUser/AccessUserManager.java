@@ -70,23 +70,16 @@ public class AccessUserManager extends Manager {
 	 *             Exception can be thrown in an attempt to save a new user
 	 *             group in the system.<br>
 	 */
-	public UserGroup saveUserGroup(UserGroup userGroup)
+	public UserGroup createUserGroup(UserGroup userGroup)
 			throws EasyCorrectionException {
-		UserGroup ug = new UserGroup();
-		if (userGroup != null) {
-			try {
-				ug = createUserGroup(userGroup);
-			} catch (ObjectNotFoundException e) {
-				System.out.println("Error!");
-			}
-		}
-		return ug;
-	}
 
-	private UserGroup createUserGroup(UserGroup userGroup)
-			throws EasyCorrectionException {
-		Integer id = DAOFactory.DEFAULT.buildUserGroupDAO().save(userGroup);
-		userGroup.setUserGroupId(id);
+		if (userGroup != null) {
+			Integer id = DAOFactory.DEFAULT.buildUserGroupDAO().save(userGroup);
+			userGroup.setUserGroupId(id);
+		}else{
+			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT.msg("UserGroup"));
+		}
+	
 		return userGroup;
 	}
 
@@ -157,15 +150,13 @@ public class AccessUserManager extends Manager {
 	 *         the identifiers passed as parameter.<br>
 	 */
 	// Private Method that not been used.
-	/*private UserGroup getUserGroupByGroupAndUser(Integer groupId, Integer userId) {
-		List<UserGroup> list = DAOFactory.DEFAULT.buildUserGroupDAO()
-				.findByUserAndGroup(groupId, userId);
-		if (list.isEmpty()) {
-			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND
-					.msg("UserGroup"));
-		}
-		return list.get(0);
-	}*/
+	/*
+	 * private UserGroup getUserGroupByGroupAndUser(Integer groupId, Integer
+	 * userId) { List<UserGroup> list = DAOFactory.DEFAULT.buildUserGroupDAO()
+	 * .findByUserAndGroup(groupId, userId); if (list.isEmpty()) { throw new
+	 * ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND .msg("UserGroup")); }
+	 * return list.get(0); }
+	 */
 
 	/**
 	 * Function used to retrieve the user groups of the system by user
@@ -215,84 +206,6 @@ public class AccessUserManager extends Manager {
 				.save(userGroup.getUser());
 		userGroup.getUser().setUserId(id);
 		return userGroup;
-	}
-
-	/**
-	 * Function used to creates users in the system ELC from a CSV file.<br>
-	 * 
-	 * @param fileName
-	 *            The path for the CSV file.<br>
-	 * @param g
-	 *            The group which you want to create users.<br>
-	 * @return The list of UserGroups from users created.<br>
-	 * @throws IOException
-	 *             Exception that can be launched in an attempt to open the file
-	 *             whose path is passed as parameter.<br>
-	 * @throws EasyCorrectionException
-	 *             Exception can be thrown in an attempt to validate users to be
-	 *             registered.<br>
-	 */
-	public ArrayList<UserGroup> createUsersFromCsvFile(String fileName, Group g)
-			throws IOException, EasyCorrectionException {
-		CSVFileFilter csv = new CSVFileFilter();
-		ArrayList<ArrayList<String>> listUsers = csv.checkCsvFile(fileName);
-		ArrayList<UserGroup> ug = new ArrayList<UserGroup>();
-
-		for (int i = 0; i < listUsers.size(); i++) {
-			User user = new User();
-			user.setUserId(new Integer(0));
-			user.setLogin(listUsers.get(i).get(0));
-			user.setName(listUsers.get(i).get(1));
-			user.setEmail(listUsers.get(i).get(2));
-			SystemStage sysStage = new SystemStage();
-			sysStage.setId(new Integer(0));
-			sysStage.setSemester(listUsers.get(i).get(3));
-			user.setPeriod(sysStage);
-			String password = PasswordGenerator.generatePassword(6, user
-					.getLogin());
-			password = MD5Generator.md5(password);
-			user.setPassword(password);
-			if (validateUser(user)) {
-				UserGroup userGroup = new UserGroup();
-				userGroup.setUserGroupId(new Integer(0));
-				userGroup.setGroup(g);
-				userGroup.setUser(user);
-				ug.add(userGroup);
-			} else {
-				throw new EasyCorrectionException(
-						ErrorMsgs.CSV_INVALID_USER.msg(String
-								.valueOf(i)));
-			}
-		}
-		return ug;
-	}
-
-	/**
-	 * Function used to validate a user in the system ELC.<br>
-	 * 
-	 * @param user
-	 *            The user that whether to validate the system.<br>
-	 * @return The boolean value indicating the validity of user.<br>
-	 */
-	private boolean validateUser(User user) {
-		Pattern patEmail = Pattern.compile(".+@.+\\.[a-z]+");
-		Matcher pesqEmail = patEmail.matcher(user.getEmail());
-
-		Pattern patName = Pattern.compile("[A-Za-z]+\\s[A-Za-z]+\\s[A-Za-z]+");
-		Matcher pesqName = patName.matcher(user.getName());
-
-		Pattern patLogin = Pattern.compile("[a-zA-Z0-9]+");
-		Matcher pesqLogin = patLogin.matcher(user.getLogin());
-		
-		Pattern patStage = Pattern.compile("[a-zA-Z0-9]");
-		Matcher pesqStage = patStage.matcher(user.getPeriod().toString());
-
-		if (pesqName.matches() && pesqEmail.matches() 
-				&& pesqLogin.matches() && pesqStage.matches()) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	public UserGroup updateUser(UserGroup userGroup, User user)
@@ -380,8 +293,8 @@ public class AccessUserManager extends Manager {
 		List<User> list = DAOFactory.DEFAULT.buildUserDAO()
 				.findByLoginAndPassword(user.getLogin(), user.getPassword());
 		if (list.isEmpty()) {
-			throw new AuthenticationException(
-					ErrorMsgs.INVALID_AUTHENTICATION.msg());
+			throw new AuthenticationException(ErrorMsgs.INVALID_AUTHENTICATION
+					.msg());
 		}
 		return list.get(0);
 
@@ -395,7 +308,7 @@ public class AccessUserManager extends Manager {
 	 * @return A list of user groups whose group identifier correspond at the
 	 *         group identifier passed as parameter.<br>
 	 */
-	public List<UserGroup> consultUserByGroup(Integer groupId) {
+	public List<UserGroup> listUsersByGroup(Integer groupId) {
 		return DAOFactory.DEFAULT.buildUserGroupDAO().findByGroup(groupId);
 	}
 
@@ -413,16 +326,18 @@ public class AccessUserManager extends Manager {
 		String password = MD5Generator.md5(newPassword);
 		User bdUser = getUserByLogin(user.getLogin());
 
-		if (bdUser != null && bdUser.getPassword().equals(MD5Generator.md5(user.getPassword()))) {
+		if (bdUser != null
+				&& bdUser.getPassword().equals(
+						MD5Generator.md5(user.getPassword()))) {
 			bdUser.setPassword(password);
 			DAOFactory.DEFAULT.buildUserDAO().update(bdUser);
 		} else {
-			throw new ObjectNotFoundException(
-					ErrorMsgs.INVALID_AUTHENTICATION.msg());
+			throw new ObjectNotFoundException(ErrorMsgs.INVALID_AUTHENTICATION
+					.msg());
 		}
 		return bdUser;
 	}
-	
+
 	/**
 	 * Function used to list all users of the system Easy Lab Correction.<br>
 	 * 
@@ -430,6 +345,83 @@ public class AccessUserManager extends Manager {
 	 */
 	public List<UserGroup> getUserGroupByStage(Integer stageId) {
 		return DAOFactory.DEFAULT.buildUserGroupDAO().findByStage(stageId);
+	}
+
+	/**
+	 * Function used to creates users in the system ELC from a CSV file.<br>
+	 * 
+	 * @param fileName
+	 *            The path for the CSV file.<br>
+	 * @param g
+	 *            The group which you want to create users.<br>
+	 * @return The list of UserGroups from users created.<br>
+	 * @throws IOException
+	 *             Exception that can be launched in an attempt to open the file
+	 *             whose path is passed as parameter.<br>
+	 * @throws EasyCorrectionException
+	 *             Exception can be thrown in an attempt to validate users to be
+	 *             registered.<br>
+	 */
+	public ArrayList<UserGroup> createUsersFromCsvFile(String fileName, Group g)
+			throws IOException, EasyCorrectionException {
+		CSVFileFilter csv = new CSVFileFilter();
+		ArrayList<ArrayList<String>> listUsers = csv.checkCsvFile(fileName);
+		ArrayList<UserGroup> ug = new ArrayList<UserGroup>();
+
+		for (int i = 0; i < listUsers.size(); i++) {
+			User user = new User();
+			user.setUserId(new Integer(0));
+			user.setLogin(listUsers.get(i).get(0));
+			user.setName(listUsers.get(i).get(1));
+			user.setEmail(listUsers.get(i).get(2));
+			SystemStage sysStage = new SystemStage();
+			sysStage.setId(new Integer(0));
+			sysStage.setSemester(listUsers.get(i).get(3));
+			user.setPeriod(sysStage);
+			String password = PasswordGenerator.generatePassword(6, user
+					.getLogin());
+			password = MD5Generator.md5(password);
+			user.setPassword(password);
+			if (validateUser(user)) {
+				UserGroup userGroup = new UserGroup();
+				userGroup.setUserGroupId(new Integer(0));
+				userGroup.setGroup(g);
+				userGroup.setUser(user);
+				ug.add(userGroup);
+			} else {
+				throw new EasyCorrectionException(ErrorMsgs.CSV_INVALID_USER
+						.msg(String.valueOf(i)));
+			}
+		}
+		return ug;
+	}
+
+	/**
+	 * Function used to validate a user in the system ELC.<br>
+	 * 
+	 * @param user
+	 *            The user that whether to validate the system.<br>
+	 * @return The boolean value indicating the validity of user.<br>
+	 */
+	private boolean validateUser(User user) {
+		Pattern patEmail = Pattern.compile(".+@.+\\.[a-z]+");
+		Matcher pesqEmail = patEmail.matcher(user.getEmail());
+
+		Pattern patName = Pattern.compile("[A-Za-z]+\\s[A-Za-z]+\\s[A-Za-z]+");
+		Matcher pesqName = patName.matcher(user.getName());
+
+		Pattern patLogin = Pattern.compile("[a-zA-Z0-9]+");
+		Matcher pesqLogin = patLogin.matcher(user.getLogin());
+
+		Pattern patStage = Pattern.compile("[a-zA-Z0-9]");
+		Matcher pesqStage = patStage.matcher(user.getPeriod().toString());
+
+		if (pesqName.matches() && pesqEmail.matches() && pesqLogin.matches()
+				&& pesqStage.matches()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

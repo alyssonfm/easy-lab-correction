@@ -18,7 +18,7 @@ import br.edu.ufcg.easyLabCorrection.managers.accessUser.AccessUserManager;
 import br.edu.ufcg.easyLabCorrection.managers.accessUser.MD5Generator;
 import br.edu.ufcg.easyLabCorrection.managers.assessment.AssessmentManager;
 import br.edu.ufcg.easyLabCorrection.managers.assignment.AssignmentManager;
-import br.edu.ufcg.easyLabCorrection.managers.automatedCorrection.AutomatedCorrectionManager;
+import br.edu.ufcg.easyLabCorrection.managers.automatedCorrection.AutomatedEvaluationManager;
 import br.edu.ufcg.easyLabCorrection.managers.compilation.CompilationManager;
 import br.edu.ufcg.easyLabCorrection.managers.stage.StageManager;
 import br.edu.ufcg.easyLabCorrection.managers.submission.SubmissionManager;
@@ -48,7 +48,7 @@ public class System {
 	private AssessmentManager assessmentManager;
 	private CompilationManager compilationManager;
 	private TeamManager teamManager;
-	private AutomatedCorrectionManager correctionManager;
+	private AutomatedEvaluationManager correctionManager;
 	private StageManager stageManager;
 
 	public System() {
@@ -59,7 +59,7 @@ public class System {
 		assessmentManager = new AssessmentManager();
 		compilationManager = new CompilationManager();
 		teamManager = new TeamManager();
-		correctionManager = new AutomatedCorrectionManager();
+		correctionManager = new AutomatedEvaluationManager();
 		stageManager = new StageManager();
 	}
 
@@ -131,18 +131,18 @@ public class System {
 		return accessUserManager.getUserByLogin(login);
 	}
 
-	public MenuFunction saveFunction(MenuFunction function)
+	public MenuFunction createFunction(MenuFunction function)
 			throws EasyCorrectionException {
-		return accessPermissionManager.saveFunction(function);
+		return accessPermissionManager.createFunction(function);
 	}
 
-	public Group saveGroup(Group group) throws EasyCorrectionException {
-		return accessPermissionManager.saveGroup(group);
+	public Group createGroup(Group group) throws EasyCorrectionException {
+		return accessPermissionManager.createGroup(group);
 	}
 
-	public UserGroup saveUserGroup(UserGroup userGroup)
+	public UserGroup createUserGroup(UserGroup userGroup)
 			throws EasyCorrectionException {
-		return accessUserManager.saveUserGroup(userGroup);
+		return accessUserManager.createUserGroup(userGroup);
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class System {
 	 *             the system.<br>
 	 */
 
-	public UserGroup saveUser(UserGroup userGroup)
+	public UserGroup createUser(UserGroup userGroup)
 			throws EasyCorrectionException {
 
 		User u = new User();
@@ -242,18 +242,18 @@ public class System {
 
 		}
 		// Create User UserGroup
-		accessUserManager.saveUserGroup(userGroup);
+		accessUserManager.createUserGroup(userGroup);
 		return userGroup;
 		// urn accessUserManager.saveUserGroup(userGroup);
 	}
 
-	public Menu saveMenu(Menu menu) throws EasyCorrectionException {
-		return accessPermissionManager.saveMenu(menu);
+	public Menu createMenu(Menu menu) throws EasyCorrectionException {
+		return accessPermissionManager.createMenu(menu);
 	}
 
-	public List<Permission> savePermissions(List<Permission> permissions)
+	public List<Permission> createPermissions(List<Permission> permissions)
 			throws EasyCorrectionException {
-		return accessPermissionManager.savePermissions(permissions);
+		return accessPermissionManager.createPermissions(permissions);
 	}
 
 	public Group updateGroup(Group group) throws EasyCorrectionException {
@@ -316,21 +316,21 @@ public class System {
 		return accessUserManager.listUserGroupsByGroup(groupName);
 	}
 
-	public List<Permission> retrievePermissionsByGroup(Integer groupId) {
-		return accessPermissionManager.consultPermissionsByGroup(groupId);
+	public List<Permission> listPermissionsByGroup(Integer groupId) {
+		return accessPermissionManager.listPermissionsByGroup(groupId);
 	}
 
-	public List<Permission> saveGroupPermission(Group g, List<MenuFunction> list)
+	public List<Permission> createGroupPermission(Group g, List<MenuFunction> list)
 			throws Throwable {
-		return accessPermissionManager.saveGroupPermission(g, list);
+		return accessPermissionManager.createGroupPermission(g, list);
 	}
 
 	public List<Menu> listOrderMenus() {
 		return accessPermissionManager.listOrderedMenus();
 	}
 
-	public List<MenuFunction> consultFunctionByMenu(Integer idMenu) {
-		return accessPermissionManager.consultFunctionsByMenu(idMenu);
+	public List<MenuFunction> listFunctionByMenu(Integer idMenu) {
+		return accessPermissionManager.listFunctionsByMenu(idMenu);
 	}
 
 	public Group getGroupByName(String name) {
@@ -348,7 +348,7 @@ public class System {
 	}
 
 	public List<UserGroup> getUserByGroup(Integer groupId) {
-		return accessUserManager.consultUserByGroup(groupId);
+		return accessUserManager.listUsersByGroup(groupId);
 	}
 
 	public List<UserGroup> getUserGroupByUser(Integer userId) {
@@ -359,12 +359,12 @@ public class System {
 		return accessUserManager.changePassword(user, newPassword);
 	}
 
-	public ArrayList<UserGroup> saveUsersFromCsvFile(String path, Group group)
+	public ArrayList<UserGroup> createUsersFromCsvFile(String path, Group group)
 			throws IOException, EasyCorrectionException {
 		ArrayList<UserGroup> ug = new ArrayList<UserGroup>();
 		ug = accessUserManager.createUsersFromCsvFile(path, group);
 		for (int i = 0; i < ug.size(); i++) {
-			saveUser(ug.get(i));
+			createUser(ug.get(i));
 		}
 		return ug;
 	}
@@ -382,9 +382,9 @@ public class System {
 		return assignmentManager.getAssignment(assignmentId);
 	}
 
-	public Assignment saveAssignment(Assignment tempAssignment)
+	public Assignment createAssignment(Assignment tempAssignment)
 			throws EasyCorrectionException {
-		Assignment assign = assignmentManager.saveAssignment(tempAssignment);
+		Assignment assign = assignmentManager.createAssignment(tempAssignment);
 		List<Team> teams = teamManager.getTeams();
 		List<UserGroup> users = accessUserManager
 				.listUserGroupsByGroup("Student");
@@ -437,7 +437,7 @@ public class System {
 		return teamManager.getTeamHasUserHasAssignments();
 	}
 
-	public TeamHasUserHasAssignment saveTeamHasUserHasAssignment(
+	public TeamHasUserHasAssignment createTeamHasUserHasAssignment(
 			TeamHasUserHasAssignment tua) throws EasyCorrectionException {
 		return teamManager.saveTeamHasUserHasAssignment(tua);
 	}
@@ -565,8 +565,8 @@ public class System {
 		submissionManager.deleteSubmission(sub);
 	}
 
-	public Team saveTeam(Team t) throws EasyCorrectionException {
-		return teamManager.saveTeam(t);
+	public Team createTeam(Team t) throws EasyCorrectionException {
+		return teamManager.createTeam(t);
 	}
 
 	public Integer submissionNumber(Submission submission) {
@@ -620,7 +620,7 @@ public class System {
 				correctorId);
 	}
 
-	public Assessment saveAssessment(Assessment assessment)
+	public Assessment createAssessment(Assessment assessment)
 			throws EasyCorrectionException {
 		return assessmentManager.saveAssessment(assessment);
 	}
@@ -693,7 +693,7 @@ public class System {
 						int index = teams.get(teams.size() - 1).getId() + 1;
 						team.setName("Team " + index);
 					}
-					Team t = teamManager.saveTeam(team);
+					Team t = teamManager.createTeam(team);
 					if (i == 0) {
 						allocateUserToTeam(userGroup.getUser(), t);
 					}

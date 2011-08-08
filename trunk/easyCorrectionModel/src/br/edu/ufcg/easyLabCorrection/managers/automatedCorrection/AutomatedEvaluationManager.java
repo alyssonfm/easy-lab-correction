@@ -6,11 +6,11 @@ import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
 import br.edu.ufcg.easyLabCorrection.managers.Manager;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 
-public class AutomatedCorrectionManager extends Manager {
+public class AutomatedEvaluationManager extends Manager {
 
 	private TestExecution test;
 
-	public AutomatedCorrectionManager() {
+	public AutomatedEvaluationManager() {
 		super();
 		test = new TestExecution();
 	}

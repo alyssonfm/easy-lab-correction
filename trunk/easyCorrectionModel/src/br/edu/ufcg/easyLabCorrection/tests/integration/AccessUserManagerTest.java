@@ -49,17 +49,17 @@ public class AccessUserManagerTest {
 		UserGroup usgr2 = new UserGroup(1, gr, null);
 
 		try {
-			access.saveUserGroup(usgrError);
+			access.createUserGroup(usgrError);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 		try {
-			access.saveUserGroup(usgr1);
+			access.createUserGroup(usgr1);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 		try {
-			access.saveUserGroup(usgr2);
+			access.createUserGroup(usgr2);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
@@ -69,7 +69,7 @@ public class AccessUserManagerTest {
 		 */
 
 		try {
-			access.saveUserGroup(usgr);
+			access.createUserGroup(usgr);
 		} catch (EasyCorrectionException e) {
 			e.printStackTrace();
 			Assert.assertTrue(false);
@@ -100,29 +100,29 @@ public class AccessUserManagerTest {
 		UserGroup usgr9 = new UserGroup(1, gr, null);
 
 		try {
-			access.saveUserGroup(usgr6);
+			access.createUserGroup(usgr6);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 		try {
-			access.saveUserGroup(usgr7);
+			access.createUserGroup(usgr7);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 		try {
-			access.saveUserGroup(usgr8);
+			access.createUserGroup(usgr8);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e1) {
 		}
 		try {
-			access.saveUserGroup(usgr9);
+			access.createUserGroup(usgr9);
 			Assert.assertTrue(false);
 		} catch (EasyCorrectionException e) {
 		}
 
 		// UserGroup OK
 		try {
-			access.saveUserGroup(usgr);
+			access.createUserGroup(usgr);
 		} catch (EasyCorrectionException e) {
 			e.printStackTrace();
 			Assert.assertTrue(false);
@@ -418,10 +418,10 @@ public class AccessUserManagerTest {
 		Assert.assertEquals(us22.getLogin(), us.getLogin());
 		Assert.assertEquals(us22.getEmail(), us.getEmail());
 
-		access.consultUserByGroup(-1);
+		access.listUsersByGroup(-1);
 		Assert.assertTrue(false);
 
-		access.consultUserByGroup(gr.getGroupId());
+		access.listUsersByGroup(gr.getGroupId());
 		Assert.assertTrue(true);
 	}
 
