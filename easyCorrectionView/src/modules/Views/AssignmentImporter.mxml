@@ -43,7 +43,7 @@
 						}
 					}
 					catch(e:Error){
-						msg = "Serviço indisponível, reinicie a operação.";
+						msg = "Service Unavailable, please restart the operation.";
 					}
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, msg));
 				}
