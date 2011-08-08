@@ -17,6 +17,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
+import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 /**
  * Class responsible for managing of acess of the users in the system Easy Lab
@@ -412,7 +413,7 @@ public class AccessUserManager extends Manager {
 		String password = MD5Generator.md5(newPassword);
 		User bdUser = getUserByLogin(user.getLogin());
 
-		if (bdUser != null && bdUser.getPassword().equals(user.getPassword())) {
+		if (bdUser != null && bdUser.getPassword().equals(MD5Generator.md5(user.getPassword()))) {
 			bdUser.setPassword(password);
 			DAOFactory.DEFAULT.buildUserDAO().update(bdUser);
 		} else {
