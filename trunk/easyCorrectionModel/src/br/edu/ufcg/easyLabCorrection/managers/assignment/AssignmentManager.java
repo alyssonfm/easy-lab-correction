@@ -563,6 +563,11 @@ public class AssignmentManager extends Manager {
 
 		return DAOFactory.DEFAULT.buildAssignmentTypeDAO().findAll();
 	}
+	
+	public List<Assignment> getAssignmentByCourse(String course) {
+
+		return DAOFactory.DEFAULT.buildAssignmentDAO().findByCourse(course);
+	}
 
 	private boolean assignmentAttributesBasicValidations(Assignment assignment)
 			throws AssignmentException {
