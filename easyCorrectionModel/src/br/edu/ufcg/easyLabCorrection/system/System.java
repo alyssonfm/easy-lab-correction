@@ -772,4 +772,8 @@ public class System {
 		}
 	}
 	
+	public List<Assignment> getAssignmentByCourse(String course) {
+		return assignmentManager.getAssignmentByCourse(course);
+	}
+	
 }
