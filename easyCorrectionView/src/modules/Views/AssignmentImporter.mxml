@@ -86,7 +86,7 @@
 						case "Assignment":
 							sLabel = item.name;
 							break;
-						case "Period":
+						case "Semester":
 							sLabel = item.stage.semester;
 							break;
 						case "Class":
@@ -120,7 +120,7 @@
 		<mx:DataGrid x="10" y="10" width="760" height="248" id="dg_assignments" labelFunction="labelGrid" itemClick="selectAssignment()">
 			<mx:columns>
 				<mx:DataGridColumn headerText="Assignment" width="200"/>
-				<mx:DataGridColumn headerText="Period" width="80"/>
+				<mx:DataGridColumn headerText="Semester" width="80"/>
 				<mx:DataGridColumn headerText="Class" width="80"/>
 			</mx:columns>
 		</mx:DataGrid>
