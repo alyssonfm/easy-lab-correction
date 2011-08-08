@@ -17,10 +17,9 @@ import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
-import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 /**
- * Class responsible for managing of acess of the users in the system Easy Lab
+ * Class responsible for managing of access of the users in the system Easy Lab
  * Correction.<br>
  * 
  * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
@@ -157,7 +156,8 @@ public class AccessUserManager extends Manager {
 	 * @return The user group whose identifiers of user and group correspond at
 	 *         the identifiers passed as parameter.<br>
 	 */
-	private UserGroup getUserGroupByGroupAndUser(Integer groupId, Integer userId) {
+	// Private Method that not been used.
+	/*private UserGroup getUserGroupByGroupAndUser(Integer groupId, Integer userId) {
 		List<UserGroup> list = DAOFactory.DEFAULT.buildUserGroupDAO()
 				.findByUserAndGroup(groupId, userId);
 		if (list.isEmpty()) {
@@ -165,7 +165,7 @@ public class AccessUserManager extends Manager {
 					.msg("UserGroup"));
 		}
 		return list.get(0);
-	}
+	}*/
 
 	/**
 	 * Function used to retrieve the user groups of the system by user
