@@ -135,7 +135,7 @@
 					case "Rótulo":
 						sLabel = item.label;
 						break;
-					case "Nome":
+					case "Function Name":
 						sLabel = item.name;
 						break;
 				}
