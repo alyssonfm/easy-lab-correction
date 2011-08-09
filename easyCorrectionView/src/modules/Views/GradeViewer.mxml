@@ -129,7 +129,7 @@
 				<mx:DataGridColumn headerText="Student Name"  width="150" sortable="true" sortCompareFunction="compareName"/>
 				<mx:DataGridColumn headerText="Automatic Execution Percentage" width="50"/>
 				<mx:DataGridColumn headerText="Grade 1 (Automatic Assessment)"  width="50"/>
-				<mx:DataGridColumn headerText="Grade 2(Manual Assessment)" width="50"/>
+				<mx:DataGridColumn headerText="Grade 2 (Manual Assessment)" width="50"/>
 				<mx:DataGridColumn headerText="Final Grade" width="50"/>
 			</mx:columns>
 		</mx:DataGrid>
