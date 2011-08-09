@@ -359,10 +359,10 @@ public class System {
 		return accessUserManager.changePassword(user, newPassword);
 	}
 
-	public ArrayList<UserGroup> createUsersFromCsvFile(String path, Group group)
+	public ArrayList<UserGroup> createUsersFromCsvFile(String path, Group group, SystemStage systemStage)
 			throws IOException, EasyCorrectionException {
 		ArrayList<UserGroup> ug = new ArrayList<UserGroup>();
-		ug = accessUserManager.createUsersFromCsvFile(path, group);
+		ug = accessUserManager.createUsersFromCsvFile(path, group, systemStage);
 		for (int i = 0; i < ug.size(); i++) {
 			createUser(ug.get(i));
 		}
