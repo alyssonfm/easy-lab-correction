@@ -21,22 +21,25 @@ CARACTERÍSTICAS DO ROTEIRO:
 	* Data Máxima para discussão (desabilitado por enquanto)
 	* Penalidade por dia de atraso (Checkbox para marcar se terá penalidade)
  
-COMPILAÇÃO:
+SUBMISSION:
+	* 
+ 
+COMPILATION:
 	* ...
  
-TESTE DE UNIDADE:
-	* Tempo-limite de execução
-	* Anexar Testes Automáticos
-	* Anexar Ambiente
+UNIT TESTING:
+	* Execution Time-limit
+	* Attach Automatic Test
+	* Attach Development Environment
 
-COMPARAÇÃO DE ARQUIVOS:
-	* Tempo-limite de execução
-	* Anexar Arquivo de Saída(um arquivo TXT) - Gabarito
-	* Anexar Ambiente
+OUTPUT COMPARISON:
+	* Execution Time-limit
+	* Attach Output and Input Files
+	* Attach Development Environment
 
 	* OBS.: O aluno deve ter uma classe chamada Main
 	
-NOTA AUTOMÁTICA (Checkbox):
+AUTOMATIC GRADING:
 	* Porcentagem Automática de Avaliação 
 	
 	

@@ -401,7 +401,7 @@
 		<mx:Label text="Discussion deadline date:" fontWeight="bold"
 			textAlign="left" width="201" x="10" y="288" id="labelAutomatic2"/>
 		<mx:Label text="Release Date:" fontWeight="bold"
-			textAlign="left" width="131" x="399" y="43" id="labelAutomatic4"/>
+			textAlign="left" width="101" x="429" y="43" id="labelAutomatic4"/>
 		<mx:HRule x="10" y="397" width="760"/>
 		<mx:HRule x="10" y="241" width="760"/>
 		<mx:HRule x="10" y="350" width="760"/>
