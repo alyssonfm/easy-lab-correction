@@ -549,8 +549,8 @@ INSERT INTO `funcao` (`id`,`nome`,`rotulo`,`menu_id`) VALUES
  (7,'Grading Tables','gradingTables',3),
  (8,'Submissions','assignmentSubmission',4),
  (9,'Assignment Assessment','assignmentAssessment',3),
- (10,'Discussions','chats',3),
  (11,'Team Creation','createTem',4);
+ -- (10,'Discussions','chats',3),
 /*!40000 ALTER TABLE `funcao` ENABLE KEYS */;
 
 
@@ -751,7 +751,6 @@ INSERT INTO `permissao` (`id`,`grupo_id`,`funcao_id`) VALUES
  (5,1,7),
  (6,1,8),
  (7,1,9),
- (8,1,10),
  (9,1,11),
  (10,2,1),
  (11,2,4),
@@ -763,8 +762,7 @@ INSERT INTO `permissao` (`id`,`grupo_id`,`funcao_id`) VALUES
  (17,2,5),
  (18,2,7),
  (19,2,9),
- (20,3,7),
- (21,3,10);
+ (20,3,7);
 /*!40000 ALTER TABLE `permissao` ENABLE KEYS */;
 
 

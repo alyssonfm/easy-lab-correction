@@ -385,7 +385,7 @@
 		<mx:Label text="Submission max number:" fontWeight="bold"
 			textAlign="left" width="191" x="476" y="258" id="labelAutomatic3"/>
 		<mx:Label text="Execution time-limit:" fontWeight="bold"
-			textAlign="left" width="224" x="415" y="365" id="labelAutomatic5"/>
+			textAlign="left" width="160" x="476" y="365" id="labelAutomatic5"/>
 		<mx:Label text="ms" fontWeight="bold"
 			textAlign="left" width="27" x="744" y="365"/>
 		<mx:Label text="H" fontWeight="bold"

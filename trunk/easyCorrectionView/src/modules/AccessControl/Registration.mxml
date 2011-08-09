@@ -872,6 +872,7 @@
 				
 			}
 			
+			
 			private function selectUser(): void{
 				if (currentState != "teacherState"){
 					if (dgUsers.selectedItem != null) {

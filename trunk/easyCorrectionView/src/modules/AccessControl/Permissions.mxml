@@ -132,7 +132,7 @@
 				var sLabel:String = "";
 				var sHeaderText:String = column.headerText;
 				switch (sHeaderText)  {
-					case "Rótulo":
+					case "Has Permission":
 						sLabel = item.label;
 						break;
 					case "Function Name":
