@@ -167,10 +167,10 @@ public class Facade {
 		}
 	}
 	
-	public ArrayList<UserGroup> saveUsersFromCsvFile(String path, Group group) 
+	public ArrayList<UserGroup> saveUsersFromCsvFile(String path, Group group, SystemStage systemStage) 
 		throws IOException, EasyCorrectionException {
 		try {
-			return system.createUsersFromCsvFile(path, group);
+			return system.createUsersFromCsvFile(path, group, systemStage);
 		} catch (IOException e) {
 			log.error("saveUsersFromCsvFile", e);
 			throw e;

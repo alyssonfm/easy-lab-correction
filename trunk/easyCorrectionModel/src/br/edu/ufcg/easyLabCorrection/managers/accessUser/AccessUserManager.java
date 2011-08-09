@@ -362,7 +362,7 @@ public class AccessUserManager extends Manager {
 	 *             Exception can be thrown in an attempt to validate users to be
 	 *             registered.<br>
 	 */
-	public ArrayList<UserGroup> createUsersFromCsvFile(String fileName, Group g)
+	public ArrayList<UserGroup> createUsersFromCsvFile(String fileName, Group g, SystemStage systemStage)
 			throws IOException, EasyCorrectionException {
 		CSVFileFilter csv = new CSVFileFilter();
 		ArrayList<ArrayList<String>> listUsers = csv.checkCsvFile(fileName);
@@ -374,10 +374,7 @@ public class AccessUserManager extends Manager {
 			user.setLogin(listUsers.get(i).get(0));
 			user.setName(listUsers.get(i).get(1));
 			user.setEmail(listUsers.get(i).get(2));
-			SystemStage sysStage = new SystemStage();
-			sysStage.setId(new Integer(0));
-			sysStage.setSemester(listUsers.get(i).get(3));
-			user.setPeriod(sysStage);
+			user.setPeriod(systemStage);
 			String password = PasswordGenerator.generatePassword(6, user
 					.getLogin());
 			password = MD5Generator.md5(password);
