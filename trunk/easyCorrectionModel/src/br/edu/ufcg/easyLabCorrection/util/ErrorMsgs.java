@@ -71,7 +71,7 @@ public enum ErrorMsgs {
 	},
 	INVALID_AUTHENTICATION {
 		public String msg(String... args) {
-			return "Invalid Authentication, the login and/or the password do not match!";
+			return "Invalid Authentication, the login and the password do not match!";
 		}
 	},
 	INVALID_PASSWORD_CHANGE {

@@ -54,7 +54,7 @@
 						 labelFunction="labelGridUsers" id="dgUsersState">
 					<mx:columns>
 						<mx:DataGridColumn headerText="Login" dataField="id" width="200"/>
-						<mx:DataGridColumn headerText="Username"/>
+						<mx:DataGridColumn headerText="Name"/>
 					</mx:columns>
 				</mx:DataGrid>
 			</mx:AddChild>
@@ -314,7 +314,7 @@
 				var auxGroup: ArrayCollection = new ArrayCollection();
 				if (currentState == "teacherState"){
 					for(var i: int = 0; i < groups.length; i++){
-						if(groups.getItemAt(i).name.toUpperCase() != "INSTRUCTOR" && groups.getItemAt(i).name.toUpperCase() != "ADMINISTRADOR"){
+						if(groups.getItemAt(i).name.toUpperCase() != "INSTRUCTOR" && groups.getItemAt(i).name.toUpperCase() != "SYSTEM MANAGER"){
 							if(!loggedAssistant){
 								auxGroup.addItem(groups.getItemAt(i));	 
 							}
@@ -836,7 +836,7 @@
 						sendEmails(userGroup);
 						emailChanged = false;
 					} else{
-						localMessage = new Array(false, "The data was sucessfully updated!");
+						localMessage = new Array(false, "The User was sucessfully updated!");
 						launchException(localMessage);
 					}
 				}
