@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modules.System.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+		width="660" height="214" creationComplete="init()" title="Registration Importer" showCloseButton="true" close="closeWindow()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import bean.Utility.Constant;
+				import bean.system.SystemStage;
+				import events.AssignmentEvent;
+				import bean.Utility.CastEntities;
+				import bean.assignments.Assignment;
+				import events.ObjectEvent;
+				import mx.managers.SystemManager;
+				import bean.Utility.Util;
+				import mx.collections.ArrayCollection;
+				import events.UserEvent;
+				import bean.permission.*;
+				import events.EventLogResponse;
+				import events.ClosePopupEvent;
+				import mx.utils.Base64Decoder;
+				import mx.controls.Image;
+				import com.adobe.serialization.json.JSON;
+				import mx.controls.Alert;
+				import mx.utils.StringUtil;
+				import Scripts.ModulesController;
+				import mx.binding.utils.BindingUtils;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+				
+				private var fileRef:FileReference;
+				private var request: URLRequest;
+				private const FILE_UPLOAD_URL:String = Constant.urlUploadDonwload;
+				private var url: String = "";
+				
+				private var group: Group = new Group();
+				private var systemStage: SystemStage = new SystemStage();
+	            
+	            private function failure(event:FaultEvent):void {
+					var msg:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							msg = event.fault.faultString;
+						} else {
+							msg = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						msg = "Serviço indisponível, reinicie a operação.";
+					}
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, msg));
+				}
+				
+				private function chooseFile(): void{
+					fileRef = new FileReference();
+			   	 	fileRef.addEventListener(Event.SELECT, selectedFile);
+			   	 	fileRef.addEventListener(Event.COMPLETE, fullSending);
+			   	 	fileRef.addEventListener(IOErrorEvent.IO_ERROR, sendError);
+			    	fileRef.browse(new Array(new FileFilter("Arquivo (*.csv)","*.csv")));
+				}
+				
+				public function selectedFile(evt:Event):void {
+			       	request = new URLRequest(FILE_UPLOAD_URL);
+			       	url = "/arquivosImportados/";
+			       	path.text = fileRef.name;
+				}
+				
+				public function sendError(evt:Event):void {
+			       	var param:Array = new Array(true, "Transmission Error. The file was not sent." +
+														"\n\nTry again! If the problem persists..." + 
+														"\n\nVerify if your conection with the internet is ativated.");
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
+				}
+				
+				private function importAssignment():void{
+					request = new URLRequest(FILE_UPLOAD_URL);
+					var variables:URLVariables = new URLVariables();
+					variables.url = url;
+					variables.fileName = path.text;
+					request.data = variables;
+					fileRef.upload(request);
+				}
+				
+				public function fullSending(evt:Event):void {
+					systemStage = CastEntities.castStage(cb_stage.selectedItem);
+					facade.getOperation("saveUsersFromCsvFile").send(url, group, systemStage);
+				}
+				
+				private function saveUsersFromCsvFile_result(event:ResultEvent):void{
+					var param:Array = new Array(false, "Imported Successfully.");
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
+				}
+				
+				private function closeWindow():void {
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostra uma mensagem de erro
+				 */
+				private function eventLaunches(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function init():void {
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					var courseName: String = String(ModulesController.getParam());
+					getGroupByName("Student");
+				}
+				
+				private function getGroupByName(courseName: String):void{
+					facade.getOperation("getGroupByName").send(courseName);
+				}
+				
+				private function getGroupByName_result(event:ResultEvent):void{
+					group = CastEntities.castGroup(event.result);
+					systemStageList();
+				}
+				
+				private function systemStageList():void{
+					facade.getOperation("systemStageList").send();
+				}
+				
+				private function systemStageList_result(event:ResultEvent):void{
+					cb_stage.dataProvider = new ArrayCollection();
+					cb_stage.dataProvider = event.result as ArrayCollection;
+				}
+				
+				private function showStage(item:*):String {
+					return item.course + " - " + item.semester + " (" + item.courseClass + ")";
+				}
+
+			]]>
+		</mx:Script>
+		<mx:LinkButton x="193.5" y="56" label="   Attach File" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="chooseFile()"/>
+		<mx:Label x="10" y="92" width="620" id="path" textAlign="center"/>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			<mx:method name="getGroupByName" result="getGroupByName_result(event)" fault="failure(event)"/>
+			<mx:method name="saveUsersFromCsvFile" result="saveUsersFromCsvFile_result(event)" fault="failure(event)"/>
+			<mx:method name="systemStageList" result="systemStageList_result(event)" fault="failure(event)"/>
+		</mx:RemoteObject>
+		
+		<mx:Button x="217.5" y="132" label="   import Users" width="204.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="importButton" click="importAssignment()" enabled="false"/>
+		<mx:ComboBox x="73" y="10" width="557" labelField="showStage" id="cb_stage"/>
+		<mx:Label text="Course:" fontWeight="bold" textAlign="left" width="64" x="10" y="11.5" id="labelCourse"/>
+		
+</les:ModuleTitleWindow>
+

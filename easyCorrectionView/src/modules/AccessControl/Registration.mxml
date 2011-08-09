@@ -1181,6 +1181,11 @@
 				);
 			}
 			
+			private function importStudentsFromCSVFile():void {  
+				ModulesController.createModule("modules/AccessControl/RegistrationImporter.swf", this, null);
+			}
+			
+			
 		]]>
 	</mx:Script>
 	
@@ -1299,7 +1304,7 @@
 	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="true">	
 		
 		<mx:Canvas label="User" width="100%" height="100%" id="canvas4">
-			<mx:ComboBox prompt="select..." x="64" y="10" width="548" labelField="name" id="cbUserGroup" change="filtrateUserByGroup()"/>
+			<mx:ComboBox prompt="select..." x="64" y="10" width="457" labelField="name" id="cbUserGroup" change="filtrateUserByGroup()"/>
 			<mx:ComboBox prompt="select..." x="62" y="39.5" width="550" labelFunction="showStage" id="cbSystemStage" />
 			<mx:TextInput x="64" y="69" width="548" id="inputUserName" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="64" y="98.5" width="252.5" id="inputUserLogin" change="handleValidaUsuario(null)"/>
@@ -1322,6 +1327,7 @@
 					<mx:DataGridColumn headerText="Name" sortCompareFunction="nameCompare"/>
 				</mx:columns>
 			</mx:DataGrid>
+			<mx:Button x="529" y="10" label="Import" width="83" click="importStudentsFromCSVFile()"/>
 		</mx:Canvas>
 		
 		<mx:Canvas label="Group" width="100%" height="100%" id="canvas3">
