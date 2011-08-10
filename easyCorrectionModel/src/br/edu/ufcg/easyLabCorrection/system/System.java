@@ -349,7 +349,11 @@ public class System {
 	public List<UserGroup> getUserByGroup(Integer groupId) {
 		return accessUserManager.listUsersByGroup(groupId);
 	}
-
+	
+	public List<UserGroup> getUsersByGroupAndStage(Integer systemStage, Integer groupId) {
+		return accessUserManager.listUsersByGroupAndStage(systemStage, groupId);
+	}
+	
 	public List<UserGroup> getUserGroupByUser(Integer userId) {
 		return accessUserManager.getUserGroupByUser(userId);
 	}

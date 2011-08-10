@@ -46,6 +46,19 @@ public class UserGroupHibernateDAO extends
 		return list;
 	}
 	
+	//There are differences between this two methods. Pay Attention the numbers of parameters.
+	@SuppressWarnings("unchecked")
+	public List<UserGroup> findByGroupAndStage(Integer systemStageId, Integer groupId) {
+		Query q = getSession().createQuery("from UserGroup where group.groupId = :groupId " +
+				"and user.period.id = :stageId");
+		q.setParameter("groupId", groupId);
+		q.setParameter("stageId", systemStageId);
+		q.setCacheable(true);
+		List <UserGroup> list = q.list();
+		instantiatesList(list);
+		return list;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByStage(int stageId) {
 		Query q = getSession().createQuery("from UserGroup where user.period.id = :stageId");
