@@ -127,14 +127,14 @@
 				private function editAssignmentCalls():void{
 					if(dg_agenda.selectedItem != null){
 						var param:* = dg_agenda.selectedItem;
-						ModulesController.createModule("modules/Views/AssignmentManagement.swf", this, param);
+						ModulesController.createModule("modules/Views/AssignmentRegistration.swf", this, param);
 					}else{
-						ModulesController.createModule("modules/Views/AssignmentManagement.swf", this, null);
+						ModulesController.createModule("modules/Views/AssignmentRegistration.swf", this, null);
 					}
 				}
 				
 				private function createsAssignment():void{
-					ModulesController.createModule("modules/Views/AssignmentManagement.swf", this, null);
+					ModulesController.createModule("modules/Views/AssignmentRegistration.swf", this, null);
 				}
 
 			]]>
