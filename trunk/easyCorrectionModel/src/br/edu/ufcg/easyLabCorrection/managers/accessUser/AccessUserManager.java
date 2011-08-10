@@ -311,6 +311,18 @@ public class AccessUserManager extends Manager {
 	public List<UserGroup> listUsersByGroup(Integer groupId) {
 		return DAOFactory.DEFAULT.buildUserGroupDAO().findByGroup(groupId);
 	}
+	
+	/**
+	 * Function used to consult users of the system by group identifier.<br>
+	 * 
+	 * @param groupId
+	 *            The group identifier used to consult the user in the system.<br>
+	 * @return A list of user groups whose group identifier correspond at the
+	 *         group identifier passed as parameter.<br>
+	 */
+	public List<UserGroup> listUsersByGroupAndStage(Integer systemStage, Integer groupId) {
+		return DAOFactory.DEFAULT.buildUserGroupDAO().findByGroupAndStage(systemStage, groupId);
+	}
 
 	/**
 	 * Function used to change the password of the user of the system.<br>

@@ -390,7 +390,17 @@ public class Facade {
 			throw e;
 		}
 	}
-
+	
+	public List<UserGroup> getUsersByGroupAndStage(Integer systemStage, Integer groupId)
+			throws Throwable {
+		try {
+			return system.getUsersByGroupAndStage(systemStage, groupId);
+		} catch (Throwable e) {
+			log.error("getUsersByGroupAndStage()", e);
+			throw e;
+		}
+	}
+	
 	public List<UserGroup> getUserGroupByUser(Integer userId)
 			throws Throwable {
 		try {
