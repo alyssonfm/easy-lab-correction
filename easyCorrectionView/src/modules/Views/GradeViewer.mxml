@@ -87,7 +87,7 @@
 						case "Grade 1 (Automatic Assessment)":
 							sLabel = item.automaticGrade;
 							break;
-						case "Grade 2(Manual Assessment)":
+						case "Grade 2 (Manual Assessment)":
 							sLabel = item.correctionGrade;
 							break;
 						case "Final Grade":
