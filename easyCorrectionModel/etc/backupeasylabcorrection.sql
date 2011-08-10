@@ -999,7 +999,7 @@ CREATE TABLE `usuario` (
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`id`,`login`,`nome`,`senha`,`email`,`periodo_id`) VALUES 
  (1,'demas','Demetrio Gomes','4297f44b13955235245b2497399d7a93','demetr@gmail.com',1),
- (3,'alysson','Alysson Filgueira Milanez','4b395a361e5233bafb1efa024cef5037','alyssonfilgueira@gmail.com',1),
+ (3,'alysson','Alysson Filgueira Milanez','4297f44b13955235245b2497399d7a93','alyssonfilgueira@gmail.com',1),
  (119,'augusto','Augusto','4297f44b13955235245b2497399d7a93','augustomacedo@gmail.com',1),
  (126,'livia','Livia Campos','3fb4b2291f7bf8c4835b8a11f1cf199f','sampaiolivia@gmail.com',1),
  (132,'liviam','Livia M.','3fb4b2291f7bf8c4835b8a11f1cf199f','livia@dsc.ufcg.edu.br',1),
