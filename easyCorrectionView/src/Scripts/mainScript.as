@@ -83,7 +83,7 @@ private function geraTabBar(): TabBar {
 	this.addChild(userLabel);
 
 	loggedUser = new Label();
-	loggedUser.x = userLabel.x + 100;
+	loggedUser.x = userLabel.x + 70;
 	loggedUser.y = 10;
 	loggedUser.styleName = "valorLabel";
 	this.addChild(loggedUser);
