@@ -65,6 +65,7 @@
 			       	request = new URLRequest(FILE_UPLOAD_URL);
 			       	url = "/arquivosImportados/";
 			       	path.text = fileRef.name;
+			       	importButton.enabled = true;
 				}
 				
 				public function sendError(evt:Event):void {
@@ -85,6 +86,7 @@
 				
 				public function fullSending(evt:Event):void {
 					systemStage = CastEntities.castStage(cb_stage.selectedItem);
+					url = url + path.text;
 					facade.getOperation("saveUsersFromCsvFile").send(url, group, systemStage);
 				}
 				
@@ -147,7 +149,7 @@
 		</mx:RemoteObject>
 		
 		<mx:Button x="217.5" y="132" label="   import Users" width="204.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="importButton" click="importAssignment()" enabled="false"/>
-		<mx:ComboBox x="73" y="10" width="557" labelField="showStage" id="cb_stage"/>
+		<mx:ComboBox x="73" y="10" width="557" labelFunction="showStage" id="cb_stage"/>
 		<mx:Label text="Course:" fontWeight="bold" textAlign="left" width="64" x="10" y="11.5" id="labelCourse"/>
 		
 </les:ModuleTitleWindow>

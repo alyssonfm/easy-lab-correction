@@ -8,7 +8,7 @@
 		<mx:State name="teacherState">
 			<mx:RemoveChild target="{tabNav}"/>
 			<mx:AddChild position="lastChild">
-				<mx:ComboBox prompt="select..." x="66" y="10" width="548" labelField="name" id="cbUserGroupState" change="filtrateUserByGroup()"/>
+				<mx:ComboBox prompt="select..." x="65" y="41" width="548" labelField="name" id="cbUserGroupState" change="filtrateUserByGroup()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:TextInput x="64" y="71" width="548" id="inputUserNameState" change="handleValidaUsuario(null)"/>
@@ -29,10 +29,10 @@
 				<mx:Button x="386.5" y="162.5" label="   Delete" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButtonState" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="243.5" y="162.5" label="   Update" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButtonState" height="28"/>
+				<mx:Button x="243.5" y="162.5" label="   Update" click="UpdateUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButtonState" height="28"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="12" y="11.5" text="Group:" id="labelUserGroupState"/>
+				<mx:Label x="11" y="42.5" text="Group:" id="labelUserGroupState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="10" y="73" text="Name:" id="labelUserNameState"/>
@@ -59,10 +59,10 @@
 				</mx:DataGrid>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:ComboBox prompt="select..." x="64" y="40" width="550" labelFunction="showStage" id="cbSystemStageState" />
+				<mx:Label x="12" y="12.5" text="Class:" id="labelClassState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="12" y="41.5" text="Class:" id="labelClassState"/>
+				<mx:Label x="64" y="12.5" id="labelInstructorClass" width="550"/>
 			</mx:AddChild>
 		</mx:State>
 	</les:states>
@@ -167,6 +167,7 @@
 			private var generatedPassword: String = "";
 			
 			private var emailChanged: Boolean = false;
+			private var currentUserStage: SystemStage = new SystemStage();
 			
 			[Bindable]
 			private var message:String;
@@ -214,6 +215,8 @@
 					|| userGroupList.getItemAt(0).group.name.toUpperCase() == "ASSISTANT"){
 					if(userGroupList.getItemAt(0).group.name.toUpperCase() == "ASSISTANT") loggedAssistant = true;
 					currentState = "teacherState";
+					currentUserStage = CastEntities.castUserGroup(userGroupList.getItemAt(0)).user.period;
+					setCourse(currentUserStage);
 					tabNav.visible = true;
 					emailValidator.source = inputUserEmailState;
 					emailValidator.trigger = inputUserEmailState;
@@ -223,6 +226,10 @@
 					tabNav.visible = true;
 					selectTab();
 				}
+			}
+			
+			private function setCourse(ss: SystemStage): void{
+				labelInstructorClass.text =  ss.course + " - " + ss.semester + " (" + ss.courseClass + ")";
 			}
 			
 			
@@ -784,7 +791,7 @@
 						user.login = StringUtil.trim(inputUserLoginState.text);
 						user.name = StringUtil.trim(inputUserNameState.text);
 						user.email = StringUtil.trim(inputUserEmailState.text);
-						user.period = CastEntities.castStage(cbSystemStageState.selectedItem);
+						user.period = currentUserStage; 
 						if(!firstEntry && userGroup.user.email != user.email){
 							emailChanged = true;
 						}
@@ -896,7 +903,6 @@
 						userGroup.user = CastEntities.castUser(dgUsersState.selectedItem.user);
 						userGroup.group = dgUsersState.selectedItem.group;
 						cbUserGroupState.selectedIndex = Util.objectTakesPost("groupId", ArrayCollection(cbUserGroupState.dataProvider), userGroup.group);
-						cbSystemStageState.selectedIndex = Util.objectTakesPost("id", ArrayCollection(cbSystemStageState.dataProvider), userGroup.user.period);
 						inputUserNameState.text = userGroup.user.name;
 						inputUserLoginState.text = userGroup.user.login;
 						inputUserEmailState.text = userGroup.user.email;
@@ -1305,18 +1311,18 @@
 	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="true">	
 		
 		<mx:Canvas label="User" width="100%" height="100%" id="canvas4">
-			<mx:ComboBox prompt="select..." x="64" y="10" width="457" labelField="name" id="cbUserGroup" change="filtrateUserByGroup()"/>
-			<mx:ComboBox prompt="select..." x="62" y="39.5" width="550" labelFunction="showStage" id="cbSystemStage" />
-			<mx:TextInput x="64" y="69" width="548" id="inputUserName" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="64" y="98.5" width="252.5" id="inputUserLogin" change="handleValidaUsuario(null)"/>
+			<mx:ComboBox prompt="select..." x="62" y="39" width="550" labelField="name" id="cbUserGroup" change="filtrateUserByGroup()"/>
+			<mx:ComboBox prompt="select..." x="62" y="10" width="459" labelFunction="showStage" id="cbSystemStage" />
+			<mx:TextInput x="62" y="69" width="550" id="inputUserName" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="62" y="98.5" width="254.5" id="inputUserLogin" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="404.5" y="98.5" width="207.5" id="inputUserPassword" displayAsPassword="true"/>
-			<mx:TextInput x="64" y="128.5" width="548" id="inpuUserEmail" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="62" y="128.5" width="550" id="inpuUserEmail" change="handleValidaUsuario(null)"/>
 			<mx:Button x="243.5" y="160.5" label="   Save" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButton" height="28" enabled="false"/>
 			<mx:Button x="100.5" y="160.5" label="   New" width="135" height="28" id="newUserButton" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
 			<mx:Button x="386.5" y="160.5" label="   Delete" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButton" height="28"/>
-			<mx:Button x="243.5" y="160.5" label="   Update" click="verifyUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButton" height="28"/>
-			<mx:Label x="9" y="11.5" text="Group:" id="labelGrupoUsuario"/>
-			<mx:Label x="12" y="41" text="Class:" id="labelClass"/>
+			<mx:Button x="243.5" y="160.5" label="   Update" click="UpdateUser()" icon="@Embed(source='../../image/atualiza.png')" width="135" id="updateUserButton" height="28"/>
+			<mx:Label x="9" y="40.5" text="Group:" id="labelGrupoUsuario"/>
+			<mx:Label x="12" y="11.5" text="Class:" id="labelClass"/>
 			<mx:Label x="10" y="71" text="Name:" id="labelNomeUsuario"/>
 			<mx:Label x="12" y="100.5" text="Login:" id="labelLoginUsuario"/>
 			<mx:Label x="12" y="130.5" text="Email:" id="labelEmailUsuario"/>
@@ -1328,7 +1334,7 @@
 					<mx:DataGridColumn headerText="Name" sortCompareFunction="nameCompare"/>
 				</mx:columns>
 			</mx:DataGrid>
-			<mx:Button x="529" y="10" label="Import" width="83" click="importStudentsFromCSVFile()"/>
+			<mx:Button x="529" y="10.5" label="Import" width="83" click="importStudentsFromCSVFile()"/>
 		</mx:Canvas>
 		
 		<mx:Canvas label="Group" width="100%" height="100%" id="canvas3">
