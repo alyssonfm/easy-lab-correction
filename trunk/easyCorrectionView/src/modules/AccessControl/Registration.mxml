@@ -185,7 +185,7 @@
 			
 			private function init():void {
 				facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
-				loggedUser = ModulesController.getParam();
+				loggedUser = ModulesController.getParam();	
 				getUserGroup();
 				getSystemStageList();
 			}
@@ -203,6 +203,7 @@
 				if (tabNav.selectedIndex == 4){
 					dgStages.dataProvider = stages;
 				}
+				
 			}
 			
 			private function getUserGroup(): void{
@@ -352,10 +353,12 @@
 					if (tabNav.selectedIndex == 0){
 						cbUserGroup.dataProvider = groups;
 						if (groups.length != 0){
+							cbSystemStage.selectedIndex = 0;
 							cbUserGroup.selectedIndex = 0;
 							filtrateUserByGroup();
 						}
 						else{
+							cbSystemStage.selectedIndex = -1;
 							cbUserGroup.selectedIndex = -1;
 						}
 					}
@@ -1007,13 +1010,18 @@
 				try{
 					handleValidaUsuario(null);
 					var auxUserGroup : *;
+					var auxSystemStage : *;
 					if (currentState != "teacherState"){
-						auxUserGroup = cbUserGroup.selectedItem;	
+						auxSystemStage = cbSystemStage.selectedItem;
+						auxUserGroup = cbUserGroup.selectedItem;
+						facade.getOperation("getUsersByGroupAndStage").send(auxSystemStage.id,
+							auxUserGroup.groupId);	
 					}
 					else{
 						auxUserGroup = cbUserGroupState.selectedItem;
+						facade.getOperation("getUserByGroup").send(auxUserGroup.groupId);
 					}
-					facade.getOperation("getUserByGroup").send(auxUserGroup.groupId);
+					
 				} catch(e: Error){}
 			}
 			
@@ -1213,6 +1221,7 @@
 		<mx:method name="saveUser" result="saveUser_result(event)" fault="failure(event)"/>
 		<mx:method name="getUserByGroup" result="getUserByGroup_result(event)" fault="failure(event)"/>
 		<mx:method name="getUserGroupByUser" result="getUserGroupByUser_result(event)" fault="failure(event)"/>
+		<mx:method name="getUsersByGroupAndStage" result="getUserByGroup_result(event)" fault="failure(event)"/>
 		<mx:method name="getUserByLogin" result="getUserByLogin_result(event)" fault="ExistingUserFailure(event)"/>
 		<mx:method name="systemStageList" result="systemStageList_result(event)" fault="failure(event)"/>
 		<mx:method name="removeMenu" result="removeMenu_result()" fault="menuFailure(event)"/>
@@ -1312,7 +1321,7 @@
 		
 		<mx:Canvas label="User" width="100%" height="100%" id="canvas4">
 			<mx:ComboBox prompt="select..." x="62" y="39" width="550" labelField="name" id="cbUserGroup" change="filtrateUserByGroup()"/>
-			<mx:ComboBox prompt="select..." x="62" y="10" width="459" labelFunction="showStage" id="cbSystemStage" />
+			<mx:ComboBox prompt="select..." x="62" y="10" width="459" labelFunction="showStage" id="cbSystemStage"  change="filtrateUserByGroup()"/>
 			<mx:TextInput x="62" y="69" width="550" id="inputUserName" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="62" y="98.5" width="254.5" id="inputUserLogin" change="handleValidaUsuario(null)"/>
 			<mx:TextInput x="404.5" y="98.5" width="207.5" id="inputUserPassword" displayAsPassword="true"/>
