@@ -210,6 +210,8 @@ public class System {
 					userGroup = accessUserManager.createUser(userGroup);
 					createTeamForIncomingStudent(userGroup);
 				}
+				// Create User UserGroup
+				accessUserManager.createUserGroup(userGroup);
 			} else {
 				try {
 					us = getUser(userGroup.getUser().getUserId());
@@ -239,10 +241,7 @@ public class System {
 					}
 				}
 			}
-
 		}
-		// Create User UserGroup
-		accessUserManager.createUserGroup(userGroup);
 		return userGroup;
 		// urn accessUserManager.saveUserGroup(userGroup);
 	}
@@ -362,7 +361,9 @@ public class System {
 	public ArrayList<UserGroup> createUsersFromCsvFile(String path, Group group, SystemStage systemStage)
 			throws IOException, EasyCorrectionException {
 		ArrayList<UserGroup> ug = new ArrayList<UserGroup>();
-		ug = accessUserManager.createUsersFromCsvFile(path, group, systemStage);
+		path = path.replace("/", File.separator);
+		String uploadDir = ServletUpload.local + path;
+		ug = accessUserManager.createUsersFromCsvFile(uploadDir, group, systemStage);
 		for (int i = 0; i < ug.size(); i++) {
 			createUser(ug.get(i));
 		}
