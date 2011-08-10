@@ -57,7 +57,7 @@ public class CSVFileFilter {
 				line = br.readLine();
 				linhas = line.split(lineSeparator);
 				lineNumber++;
-				if (linhas.length != 4) {
+				if (linhas.length != 3) {
 					throw new EasyCorrectionException(
 							ErrorMsgs.INVALID_FIELDS_NUMBER.msg(String
 									.valueOf(lineNumber)));
