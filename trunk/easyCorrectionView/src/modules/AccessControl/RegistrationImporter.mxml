@@ -126,7 +126,7 @@
 			<mx:method name="saveUsersFromCsvFile" result="saveUsersFromCsvFile_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
-		<mx:Button x="217.5" y="132" label="   import Users" width="204.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="importButton" click="importAssignment()" enabled="false"/>
+		<mx:Button x="217.5" y="132" label="   Import Users" width="204.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="importButton" click="importAssignment()" enabled="false"/>
 		<mx:Label text="Course:" fontWeight="bold" textAlign="left" width="64" x="10" y="11.5" id="labelCourse"/>
 		<mx:Label fontWeight="bold" textAlign="left" width="539" x="82" y="11.5" id="labelCourseVal"/>
 		

@@ -61,7 +61,7 @@ public enum ErrorMsgs {
 	INVALID_FIELDS_NUMBER {
 		public String msg(String... args) {
 			return "The line " + args[0]
-					+ " contains an invalid number of colunms!";
+					+ " contains an invalid number of columns!";
 		}
 	},
 	CSV_INVALID_USER {

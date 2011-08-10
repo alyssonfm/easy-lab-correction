@@ -124,7 +124,7 @@
 				<mx:DataGridColumn headerText="Class" width="80"/>
 			</mx:columns>
 		</mx:DataGrid>
-		<mx:Button x="287.5" y="268" label="   import Assignment" width="204.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="importButton" click="importAssignment()" enabled="false"/>
+		<mx:Button x="287.5" y="268" label="   Import Assignment" width="204.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="importButton" click="importAssignment()" enabled="false"/>
 		
 		
 </les:ModuleTitleWindow>
