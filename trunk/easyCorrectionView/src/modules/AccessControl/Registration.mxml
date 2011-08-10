@@ -62,7 +62,10 @@
 				<mx:Label x="12" y="12.5" text="Class:" id="labelClassState"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="64" y="12.5" id="labelInstructorClass" width="550"/>
+				<mx:Label x="64" y="12.5" id="labelInstructorClass" width="457"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="529" y="10.5" label="Import" width="83" click="importStudentsFromCSVFile()"/>
 			</mx:AddChild>
 		</mx:State>
 	</les:states>
@@ -185,7 +188,7 @@
 			
 			private function init():void {
 				facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
-				loggedUser = ModulesController.getParam();	
+				loggedUser = ModulesController.getParam();
 				getUserGroup();
 				getSystemStageList();
 			}
@@ -203,7 +206,6 @@
 				if (tabNav.selectedIndex == 4){
 					dgStages.dataProvider = stages;
 				}
-				
 			}
 			
 			private function getUserGroup(): void{
@@ -1196,8 +1198,15 @@
 				);
 			}
 			
-			private function importStudentsFromCSVFile():void {  
-				ModulesController.createModule("modules/AccessControl/RegistrationImporter.swf", this, null);
+			private function importStudentsFromCSVFile():void {
+				var sysStage: SystemStage = new SystemStage();
+				if(currentState != "teacherState"){
+					sysStage = CastEntities.castStage(cbSystemStage.selectedItem);
+				}
+				else{
+					sysStage = currentUserStage;
+				}
+				ModulesController.createModule("modules/AccessControl/RegistrationImporter.swf", this, sysStage);
 			}
 			
 			
@@ -1317,7 +1326,7 @@
 	    tooManyAtSignsError="The email address contains too many at (@) signs."
 	/>
 	
-	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="true">	
+	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="false">	
 		
 		<mx:Canvas label="User" width="100%" height="100%" id="canvas4">
 			<mx:ComboBox prompt="select..." x="62" y="39" width="550" labelField="name" id="cbUserGroup" change="filtrateUserByGroup()"/>

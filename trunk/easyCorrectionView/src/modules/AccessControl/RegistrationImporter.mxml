@@ -11,20 +11,13 @@
 				import bean.system.SystemStage;
 				import events.AssignmentEvent;
 				import bean.Utility.CastEntities;
-				import bean.assignments.Assignment;
 				import events.ObjectEvent;
 				import mx.managers.SystemManager;
 				import bean.Utility.Util;
 				import mx.collections.ArrayCollection;
-				import events.UserEvent;
 				import bean.permission.*;
 				import events.EventLogResponse;
 				import events.ClosePopupEvent;
-				import mx.utils.Base64Decoder;
-				import mx.controls.Image;
-				import com.adobe.serialization.json.JSON;
-				import mx.controls.Alert;
-				import mx.utils.StringUtil;
 				import Scripts.ModulesController;
 				import mx.binding.utils.BindingUtils;
 				import mx.rpc.events.ResultEvent;
@@ -85,7 +78,6 @@
 				}
 				
 				public function fullSending(evt:Event):void {
-					systemStage = CastEntities.castStage(cb_stage.selectedItem);
 					url = url + path.text;
 					facade.getOperation("saveUsersFromCsvFile").send(url, group, systemStage);
 				}
@@ -111,30 +103,17 @@
 				
 				private function init():void {
 					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
-					var courseName: String = String(ModulesController.getParam());
-					getGroupByName("Student");
+					systemStage = ModulesController.getParam();
+					labelCourseVal.text = systemStage.course + " - " + systemStage.semester + " (" + systemStage.courseClass + ")";
+					getGroupByName();	
 				}
 				
-				private function getGroupByName(courseName: String):void{
-					facade.getOperation("getGroupByName").send(courseName);
+				private function getGroupByName():void{
+					facade.getOperation("getGroupByName").send("Student");
 				}
 				
 				private function getGroupByName_result(event:ResultEvent):void{
 					group = CastEntities.castGroup(event.result);
-					systemStageList();
-				}
-				
-				private function systemStageList():void{
-					facade.getOperation("systemStageList").send();
-				}
-				
-				private function systemStageList_result(event:ResultEvent):void{
-					cb_stage.dataProvider = new ArrayCollection();
-					cb_stage.dataProvider = event.result as ArrayCollection;
-				}
-				
-				private function showStage(item:*):String {
-					return item.course + " - " + item.semester + " (" + item.courseClass + ")";
 				}
 
 			]]>
@@ -145,12 +124,11 @@
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="getGroupByName" result="getGroupByName_result(event)" fault="failure(event)"/>
 			<mx:method name="saveUsersFromCsvFile" result="saveUsersFromCsvFile_result(event)" fault="failure(event)"/>
-			<mx:method name="systemStageList" result="systemStageList_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
 		<mx:Button x="217.5" y="132" label="   import Users" width="204.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="importButton" click="importAssignment()" enabled="false"/>
-		<mx:ComboBox x="73" y="10" width="557" labelFunction="showStage" id="cb_stage"/>
 		<mx:Label text="Course:" fontWeight="bold" textAlign="left" width="64" x="10" y="11.5" id="labelCourse"/>
+		<mx:Label fontWeight="bold" textAlign="left" width="539" x="82" y="11.5" id="labelCourseVal"/>
 		
 </les:ModuleTitleWindow>
 
