@@ -50,6 +50,21 @@ public enum ErrorMsgs {
 		}
 	},
 
+	/*
+	 * System
+	 */
+
+	REPEATED_USER_LOGIN{
+		public String msg(String... args) {
+			return "It is not possible to register the User, this login already exists.";
+		}
+	},
+	
+	REPEATED_USER_EMAIL{
+		public String msg(String... args) {
+			return "It is not possible to register the User, this e-mail already exists.";
+		}
+	},
 	
 	/*
 	 * Access Permission Manager
