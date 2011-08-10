@@ -41,7 +41,7 @@
 						}
 					}
 					catch(e:Error){
-						msg = "Serviço indisponível, reinicie a operação.";
+						msg = "Service Unavailable, please restart the operation.";
 					}
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, msg));
 				}
@@ -51,7 +51,7 @@
 			   	 	fileRef.addEventListener(Event.SELECT, selectedFile);
 			   	 	fileRef.addEventListener(Event.COMPLETE, fullSending);
 			   	 	fileRef.addEventListener(IOErrorEvent.IO_ERROR, sendError);
-			    	fileRef.browse(new Array(new FileFilter("Arquivo (*.csv)","*.csv")));
+			    	fileRef.browse(new Array(new FileFilter("File (*.csv)","*.csv")));
 				}
 				
 				public function selectedFile(evt:Event):void {
@@ -63,8 +63,8 @@
 				
 				public function sendError(evt:Event):void {
 			       	var param:Array = new Array(true, "Transmission Error. The file was not sent." +
-														"\n\nTry again! If the problem persists..." + 
-														"\n\nVerify if your conection with the internet is ativated.");
+														"\n\nPlease, try again." + 
+														"\n\nIf the problem persists, verify if your internet conection is activated.");
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 				}
 				
@@ -83,7 +83,7 @@
 				}
 				
 				private function saveUsersFromCsvFile_result(event:ResultEvent):void{
-					var param:Array = new Array(false, "Imported Successfully.");
+					var param:Array = new Array(false, "The Users were successfuly imported.");
 					ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 				}
 				
@@ -93,7 +93,7 @@
 				
 				/*
 				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
-				 *	então devemos mostra uma mensagem de erro
+				 *	então devemos mostrar uma mensagem de erro
 				 */
 				private function eventLaunches(event:FaultEvent):void {
 					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,

@@ -218,26 +218,22 @@ public class System {
 					if (u != null) {
 						if (!userGroup.getUser().getUserId().equals(
 								u.getUserId())) {
-							throw new ObjectNotFoundException(
-									"It is not possible to register the User, this login already exists.");
+							throw new ObjectNotFoundException(ErrorMsgs.REPEATED_USER_LOGIN.msg());
 						}
 					}
 					if (use  != null) {
 						if (!userGroup.getUser().getUserId().equals(
 								use.getUserId())) {
-							throw new ObjectNotFoundException(
-									"It is not possible to register the User, this e-mail already exists.");
+							throw new ObjectNotFoundException(ErrorMsgs.REPEATED_USER_EMAIL.msg());
 						}
 					}
 					userGroup = accessUserManager.updateUser(userGroup, us);
 				} catch (ObjectNotFoundException e) {
 					if (u != null) {
-						throw new ObjectNotFoundException(
-								"It is not possible to register the User, this login already exists.");
+						throw new ObjectNotFoundException(ErrorMsgs.REPEATED_USER_LOGIN.msg());
 					}
 					if (use != null) {
-						throw new ObjectNotFoundException(
-								"It is not possible to register the User, this e-mail already exists.");
+						throw new ObjectNotFoundException(ErrorMsgs.REPEATED_USER_EMAIL.msg());
 					}
 				}
 			}
