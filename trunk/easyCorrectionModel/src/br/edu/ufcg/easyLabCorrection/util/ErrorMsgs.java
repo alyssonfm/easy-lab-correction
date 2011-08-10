@@ -208,13 +208,13 @@ public enum ErrorMsgs {
 	TEAM_MEMBERS_QUANTITY_IS_FULL {
 		public String msg(String... args) {
 			return "This team (" + args[0]
-					+ ")already reached the max number of members(" + args[1]
+					+ ") already reached the max number of members(" + args[1]
 					+ "). Please register in another team!";
 		}
 	},
 	TEAM_FOR_INDIVIDUAL_ASSIGNMENTS {
 		public String msg(String... args) {
-			return "The teams cannot be chaged. The assignment is individual!";
+			return "The teams cannot be changed. The assignment is individual!";
 		}
 	};
 
