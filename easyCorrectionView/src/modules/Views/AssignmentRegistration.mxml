@@ -7,6 +7,7 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.user.User;
 				import events.AssignmentEvent;
 				import bean.Utility.Constant;
 				import events.ObjectEvent;
@@ -50,6 +51,7 @@
 				private var urlTests: String = "";
 				private var urlEnvironment: String = "";
 				private var paramMessage:Array;
+				private var currentUser: User = new User();
 	            
 	            private function failure(event:FaultEvent):void {
 					var message:String;
@@ -111,6 +113,16 @@
 						updateAssignmentButton.visible = false;
 						createAssignmentButton.visible = true;
 					}
+					getUser();
+				}
+				
+				private function getUser():void{
+					var userId: int = SharedObject.getLocal("sistema", "/").data.idUsuario;
+					facade.getOperation("getUser").send(userId);	
+				}
+				
+				private function getUser_result(event:ResultEvent):void{
+					currentUser = CastEntities.castUser(event.result); 
 				}
 				
 				private function getAssignment():void{
@@ -238,7 +250,7 @@
 					assignment.sendMaxNumber = int(inputMaxNumberSent.text);
 					assignment.participantsMaxNumber = int(inputMaxTeam.text);
 					assignment.penaltyPerDaysLate = Util.formatsTextValueToNumber(inputPenalty.text);
-					assignment.stage = stg;
+					assignment.stage = currentUser.period;
 					assignment.automaticTestsPercentage = Util.formatsTextValueToNumber(inputPercentage.text);
 					assignment.testTimeLimit = int(inputTimeout.text);
 					assignment.assignmentType = CastEntities.castAssignmentType(comboType.selectedItem);
@@ -317,15 +329,8 @@
 					dfDiscussionDate.selectedDate = new Date(dfReleaseDate.selectedDate.getTime()+(21*millisecondsPerDay));
 				}
 				
-				private function openAssignmentImporter():void{
-					var userId: int = SharedObject.getLocal("sistema", "/").data.idUsuario;
-					facade.getOperation("getUser").send(userId);
-					
-				}
-				
-				private function getUser_result(event:ResultEvent):void{
-					var course: String = CastEntities.castUser(event.result).period.course; 
-					ModulesController.createModule("modules/Views/AssignmentImporter.swf", this, course);
+				private function openAssignmentImporter():void{ 
+					ModulesController.createModule("modules/Views/AssignmentImporter.swf", this, currentUser.period.course);
 				}
 				
 			]]>
