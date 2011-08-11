@@ -239,4 +239,9 @@ public class SubmissionManager {
 		return getZipFile(sourceDir.list());
 	}
 
+	public String countSubmissionsByAssignmentId(int assignmentId) {
+		return DAOFactory.DEFAULT.buildSubmissionDAO()
+				.countSubmissionsByAssignmentId(assignmentId);
+	}
+
 }

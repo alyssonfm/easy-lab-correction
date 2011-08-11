@@ -530,7 +530,16 @@ public class Facade {
 			throw e;
 		}
 	}
-
+	
+	public String getAssignmentStatus(int assign) throws Throwable{
+		try {
+			return system.getAssignmentStatus(assign);		
+		} catch (Throwable e) {
+			log.error("getAssignmentStatus()", e);
+			throw e;
+		}		
+	}
+	
 	/*******************************************************************
 	 * Facade Submissoes
 	 * **********************************************************************
@@ -731,6 +740,15 @@ public class Facade {
 			return system.getLastSubmissionByAssignmentAndTeam(assignment, team);
 		} catch (Throwable e) {
 			log.error("getLastSubmissionByAssignmentAndTeam()", e);
+			throw e;
+		}
+	}
+	
+	public String countSubmissionsByAssignmentId(int assignmentId) throws Throwable{
+		try {
+			return system.countSubmissionsByAssignmentId(assignmentId);
+		} catch (Throwable e) {
+			log.error("countSubmissionsByAssignmentId()", e);
 			throw e;
 		}
 	}
