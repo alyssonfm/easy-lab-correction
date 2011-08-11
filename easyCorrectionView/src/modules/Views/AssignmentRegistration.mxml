@@ -43,7 +43,6 @@
 				public static var edited: Boolean = false;
 				public static var save: Boolean = false; 
 				
-				private var stg:SystemStage = new SystemStage();
 				private var assignment:Assignment = new Assignment();
 				private var stat:*;
 				private var doUpload: Boolean = false;
@@ -104,7 +103,6 @@
 				
 				private function listAssignmentType_result(event:ResultEvent):void{
 					comboType.dataProvider = event.result;
-					getCurrentStage();
 					if(stat != null){
 						getAssignment();
 						updateAssignmentButton.visible = true;
@@ -221,15 +219,6 @@
 				public function fullSendingEnvironment(evt:Event):void {
 				}
 				
-				private function getCurrentStage():void{
-					facade.getOperation("getCurrentStage").send();
-				}
-				
-				private function getCurrentStage_result(event:ResultEvent):void{
-					stg = new SystemStage();
-					stg = CastEntities.castStage(ArrayCollection(event.result).getItemAt(0));
-				}
-				
 				private function fillsAssignment():void{
 					var dateDiscussion: Date = Util.formatsDateStringToDate(dfDiscussionDate.text);
 					dateDiscussion.setHours(Number(inputDiscussionHour.text), Number(inputDiscussionMinute.text),0,0);
@@ -245,8 +234,8 @@
 					
 					assignment.description = inputDescription.text;
 					assignment.name = inputTitle.text;
-					assignment.interfaceDirectory = "/periodo" + stg.semester + "/environment/" + assignment.id + "/";
-					assignment.testsDirectory = "/periodo" + stg.semester + "/testes/" + assignment.id + "/";
+					assignment.interfaceDirectory = "/periodo" + currentUser.period.semester + "/environment/" + assignment.id + "/";
+					assignment.testsDirectory = "/periodo" + currentUser.period.semester + "/testes/" + assignment.id + "/";
 					assignment.sendMaxNumber = int(inputMaxNumberSent.text);
 					assignment.participantsMaxNumber = int(inputMaxTeam.text);
 					assignment.penaltyPerDaysLate = Util.formatsTextValueToNumber(inputPenalty.text);
@@ -300,8 +289,8 @@
 				private function saveAssignment_result(event:ResultEvent):void{
 					assignment = new Assignment();
 					assignment = CastEntities.castAssignment(event.result);
-					urlTests = "/periodo" + stg.semester + "/testes/" + assignment.id + "/";
-					urlEnvironment = "/periodo" + stg.semester + "/environment/" + assignment.id + "/";
+					urlTests = "/periodo" + currentUser.period.semester + "/testes/" + assignment.id + "/";
+					urlEnvironment = "/periodo" + currentUser.period.semester + "/environment/" + assignment.id + "/";
 					if (!isCreate){
 						try{
 							var variables:URLVariables = new URLVariables();
@@ -338,7 +327,6 @@
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="getUser" result="getUser_result(event)" fault="failure(event)"/>
-			<mx:method name="getCurrentStage" result="getCurrentStage_result(event)" fault="failure(event)"/>
 			<mx:method name="saveAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="updateAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="listAssignmentType" result="listAssignmentType_result(event)" fault="failure(event)"/>
