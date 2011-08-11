@@ -3,7 +3,7 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-		width="660" height="214" creationComplete="init()" title="Registration Importer" showCloseButton="true" close="closeWindow()" layout="absolute">
+		width="660" height="238" creationComplete="init()" title="Registration Importer" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -118,17 +118,18 @@
 
 			]]>
 		</mx:Script>
-		<mx:LinkButton x="193.5" y="56" label="   Attach File" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="chooseFile()"/>
-		<mx:Label x="10" y="92" width="620" id="path" textAlign="center"/>
+		<mx:LinkButton x="193.5" y="82" label="   Attach File" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="chooseFile()"/>
+		<mx:Label x="10" y="117" width="620" id="path" textAlign="center"/>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="getGroupByName" result="getGroupByName_result(event)" fault="failure(event)"/>
 			<mx:method name="saveUsersFromCsvFile" result="saveUsersFromCsvFile_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
-		<mx:Button x="217.5" y="132" label="   Import Users" width="204.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="importButton" click="importAssignment()" enabled="false"/>
+		<mx:Button x="217.5" y="157" label="   Import Users" width="204.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="importButton" click="importAssignment()" enabled="false"/>
 		<mx:Label text="Course:" fontWeight="bold" textAlign="left" width="64" x="10" y="11.5" id="labelCourse"/>
 		<mx:Label fontWeight="bold" textAlign="left" width="539" x="82" y="11.5" id="labelCourseVal"/>
+		<mx:Label x="10" y="54" text="* Note: The CSV file must have three fields: registration, name, email, and in this sequence." width="620" height="29" id="informsFileLabel" color="#FF0000" fontWeight="bold"/>
 		
 </les:ModuleTitleWindow>
 
