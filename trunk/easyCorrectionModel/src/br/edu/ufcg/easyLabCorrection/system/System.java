@@ -776,5 +776,13 @@ public class System {
 	public List<Assignment> getAssignmentByCourse(String course) {
 		return assignmentManager.getAssignmentByCourse(course);
 	}
+
+	public String getAssignmentStatus(int assign) {
+		return assignmentManager.getAssignmentStatus(assign);
+	}
+
+	public String countSubmissionsByAssignmentId(int assignmentId) {
+		return submissionManager.countSubmissionsByAssignmentId(assignmentId);
+	}
 	
 }

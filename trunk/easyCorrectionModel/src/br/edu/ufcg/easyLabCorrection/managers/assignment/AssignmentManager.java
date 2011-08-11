@@ -624,5 +624,20 @@ public class AssignmentManager extends Manager {
 			return true;
 		}
 	}
+
+	public String getAssignmentStatus(int id) {
+		String status = "";
+		Assignment assign = getAssignment(id);
+		if(getClosedAssignments().contains(assign)){
+			status = "CLOSED";			
+		} else if(getReleasedAssignments().contains(status)){
+			status = "RELEASED";
+		} else if(getInCorrectionAssignments().contains(status)){
+			status = "IN CORRECTION";
+		}else if(getInCreationAssignments().contains(assign)){
+			status = "IN CREATION";
+		}
+		return status;
+	}
 	
 }
