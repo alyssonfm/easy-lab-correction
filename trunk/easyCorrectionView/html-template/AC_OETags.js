@@ -302,9 +302,9 @@ function getUrlAMFCanalSeguro(destino) {
 }
 
 function getUrlSendMail() {
-	return getProtocolo() + top.location.host + getPorta() + "easyCorrection/SendMailServlet";
+	return getProtocolo() + top.location.host + "/" + "easyCorrection/SendMailServlet";
 }
 
 function downLoadRoteiro() {
-	return getProtocolo() + top.location.host + getPorta() + "easyCorrection/downloadArquivo";
+	return getProtocolo() + top.location.host + "/" + "easyCorrection/downloadArquivo";
 }
