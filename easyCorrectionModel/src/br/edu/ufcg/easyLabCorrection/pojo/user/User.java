@@ -2,8 +2,6 @@ package br.edu.ufcg.easyLabCorrection.pojo.user;
 
 import java.io.Serializable;
 
-import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
-
 /**
  * <p>Pojo mapping TABLE agenda</p>
  * <p></p>
@@ -27,8 +25,6 @@ public class User implements Serializable {
 	private String password;
 	
 	private String email;
-	
-	private SystemStage period;
 	
 	/**
 	 * 
@@ -89,14 +85,6 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public SystemStage getPeriod() {
-		return period;
-	}
-
-	public void setPeriod(SystemStage period) {
-		this.period = period;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -106,7 +94,6 @@ public class User implements Serializable {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((period == null) ? 0 : period.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
@@ -140,11 +127,6 @@ public class User implements Serializable {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (period == null) {
-			if (other.period != null)
-				return false;
-		} else if (!period.equals(other.period))
-			return false;
 		if (userId == null) {
 			if (other.userId != null)
 				return false;
@@ -152,12 +134,7 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", login=" + login + ", name=" + name
-				+ ", password=" + password + ", email=" + email + ", period="
-				+ period + "]";
-	}
 	
+	
+
 }
