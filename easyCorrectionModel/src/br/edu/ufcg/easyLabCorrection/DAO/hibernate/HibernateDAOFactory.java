@@ -1,11 +1,11 @@
 package br.edu.ufcg.easyLabCorrection.DAO.hibernate;
 
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.FunctionHibernateDAO;
+
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.GroupHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.MenuHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.PermissionHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.UserGroupHibernateDAO;
-import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.UserHasSystemStageHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.UserHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.AssessmentHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.AssignmentHibernateDAO;
@@ -86,11 +86,6 @@ public class HibernateDAOFactory extends DAOFactory {
 	@Override
 	public AssignmentTypeHibernateDAO buildAssignmentTypeDAO() {
 		return new AssignmentTypeHibernateDAO(HibernateUtil.getSession());
-	}
-	
-	@Override
-	public UserHasSystemStageHibernateDAO buildUserHasSystemStageDAO() {
-		return new UserHasSystemStageHibernateDAO(HibernateUtil.getSession());
 	}
 	
 }

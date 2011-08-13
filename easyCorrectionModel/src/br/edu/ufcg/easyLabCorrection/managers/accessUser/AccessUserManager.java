@@ -15,7 +15,6 @@ import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
 import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.pojo.user.UserHasSystemStage;
 import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 import br.edu.ufcg.easyLabCorrection.util.SwapperAtributosReflect;
 
@@ -396,6 +395,7 @@ public class AccessUserManager extends Manager {
 				userGroup.setUserGroupId(new Integer(0));
 				userGroup.setGroup(g);
 				userGroup.setUser(user);
+				userGroup.setSystemStage(systemStage);
 				ug.add(userGroup);
 			} else {
 				throw new EasyCorrectionException(ErrorMsgs.CSV_INVALID_USER
@@ -429,47 +429,4 @@ public class AccessUserManager extends Manager {
 		}
 	}
 	
-	public UserHasSystemStage createUserHasSystemStage(UserHasSystemStage userStage)
-	throws EasyCorrectionException {
-		
-		if (userStage != null) {
-			Integer id = DAOFactory.DEFAULT.buildUserHasSystemStageDAO().save(userStage);
-			userStage.setId(id);
-		}else{
-			throw new EasyCorrectionException(ErrorMsgs.NULL_OBJECT.msg("UserSystemStage"));
-		}
-
-		return userStage;
-	}
-	
-	
-	public UserHasSystemStage getUserHasSystemStage(Integer id){
-		return DAOFactory.DEFAULT.buildUserHasSystemStageDAO().getById(id);
-		
-	}
-	
-	
-	public UserHasSystemStage updateUserHasSystemStage(UserHasSystemStage userStage)
-	throws EasyCorrectionException {
-		UserHasSystemStage uss = getUserHasSystemStage(userStage.getId());
-		uss = (UserHasSystemStage) SwapperAtributosReflect.swapObject(uss, userStage, UserHasSystemStage.class);
-		DAOFactory.DEFAULT.buildUserHasSystemStageDAO().update(uss);
-		userStage.setId(uss.getId());
-		return userStage;
-	}
-	
-	public void deleteUserHasSystemStage(UserHasSystemStage userStage) throws EasyCorrectionException{
-		UserHasSystemStage uss = getUserHasSystemStage(userStage.getId());
-		uss = (UserHasSystemStage) SwapperAtributosReflect.swapObject(uss, userStage, UserHasSystemStage.class);
-		DAOFactory.DEFAULT.buildUserHasSystemStageDAO().delete(uss);
-	}
-	
-	public List<UserHasSystemStage> getUserHasSystemStageUserId(Integer userId){
-		return  DAOFactory.DEFAULT.buildUserHasSystemStageDAO().findByUserId(userId);
-	}
-	
-	public List<UserHasSystemStage> getUserHasSystemStageSystemStageId(Integer systemStageId){
-		return  DAOFactory.DEFAULT.buildUserHasSystemStageDAO().findBySystemStageId(systemStageId);
-	}
-
 }
