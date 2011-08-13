@@ -36,6 +36,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
+import br.edu.ufcg.easyLabCorrection.pojo.user.UserHasSystemStage;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
 import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 
@@ -241,6 +242,18 @@ public class System {
 		return userGroup;
 		// urn accessUserManager.saveUserGroup(userGroup);
 	}
+	
+	public UserHasSystemStage createUserHasSystemStage(UserHasSystemStage userHasSystemStage) throws EasyCorrectionException{
+		return accessUserManager.createUserHasSystemStage(userHasSystemStage);
+	}
+	
+	public UserHasSystemStage updateUserHasSystemStage(UserHasSystemStage userHasSystemStage) throws EasyCorrectionException{
+		return accessUserManager.updateUserHasSystemStage(userHasSystemStage);
+	}
+	
+	public void deleteUserHasSystemStage(UserHasSystemStage userStage) throws EasyCorrectionException{
+		accessUserManager.deleteUserHasSystemStage(userStage);
+	}
 
 	public Menu createMenu(Menu menu) throws EasyCorrectionException {
 		return accessPermissionManager.createMenu(menu);
@@ -361,11 +374,16 @@ public class System {
 	public ArrayList<UserGroup> createUsersFromCsvFile(String path, Group group, SystemStage systemStage)
 			throws IOException, EasyCorrectionException {
 		ArrayList<UserGroup> ug = new ArrayList<UserGroup>();
+		UserHasSystemStage userSystemStage = new UserHasSystemStage();
+		userSystemStage.setSystemStage(systemStage);
+		
 		path = path.replace("/", File.separator);
 		String uploadDir = ServletUpload.local + path;
 		ug = accessUserManager.createUsersFromCsvFile(uploadDir, group, systemStage);
 		for (int i = 0; i < ug.size(); i++) {
-			createUser(ug.get(i));
+			UserGroup ugtemp = createUser(ug.get(i));
+			userSystemStage.setUser(ugtemp.getUser());
+			createUserHasSystemStage(userSystemStage);
 		}
 		return ug;
 	}
@@ -783,6 +801,14 @@ public class System {
 
 	public String countSubmissionsByAssignmentId(int assignmentId) {
 		return submissionManager.countSubmissionsByAssignmentId(assignmentId);
+	}
+	
+	public List<UserHasSystemStage> getUserHasSystemStageyUserId(Integer userId){
+		return accessUserManager.getUserHasSystemStageUserId(userId);
+	}
+	
+	public List<UserHasSystemStage> getUserHasSystemStageSystemStageId(Integer systemStageId){
+		return accessUserManager.getUserHasSystemStageSystemStageId(systemStageId);
 	}
 	
 }
