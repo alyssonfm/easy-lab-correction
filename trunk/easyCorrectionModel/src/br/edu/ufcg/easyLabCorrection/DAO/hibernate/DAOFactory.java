@@ -5,6 +5,7 @@ import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.GroupHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.MenuHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.PermissionHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.UserGroupHibernateDAO;
+import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.UserHasSystemStageHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.access.UserHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.AssessmentHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.AssignmentHibernateDAO;
@@ -67,5 +68,7 @@ public abstract class DAOFactory {
 	public abstract SubmissionHibernateDAO buildSubmissionDAO();
 	
 	public abstract AssignmentTypeHibernateDAO buildAssignmentTypeDAO();
+	
+	public abstract UserHasSystemStageHibernateDAO buildUserHasSystemStageDAO();
 		
 }
