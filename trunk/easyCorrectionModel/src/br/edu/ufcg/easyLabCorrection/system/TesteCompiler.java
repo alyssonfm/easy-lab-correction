@@ -20,7 +20,7 @@ public class TesteCompiler {
 		String libDirectory = (ServletUpload.local2 + "/").replace("/",
 				File.separator);
 		
-		sys.compilationUnit(sourceDirectory, testsDirectory, libDirectory);
+		//sys.compilationUnit(sourceDirectory, testsDirectory, libDirectory);
 	}
 	
 }
