@@ -9,7 +9,6 @@ import org.hibernate.criterion.SimpleExpression;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.MyPersistenceLayer;
-import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.SystemStageHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.exceptions.ConstraintViolationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EmptyFieldException;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
@@ -66,7 +65,6 @@ public class UserHibernateDAO extends
 	}
 	
 	public static User instantiatesUser(User u) throws EmptyFieldException{
-		u.setPeriod(SystemStageHibernateDAO.instantiatesSystemStage(u.getPeriod()));
 		u = MyPersistenceLayer.deproxy(u, User.class);
 		return u;
 	}
