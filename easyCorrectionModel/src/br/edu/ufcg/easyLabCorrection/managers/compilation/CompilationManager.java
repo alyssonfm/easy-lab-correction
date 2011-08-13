@@ -1,12 +1,19 @@
 package br.edu.ufcg.easyLabCorrection.managers.compilation;
 
+import groovy.util.AntBuilder;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
+import javax.tools.JavaCompiler.CompilationTask;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
 import br.edu.ufcg.easyLabCorrection.managers.Manager;
@@ -88,7 +95,16 @@ public class CompilationManager extends Manager{
 		//Gets the names of all jar files inside libDirectory
 		ArrayList<String> listLib = pv.visitAllDirsAndFilesFindingJars(new File(sourceDirectory));
 		mountLibDirectories(listLib);
-
+		
+		
+		/*
+		try {
+			//generateTask(javaCompiler);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}*/
+		
 		try {
 			String sourceDir = concatDirectories(pathList);
 			String testSourceDir = concatDirectories(pathTestList);
@@ -135,6 +151,14 @@ public class CompilationManager extends Manager{
 		return compilationError;
 	}
 	
+	private List<File> mountFileList(ArrayList<String> listResource){
+		List<File> list = new ArrayList<File>();
+		for (String str : listResource) {
+			list.add(new File(str));
+		} 
+		return list;
+	}
+	
 	/*
 	 * PRIVATE METHODS.
 	 */
@@ -165,16 +189,18 @@ public class CompilationManager extends Manager{
 	}
 	
 	private void clearSourcePaths(){
-		for (String testPath: sourceTestFileList){
-			for (String sourcePath: sourceFileList){
-				String st = testPath.substring(testPath.lastIndexOf("\\"), testPath.length());
-				String sts = sourcePath.substring(sourcePath.lastIndexOf("\\"), sourcePath.length());
-				if (st.equals(sts)){
-					sourceFileList.remove(sourcePath);
-					break;
+		try{
+			for (String testPath: sourceTestFileList){
+				for (String sourcePath: sourceFileList){
+					String st = testPath.substring(testPath.lastIndexOf("\\"), testPath.length());
+					String sts = sourcePath.substring(sourcePath.lastIndexOf("\\"), sourcePath.length());
+					if (st.equals(sts)){
+						sourceFileList.remove(sourcePath);
+						break;
+					}
 				}
 			}
-		}
+		}catch (Exception e) { }
 	}
 	
 	private String[] mountCompilerParameters(String sourceDir, String testSourceDir, String libDir, String outDir){

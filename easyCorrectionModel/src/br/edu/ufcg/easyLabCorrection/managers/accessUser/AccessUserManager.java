@@ -389,7 +389,7 @@ public class AccessUserManager extends Manager {
 			user.setPeriod(systemStage);
 			String password = PasswordGenerator.generatePassword(6, user
 					.getLogin());
-			password = MD5Generator.md5(password);
+			password = "123456";
 			user.setPassword(password);
 			if (validateUser(user)) {
 				UserGroup userGroup = new UserGroup();
