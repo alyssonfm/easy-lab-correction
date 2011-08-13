@@ -4,7 +4,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
@@ -424,5 +423,6 @@ public class AccessUserManagerTest {
 		access.listUsersByGroup(gr.getGroupId());
 		Assert.assertTrue(true);
 	}
+	
 
 }
