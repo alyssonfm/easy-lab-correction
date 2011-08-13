@@ -33,11 +33,10 @@ public class UserGroupHibernateDAO extends
 		return list;
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByGroup(Integer groupId) {
 		Query q = getSession().createQuery("from UserGroup where group.groupId = :groupId " +
-				"and user.period.id = :stageId");
+				"and systemStage.id = :stageId");
 		q.setParameter("groupId", groupId);
 		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
 		q.setCacheable(true);
@@ -50,7 +49,7 @@ public class UserGroupHibernateDAO extends
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByGroupAndStage(Integer systemStageId, Integer groupId) {
 		Query q = getSession().createQuery("from UserGroup where group.groupId = :groupId " +
-				"and user.period.id = :stageId");
+				"and systemStage.id = :stageId");
 		q.setParameter("groupId", groupId);
 		q.setParameter("stageId", systemStageId);
 		q.setCacheable(true);
@@ -61,7 +60,7 @@ public class UserGroupHibernateDAO extends
 	
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByStage(int stageId) {
-		Query q = getSession().createQuery("from UserGroup where user.period.id = :stageId");
+		Query q = getSession().createQuery("from UserGroup where systemStage.id = :stageId");
 		q.setParameter("stageId", stageId);
 		q.setCacheable(true);
 		List <UserGroup> list = q.list();
@@ -72,7 +71,7 @@ public class UserGroupHibernateDAO extends
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByGroup(String name) {
 		Query q = getSession().createQuery("from UserGroup where group.name like :name " +
-				"and user.period.id = :stageId");
+				"and systemStage.id = :stageId");
 		q.setParameter("name",name);
 		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
 		q.setCacheable(true);

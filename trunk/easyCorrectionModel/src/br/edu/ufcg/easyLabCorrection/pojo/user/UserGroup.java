@@ -3,6 +3,7 @@ package br.edu.ufcg.easyLabCorrection.pojo.user;
 import java.io.Serializable;
 
 import br.edu.ufcg.easyLabCorrection.pojo.permission.Group;
+import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 
 /**
  * <p>Pojo mapping TABLE agenda</p>
@@ -24,8 +25,18 @@ public class UserGroup implements Serializable {
 	
 	private User user;
 	
+	private SystemStage systemStage;
+
 	public UserGroup() {
 		super();
+	}
+	
+	public SystemStage getSystemStage() {
+		return systemStage;
+	}
+
+	public void setSystemStage(SystemStage systemStage) {
+		this.systemStage = systemStage;
 	}
 
 	public UserGroup(Integer userGroupId, Group group, User user) {

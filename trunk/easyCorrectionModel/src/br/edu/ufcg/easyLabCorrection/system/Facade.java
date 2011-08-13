@@ -22,7 +22,6 @@ import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
-import br.edu.ufcg.easyLabCorrection.pojo.user.UserHasSystemStage;
 import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 public class Facade {
@@ -920,52 +919,6 @@ public class Facade {
 			system.deleteSystemStage(stage);
 		}catch (Throwable e) {
 			log.error("deleteSystemStage()", e);
-			throw e;
-		}
-	}
-	
-	public UserHasSystemStage createUserHasSystemStage(UserHasSystemStage userHasSystemStage) throws Throwable{
-		try{
-			return system.createUserHasSystemStage(userHasSystemStage);
-		}catch (Throwable e) {
-			log.error("createUserHasSystemStage()", e);
-			throw e;
-		}
-	}
-	
-	public UserHasSystemStage updateUserHasSystemStage(UserHasSystemStage userHasSystemStage) throws Throwable{
-		try{
-			return system.updateUserHasSystemStage(userHasSystemStage);
-		}catch (Throwable e) {
-			log.error("updateUserHasSystemStage()", e);
-			throw e;
-		}
-	}
-	
-	public void deleteUserHasSystemStage(UserHasSystemStage userStage) throws Throwable{
-		try{
-			system.deleteUserHasSystemStage(userStage);
-		}catch (Throwable e) {
-			log.error("deleteUserHasSystemStage()", e);
-			throw e;
-		}
-	}
-	
-	public List<UserHasSystemStage> getUserHasSystemStageyUserId(Integer userId) throws Throwable{
-		try{
-			return system.getUserHasSystemStageyUserId(userId);
-		}catch (Throwable e) {
-			log.error("getUserHasSystemStageyUserId()", e);
-			throw e;
-		}
-		
-	}
-	
-	public List<UserHasSystemStage> getUserHasSystemStageSystemStageId(Integer systemStageId) throws Throwable{
-		try{
-			return system.getUserHasSystemStageSystemStageId(systemStageId);
-		}catch (Throwable e) {
-			log.error("getUserHasSystemStageSystemStageId()", e);
 			throw e;
 		}
 	}
