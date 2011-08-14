@@ -1213,7 +1213,7 @@
 			
 			public function addSystemStages():void {
 				var userGroupTemp: UserGroup = CastEntities.castUserGroup(dgUsers.selectedItem);
-				ModulesController.createModule("modules/AccessControl/CourseManagement.swf", this, userGroupTemp);
+				ModulesController.createModule("modules/AccessControl/AddStage.swf", this, userGroupTemp);
 			}
 			
 			

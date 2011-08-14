@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:les="modules.System.*" 
+						xmlns:comp="com.adobe.flex.extras.controls.*"
+						xmlns:extra="br.com.thinklab.util.control.*"
+		width="660" height="388" creationComplete="init()" title="Add Stage" showCloseButton="true" close="closeWindow()" layout="absolute">
+		
+		<mx:Script>
+			<![CDATA[
+				import bean.user.UserGroup;
+				import bean.Utility.Constant;
+				import bean.system.SystemStage;
+				import events.AssignmentEvent;
+				import bean.Utility.CastEntities;
+				import events.ObjectEvent;
+				import mx.managers.SystemManager;
+				import bean.Utility.Util;
+				import mx.collections.ArrayCollection;
+				import bean.permission.*;
+				import events.EventLogResponse;
+				import events.ClosePopupEvent;
+				import Scripts.ModulesController;
+				import mx.binding.utils.BindingUtils;
+				import mx.rpc.events.ResultEvent;
+				import mx.rpc.events.FaultEvent;
+				
+				private var fileRef:FileReference;
+				private var request: URLRequest;
+				private const FILE_UPLOAD_URL:String = Constant.urlUploadDonwload;
+				private var url: String = "";
+				
+				private var userGroup: UserGroup = new UserGroup();
+				private var systemStage: SystemStage = new SystemStage();
+
+	            
+	            private function init():void {
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					userGroup = ModulesController.getParam();
+					getSystemStageList();	
+				}
+	            
+	            private function failure(event:FaultEvent):void {
+					var msg:String;
+					try{
+						if (event.fault.rootCause.message == null) {
+							msg = event.fault.faultString;
+						} else {
+							msg = event.fault.rootCause.message;
+						}
+					}
+					catch(e:Error){
+						msg = "Service Unavailable, please restart the operation.";
+					}
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(true, msg));
+				}
+				
+				private function closeWindow():void {
+					dispatchEvent(new ClosePopupEvent(this));
+				}
+				
+				/*
+				 *	Caso aconteça algum erro no acesso ao controlador, através do HttpService
+				 *	então devemos mostrar uma mensagem de erro
+				 */
+				private function eventLaunches(event:FaultEvent):void {
+					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
+						event.fault, event.token, event.message);
+					dispatchEvent(e);
+				}
+				
+				private function getSystemStageList(): void{
+					facade.getOperation("systemStageList").send();
+				}
+				
+				private function systemStageList_result(event:ResultEvent):void {
+					cbSystemStage.dataProvider = event.result as ArrayCollection;
+					getUserGroupByUser();
+				}
+				
+				private function getUserGroupByUser():void{
+					facade.getOperation("getUserGroupByUser").send(userGroup.user.userId);
+				}
+				
+				private function getUserGroupByUser_result(event:ResultEvent):void{
+					dgUserGroups.dataProvider = event.result as ArrayCollection;
+				}
+				
+				private function showSystemStage(item: *): String{
+					return item.course + " - " + item.semester + " (" + item.courseClass + ")";
+				}
+				
+				private function saveSystemStage():void{
+					var sysStage: SystemStage = CastEntities.castStage(cbSystemStage.selectedItem);
+					if(!verifyIfIncludes(sysStage)){
+						userGroup.systemStage = sysStage;
+						facade.getOperation("saveUserGroup").send(userGroup);
+					}
+					else{
+						var message:String = "It is not possible to finish this operation. This Class is already included.";
+						launchException(new Array(true, message));
+					}
+				}
+				
+				private function createUserGroup_result(event:ResultEvent):void{
+					getUserGroupByUser();
+				}
+				
+				private function launchException(params: Array): void{
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, params);
+				}
+				
+				private function verifyIfIncludes(sysStage: SystemStage): Boolean{
+					var exists: Boolean = false;
+					var list: ArrayCollection = dgUserGroups.dataProvider as ArrayCollection;
+					for(var i: int = 0; i < list.length; i++){
+						if (list.getItemAt(i).systemStage.course == sysStage.course
+							&& list.getItemAt(i).systemStage.courseClass == sysStage.courseClass
+							&& list.getItemAt(i).systemStage.semester == sysStage.semester)
+							return true;
+					}
+					return false;
+				}
+				
+				private function labelGridUsers(item:*, column:DataGridColumn):String {
+					var sLabel:String = "";
+					var sHeaderText:String = column.headerText;
+					switch (sHeaderText)  {
+						case "Course":
+							sLabel = item.systemStage.course;
+							break;
+						case "Semester":
+							sLabel = item.systemStage.semester;
+							break;
+						case "Class":
+							sLabel = item.systemStage.courseClass;
+							break;
+					}
+					return sLabel;
+				}
+				
+			]]>
+		</mx:Script>
+				
+		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+			<mx:method name="systemStageList" result="systemStageList_result(event)" fault="failure(event)"/>
+			<mx:method name="getUserGroupByUser" result="getUserGroupByUser_result(event)" fault="failure(event)"/>
+			<mx:method name="saveUserGroup" result="createUserGroup_result(event)" fault="failure(event)"/>
+		</mx:RemoteObject>
+		
+		<mx:Label text="Course:" fontWeight="bold" textAlign="left" width="64" x="10" y="11.5" id="labelCourse"/>
+		<mx:ComboBox prompt="select..." x="82" y="10" width="548" labelFunction="showSystemStage" id="cbSystemStage"/>
+		<mx:DataGrid x="10" y="97.5" width="620" height="236.5" draggableColumns="false"
+				 labelFunction="labelGridUsers" id="dgUserGroups">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Course" width="400"/>
+				<mx:DataGridColumn headerText="Semester"/>
+				<mx:DataGridColumn headerText="Class"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:Button x="252.5" y="50" label="   Add" width="135" height="28" id="addUserButton" click="saveSystemStage()" icon="@Embed(source='../../image/novo.png')"/>
+		
+</les:ModuleTitleWindow>
+
