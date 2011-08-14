@@ -202,9 +202,13 @@ public final class HibernateUtil {
 		session.setAttribute("stageId", systemStage);
 	}
 	
-	public static int getCurrentStageId(){ 
-		FlexSession session = FlexContext.getFlexSession();
-		return (Integer) session.getAttribute("stageId");
+	public static int getCurrentStageId(){
+		try{
+			FlexSession session = FlexContext.getFlexSession();
+			return (Integer) session.getAttribute("stageId");
+		} catch(NullPointerException ne){
+			return 1;
+		}
 	}
 
 }

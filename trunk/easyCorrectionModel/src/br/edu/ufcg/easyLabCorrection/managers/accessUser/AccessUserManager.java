@@ -170,6 +170,10 @@ public class AccessUserManager extends Manager {
 	public List<UserGroup> getUserGroupByUser(Integer userId) {
 		return DAOFactory.DEFAULT.buildUserGroupDAO().findByUserId(userId);
 	}
+	
+	public List<UserGroup> getUserGroupByUserIdAndCurrentStageId(Integer userId) {
+		return DAOFactory.DEFAULT.buildUserGroupDAO().findByUserIdAndCurrentStageId(userId);
+	}
 
 	/*
 	 * USER

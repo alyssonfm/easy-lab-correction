@@ -12,7 +12,7 @@
 
 		<many-to-one name="user" lazy="false" column="id_usuario" class="br.edu.ufcg.easyLabCorrection.pojo.user.User" insert="true" update="true"/>
 		<many-to-one name="group" lazy="false" column="id_grupo" class="br.edu.ufcg.easyLabCorrection.pojo.permission.Group" insert="true" update="true"/>
-		<many-to-one name="systemStage" lazy="false" column="periodo_id" class="br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage" insert="true" update="true"/>
+		<many-to-one name="systemStage" lazy="false" column="id_periodo" class="br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage" insert="true" update="true"/>
 
 	</class>
 </hibernate-mapping>

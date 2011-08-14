@@ -10,6 +10,7 @@ import org.hibernate.criterion.SimpleExpression;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.AbstractHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.MyPersistenceLayer;
+import br.edu.ufcg.easyLabCorrection.DAO.hibernate.system.SystemStageHibernateDAO;
 import br.edu.ufcg.easyLabCorrection.exceptions.ConstraintViolationException;
 import br.edu.ufcg.easyLabCorrection.exceptions.EmptyFieldException;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
@@ -79,6 +80,18 @@ public class UserGroupHibernateDAO extends
 		instantiatesList(list);
 		return list;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserGroup> findByUserIdAndCurrentStageId(Integer userId) {
+		Query q = getSession().createQuery("from UserGroup where user.userId = :userId " + 
+				" and systemStage.id = :stageId");
+		q.setParameter("userId",userId);
+		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
+		q.setCacheable(true);
+		List <UserGroup> list = q.list();
+		instantiatesList(list);
+		return list;
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByUserId(Integer userId) {
@@ -120,6 +133,7 @@ public class UserGroupHibernateDAO extends
 	public static UserGroup instantiateUserGroup(UserGroup gu) throws EmptyFieldException{
 		gu.setGroup(GroupHibernateDAO.instanciaGroup(gu.getGroup()));
 		gu.setUser(UserHibernateDAO.instantiatesUser(gu.getUser()));
+		gu.setSystemStage(SystemStageHibernateDAO.instantiatesSystemStage(gu.getSystemStage()));
 		gu = MyPersistenceLayer.deproxy(gu, UserGroup.class);
 		return gu;
 	}

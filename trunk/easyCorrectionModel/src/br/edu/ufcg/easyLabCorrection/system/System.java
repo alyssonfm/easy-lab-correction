@@ -353,6 +353,10 @@ public class System {
 	public List<UserGroup> getUserGroupByUser(Integer userId) {
 		return accessUserManager.getUserGroupByUser(userId);
 	}
+	
+	public List<UserGroup> getUserGroupByUserIdAndCurrentStageId(Integer userId) {
+		return accessUserManager.getUserGroupByUserIdAndCurrentStageId(userId);
+	}
 
 	public User changePassword(User user, String newPassword) {
 		return accessUserManager.changePassword(user, newPassword);
