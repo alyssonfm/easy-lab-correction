@@ -30,6 +30,7 @@
     <module application="src/main.mxml" destPath="modules/System/RecoverPassword.swf" optimize="true" sourcePath="src/modules/System/RecoverPassword.mxml"/>
     <module application="src/main.mxml" destPath="modules/AccessControl/Permissions.swf" optimize="true" sourcePath="src/modules/AccessControl/Permissions.mxml"/>
     <module application="src/main.mxml" destPath="modules/AccessControl/RegistrationImporter.swf" optimize="true" sourcePath="src/modules/AccessControl/RegistrationImporter.mxml"/>
+    <module application="src/main.mxml" destPath="modules/AccessControl/AddStage.swf" optimize="true" sourcePath="src/modules/AccessControl/AddStage.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>
