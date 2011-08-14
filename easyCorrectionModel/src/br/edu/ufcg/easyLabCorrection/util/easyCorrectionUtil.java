@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.NonexistantAttributeException;
+import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
 
 /**
  * Class that contains some functions that are used by several classes of system ELC.<br>
@@ -106,5 +107,28 @@ public class easyCorrectionUtil {
 	private static String correctsAttributeString(String attribute) {
 		String firstLetter = String.valueOf(attribute.charAt(0));
 		return attribute.replaceFirst(firstLetter, firstLetter.toUpperCase());
+	}
+	
+	public static String getEmailMessage(UserGroup ug){
+		
+		String message = "<BR>Dear "+ ug.getUser().getName() + ",</BR>" +
+			"<BR></BR>" +  
+			"<BR>Congratulations, an ELC student account has been created for you.</BR>" +
+			"<BR></BR>" +				
+			"<BR>Enjoy the most from the system assignment submission facilities.</BR>" + 
+			"<BR>Your access data are the following:</BR>" +
+			"<BR></BR>" +
+			"<BR>Login:</BR>" + 
+			"<BR>"+ ug.getUser().getLogin() + "</BR>" + 
+			"<BR>Password:</BR><BR>" + ug.getUser().getPassword() +"</br>" + 
+			"<p>Obs.: Please remember! Your password was randomly generated and it unstraferable, " +
+			"so we suggest you to update it imediatelly.</p>" + 
+			"<BR>You can log in at</BR>" +
+			"<BR><a href=https://les.dsc.ufcg.edu.br:8443/EasyLabCorrection/>https://les.dsc.ufcg.edu.br:8443/EasyLabCorrection/</a></BR>" +
+			"<BR></BR>" +
+			"<BR>Graciously,</BR>" +
+			"<BR>Easy Lab Correction Team</BR>";
+
+		return message;
 	}
 }
