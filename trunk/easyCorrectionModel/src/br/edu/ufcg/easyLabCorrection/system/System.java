@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.ServletException;
+
 import junit.framework.TestResult;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.DAOFactory;
 import br.edu.ufcg.easyLabCorrection.DAO.hibernate.HibernateUtil;
@@ -36,8 +38,11 @@ import br.edu.ufcg.easyLabCorrection.pojo.team.Team;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.pojo.user.User;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
+import br.edu.ufcg.easyLabCorrection.servlet.EmailSender;
+import br.edu.ufcg.easyLabCorrection.servlet.SendMailServlet;
 import br.edu.ufcg.easyLabCorrection.servlet.ServletUpload;
 import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
+import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 
 public class System {
 
@@ -371,8 +376,22 @@ public class System {
 		ug = accessUserManager.createUsersFromCsvFile(uploadDir, group, systemStage);
 		for (int i = 0; i < ug.size(); i++) {
 			createUser(ug.get(i));
+			sendEmail(ug.get(i));
 		}
 		return ug;
+	}
+	
+	private void sendEmail(UserGroup ug){
+		
+		String assunto = "Welcome to EasyLabCorrection!";
+		String contato = ug.getUser().getEmail();
+		String mensagem = easyCorrectionUtil.getEmailMessage(ug);
+		String emailInst = SendMailServlet.emailInst;
+		
+		try {
+			EmailSender.sendMail(assunto, contato, mensagem, emailInst);
+		} catch (ServletException e) {
+		} catch (IOException e) {}
 	}
 
 	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
