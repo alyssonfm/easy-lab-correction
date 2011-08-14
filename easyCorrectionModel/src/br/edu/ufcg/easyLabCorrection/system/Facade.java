@@ -410,6 +410,16 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public List<UserGroup> getUserGroupByUserIdAndCurrentStageId(Integer userId)
+			throws Throwable {
+		try {
+			return system.getUserGroupByUserIdAndCurrentStageId(userId);
+		} catch (Throwable e) {
+			log.error("getUserGroupByUserIdAndCurrentStageId()", e);
+			throw e;
+		}
+	}
 
 	public Date getDataNow() throws Throwable {
 		try {
