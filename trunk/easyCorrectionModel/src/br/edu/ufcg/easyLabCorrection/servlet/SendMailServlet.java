@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SendMailServlet extends HttpServlet implements Servlet {
 
 	private static final long serialVersionUID = 1L;
+	public static final String emailInst = "leda@dsc.ufcg.edu.br";
 
 	/**
 	 * Constructor default to class. Creates a new object SendMailServlet.<br>
@@ -34,7 +35,6 @@ public class SendMailServlet extends HttpServlet implements Servlet {
 		String assunto = request.getParameter("assunto");
 		String contato = request.getParameter("contato");
 		String mensagem = request.getParameter("mensagem");
-		String emailInst = "leda@dsc.ufcg.edu.br";
 		EmailSender.sendMail(assunto, contato, mensagem, emailInst);
 	}
 
