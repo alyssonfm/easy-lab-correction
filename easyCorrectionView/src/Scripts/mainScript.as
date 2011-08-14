@@ -1,17 +1,26 @@
 import Scripts.ModulesController;
+
+import bean.Utility.CastEntities;
 import bean.Utility.Util;
+import bean.user.UserGroup;
+
 import events.*;
+
 import flash.net.SharedObject;
-import flash.system.Capabilities;
+
 import modules.System.Home;
+
 import mx.collections.*;
 import mx.containers.ViewStack;
+import mx.controls.ComboBox;
 import mx.controls.Label;
 import mx.controls.LinkBar;
 import mx.controls.LinkButton;
 import mx.controls.TabBar;
+import mx.events.ListEvent;
 import mx.events.MenuEvent;
 import mx.rpc.events.FaultEvent;
+import mx.rpc.events.ResultEvent;
 			
 [Bindable]
 private var subMenusSistemas:Object = null;
@@ -21,6 +30,8 @@ private var stackMenuSistemas:ViewStack;
 private var home:Home;
 private var tabBar:TabBar;
 private var user: *;
+private var cb_systemStage: ComboBox;
+private var ugSelected: UserGroup;
 
 [Embed(source='/image/porta.png')]
 private var icone:Class;
@@ -77,16 +88,24 @@ private function geraTabBar(): TabBar {
 	tabBar = new TabBar();
 	userLabel = new Label();
 	userLabel.id = "labelUsuario";
-	userLabel.x = 170;
-	userLabel.y = 10;
+	userLabel.x = 150;
+	userLabel.y = 15;
 	userLabel.text = "Welcome ";
 	this.addChild(userLabel);
 
 	loggedUser = new Label();
 	loggedUser.x = userLabel.x + 70;
-	loggedUser.y = 10;
+	loggedUser.y = 15;
 	loggedUser.styleName = "valorLabel";
 	this.addChild(loggedUser);
+	
+	cb_systemStage = new ComboBox();
+	cb_systemStage.x = 150;
+	cb_systemStage.y = 50;
+	cb_systemStage.width = 815;
+	cb_systemStage.labelFunction = showCourse;
+	cb_systemStage.addEventListener(ListEvent.CHANGE, setSystemStage);
+	this.addChild(cb_systemStage);
 
 	tabBar.x = 263;
 	tabBar.y = 56;
@@ -188,6 +207,35 @@ private function saveCookie(event:UserEvent):void{
 	loggedUser.text = "";
 	loggedUser.text = user.name;
 	cookie.flush();
+	getUserHasSystemStageyUserId(user.userId);
+}
+
+private function getUserHasSystemStageyUserId(userId: int):void {
+	facade.getOperation("getUserGroupByUser").send(userId);	
+}
+
+private function setSystemStage(event: ListEvent):void {
+	ugSelected = CastEntities.castUserGroup(cb_systemStage.selectedItem);
+	facade.getOperation("setSystemStage").send(ugSelected.systemStage.id);		
+}
+
+private function getUserGroupByUser_result(event:ResultEvent): void{
+	var ussList: ArrayCollection = new ArrayCollection();
+	cb_systemStage.dataProvider = event.result as ArrayCollection;
+	if (cb_systemStage.dataProvider.length > 0){
+		ugSelected = CastEntities.castUserGroup(cb_systemStage.dataProvider.getItemAt(0));
+		facade.getOperation("setSystemStage").send(ugSelected.systemStage.id);
+	}
+}
+
+private function setSystemStage_result(event:ResultEvent): void{
+	dispatchEvent(new SystemStateChangeEvent(ugSelected.systemStage));
+}
+
+private function showCourse(item:*):String {
+	return item.systemStage.course + " - " + 
+		item.systemStage.semester + 
+		" (" + item.systemStage.courseClass + ")";
 }
 
 private function fillsMenuBar(menu: *, functionList: ArrayCollection): String {
@@ -264,13 +312,15 @@ private function PressedMenuItem(event: MenuEvent):void  {
  * Método para iniciar a aplicação (é chamado quando a aplicação inicia no browser)
  */
 private function init():void {
+	facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+	var state: String = String(ModulesController.getParam());
 	inicializeMenus();
 	listenToEvents();
 	generateBLinks();
 	generateLoginScreen();
 }
 
-private function falha(event:FaultEvent):void {
+private function fail(event:FaultEvent):void {
 	var message:String;
 	try{
 		if (event.fault.rootCause.message == null) {

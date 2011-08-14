@@ -13,8 +13,6 @@ package bean.Utility {
 	import bean.team.TeamHasUserHasAssignment;
 	import bean.user.User;
 	import bean.user.UserGroup;
-	
-
 
 	public class CastEntities {				
 		
@@ -107,7 +105,6 @@ package bean.Utility {
 					u.login = object.login;
 					u.name = object.name;
 					u.password = object.password;
-					u.period = castStage(object.period);
 					u.userId = object.userId;
 					return u;
 				}
@@ -124,6 +121,7 @@ package bean.Utility {
 					ug.group = castGroup(object.group);
 					ug.user = castUser(object.user);
 					ug.userGroupId = object.userGroupId;
+					ug.systemStage = castStage(object.systemStage);
 					return ug;
 				}
 			}

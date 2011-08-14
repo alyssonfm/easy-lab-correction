@@ -18,7 +18,6 @@ package bean.user {
 		public var password:String;
 	
 		public var email:String;
-	
-		public var period:SystemStage;
+		
 	}
 }

@@ -9,8 +9,13 @@
 	<mx:Style source="style/app_style.css"/>
 	<mx:Script source="Scripts/mainScript.as"/>
 	
+	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
+		<mx:method name="getUserGroupByUser" result="getUserGroupByUser_result(event)" fault="fail(event)"/>
+		<mx:method name="setSystemStage" result="setSystemStage_result(event)" fault="fail(event)"/>			
+	</mx:RemoteObject>
+	
 	<mx:Image id="imageELC" x="46" y="15" width="88" height="106" source="ELC_java_logo.jpg" />
-    <mx:MenuBar id="menuBar" labelField="@label" menuStyleName="#042E8E" dataProvider="{menuBarCollection}" x="164" y="94" alpha="0.5" cornerRadius="10" color="#042E8E" height="27"/>
+    <mx:MenuBar id="menuBar" labelField="@label" menuStyleName="#042E8E" dataProvider="{menuBarCollection}" x="150" y="94" alpha="0.5" cornerRadius="10" color="#042E8E" height="27"/>
     <mx:ViewStack x="0" y="164" id="mainView" width="1034" height="329"/>
     <mx:HRule id="hr" x="28" y="129" width="934.95" height="11"/>
     <mx:VRule id="vr" x="18" y="15" height="120" width="20"/>
