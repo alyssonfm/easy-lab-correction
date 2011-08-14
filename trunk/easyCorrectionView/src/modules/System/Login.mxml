@@ -100,10 +100,6 @@
 				
 				private function getUser_result(event:ResultEvent):void{
 					dispatchEvent(new UserEvent(event.result));
-					facade.getOperation("setSystemStage").send(event.result.period.id);
-				}
-				
-				private function setSystemStage_result(event:ResultEvent):void{
 					dispatchEvent(new EventLogResponse(func));
 					dispatchEvent(new ClosePopupEvent(this));	
 				}
@@ -178,8 +174,7 @@
 			
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="validateUser" result="validateUser_result(event)" fault="fail(event)"/>
-			<mx:method name="getUserByLogin" result="getUser_result(event)" fault="fail(event)"/>
-			<mx:method name="setSystemStage" result="setSystemStage_result(event)" fault="fail(event)"/>
+			<mx:method name="getUserByLogin" result="getUser_result(event)" fault="fail(event)"/>			
 		</mx:RemoteObject>
 	
 		<mx:Form width="439" y="205" x="48.5">

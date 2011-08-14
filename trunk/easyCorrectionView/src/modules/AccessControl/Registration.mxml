@@ -11,13 +11,13 @@
 				<mx:ComboBox prompt="select..." x="65" y="41" width="548" labelField="name" id="cbUserGroupState" change="filtrateUserByGroup()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="64" y="71" width="548" id="inputUserNameState" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="64" y="71" width="548" id="inputUserNameState" change="handleValidaUsuario(null)" maxHeight="50"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="64" y="100.5" width="348" id="inputUserLoginState" change="handleValidaUsuario(null)"/>
+				<mx:TextInput x="64" y="100.5" width="348" id="inputUserLoginState" change="handleValidaUsuario(null)" maxChars="100"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:TextInput x="500" y="100.5" width="112" id="inputUserPasswordState" displayAsPassword="true"/>
+				<mx:TextInput x="500" y="100.5" width="112" id="inputUserPasswordState" displayAsPassword="true" maxChars="50"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Button x="243.5" y="162.5" label="   Save" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButtonState" height="28" enabled="false"/>
@@ -218,7 +218,7 @@
 					|| userGroupList.getItemAt(0).group.name.toUpperCase() == "ASSISTANT"){
 					if(userGroupList.getItemAt(0).group.name.toUpperCase() == "ASSISTANT") loggedAssistant = true;
 					currentState = "teacherState";
-					currentUserStage = CastEntities.castUserGroup(userGroupList.getItemAt(0)).user.period;
+					currentUserStage = CastEntities.castUserGroup(userGroupList.getItemAt(0)).systemStage;
 					setCourse(currentUserStage);
 					tabNav.visible = true;
 					emailValidator.source = inputUserEmailState;
@@ -762,12 +762,12 @@
 						user.login = StringUtil.trim(inputUserLogin.text);
 						user.name = StringUtil.trim(inputUserName.text);
 						user.email = StringUtil.trim(inpuUserEmail.text);
-						user.period = CastEntities.castStage(cbSystemStage.selectedItem);
 						if(!firstEntry && userGroup.user.email != user.email){
 							emailChanged = true;
 						}
 						userGroup.group = CastEntities.castGroup(cbUserGroup.selectedItem);
 						userGroup.user = user;
+						userGroup.systemStage = CastEntities.castStage(cbSystemStage.selectedItem);
 						facade.getOperation("saveUser").send(userGroup);
 					}
 				}
@@ -796,12 +796,12 @@
 						user.login = StringUtil.trim(inputUserLoginState.text);
 						user.name = StringUtil.trim(inputUserNameState.text);
 						user.email = StringUtil.trim(inputUserEmailState.text);
-						user.period = currentUserStage; 
 						if(!firstEntry && userGroup.user.email != user.email){
 							emailChanged = true;
 						}
 						userGroup.group = CastEntities.castGroup(cbUserGroupState.selectedItem);
 						userGroup.user = user;
+						userGroup.systemStage = currentUserStage;
 						facade.getOperation("saveUser").send(userGroup);
 					}
 				}
@@ -891,8 +891,9 @@
 						userGroup.userGroupId = dgUsers.selectedItem.userGroupId;
 						userGroup.user = CastEntities.castUser(dgUsers.selectedItem.user);
 						userGroup.group = dgUsers.selectedItem.group;
+						userGroup.systemStage = CastEntities.castStage(dgUsers.selectedItem.systemStage);
 						cbUserGroup.selectedIndex = Util.objectTakesPost("groupId", ArrayCollection(cbUserGroup.dataProvider), userGroup.group);
-						cbSystemStage.selectedIndex = Util.objectTakesPost("id", ArrayCollection(cbSystemStage.dataProvider), userGroup.user.period);
+						cbSystemStage.selectedIndex = Util.objectTakesPost("id", ArrayCollection(cbSystemStage.dataProvider), userGroup.systemStage);
 						inputUserName.text = userGroup.user.name;
 						inputUserLogin.text = userGroup.user.login;
 						inpuUserEmail.text = userGroup.user.email;
@@ -907,6 +908,7 @@
 						userGroup.userGroupId = dgUsersState.selectedItem.userGroupId;
 						userGroup.user = CastEntities.castUser(dgUsersState.selectedItem.user);
 						userGroup.group = dgUsersState.selectedItem.group;
+						userGroup.systemStage = CastEntities.castStage(dgUsersState.selectedItem.systemStage);
 						cbUserGroupState.selectedIndex = Util.objectTakesPost("groupId", ArrayCollection(cbUserGroupState.dataProvider), userGroup.group);
 						inputUserNameState.text = userGroup.user.name;
 						inputUserLoginState.text = userGroup.user.login;
@@ -1209,6 +1211,11 @@
 				ModulesController.createModule("modules/AccessControl/RegistrationImporter.swf", this, sysStage);
 			}
 			
+			public function addSystemStages():void {
+				var userGroupTemp: UserGroup = CastEntities.castUserGroup(dgUsers.selectedItem);
+				ModulesController.createModule("modules/AccessControl/CourseManagement.swf", this, userGroupTemp);
+			}
+			
 			
 		]]>
 	</mx:Script>
@@ -1326,15 +1333,15 @@
 	    tooManyAtSignsError="The email address contains too many at (@) signs."
 	/>
 	
-	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="false">	
+	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="true">	
 		
 		<mx:Canvas label="User" width="100%" height="100%" id="canvas4">
 			<mx:ComboBox prompt="select..." x="62" y="39" width="550" labelField="name" id="cbUserGroup" change="filtrateUserByGroup()"/>
 			<mx:ComboBox prompt="select..." x="62" y="10" width="459" labelFunction="showStage" id="cbSystemStage"  change="filtrateUserByGroup()"/>
-			<mx:TextInput x="62" y="69" width="550" id="inputUserName" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="62" y="98.5" width="254.5" id="inputUserLogin" change="handleValidaUsuario(null)"/>
-			<mx:TextInput x="404.5" y="98.5" width="207.5" id="inputUserPassword" displayAsPassword="true"/>
-			<mx:TextInput x="62" y="128.5" width="550" id="inpuUserEmail" change="handleValidaUsuario(null)"/>
+			<mx:TextInput x="62" y="69" width="550" id="inputUserName" change="handleValidaUsuario(null)" maxChars="50"/>
+			<mx:TextInput x="62" y="98.5" width="254.5" id="inputUserLogin" change="handleValidaUsuario(null)" maxChars="50"/>
+			<mx:TextInput x="404.5" y="98.5" width="207.5" id="inputUserPassword" displayAsPassword="true" maxChars="50"/>
+			<mx:TextInput x="62" y="128.5" width="550" id="inpuUserEmail" change="handleValidaUsuario(null)" maxChars="100"/>
 			<mx:Button x="243.5" y="160.5" label="   Save" click="saveUserGroup()" icon="@Embed(source='../../image/disquete.png')" width="135" id="saveUserButton" height="28" enabled="false"/>
 			<mx:Button x="100.5" y="160.5" label="   New" width="135" height="28" id="newUserButton" click="changeSaver()" icon="@Embed(source='../../image/novo.png')"/>
 			<mx:Button x="386.5" y="160.5" label="   Delete" click="removeUser()" icon="@Embed(source='../../image/delete.png')" width="135" id="removeUserButton" height="28"/>
@@ -1350,6 +1357,15 @@
 				<mx:columns>
 					<mx:DataGridColumn headerText="Login" width="200" sortCompareFunction="loginCompare"/>
 					<mx:DataGridColumn headerText="Name" sortCompareFunction="nameCompare"/>
+					<mx:DataGridColumn headerText="" width="60">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+									<mx:Button fontSize="11" icon="@Embed(source='../../image/novo.png')" click="outerDocument.addSystemStages();"/>	
+								</mx:HBox>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
 				</mx:columns>
 			</mx:DataGrid>
 			<mx:Button x="529" y="10.5" label="Import" width="83" click="importStudentsFromCSVFile()"/>
@@ -1409,7 +1425,7 @@
 			</mx:DataGrid>
 		</mx:Canvas>
 		
-		<mx:Canvas label="Stage" width="100%" height="100%" id="canvas5">		
+		<mx:Canvas label="Course" width="100%" height="100%" id="canvas5">		
 			<mx:TextInput x="90" y="32" width="522" maxChars="50" id="inputStageCourse" change="handleValidateStage(null)"/>
 			<mx:TextInput x="377" y="64" width="235" maxChars="50" id="inputStageClass" change="handleValidateStage(null)"/>
 			<mx:TextInput x="90" y="62" width="215" maxChars="50" id="inputStagePeriod" change="handleValidateStage(null)"/>

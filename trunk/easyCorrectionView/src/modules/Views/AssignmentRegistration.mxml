@@ -7,6 +7,8 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.user.UserGroup;
+				import bean.permission.Group;
 				import bean.user.User;
 				import events.AssignmentEvent;
 				import bean.Utility.Constant;
@@ -50,7 +52,7 @@
 				private var urlTests: String = "";
 				private var urlEnvironment: String = "";
 				private var paramMessage:Array;
-				private var currentUser: User = new User();
+				private var currentGroupUser: UserGroup = new UserGroup();
 	            
 	            private function failure(event:FaultEvent):void {
 					var message:String;
@@ -116,11 +118,12 @@
 				
 				private function getUser():void{
 					var userId: int = SharedObject.getLocal("sistema", "/").data.idUsuario;
-					facade.getOperation("getUser").send(userId);	
+					facade.getOperation("getUserGroupByUserIdAndCurrentStageId").send(userId);	
 				}
 				
-				private function getUser_result(event:ResultEvent):void{
-					currentUser = CastEntities.castUser(event.result); 
+				private function getUserGroupByUserIdAndCurrentStageId_result(event:ResultEvent):void{
+					var ugList: ArrayCollection = event.result as ArrayCollection;
+					currentGroupUser = CastEntities.castUserGroup(ugList.getItemAt(0)); 
 				}
 				
 				private function getAssignment():void{
@@ -234,12 +237,12 @@
 					
 					assignment.description = inputDescription.text;
 					assignment.name = inputTitle.text;
-					assignment.interfaceDirectory = "/periodo" + currentUser.period.semester + "/environment/" + assignment.id + "/";
-					assignment.testsDirectory = "/periodo" + currentUser.period.semester + "/testes/" + assignment.id + "/";
+					assignment.interfaceDirectory = "/periodo" + currentGroupUser.systemStage.semester + "/environment/" + assignment.id + "/";
+					assignment.testsDirectory = "/periodo" + currentGroupUser.systemStage.semester + "/testes/" + assignment.id + "/";
 					assignment.sendMaxNumber = int(inputMaxNumberSent.text);
 					assignment.participantsMaxNumber = int(inputMaxTeam.text);
 					assignment.penaltyPerDaysLate = Util.formatsTextValueToNumber(inputPenalty.text);
-					assignment.stage = currentUser.period;
+					assignment.stage = currentGroupUser.systemStage;
 					assignment.automaticTestsPercentage = Util.formatsTextValueToNumber(inputPercentage.text);
 					assignment.testTimeLimit = int(inputTimeout.text);
 					assignment.assignmentType = CastEntities.castAssignmentType(comboType.selectedItem);
@@ -289,8 +292,8 @@
 				private function saveAssignment_result(event:ResultEvent):void{
 					assignment = new Assignment();
 					assignment = CastEntities.castAssignment(event.result);
-					urlTests = "/periodo" + currentUser.period.semester + "/testes/" + assignment.id + "/";
-					urlEnvironment = "/periodo" + currentUser.period.semester + "/environment/" + assignment.id + "/";
+					urlTests = "/periodo" + currentGroupUser.systemStage.semester + "/testes/" + assignment.id + "/";
+					urlEnvironment = "/periodo" + currentGroupUser.systemStage.semester + "/environment/" + assignment.id + "/";
 					if (!isCreate){
 						try{
 							var variables:URLVariables = new URLVariables();
@@ -319,14 +322,14 @@
 				}
 				
 				private function openAssignmentImporter():void{ 
-					ModulesController.createModule("modules/Views/AssignmentImporter.swf", this, currentUser.period.course);
+					ModulesController.createModule("modules/Views/AssignmentImporter.swf", this, currentGroupUser.systemStage.course);
 				}
 				
 			]]>
 		</mx:Script>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
-			<mx:method name="getUser" result="getUser_result(event)" fault="failure(event)"/>
+			<mx:method name="getUserGroupByUserIdAndCurrentStageId" result="getUserGroupByUserIdAndCurrentStageId_result(event)" fault="failure(event)"/>
 			<mx:method name="saveAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="updateAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="listAssignmentType" result="listAssignmentType_result(event)" fault="failure(event)"/>

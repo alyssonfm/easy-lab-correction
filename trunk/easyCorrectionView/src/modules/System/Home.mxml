@@ -4,6 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import events.SystemStateChangeEvent;
 			import bean.Utility.*;
 			import bean.assessments.Assessment;
 			import bean.team.TeamHasUserHasAssignment;
@@ -36,8 +37,17 @@
 				facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 				ModulesController.getParam();
 				this.systemManager.addEventListener(ObjectEvent.ObjetoEventConst, hasAssignment);
+				this.systemManager.addEventListener(SystemStateChangeEvent.systemStateChangeEventConst, systemStageChange);
 				getUserGroupByUser();
 				//downloadTestsButton.enabled = false;
+				inicializeAll();
+			}
+			
+			private function systemStageChange(event: SystemStateChangeEvent):void{
+				inicializeAll();
+			}
+			
+			private function inicializeAll(): void{
 				downloadEnvironmentButton.enabled = false;
 				checkCorrectionButton.enabled = false;
 				getReleasedAssignments();
@@ -48,7 +58,7 @@
 			}
 			
 			private function hasAssignment(event: ObjectEvent):void{
-				getReleasedAssignments();
+				inicializeAll();
 			}
 			
 			private function failure(event:FaultEvent):void {
