@@ -102,9 +102,9 @@ private function geraTabBar(): TabBar {
 	cb_systemStage = new ComboBox();
 	cb_systemStage.x = 150;
 	cb_systemStage.y = 50;
-	cb_systemStage.width = 815;
 	cb_systemStage.labelFunction = showCourse;
 	cb_systemStage.addEventListener(ListEvent.CHANGE, setSystemStage);
+	cb_systemStage.invalidateSize();
 	this.addChild(cb_systemStage);
 
 	tabBar.x = 263;
