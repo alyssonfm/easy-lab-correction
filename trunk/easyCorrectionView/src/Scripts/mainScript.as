@@ -204,6 +204,7 @@ private function saveCookie(event:UserEvent):void{
 	cookie.data.idUsuario= user.userId;
 	cookie.data.loginUsuario = user.login;
 	cookie.data.nomeUsuario = user.name;
+	cookie.data.userGroup = cb_systemStage.selectedItem;
 	loggedUser.text = "";
 	loggedUser.text = user.name;
 	cookie.flush();
@@ -215,7 +216,9 @@ private function getUserHasSystemStageyUserId(userId: int):void {
 }
 
 private function setSystemStage(event: ListEvent):void {
+	var cookie:SharedObject = SharedObject.getLocal("sistema", "/");
 	ugSelected = CastEntities.castUserGroup(cb_systemStage.selectedItem);
+	cookie.data.userGroup = ugSelected;
 	facade.getOperation("setSystemStage").send(ugSelected.systemStage.id);		
 }
 
