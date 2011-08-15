@@ -421,7 +421,7 @@ public class AccessUserManager extends Manager {
 		Matcher pesqEmail = patEmail.matcher(user.getEmail());
 		System.out.println(pesqEmail.matches());
 
-		Pattern patName = Pattern.compile("[A-Za-z]+\\s[A-Za-z]+\\s[A-Za-z]+");
+		Pattern patName = Pattern.compile("[A-Za-z]+[\\sA-Za-z]+");
 		Matcher pesqName = patName.matcher(user.getName());
 		System.out.println(pesqName.matches());
 
