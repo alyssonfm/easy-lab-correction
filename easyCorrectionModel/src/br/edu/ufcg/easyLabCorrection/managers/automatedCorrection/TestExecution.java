@@ -15,7 +15,6 @@ import org.junit.runner.JUnitCore;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
-import br.edu.ufcg.easyLabCorrection.managers.compilation.CompilationFileFilter;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.util.Constants;
@@ -74,23 +73,23 @@ public class TestExecution {
 		Class<?> testClass;
 
 		try {
-			CompilationFileFilter pv = new CompilationFileFilter();
+			TestExecutionFileFilter tv = new TestExecutionFileFilter();
 			//Gets the names of all java files inside sourceDirectory
-			ArrayList<String> listSource = pv.visitAllDirsAndFiles(new File(sourceDirectory));
+			ArrayList<String> listSource = tv.visitAllDirsAndFiles(new File(sourceDirectory));
 			
 			if (listSource.size() == 0){
 				cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
 						.toURI().toURL() }, JUnitCore.class.getClassLoader());
 				testClass = cl.loadClass(Constants.mainTest);
 			}else{
-				String pathFile = listSource.get(0);
-				String path = pathFile.substring(0, pathFile.lastIndexOf("\\") + 1);
-				String lastPath = path.substring(0, pathFile.lastIndexOf("\\"));
-				lastPath = lastPath.substring(lastPath.lastIndexOf("\\") + 1, lastPath.length());
-				cl = new URLClassLoader(new URL[] { 
-						new File(path)
-						.toURI().toURL() }, JUnitCore.class.getClassLoader());
-				testClass = cl.loadClass(lastPath + "." + Constants.mainTest);
+
+				//String pathFile = tv.findMainTest();
+				//String path = pathFile.substring(0, pathFile.lastIndexOf("\\") + 1);
+				//String lastPath = path.substring(0, pathFile.lastIndexOf("\\"));
+				//String goodPath = lastPath.substring(0, lastPath.lastIndexOf("\\") + 1);
+				cl = new URLClassLoader(tv.getAllDiffPaths(), JUnitCore.class.getClassLoader());
+				//lastPath = lastPath.substring(lastPath.lastIndexOf("\\") + 1, lastPath.length());
+				testClass = cl.loadClass(Constants.mainTest);
 			}
 			testAdapter = new JUnit4TestAdapter(testClass);
 			result = TestRunner.run(testAdapter);
