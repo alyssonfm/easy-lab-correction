@@ -218,7 +218,8 @@
 					|| userGroupList.getItemAt(0).group.name.toUpperCase() == "ASSISTANT"){
 					if(userGroupList.getItemAt(0).group.name.toUpperCase() == "ASSISTANT") loggedAssistant = true;
 					currentState = "teacherState";
-					currentUserStage = CastEntities.castUserGroup(userGroupList.getItemAt(0)).systemStage;
+					var sessionObject:SharedObject = SharedObject.getLocal("sistema", "/");
+					currentUserStage = sessionObject.data.userGroup.systemStage;
 					setCourse(currentUserStage);
 					tabNav.visible = true;
 					emailValidator.source = inputUserEmailState;
@@ -1333,7 +1334,7 @@
 	    tooManyAtSignsError="The email address contains too many at (@) signs."
 	/>
 	
-	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="true">	
+	<mx:TabNavigator change="selectTab()" width="100%" height="100%" id = "tabNav" visible="false">	
 		
 		<mx:Canvas label="User" width="100%" height="100%" id="canvas4">
 			<mx:ComboBox prompt="select..." x="62" y="39" width="550" labelField="name" id="cbUserGroup" change="filtrateUserByGroup()"/>
