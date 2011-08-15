@@ -142,31 +142,6 @@ public class ServletUpload extends HttpServlet {
 				}
 			}
 		}
-		/*
-		 * try { String destinationname = destinationFolder; byte[] buf = new
-		 * byte[1024]; ZipInputStream zipinputstream = null; ZipEntry zipentry;
-		 * zipinputstream = new ZipInputStream( new
-		 * FileInputStream(destinationFolder + fileName)); zipentry =
-		 * zipinputstream.getNextEntry(); while (zipentry != null) { //for each
-		 * entry to be extracted String entryName = zipentry.getName(); int n;
-		 * FileOutputStream fileoutputstream; File newFile = new
-		 * File(entryName); String directory = newFile.getParent();
-		 * 
-		 * if(directory == null) { if(newFile.isDirectory()) break; }
-		 * 
-		 * fileoutputstream = new FileOutputStream( destinationname+entryName);
-		 * 
-		 * while ((n = zipinputstream.read(buf, 0, 1024)) > -1)
-		 * fileoutputstream.write(buf, 0, n);
-		 * 
-		 * fileoutputstream.close(); zipinputstream.closeEntry(); zipentry =
-		 * zipinputstream.getNextEntry();
-		 * 
-		 * }//while
-		 * 
-		 * zipinputstream.close(); } catch (Exception e) { e.printStackTrace();
-		 * }
-		 */
 	}
 
 	private boolean deleteDir(File dir) {

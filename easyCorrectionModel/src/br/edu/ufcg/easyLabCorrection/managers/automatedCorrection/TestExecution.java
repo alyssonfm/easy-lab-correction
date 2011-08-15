@@ -77,29 +77,25 @@ public class TestExecution {
 			//Gets the names of all java files inside sourceDirectory
 			ArrayList<String> listSource = tv.visitAllDirsAndFiles(new File(sourceDirectory));
 			
-			if (listSource.size() == 0){
+			if (listSource.size() != 0){
+				String pathFile = tv.findMainTest();
+				String path = pathFile.substring(sourceDirectory.length(), 
+					pathFile.lastIndexOf("\\") + 1).replace("\\", ".");
+				
 				cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
-						.toURI().toURL() }, JUnitCore.class.getClassLoader());
-				testClass = cl.loadClass(Constants.mainTest);
-			}else{
-
-				//String pathFile = tv.findMainTest();
-				//String path = pathFile.substring(0, pathFile.lastIndexOf("\\") + 1);
-				//String lastPath = path.substring(0, pathFile.lastIndexOf("\\"));
-				//String goodPath = lastPath.substring(0, lastPath.lastIndexOf("\\") + 1);
-				cl = new URLClassLoader(tv.getAllDiffPaths(), JUnitCore.class.getClassLoader());
-				//lastPath = lastPath.substring(lastPath.lastIndexOf("\\") + 1, lastPath.length());
-				testClass = cl.loadClass(Constants.mainTest);
+					.toURI().toURL() }, JUnitCore.class.getClassLoader());
+				testClass = cl.loadClass(path + Constants.mainTest);
+				testAdapter = new JUnit4TestAdapter(testClass);
+				result = TestRunner.run(testAdapter);
+				return result;
 			}
-			testAdapter = new JUnit4TestAdapter(testClass);
-			result = TestRunner.run(testAdapter);
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			throw new TestExecutionException(e.getMessage());
 		}
+		return new TestResult();
 		
-		return result;
 	}
 	
 	/**
