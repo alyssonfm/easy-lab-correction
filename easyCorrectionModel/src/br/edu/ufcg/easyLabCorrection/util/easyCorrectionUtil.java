@@ -113,7 +113,7 @@ public class easyCorrectionUtil {
 		
 		String message = "<BR>Dear "+ ug.getUser().getName() + ",</BR>" +
 			"<BR></BR>" +  
-			"<BR>Congratulations, an ELC student account has been created for you.</BR>" +
+			"<BR>Congratulations, an ELC " + ug.getGroup().getName() + " account has been created for you.</BR>" +
 			"<BR></BR>" +				
 			"<BR>Enjoy the most from the system assignment submission facilities.</BR>" + 
 			"<BR>Your access data are the following:</BR>" +
