@@ -376,6 +376,7 @@ public class System {
 		ug = accessUserManager.createUsersFromCsvFile(uploadDir, group, systemStage);
 		for (int i = 0; i < ug.size(); i++) {
 			createUser(ug.get(i));
+			ug.get(i).getUser().setPassword("123456");
 			sendEmail(ug.get(i));
 		}
 		return ug;
