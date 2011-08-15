@@ -227,6 +227,7 @@ private function getUserGroupByUser_result(event:ResultEvent): void{
 	cb_systemStage.dataProvider = event.result as ArrayCollection;
 	if (cb_systemStage.dataProvider.length > 0){
 		ugSelected = CastEntities.castUserGroup(cb_systemStage.dataProvider.getItemAt(0));
+		SharedObject.getLocal("sistema", "/").data.userGroup = ugSelected;
 		facade.getOperation("setSystemStage").send(ugSelected.systemStage.id);
 	}
 }
