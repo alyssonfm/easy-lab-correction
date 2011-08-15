@@ -517,17 +517,17 @@ public class System {
 				compilationUnit(sourceDirectory, testsDirectory, libDirectory);
 				
 				//Remover (Apenas para teste) -------
-				double automaticTestsGrade = 10;
+				/*double automaticTestsGrade = 10;
 				result = "COMPILATION: OK.";
 				assessmentManager.setAssessment(submission,
-						automaticTestsGrade, result);
+						automaticTestsGrade, result);*/
 				//-----------------------------------
 			} catch (CompilationException compilationError) {
 				return "COMPILATION ERROR: \n" + compilationError.getMessage();
 			}
 
 			// Running Tests
-			/*
+			
 			testResult = correctionManager.runAutomaticTests(submission,
 					sourceDirectory, testsDirectory);
 
@@ -540,7 +540,7 @@ public class System {
 						automaticTestsGrade, result);
 			} else {
 				submissionManager.deleteSubmission(submission);
-			}*/
+			}
 		} else {
 			result = "This assessment will not run automatic tests.";
 			assessmentManager.setAssessment(submission, 0, result);
