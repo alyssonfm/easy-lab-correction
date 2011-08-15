@@ -419,12 +419,15 @@ public class AccessUserManager extends Manager {
 	private boolean validateUser(User user) {
 		Pattern patEmail = Pattern.compile(".+@.+\\.[a-z]+");
 		Matcher pesqEmail = patEmail.matcher(user.getEmail());
+		System.out.println(pesqEmail.matches());
 
 		Pattern patName = Pattern.compile("[A-Za-z]+\\s[A-Za-z]+\\s[A-Za-z]+");
 		Matcher pesqName = patName.matcher(user.getName());
+		System.out.println(pesqName.matches());
 
 		Pattern patLogin = Pattern.compile("[a-zA-Z0-9]+");
 		Matcher pesqLogin = patLogin.matcher(user.getLogin());
+		System.out.println(pesqLogin.matches());
 
 		if (pesqName.matches() && pesqEmail.matches() && pesqLogin.matches()) {
 			return true;
