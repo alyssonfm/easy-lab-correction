@@ -495,7 +495,7 @@ public class System {
 		return submissionManager.submitAssignment(submission, assignment);
 	}
 
-	public String runAutomaticTests(Submission submission)
+	public String processSubmission(Submission submission)
 			throws EasyCorrectionException {
 
 		TestResult testResult;
@@ -508,10 +508,10 @@ public class System {
 				+ submission.getUrl().replace("/", File.separator);
 		String libDirectory = (ServletUpload.local + "/").replace("/",
 				File.separator);
-
+		
 		if (submission.getTeamHasUserHasAssignment().getAssignment()
-				.getAutomaticTestsPercentage() > 0) {
-
+				.getAssignmentType().getCompilation()){
+			
 			// Compilation
 			try {
 				compilationUnit(sourceDirectory, testsDirectory, libDirectory);
@@ -525,28 +525,36 @@ public class System {
 			} catch (CompilationException compilationError) {
 				return "COMPILATION ERROR: \n" + compilationError.getMessage();
 			}
-
-			// Running Tests
-			
-			testResult = correctionManager.runAutomaticTests(submission,
-					sourceDirectory, testsDirectory);
-
-			if (testResult != null) {
-				Object[] answer = correctionManager.getTestsExecutionOutput(
-						testResult, submission);
-				double automaticTestsGrade = (Double) answer[0];
-				result = (String) answer[1];
-				assessmentManager.setAssessment(submission,
-						automaticTestsGrade, result);
-			} else {
-				submissionManager.deleteSubmission(submission);
-			}
-		} else {
-			result = "This assessment will not run automatic tests.";
-			assessmentManager.setAssessment(submission, 0, result);
-			return "Result: " + result;
 		}
+		if (submission.getTeamHasUserHasAssignment().getAssignment()
+			.getAssignmentType().getTestExecution()){
+			if (submission.getTeamHasUserHasAssignment().getAssignment()
+				.getAutomaticTestsPercentage() > 0) {
 
+				// Running Tests
+				testResult = correctionManager.runAutomaticTests(submission,
+						sourceDirectory, testsDirectory);
+	
+				if (testResult != null) {
+					Object[] answer = correctionManager.getTestsExecutionOutput(
+							testResult, submission);
+					double automaticTestsGrade = (Double) answer[0];
+					result = (String) answer[1];
+					assessmentManager.setAssessment(submission,
+							automaticTestsGrade, result);
+				} else {
+					submissionManager.deleteSubmission(submission);
+				}
+			} else {
+				result = "This assessment will not run automatic tests.";
+				assessmentManager.setAssessment(submission, 0, result);
+				return "Result: " + result;
+			}
+		}
+		if (submission.getTeamHasUserHasAssignment().getAssignment()
+				.getAssignmentType().getOutputComparison()){
+			//TODO
+		}
 		return result;
 	}
 
