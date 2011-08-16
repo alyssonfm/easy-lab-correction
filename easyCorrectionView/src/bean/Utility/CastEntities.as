@@ -195,6 +195,9 @@ package bean.Utility {
 					var at:AssignmentType = new AssignmentType();
 					at.id = object.id;
 					at.name = object.name;
+					at.compilation = object.compilation;
+					at.testExecution = object.testExecution;
+					at.outputComparison = object.outputComparison;
 					return at;
 				}
 			}
