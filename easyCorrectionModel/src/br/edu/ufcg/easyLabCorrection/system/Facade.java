@@ -689,11 +689,11 @@ public class Facade {
 		}
 	}
 
-	public String runAutomaticTests(Submission submission) throws Throwable {
+	public String processSubmission(Submission submission) throws Throwable {
 		try {
-			return system.runAutomaticTests(submission);
+			return system.processSubmission(submission);
 		} catch (Throwable e) {
-			log.error("runAutomaticTests()", e);
+			log.error("processSubmission()", e);
 			throw e;
 		}
 	}

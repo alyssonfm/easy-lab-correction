@@ -11,6 +11,9 @@
 		</id>
 		
 		<property name="name" column="nome"/>
+		<property name="compilation" column="compilacao"/>
+		<property name="testExecution" column="testes_automaticos"/>
+		<property name="outputComparison" column="comparacao_saida"/>
 		
 	</class>
 </hibernate-mapping>
