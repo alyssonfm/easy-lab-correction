@@ -8,6 +8,9 @@ package bean.assignments{
 
 		public var id:int;
 		public var name:String;
+		public var compilation: Boolean;
+		public var testExecution: Boolean;
+		public var outputComparison: Boolean;
 		
 	}
 }
