@@ -101,10 +101,10 @@
 				public function completeSend(evt:Event):void {
 					request = new URLRequest(FILE_UPLOAD_URL);
 					var sub: Submission = CastEntities.castSubmission(submission);
-					facade.getOperation("runAutomaticTests").send(sub);
+					facade.getOperation("processSubmission").send(sub);
 				}
 				
-				public function runAutomaticTests_result(event:ResultEvent):void{
+				public function processSubmission_result(event:ResultEvent):void{
 					var result: String = event.result as String;
 					inputDescription.text = result;
 					inputDescription.editable = false;
@@ -210,7 +210,7 @@
 			<mx:method name="getTeamHasUserHasAssignmentByUserAndAssignment" result="getTeamHasUserHasAssignmentByUserAndAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="submitAssignment" result="submitAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="deleteSubmission" result="deleteSubmission_result(event)" fault="failure(event)"/>
-			<mx:method name="runAutomaticTests" result="runAutomaticTests_result(event)" fault="failure(event)"/>
+			<mx:method name="processSubmission" result="processSubmission_result(event)" fault="failure(event)"/>
 			<mx:method name="submissionNumber" result="submissionNumber_result(event)" fault="failure(event)"/>
 			<mx:method name="getSubmissionNumberByTua" result="submissionNumber_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
