@@ -10,6 +10,7 @@ import javax.tools.ToolProvider;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.CompilationException;
 import br.edu.ufcg.easyLabCorrection.managers.Manager;
+import br.edu.ufcg.easyLabCorrection.util.Constants;
 import br.edu.ufcg.easyLabCorrection.util.ErrorMsgs;
 
 /**
@@ -93,7 +94,7 @@ public class CompilationManager extends Manager{
 			String sourceDir = concatDirectories(pathList);
 			String testSourceDir = concatDirectories(pathTestList);
 			String libDir = concatDirectories(libFileList);
-			libDir += libDirectory + "junit.jar;";
+			libDir += libDirectory + "junit.jar";
 			
 			String[] arguments = mountCompilerParameters(sourceDir, testSourceDir, libDir, sourceDirectory);
 			javaCompiler.run(null, out, error, arguments);
@@ -140,11 +141,13 @@ public class CompilationManager extends Manager{
 	 */
 	private void mountSourceDirectories(ArrayList<String> listSource){
 		for (String sourcePath: listSource){
-			String path = sourcePath.substring(0, sourcePath.lastIndexOf("\\") + 1);
-			if(!pathList.contains(path)){
-				pathList.add(path);
+			if (!sourcePath.endsWith(Constants.mainTest + ".java")){
+				String path = sourcePath.substring(0, sourcePath.lastIndexOf("\\") + 1);
+				if(!pathList.contains(path)){
+					pathList.add(path);
+				}
+				sourceFileList.add(sourcePath);
 			}
-			sourceFileList.add(sourcePath);
 		}
 	}
 	
@@ -204,7 +207,7 @@ public class CompilationManager extends Manager{
 	private String concatDirectories(ArrayList<String> pathList){
 		String paths = "";
 		for(String path: pathList){
-			paths += path + ";";
+			paths += path + ":";
 		}
 		return paths;
 	}
