@@ -530,7 +530,7 @@ public class System {
 			.getAssignmentType().getTestExecution()){
 			if (submission.getTeamHasUserHasAssignment().getAssignment()
 				.getAutomaticTestsPercentage() > 0) {
-
+				
 				// Running Tests
 				testResult = correctionManager.runAutomaticTests(submission,
 						sourceDirectory, testsDirectory);

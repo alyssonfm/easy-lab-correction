@@ -27,7 +27,7 @@ import br.edu.ufcg.easyLabCorrection.util.easyCorrectionUtil;
 public class Facade {
 
 	private System system;
-	static Logger log = Logger.getLogger("br.ufcg.edu.facade");
+	public static Logger log = Logger.getLogger("br.ufcg.edu.facade");
 
 	public Facade() {
 		system = new System();
