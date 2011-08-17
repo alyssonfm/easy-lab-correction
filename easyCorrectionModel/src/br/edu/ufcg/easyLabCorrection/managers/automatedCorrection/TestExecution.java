@@ -76,12 +76,10 @@ public class TestExecution {
 			TestExecutionFileFilter tv = new TestExecutionFileFilter();
 			//Gets the names of all java files inside sourceDirectory
 			ArrayList<String> listSource = tv.visitAllDirsAndFiles(new File(sourceDirectory));
-			
 			if (listSource.size() != 0){
 				String pathFile = tv.findMainTest();
 				String path = pathFile.substring(sourceDirectory.length(), 
-					pathFile.lastIndexOf("\\") + 1).replace("\\", ".");
-				
+					pathFile.lastIndexOf(File.separator) + 1).replace(File.separator, ".");
 				cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
 					.toURI().toURL() }, JUnitCore.class.getClassLoader());
 				testClass = cl.loadClass(path + Constants.mainTest);

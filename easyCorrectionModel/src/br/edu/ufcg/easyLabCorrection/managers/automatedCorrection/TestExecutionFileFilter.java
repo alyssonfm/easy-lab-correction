@@ -2,8 +2,6 @@ package br.edu.ufcg.easyLabCorrection.managers.automatedCorrection;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import br.edu.ufcg.easyLabCorrection.util.Constants;
@@ -66,21 +64,4 @@ public class TestExecutionFileFilter {
 		return "";
 	}
 	
-	public URL[] getAllDiffPaths(){
-		ArrayList<String> listOfPaths = new ArrayList<String>();
-		for (int i = 0; i < sourcePaths.size(); i++) {
-			String str = sourcePaths.get(i).substring(0, sourcePaths.get(i).lastIndexOf("\\") + 1);
-			if(!listOfPaths.contains(str)){
-				listOfPaths.add(str);
-			}
-		}
-		URL[] URLList = new URL[listOfPaths.size()]; 
-		for (int i = 0; i < listOfPaths.size(); i++) {
-			try {
-				URLList[i] = new File(listOfPaths.get(i)).toURI().toURL();
-			} catch (MalformedURLException e) {
-			}
-		}
-		return URLList;
-	}
 }
