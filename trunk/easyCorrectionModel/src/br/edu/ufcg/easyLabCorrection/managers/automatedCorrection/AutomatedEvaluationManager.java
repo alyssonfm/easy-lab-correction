@@ -12,28 +12,38 @@ public class AutomatedEvaluationManager extends Manager {
 
 	public AutomatedEvaluationManager() {
 		super();
-		test = new TestExecution();
 	}
 
 	/*
 	 * Test Execution
 	 */
 
-	public TestResult runAutomaticTests(Submission submission,
-			String sourceDirectory, String testsDirectory)
+	public TestResult runAutomaticTests(String sourceDirectory, long timeLimit)
 			throws EasyCorrectionException {
-
-		return test.runAutomaticTests(submission, sourceDirectory,
-				testsDirectory);
+		TestResult tr = new TestResult();
+		test = new TestExecution(sourceDirectory);
+		test.start();
+		try {
+			Thread.sleep(timeLimit);
+			tr = test.getResult();
+			if(tr != null){
+				return tr;
+			}
+			else{
+				throw new TestExecutionException("Time Limit Exceeded");
+			}
+		} catch (InterruptedException e) {
+			throw new TestExecutionException("Time Limit Exceeded");
+		}
 	}
-
-	public TestResult executeTests(String sourceDirectory, String testsDirectory)
-			throws TestExecutionException {
-		return test.executeTests(sourceDirectory, testsDirectory);
+	
+	public void interruptExecution() {
+		test.interrupt();
 	}
 
 	public Object[] getTestsExecutionOutput(TestResult result,
 			Submission submission) {
 		return test.getTestsExecutionOutput(result, submission);
 	}
+	
 }

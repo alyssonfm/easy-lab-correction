@@ -13,11 +13,11 @@ import junit.textui.TestRunner;
 
 import org.junit.runner.JUnitCore;
 
-import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.exceptions.TestExecutionException;
 import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 import br.edu.ufcg.easyLabCorrection.pojo.team.TeamHasUserHasAssignment;
 import br.edu.ufcg.easyLabCorrection.util.Constants;
+import br.edu.ufcg.easyLabCorrection.util.SecuritySupport;
 
 /**
  * Class responsible for managing of tests in the system 
@@ -26,35 +26,37 @@ import br.edu.ufcg.easyLabCorrection.util.Constants;
  * @version 1.0 14 of May of 2011.<br>
  *
  */
-public class TestExecution {
+public class TestExecution extends Thread{
+	
+	private String sourceDirectory;
+	private TestResult result;
+	private Object pass = new Object();
+	private SecuritySupport secSupport = new SecuritySupport(pass);
 
 	/**
 	 * Constructor default of class, creates a new object TestManager.<br>
 	 */
-	public TestExecution() {
+	public TestExecution(String sourceDirectory) {
 		super();
+		this.sourceDirectory = sourceDirectory;
 	}
 	
-	/**
-	 * Function used to run automatic tests in the submission performed.<br>
-	 * @param submission The submission which will run in automatic testing.<br>
-	 * @return A string containing the result of running the tests.<br> 
-	 * @throws EasyCorrectionException Exception can be thrown in the execution 
-	 * of automated tests.<br>
-	 */
-	public TestResult runAutomaticTests(Submission submission, String sourceDirectory,
-			String testsDirectory)
-			throws EasyCorrectionException {
+	public TestResult getResult() {
+		return result;
+	}
 
-		TestResult testResult;
-		try {
-			testResult = executeTests(sourceDirectory, testsDirectory);
-		} catch (TestExecutionException e) {
-			return null;
-		}
-		return testResult;
+	public void setResult(TestResult result) {
+		this.result = result;
 	}
-	
+
+	public Object getPass() {
+		return pass;
+	}
+
+	public void setPass(Object pass) {
+		this.pass = pass;
+	}
+
 	/**
 	 * Function used to execute the tests of system, receives as parameter
 	 * the path of the tests directory, and of the source code directory.<br>
@@ -64,11 +66,9 @@ public class TestExecution {
 	 * @throws TestExecutionException Exception can be thrown during 
 	 * the execution of tests.<br>
 	 */
-	public TestResult executeTests(String sourceDirectory,
-			String testsDirectory) throws TestExecutionException {
-
+	public void executeTests(){
+		
 		JUnit4TestAdapter testAdapter;
-		TestResult result;
 		URLClassLoader cl;
 		Class<?> testClass;
 
@@ -85,15 +85,20 @@ public class TestExecution {
 				testClass = cl.loadClass(path + Constants.mainTest);
 				testAdapter = new JUnit4TestAdapter(testClass);
 				result = TestRunner.run(testAdapter);
-				return result;
 			}
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-			throw new TestExecutionException(e.getMessage());
+			result = null;
 		}
-		return new TestResult();
-		
+	}
+
+	public void run() {
+		SecurityManager old = System.getSecurityManager();
+		System.setSecurityManager(secSupport);
+		executeTests();
+		System.setSecurityManager(old);
+		secSupport.disable(pass);
 	}
 	
 	/**
