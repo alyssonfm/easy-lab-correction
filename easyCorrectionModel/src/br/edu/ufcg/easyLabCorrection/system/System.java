@@ -516,12 +516,16 @@ public class System {
 			try {
 				compilationUnit(sourceDirectory, testsDirectory, libDirectory);
 				
-				//Remover (Apenas para teste) -------
-				/*double automaticTestsGrade = 10;
-				result = "COMPILATION: OK.";
-				assessmentManager.setAssessment(submission,
-						automaticTestsGrade, result);*/
-				//-----------------------------------
+				if(!submission.getTeamHasUserHasAssignment().getAssignment()
+						.getAssignmentType().getTestExecution() &&
+				   !submission.getTeamHasUserHasAssignment().getAssignment()
+						.getAssignmentType().getOutputComparison()){
+					
+					double automaticTestsGrade = 0;
+					result = "COMPILATION: OK.";
+					assessmentManager.setAssessment(submission,
+							automaticTestsGrade, result);
+				}
 			} catch (CompilationException compilationError) {
 				return "COMPILATION ERROR: \n" + compilationError.getMessage();
 			}
@@ -532,8 +536,8 @@ public class System {
 				.getAutomaticTestsPercentage() > 0) {
 				
 				// Running Tests
-				testResult = correctionManager.runAutomaticTests(submission,
-						sourceDirectory, testsDirectory);
+				testResult = correctionManager.runAutomaticTests(sourceDirectory,
+						submission.getTeamHasUserHasAssignment().getAssignment().getTestTimeLimit());
 	
 				if (testResult != null) {
 					Object[] answer = correctionManager.getTestsExecutionOutput(
