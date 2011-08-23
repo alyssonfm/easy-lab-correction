@@ -7,6 +7,7 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import bean.assignments.AssignmentType;
 				import bean.user.UserGroup;
 				import bean.permission.Group;
 				import bean.user.User;
@@ -325,6 +326,22 @@
 					ModulesController.createModule("modules/Views/AssignmentImporter.swf", this, currentGroupUser.systemStage.course);
 				}
 				
+				private function changeAssignmentType():void{ 
+					var assignmentType: AssignmentType = CastEntities.castAssignmentType(comboType.selectedItem);
+					if (!assignmentType.outputComparison && !assignmentType.testExecution){
+						inputPercentage.text = "0";
+						inputPercentage.enabled = false;						
+						inputTimeout.text = "5000";
+						inputTimeout.enabled = false;
+					}
+					else{
+						inputPercentage.text = "100";
+						inputPercentage.enabled = true;
+						inputTimeout.text = "5000";
+						inputTimeout.enabled = true;
+					}
+				}
+				
 			]]>
 		</mx:Script>
 				
@@ -373,7 +390,7 @@
 		<mx:TextInput x="723" y="254" id="inputMaxNumberSent" width="47" restrict="[0-9]" maxChars="2" text="3"/>
 		<extra:DecimalInput x="219" y="318"  precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPenalty" width="113" text="0.5"/>
 		<extra:DecimalInput x="285" y="361"   precision="2" restrict="'0-9'" useThousandsSeparator="true" currencyFormat="br" enabled="true" id="inputPercentage" width="91" text="100"/>
-		<mx:TextInput x="641" y="363" id="inputTimeout" width="95" restrict="[0-9]" maxChars="2" text="10"/>
+		<mx:TextInput x="641" y="363" id="inputTimeout" width="95" restrict="[0-9]" maxChars="2" text="5000"/>
 		<mx:Label text="Team Members max number:" fontWeight="bold"
 			textAlign="left" width="239" x="476" y="288" id="labelAutomatic0"/>
 		<mx:Label text="Penalty per day late:" fontWeight="bold"
@@ -412,7 +429,7 @@
 			textAlign="left" width="17" x="706" y="43" id="labelAutomatica20"/>
 		<mx:Label text="M" fontWeight="bold"
 			textAlign="left" width="17" x="753" y="43" id="labelAutomatica10"/>
-		<mx:ComboBox x="62" y="41" width="329" id="comboType" labelField="name"></mx:ComboBox>
+		<mx:ComboBox x="62" y="41" width="329" id="comboType" labelField="name" change="changeAssignmentType()"></mx:ComboBox>
 		<mx:Button x="675" y="11" label="Import" width="95" click="openAssignmentImporter()"/>
 		
 		
