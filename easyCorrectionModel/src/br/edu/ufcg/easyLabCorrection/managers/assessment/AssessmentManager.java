@@ -297,6 +297,9 @@ public class AssessmentManager extends Manager {
 			double automaticTestsGrade, String automaticTestsResult)
 			throws EasyCorrectionException {
 		try {
+			if(automaticTestsResult.length() > 400){
+				automaticTestsResult = automaticTestsResult.substring(0, 400);
+			}
 			Assessment assess = getAssessmentByAssignmentAndTeam(submission
 					.getTeamHasUserHasAssignment().getAssignment().getId(),
 					submission.getTeamHasUserHasAssignment().getTeam().getId());
