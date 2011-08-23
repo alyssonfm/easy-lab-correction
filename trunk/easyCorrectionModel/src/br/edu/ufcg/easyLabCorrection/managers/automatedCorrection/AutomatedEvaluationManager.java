@@ -30,10 +30,12 @@ public class AutomatedEvaluationManager extends Manager {
 				return tr;
 			}
 			else{
-				throw new TestExecutionException("Time Limit Exceeded");
+				throw new TestExecutionException("Execution Time Limit Exceeded! Your code should run in " +
+						timeLimit + " ms.");
 			}
 		} catch (InterruptedException e) {
-			throw new TestExecutionException("Time Limit Exceeded");
+			throw new TestExecutionException("Execution Time Limit Exceeded! Your code should run in " +
+					timeLimit + " ms.");
 		}
 	}
 	
