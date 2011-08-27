@@ -1,0 +1,7 @@
+Métodos:
+ - Ler todas as linhas do arquivo de entrada (alysson)
+ - Processa chamando o Main com a entrada (augusto)
+ 	* Retorna a String de Saída do console
+ - Compara a String de Saída com o Arquivo de Entrada (alysson)
+ - GetQuantidade de Entradas (Alysson)
+ - Calcula porcentagem de acerto e Cria avaliação (Demétrio)
