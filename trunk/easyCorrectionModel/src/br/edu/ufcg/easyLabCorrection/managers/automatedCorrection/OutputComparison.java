@@ -1,6 +1,10 @@
 package br.edu.ufcg.easyLabCorrection.managers.automatedCorrection;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -52,6 +56,7 @@ public class OutputComparison {
 
 		for (int i = 0; i < testSuite.size(); i++) {
 			// Solution Execution
+			
 			Main.main(testSuite.get(i).split(Constants.TEST_DATA_SEPARATOR));
 
 			// Result comparison
@@ -130,8 +135,30 @@ public class OutputComparison {
 	 * @return an ArrayList with the splitted file data
 	 */
 	private ArrayList<String> readStringsFromFile(File f, String stringSeparator) {
-		// TODO
-		return null;
+		ArrayList<String> contentOfFile = new ArrayList<String>();
+		String line;
+		String [] lines;
+		BufferedReader br;
+		try {
+			FileReader file = new FileReader(f);
+			br = new BufferedReader(file);
+			try {
+				while(br.ready()){
+					line = br.readLine();
+					lines = line.split(stringSeparator);
+					for(int i = 0; i < lines.length; i++){
+						contentOfFile.add(lines[i]);
+					}
+				}
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return contentOfFile;
 	}
 
 }
