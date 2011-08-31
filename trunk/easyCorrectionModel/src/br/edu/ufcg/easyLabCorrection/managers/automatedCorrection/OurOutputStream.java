@@ -5,21 +5,21 @@ import java.io.OutputStream;
 
 public class OurOutputStream extends OutputStream {
 
-	private StringBuilder string;
+	private StringBuilder stringBuilder;
 
 	public OurOutputStream() {
 		flushOurStream();
 	}
 
 	public void flushOurStream() {
-		string = new StringBuilder();
+		stringBuilder = new StringBuilder();
 	}
 	
 	public void write(int b) throws IOException {
-		this.string.append((char) b);
+		this.stringBuilder.append((char) b);
 	}
 
 	public String toString() {
-		return this.string.toString();
+		return this.stringBuilder.toString();
 	}
 }
