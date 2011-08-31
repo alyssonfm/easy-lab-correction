@@ -1,14 +1,13 @@
 package br.edu.ufcg.easyLabCorrection.managers.automatedCorrection;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
-
 import java.io.PrintStream;
 import java.util.ArrayList;
 
+import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
 import br.edu.ufcg.easyLabCorrection.managers.automatedCorrection.example.Main;
 import br.edu.ufcg.easyLabCorrection.util.Constants;
 
@@ -40,9 +39,10 @@ public class OutputComparison {
 	 * @param outputFile
 	 *            - the .txt file with all the expected outputs
 	 * @return an ArrayList with a boolean result for each test case
+	 * @throws EasyCorrectionException 
 	 */
 	public ArrayList<Boolean> compareOutput(File mainSolution, File inputFile,
-			File outputFile) {
+			File outputFile) throws EasyCorrectionException {
 
 		ArrayList<String> testSuite = readTestCasesFromFile(inputFile);
 		ArrayList<String> expectedOutput = readExpectedOutputsFromFile(outputFile);
@@ -51,16 +51,15 @@ public class OutputComparison {
 
 		PrintStream stdout = System.out;
 		OurOutputStream ourOutputStream = new OurOutputStream();
-		
+
 		System.setOut(new PrintStream(ourOutputStream));
 
 		for (int i = 0; i < testSuite.size(); i++) {
 			// Solution Execution
-			
 			Main.main(testSuite.get(i).split(Constants.TEST_DATA_SEPARATOR));
 
 			// Result comparison
-			testVerdicts.set(i, compareActualAndExpectedOutputs(ourOutputStream
+			testVerdicts.add(i, compareActualAndExpectedOutputs(ourOutputStream
 					.toString(), expectedOutput.get(i)));
 
 			// Stream cleaning
@@ -68,7 +67,7 @@ public class OutputComparison {
 		}
 
 		System.setOut(stdout);
-		
+
 		return testVerdicts;
 	}
 
@@ -90,26 +89,14 @@ public class OutputComparison {
 	}
 
 	/**
-	 * It returns the total amount of test cases in a single input file
-	 * 
-	 * @param inputFile
-	 *            - a txt file with the test data for each test case separated
-	 *            by lines
-	 * @return the total amount of test cases in a single file
-	 */
-	public int getTestCasesNumber(File inputFile) {
-		// I THINK IT WILL NOT BE USED
-		return readTestCasesFromFile(inputFile).size();
-	}
-
-	/**
 	 * It reads the file and splits it into expected output strings
 	 * 
 	 * @param f
 	 *            - the complete output file
 	 * @return an ArrayList of the expected output strings
+	 * @throws EasyCorrectionException 
 	 */
-	private ArrayList<String> readExpectedOutputsFromFile(File f) {
+	private ArrayList<String> readExpectedOutputsFromFile(File f) throws EasyCorrectionException {
 		return readStringsFromFile(f, Constants.EXPECTED_OUTPUT_SEPARATOR);
 	}
 
@@ -119,9 +106,10 @@ public class OutputComparison {
 	 * @param f
 	 *            - the complete input file
 	 * @return an ArrayList with the test case strings
+	 * @throws EasyCorrectionException 
 	 */
-	private ArrayList<String> readTestCasesFromFile(File f) {
-		return readStringsFromFile(f, Constants.TEST_DATA_SEPARATOR);
+	private ArrayList<String> readTestCasesFromFile(File f) throws EasyCorrectionException {
+		return readStringsFromFile(f, Constants.TEST_CASE_SEPARATOR);
 	}
 
 	/**
@@ -133,31 +121,34 @@ public class OutputComparison {
 	 * @param stringSeparator
 	 *            - the string separator to split the data
 	 * @return an ArrayList with the splitted file data
+	 * @throws EasyCorrectionException
 	 */
-	private ArrayList<String> readStringsFromFile(File f, String stringSeparator) {
+	private ArrayList<String> readStringsFromFile(File f, String stringSeparator)
+			throws EasyCorrectionException {
 		ArrayList<String> contentOfFile = new ArrayList<String>();
-		String line;
-		String [] lines;
-		BufferedReader br;
+		byte[] buffer = new byte[(int) f.length()];
+		BufferedInputStream stream = null;
 		try {
-			FileReader file = new FileReader(f);
-			br = new BufferedReader(file);
+			stream = new BufferedInputStream(new FileInputStream(f));
+			stream.read(buffer);
+		} catch (IOException e) {
+			throw new EasyCorrectionException("The file " + f.getName()
+					+ " could not be read during the Output Comparison!");
+		} finally {
 			try {
-				while(br.ready()){
-					line = br.readLine();
-					lines = line.split(stringSeparator);
-					for(int i = 0; i < lines.length; i++){
-						contentOfFile.add(lines[i]);
-					}
+				if (stream != null) {
+					stream.close();
 				}
-				br.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new EasyCorrectionException("The file " + f.getName()
+						+ " could not be closed during the Output Comparison!");
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		}
-		
+
+		for (String string : new String(buffer).split(stringSeparator)) {
+			contentOfFile.add(string);
+		}
+
 		return contentOfFile;
 	}
 

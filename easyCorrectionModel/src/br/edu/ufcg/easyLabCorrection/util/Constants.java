@@ -38,13 +38,14 @@ public class Constants {
 	// public static final String arquivoBackupBancoDeDados = "backup" +
 	// nomeEsquemaBanco + "0000.sql";
 
-	
 	/*
 	 * OUTPUT COMPARISON CONSTANTS
 	 */
-	
-	public static final String TEST_CASE_SEPARATOR = System.getProperty("line.separator");
+
+	public static final String TEST_CASE_SEPARATOR = System
+			.getProperty("line.separator");
 	public static final String TEST_DATA_SEPARATOR = " ";
-	public static final String EXPECTED_OUTPUT_SEPARATOR = "@";
-	
+	public static final String EXPECTED_OUTPUT_SEPARATOR = "@"
+			+ System.getProperty("line.separator");
+
 }
