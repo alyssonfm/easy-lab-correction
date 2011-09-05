@@ -557,7 +557,29 @@ public class System {
 		}
 		if (submission.getTeamHasUserHasAssignment().getAssignment()
 				.getAssignmentType().getOutputComparison()){
-			//TODO
+			
+			if (submission.getTeamHasUserHasAssignment().getAssignment()
+				.getAutomaticTestsPercentage() > 0) {
+				
+				// Running Tests
+				testResult = correctionManager.runAutomaticTests(sourceDirectory,
+						submission.getTeamHasUserHasAssignment().getAssignment().getTestTimeLimit());
+	
+				if (testResult != null) {
+					Object[] answer = correctionManager.getTestsExecutionOutput(
+							testResult, submission);
+					double automaticTestsGrade = (Double) answer[0];
+					result = (String) answer[1];
+					assessmentManager.setAssessment(submission,
+							automaticTestsGrade, result);
+				} else {
+					submissionManager.deleteSubmission(submission);
+				}
+			} else {
+				result = "This assessment will not output comparison.";
+				assessmentManager.setAssessment(submission, 0, result);
+				return "Result: " + result;
+			}
 		}
 		return result;
 	}
