@@ -26,6 +26,7 @@ public class Constants {
 	public static final String bdTestBackupFile = "etc/backupeasylabcorrection_test.sql";
 
 	public static final String mainTest = "MainTest";
+	public static final String mainClass = "Main";
 
 	public static final String notAllowedWords = "System.exit";
 
