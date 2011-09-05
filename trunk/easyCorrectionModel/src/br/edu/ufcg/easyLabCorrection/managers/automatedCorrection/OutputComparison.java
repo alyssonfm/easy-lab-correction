@@ -1,15 +1,19 @@
 package br.edu.ufcg.easyLabCorrection.managers.automatedCorrection;
 
 import java.io.BufferedInputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.lang.reflect.Method;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionException;
-import br.edu.ufcg.easyLabCorrection.managers.automatedCorrection.example.Main;
 import br.edu.ufcg.easyLabCorrection.util.Constants;
+import br.edu.ufcg.easyLabCorrection.util.SecuritySupport;
 
 /**
  * This class will execute the solution submitted by the students and compare
@@ -23,8 +27,26 @@ import br.edu.ufcg.easyLabCorrection.util.Constants;
  * standard output <br>
  * * The input and output txt files shall not contain accents
  */
-public class OutputComparison {
-
+public class OutputComparison extends Thread{
+	
+	private String sourceDirectory;
+	private String inOutFilesDirectory;
+	private String result;
+	private Object pass;
+	private SecuritySupport secSupport;
+	
+	
+	/**
+	 * Constructor default of class, creates a new object OutputComparison.<br>
+	 */
+	public OutputComparison(String sourceDirectory, String inOutFilesDirectory) {
+		super();
+		pass = new Object();
+		secSupport = new SecuritySupport(pass);
+		this.inOutFilesDirectory = inOutFilesDirectory; 
+		this.sourceDirectory = sourceDirectory;
+	}
+	
 	/**
 	 * This is the most important function of the module. Its job is execute the
 	 * given mainSolution (Main.java file) with the test data strings from the
@@ -41,34 +63,68 @@ public class OutputComparison {
 	 * @return an ArrayList with a boolean result for each test case
 	 * @throws EasyCorrectionException 
 	 */
-	public ArrayList<Boolean> compareOutput(File mainSolution, File inputFile,
-			File outputFile) throws EasyCorrectionException {
+	public ArrayList<Boolean> compareOutput(){
+		
+		try{
+			File inputFile = new File(this.inOutFilesDirectory + "entrada.txt");
+			File outputFile = new File(this.inOutFilesDirectory + "saida.txt");
+	
+			ArrayList<String> testSuite = readTestCasesFromFile(inputFile);
+			ArrayList<String> expectedOutput = readExpectedOutputsFromFile(outputFile);
+			ArrayList<Boolean> testVerdicts = new ArrayList<Boolean>(testSuite
+					.size());
+	
+			PrintStream stdout = System.out;
+			OurOutputStream ourOutputStream = new OurOutputStream();
+	
+			System.setOut(new PrintStream(ourOutputStream));
+			
+			URLClassLoader cl;
+			Class<?> testClass;
 
-		ArrayList<String> testSuite = readTestCasesFromFile(inputFile);
-		ArrayList<String> expectedOutput = readExpectedOutputsFromFile(outputFile);
-		ArrayList<Boolean> testVerdicts = new ArrayList<Boolean>(testSuite
-				.size());
+			try {
+				TestExecutionFileFilter tv = new TestExecutionFileFilter();
+				//Gets the names of all java files inside sourceDirectory
+				ArrayList<String> listSource = tv.visitAllDirsAndFiles(new File(sourceDirectory));
+				if (listSource.size() != 0){
+					String pathFile = tv.findMainClass();
+					String path = pathFile.substring(sourceDirectory.length(), 
+						pathFile.lastIndexOf(File.separator) + 1).replace(File.separator, ".");
+					cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
+						.toURI().toURL() });
+					testClass = cl.loadClass(path + Constants.mainClass);
+					
+					Class<?> getArg1[] = { (new String[1]).getClass() };
+				    Method m = testClass.getMethod("main", getArg1);
+				    
+				    for (int i = 0; i < testSuite.size(); i++) {
+						// Solution Execution
+						String[] arg1 = testSuite.get(i).split(Constants.TEST_DATA_SEPARATOR);
+						Object args[] = {arg1};
+						m.invoke(null, args);
+			
+						// Result comparison
+						testVerdicts.add(i, compareActualAndExpectedOutputs(ourOutputStream
+								.toString(), expectedOutput.get(i)));
+			
+						// Stream cleaning
+						ourOutputStream.flushOurStream();
+					}
+			
+					System.setOut(stdout);
+					setResult("OK!");
+					return testVerdicts;
+				}
 
-		PrintStream stdout = System.out;
-		OurOutputStream ourOutputStream = new OurOutputStream();
-
-		System.setOut(new PrintStream(ourOutputStream));
-
-		for (int i = 0; i < testSuite.size(); i++) {
-			// Solution Execution
-			Main.main(testSuite.get(i).split(Constants.TEST_DATA_SEPARATOR));
-
-			// Result comparison
-			testVerdicts.add(i, compareActualAndExpectedOutputs(ourOutputStream
-					.toString(), expectedOutput.get(i)));
-
-			// Stream cleaning
-			ourOutputStream.flushOurStream();
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+				setResult(null);
+			}
 		}
-
-		System.setOut(stdout);
-
-		return testVerdicts;
+		catch(EasyCorrectionException ece){
+			return new ArrayList<Boolean>();
+		}
+		return new ArrayList<Boolean>();
 	}
 
 	/**
@@ -150,6 +206,22 @@ public class OutputComparison {
 		}
 
 		return contentOfFile;
+	}
+	
+	public void run() {
+		SecurityManager old = System.getSecurityManager();
+		System.setSecurityManager(secSupport);
+		compareOutput();
+		System.setSecurityManager(old);
+		secSupport.disable(pass);
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
+	public String getResult() {
+		return result;
 	}
 
 }
