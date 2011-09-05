@@ -64,4 +64,13 @@ public class TestExecutionFileFilter {
 		return "";
 	}
 	
+	public String findMainClass(){
+		for (int i = 0; i < sourcePaths.size(); i++) {
+			if (sourcePaths.get(i).endsWith(Constants.mainClass + ".class")){
+				return sourcePaths.get(i);
+			}
+		}
+		return "";
+	}
+	
 }

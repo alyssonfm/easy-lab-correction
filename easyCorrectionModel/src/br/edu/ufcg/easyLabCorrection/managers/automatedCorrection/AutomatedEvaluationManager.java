@@ -9,6 +9,7 @@ import br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission;
 public class AutomatedEvaluationManager extends Manager {
 
 	private TestExecution test;
+	private OutputComparison outputComparison;
 
 	public AutomatedEvaluationManager() {
 		super();
@@ -48,4 +49,24 @@ public class AutomatedEvaluationManager extends Manager {
 		return test.getTestsExecutionOutput(result, submission);
 	}
 	
+	public String runOutpuComparison(String sourceDirectory, String inOutFilesDirectory, long timeLimit)
+			throws EasyCorrectionException {
+		String tr = "";
+		outputComparison = new OutputComparison(sourceDirectory, inOutFilesDirectory);
+		outputComparison.start();
+		try {
+			Thread.sleep(timeLimit);
+			tr = outputComparison.getResult();
+			if(tr != null){
+				return tr;
+			}
+			else{
+				throw new TestExecutionException("Execution Time Limit Exceeded! Your code should run in " +
+						timeLimit + " ms.");
+			}
+		} catch (InterruptedException e) {
+			throw new TestExecutionException("Execution Time Limit Exceeded! Your code should run in " +
+					timeLimit + " ms.");
+		}
+	}
 }
