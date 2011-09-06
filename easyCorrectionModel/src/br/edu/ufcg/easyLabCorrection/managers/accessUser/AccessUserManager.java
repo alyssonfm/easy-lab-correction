@@ -389,11 +389,12 @@ public class AccessUserManager extends Manager {
 			user.setUserId(new Integer(0));
 			user.setLogin(listUsers.get(i).get(0));
 			user.setName(listUsers.get(i).get(1));
-			user.setEmail(listUsers.get(i).get(2));
+			user.setEmail(listUsers.get(i).get(2).trim());
 			String password = PasswordGenerator.generatePassword(6, user
 					.getLogin());
 			password = "123456";
 			user.setPassword(password);
+			
 			if (validateUser(user)) {
 				UserGroup userGroup = new UserGroup();
 				userGroup.setUserGroupId(new Integer(0));
@@ -417,7 +418,7 @@ public class AccessUserManager extends Manager {
 	 * @return The boolean value indicating the validity of user.<br>
 	 */
 	private boolean validateUser(User user) {
-		Pattern patEmail = Pattern.compile(".+@.+\\.[a-z]+");
+		Pattern patEmail = Pattern.compile("[a-zA-Z0-9[-_.]]+@[a-zA-Z[-_.]]*[a-zA-Z[-_]]"); // .+@.+\\.[a-z]+
 		Matcher pesqEmail = patEmail.matcher(user.getEmail());
 		System.out.println(pesqEmail.matches());
 
