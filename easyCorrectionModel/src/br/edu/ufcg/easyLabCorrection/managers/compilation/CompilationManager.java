@@ -58,6 +58,7 @@ public class CompilationManager extends Manager{
 	public void runJavaCompiler(String sourceDirectory, String testDirectory, String libDirectory) throws CompilationException{
 		
 		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+		int resultCompilation = 0;
 		
 		OutputStream out = new OutputStream() {
 			public void write(int b) throws IOException {
@@ -97,7 +98,7 @@ public class CompilationManager extends Manager{
 			libDir += libDirectory + "junit.jar";
 			
 			String[] arguments = mountCompilerParameters(sourceDir, testSourceDir, libDir, sourceDirectory);
-			javaCompiler.run(null, out, error, arguments);
+			resultCompilation = javaCompiler.run(null, out, error, arguments);
 
 		} catch (Exception e) {
 			System.err.println(ErrorMsgs.INVALID_TEST_SUITE_NAME.msg());
@@ -105,7 +106,9 @@ public class CompilationManager extends Manager{
 		}
 		
 		if (compilationError) {
-			throw new CompilationException("Compilation Error!");
+			if(resultCompilation != 0){
+				throw new CompilationException("Compilation Error!");
+			}
 		}
 	}
 	
@@ -184,7 +187,7 @@ public class CompilationManager extends Manager{
 	
 	private String[] mountCompilerParameters(String sourceDir, String testSourceDir, String libDir, String outDir){
 		
-		String[] arguments = new String[6 + sourceFileList.size() + sourceTestFileList.size()];
+		String[] arguments = new String[7 + sourceFileList.size() + sourceTestFileList.size()];
 		arguments[0] = "-sourcepath";
 		arguments[1] = sourceDir + testSourceDir;
 		arguments[2] = "-classpath";
@@ -201,6 +204,8 @@ public class CompilationManager extends Manager{
 		arguments[i] = "-d";
 		i++;
 		arguments[i] = outDir;
+		i++;
+		arguments[i] = "-Xlint:unchecked";
 		return arguments;
 	}
 	
