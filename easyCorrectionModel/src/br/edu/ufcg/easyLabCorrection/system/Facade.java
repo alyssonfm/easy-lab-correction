@@ -933,4 +933,19 @@ public class Facade {
 		}
 	}
 	
+	public void copyFiles(String testUrlImported, 
+			String environmentUrlImported,
+			String testUrl,
+			String environmentUrl) throws Throwable {
+		try{
+			system.copyFiles(testUrlImported, 
+					environmentUrlImported,
+					testUrl,
+					environmentUrl);
+		}catch (Throwable e) {
+			log.error("copyFiles()", e);
+			throw e;
+		}
+	}
+	
 }
