@@ -866,5 +866,27 @@ public class System {
 	public String countSubmissionsByAssignmentId(int assignmentId) {
 		return submissionManager.countSubmissionsByAssignmentId(assignmentId);
 	}
+
+	public void copyFiles(String testUrlImported,
+			String environmentUrlImported, 
+			String testUrl, 
+			String environmentUrl) {
+
+		testUrlImported = ServletUpload.local + testUrlImported.replace("/", File.separator);
+		environmentUrlImported = ServletUpload.local + environmentUrlImported.replace("/", File.separator);
+		testUrl = ServletUpload.local + testUrl.replace("/", File.separator);
+		environmentUrl = ServletUpload.local + environmentUrl.replace("/", File.separator);
+		
+        File testImportedDir = new File(testUrlImported);  
+        File testDir = new File(testUrl);
+        File environmentImportedDir = new File(environmentUrlImported);  
+        File environmentDir = new File(environmentUrl);
+        
+        try {
+			easyCorrectionUtil.copyDirectory(testImportedDir, testDir);
+			easyCorrectionUtil.copyDirectory(environmentImportedDir, environmentDir);
+		} catch (IOException e) {}
+    
+	}
 	
 }
