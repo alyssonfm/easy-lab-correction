@@ -54,6 +54,8 @@
 				private var urlEnvironment: String = "";
 				private var paramMessage:Array;
 				private var currentGroupUser: UserGroup = new UserGroup();
+				private var testFileSelected: Boolean = false;
+				private var environmentFileSelected: Boolean = false;
 	            
 	            private function failure(event:FaultEvent):void {
 					var message:String;
@@ -185,6 +187,7 @@
 				public function selectedFileTests(evt:Event):void {
 			       	requestTests = new URLRequest(FILE_UPLOAD_URL);
 			       	pathTests.text = fileRefTests.name;
+			       	testFileSelected = true;
 				}
 				
 				public function fullSendingTests(evt:Event):void {
@@ -218,6 +221,7 @@
 				public function selectedFileEnvironment(evt:Event):void {
 			       	requestEnvironment = new URLRequest(FILE_UPLOAD_URL);
 			       	pathEnvironment.text = fileRefEnvironment.name;
+			       	environmentFileSelected = true;
 				}
 				
 				public function fullSendingEnvironment(evt:Event):void {
@@ -302,7 +306,9 @@
 							variables.fileName = "testes.zip";
 							requestTests.data = variables;
 							fileRefTests.upload(requestTests);
-						}catch(e: Error){}
+						}catch(e: Error){
+							facade.getOperation("copyFiles").send(pathTests.text, pathEnvironment.text, urlTests, urlEnvironment);
+						}
 						if(!doUpload){
 							edited = true;
 							closeWindow();
@@ -314,6 +320,10 @@
 						save = true;
 						closeWindow();
 					}
+				}
+				
+				private function copyFiles_result(event:ResultEvent):void{
+						
 				}
 				
 				private function datesUpdatedDefaut():void{
@@ -350,6 +360,7 @@
 			<mx:method name="saveAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="updateAssignment" result="saveAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="listAssignmentType" result="listAssignmentType_result(event)" fault="failure(event)"/>
+			<mx:method name="copyFiles" result="copyFiles_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
 		<mx:Label text="Name:" fontWeight="bold"
