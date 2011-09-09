@@ -476,8 +476,23 @@ public class System {
 
 	public List<Assessment> getAssessmentByAssignmentAndCorrector(
 			Assignment assignment, Integer us) {
-		return assessmentManager.getAssessmentByAssignmentAndCorrector(
-				assignment, us);
+		List<UserGroup> ug = getUserGroupByUser(us);
+		if(lookForTeacherUser(ug)){
+			return assessmentManager.getAssessmentByAssignment(assignment);
+		}
+		else{
+			return assessmentManager.getAssessmentByAssignmentAndCorrector(
+					assignment, us);
+		}
+	}
+	
+	private boolean lookForTeacherUser(List<UserGroup> list){
+		for (UserGroup userGroup : list) {
+			if (userGroup.getGroup().getName().equals("Instructor")){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Submission getLastSubmissionByAssignmentAndTeam(
