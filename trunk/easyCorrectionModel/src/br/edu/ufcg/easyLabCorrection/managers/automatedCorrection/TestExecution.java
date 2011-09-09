@@ -134,7 +134,7 @@ public class TestExecution extends Thread{
 //				+ result.failureCount()
 //				+ "\n"
 				+ "Success Verdict(s) = "
-				+ errors
+				+ (testsRunnedNumber - errors)
 				+ "\n"
 				+ "Success percentage = "
 				+ itemsPercent
