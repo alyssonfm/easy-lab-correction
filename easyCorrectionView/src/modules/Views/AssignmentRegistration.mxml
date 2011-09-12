@@ -116,6 +116,7 @@
 						updateAssignmentButton.visible = false;
 						createAssignmentButton.visible = true;
 					}
+					changeAssignmentType();
 					getUser();
 				}
 				
@@ -192,11 +193,13 @@
 				
 				public function fullSendingTests(evt:Event):void {
 					requestTests = new URLRequest(FILE_UPLOAD_URL);
-					var variables:URLVariables = new URLVariables();
-					variables.url = urlEnvironment;
-					variables.fileName = pathEnvironment.text;
-					requestEnvironment.data = variables;
-					fileRefEnvironment.upload(requestEnvironment);
+					if(pathEnvironment.text != ""){
+						var variables:URLVariables = new URLVariables();
+						variables.url = urlEnvironment;
+						variables.fileName = pathEnvironment.text;
+						requestEnvironment.data = variables;
+						fileRefEnvironment.upload(requestEnvironment);
+					}
 				}
 				
 				public function saveAssignment(): void{
@@ -302,10 +305,19 @@
 					if (!isCreate){
 						try{
 							var variables:URLVariables = new URLVariables();
-							variables.url = urlTests;
-							variables.fileName = "testes.zip";
-							requestTests.data = variables;
-							fileRefTests.upload(requestTests);
+							if(pathTests.text != ""){
+								variables.url = urlTests;
+								variables.fileName = "testes.zip";
+								requestTests.data = variables;
+								fileRefTests.upload(requestTests);
+							} else{
+								if(pathEnvironment.text != ""){
+									variables.url = urlEnvironment;
+									variables.fileName = pathEnvironment.text;
+									requestEnvironment.data = variables;
+									fileRefEnvironment.upload(requestEnvironment);
+								}
+							}
 						}catch(e: Error){
 							facade.getOperation("copyFiles").send(pathTests.text, pathEnvironment.text, urlTests, urlEnvironment);
 						}
@@ -341,7 +353,7 @@
 					if (!assignmentType.outputComparison && !assignmentType.testExecution){
 						inputPercentage.text = "0";
 						inputPercentage.enabled = false;						
-						inputTimeout.text = "5000";
+						inputTimeout.text = "0";
 						inputTimeout.enabled = false;
 					}
 					else{
