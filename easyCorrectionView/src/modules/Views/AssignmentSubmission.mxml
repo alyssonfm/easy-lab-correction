@@ -165,12 +165,10 @@
 				public function submitAssignment(): void{
 					try{
 						var param:Array;
-						if(comboAssignment.enabled){
-							if (comboAssignment.selectedItem == null){
-								param = new Array(true, "Before submit a solution you should choose the assignment.");
-								ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
-							}
-						}else if (comboLateAssignment.selectedItem == null){
+						if (comboAssignment.enabled && comboAssignment.selectedItem == null){
+							param = new Array(true, "Before submit a solution you should choose the assignment.");
+							ModulesController.createModule("modules/System/MessageStatus.swf", this, param);						
+						}else if (comboLateAssignment.enabled && comboLateAssignment.selectedItem == null){
 								param = new Array(true, "Before submit a solution you should choose the assignment.");
 								ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 						}
