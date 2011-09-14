@@ -438,6 +438,10 @@ public class System {
 	public List<Assignment> getReleasedAssignments() {
 		return assignmentManager.getReleasedAssignments();
 	}
+	
+	public List<Assignment> getLateAssignments() {
+		return assignmentManager.getLateAssignments();
+	}
 
 	/******************************************** Controle de Submissão de Roteiros EasyLabCorrection *********************************************/
 
@@ -506,7 +510,12 @@ public class System {
 			throws EasyCorrectionException {
 		Assignment assignment = assignmentManager
 				.getReleasedAssignment(submission.getTeamHasUserHasAssignment()
-						.getAssignment().getId());
+				.getAssignment().getId());
+		if (assignment == null) {
+			assignment = assignmentManager
+					.getLateAssignment(submission.getTeamHasUserHasAssignment()
+					.getAssignment().getId());
+		}
 		return submissionManager.submitAssignment(submission, assignment);
 	}
 
@@ -572,7 +581,7 @@ public class System {
 		}
 		if (submission.getTeamHasUserHasAssignment().getAssignment()
 				.getAssignmentType().getOutputComparison()){
-			
+			/*
 			if (submission.getTeamHasUserHasAssignment().getAssignment()
 				.getAutomaticTestsPercentage() > 0) {
 				
@@ -594,7 +603,7 @@ public class System {
 				result = "This assessment will not output comparison.";
 				assessmentManager.setAssessment(submission, 0, result);
 				return "Result: " + result;
-			}
+			}*/
 		}
 		return result;
 	}
