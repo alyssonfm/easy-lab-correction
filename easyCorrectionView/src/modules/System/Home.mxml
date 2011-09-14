@@ -88,23 +88,52 @@
 					buttonVisualizarNotas.enabled = false;
 					checkCorrectionButton.enabled = false;
 				}
+				facade.getOperation("getLateAssignments").send();
 			}
+			
+			private function getLateAssignments_result(event:ResultEvent):void{
+				lateAssignmentList.dataProvider = event.result as ArrayCollection;
+				if ((lateAssignmentList.dataProvider as ArrayCollection).length == 0){
+					//downloadTestsButton.enabled = false;
+					downloadEnvironmentButton.enabled = false;
+					buttonVisualizarNotas.enabled = false;
+					checkCorrectionButton.enabled = false;
+				}
+			}
+			
+			private function castReleasedAssignment(): void{
+				try{
+					assignment = CastEntities.castAssignment(assignmentList.selectedItem);
+					updateAssignmentData();
+				}
+				catch(e: Error){}
+			}
+			
+			private function castLateAssignment(): void{
+				try{
+					assignment = CastEntities.castAssignment(lateAssignmentList.selectedItem);
+					updateAssignmentData();
+				}
+				catch(e: Error){}
+			}
+
 			
 			private function updateAssignmentData(): void{
 				try{
-					assignment = CastEntities.castAssignment(assignmentList.selectedItem);
 					inputAssignmentTitle.text = assignment.name;
 					resumeText.text = assignment.description;
 					inputMaxNumberSends.text = String(assignment.sendMaxNumber);
 					inputMembersByTeam.text = String(assignment.participantsMaxNumber);
 					inputPenalty.text = String(assignment.penaltyPerDaysLate);
-//					inputDiscussionDate.text = Util.formatsDate(assignment.discussionDate);
+					inputDiscussionDate.text = Util.formatsDate(assignment.discussionDate);
 					inputDeliveryDate.text = Util.formatsDate(assignment.deliveryDate);
 					inputReleaseDate.text = Util.formatsDate(assignment.releaseDate);
 					inputDeliveryTime.text = Util.unitOrganizesTime(String(assignment.deliveryDate.hours)) + ":" + 
 						Util.unitOrganizesTime(String(assignment.deliveryDate.minutes));
 					inputReleaseTime.text = Util.unitOrganizesTime(String(assignment.releaseDate.hours)) + ":" + 
 						Util.unitOrganizesTime(String(assignment.releaseDate.minutes));
+					inputDiscussionTime.text = Util.unitOrganizesTime(String(assignment.discussionDate.hours)) + ":" + 
+						Util.unitOrganizesTime(String(assignment.discussionDate.minutes));
 					
 					loadFiles();
 					facade.getOperation("getTeamHasUserHasAssignmentByUserAndAssignment").send(userId, assignment.id);
@@ -215,6 +244,7 @@
 	
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">		
 		<mx:method name="getReleasedAssignments" result="getReleasedAssignments_result(event)" fault="failure(event)"/>
+		<mx:method name="getLateAssignments" result="getLateAssignments_result(event)" fault="failure(event)"/>
 		<mx:method name="getEnvironmentFileName" result="getEnvironmentFileName_result(event)" fault="failure(event)"/>
 		<mx:method name="getTestsFileName" result="getTestsFileName_result(event)" fault="failure(event)"/>
 		<mx:method name="getTeamHasUserHasAssignmentByUserAndAssignment" result="getTeamHasUserHasAssignmentByUserAndAssignment_result(event)" fault="failure(event)"/>
@@ -243,6 +273,8 @@
 		<mx:Label y="45" text="Automatic Grade:" x="745"/>
 		<mx:Label x="331" y="480" text="Release date/time:"/>
 		<mx:Label x="331" y="508" text="Delivery date/time:"/>
+		<mx:Label x="331" y="536" text="Discussion date/time:"/>
+		<mx:Label x="490" y="536" width="85" id="inputDiscussionDate" color="#1B7A0F"/>
 		<mx:Label x="643.95" y="480" text="Max submission number:"/>
 		<mx:Label x="645" y="508" text="Max team members:"/>
 		<mx:Label x="645" y="536" text="Penalty per day late:"/>
@@ -257,9 +289,12 @@
 		<mx:Label x="490" y="508" width="85" id="inputDeliveryDate" color="#1B7A0F"/>
 		<mx:Label x="574" y="480" width="54" id="inputReleaseTime" color="#1B7A0F"/>
 		<mx:Label x="574" y="508" width="54" id="inputDeliveryTime" color="#1B7A0F"/>
+		<mx:Label x="574" y="536" width="54" id="inputDiscussionTime" color="#1B7A0F"/>
 		<mx:TextArea x="331" y="108" width="587" height="270" backgroundAlpha="0.0" id="resumeText" editable="false" alpha="0.5" cornerRadius="10"/>
 		<mx:Label x="10" y="14" text="Released Assignments:" height="22"/>
-		<mx:List x="10" y="44" scroll="true" width="264" height="399" id="assignmentList" labelField="name" itemClick="updateAssignmentData()" fontSize="14"/>
+		<mx:Label x="10" y="337" text="Late Assignments:" height="22"/>
+		<mx:List x="10" y="44" scroll="true" width="267" height="282" id="assignmentList" labelField="name" itemClick="castReleasedAssignment()" fontSize="14"/>
+		<mx:List x="10" y="364" scroll="true" width="267" height="85" id="lateAssignmentList" labelField="name" itemClick="castLateAssignment()" fontSize="14"/>
 		<mx:List x="10" y="480" width="267" height="85" labelFunction="labelTeamAssignmentMembers" id="teamAssignmentMembers"></mx:List>
 		<mx:Label x="382" y="45" width="355" id="inputAssignmentTitle" color="#1B7A0F"/>
 		<mx:Label x="870" y="71" width="48" id="inputCorrectionGrade" color="#1B7A0F" text="0,0"/>
