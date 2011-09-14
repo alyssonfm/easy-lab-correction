@@ -101,9 +101,9 @@
 								teamHasUserHasAssignment.assignment.deliveryDate.getTime() / millisecondsPerDay;
 							var penaltyValue: Number = (item as Assessment).submission.
 								teamHasUserHasAssignment.assignment.penaltyPerDaysLate;
-							var days: int = (submissionDate - deliveryDate);
+							var days: Number = Number(numberFormatter.format(submissionDate - deliveryDate));
 							if(days > 0){
-								sLabel = ((item.automaticGrade + item.correctionGrade) - (days * (penaltyValue/10))) + "";
+								sLabel = ((item.automaticGrade + item.correctionGrade) - (days * penaltyValue)) + "";
 							}else{
 								sLabel = (item.automaticGrade + item.correctionGrade);
 							} 
@@ -112,7 +112,7 @@
 					return sLabel;
 				}
 				
-				private function compareName(itemA:Object, itemB:Object):int {  
+				private function compareName(itemA:Object, itemB:Object):int {
 					return ObjectUtil.stringCompare(
 						itemA.submission.teamHasUserHasAssignment.user.name,  
 						itemB.submission.teamHasUserHasAssignment.user.name,   
@@ -136,6 +136,7 @@
 			<mx:method name="getAssessmentsByAssignment" result="getAssessmentsByAssignment_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
+		<mx:NumberFormatter id="numberFormatter" precision="0" rounding="up"/>
 		<mx:ComboBox x="111" y="10" width="659" id="comboAssignment" change="getAssessmentsByAssignment()" enter="getAssessmentsByAssignment()" labelField="name"></mx:ComboBox>
 		<mx:HRule x="10" y="40" width="760" height="10"/>
 		<mx:DataGrid x="10" y="58" width="760" height="426" wordWrap="true" id="dgNotes" labelFunction="labelGrid">
