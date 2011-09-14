@@ -7,6 +7,9 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import flash.sampler.NewObjectSample;
+				import com.adobe.utils.NumberFormatter;
+				import bean.Utility.Util;
 				import mx.utils.ObjectUtil;
 				import bean.assessments.Assessment;
 				import bean.Utility.CastEntities;
@@ -25,6 +28,8 @@
 				import mx.binding.utils.BindingUtils;
 				import mx.rpc.events.ResultEvent;
 				import mx.rpc.events.FaultEvent;
+				
+				private static const millisecondsPerDay : int = 1000 * 60 * 60 * 24;
 				
 				private function init():void {
 					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
@@ -91,7 +96,17 @@
 							sLabel = item.correctionGrade;
 							break;
 						case "Final Grade":
-							sLabel = (item.automaticGrade + item.correctionGrade); 
+							var submissionDate: Number = (item as Assessment).submission.submissionDate.getTime() / millisecondsPerDay;
+							var deliveryDate: Number = (item as Assessment).submission.
+								teamHasUserHasAssignment.assignment.deliveryDate.getTime() / millisecondsPerDay;
+							var penaltyValue: Number = (item as Assessment).submission.
+								teamHasUserHasAssignment.assignment.penaltyPerDaysLate;
+							var days: int = (submissionDate - deliveryDate);
+							if(days > 0){
+								sLabel = ((item.automaticGrade + item.correctionGrade) - (days * (penaltyValue/10))) + "";
+							}else{
+								sLabel = (item.automaticGrade + item.correctionGrade);
+							} 
 							break;
 					}
 					return sLabel;

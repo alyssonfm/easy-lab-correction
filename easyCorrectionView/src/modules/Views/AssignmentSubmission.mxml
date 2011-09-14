@@ -6,7 +6,7 @@
 						xmlns:les="modules.System.*" 
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="718" height="418" creationComplete="init()" title="Assignment Submission" showCloseButton="true" close="closeWindow()" layout="absolute">
+	width="718" height="476" creationComplete="init()" title="Assignment Submission" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
@@ -116,17 +116,28 @@
 				
 				public function submissionNumber_result(event:ResultEvent): void{
 					try{
-						numberSubmissions.text = String(event.result);
-						maxNumberSubmission.text = comboAssignment.selectedItem.sendMaxNumber;
+						if(comboAssignment.enabled){
+							numberSubmissions.text = String(event.result);
+							maxNumberSubmission.text = comboAssignment.selectedItem.sendMaxNumber;
+						}else{
+							numberSubmissions.text = String(event.result);
+							maxNumberSubmission.text = comboLateAssignment.selectedItem.sendMaxNumber;
+						}
 					}catch(e: Error){} 
 				}
 				
 				public function getTeamHasUserHasAssignmentByUserAndAssignment():void{
 					var param:Array;
 					try{
-						if(comboAssignment.selectedItem != null){
-							var id:int = int(SharedObject.getLocal("sistema", "/").data.idUsuario);
-							facade.getOperation("getTeamHasUserHasAssignmentByUserAndAssignment").send(id, CastEntities.castAssignment(comboAssignment.selectedItem).id);
+						var id:int = int(SharedObject.getLocal("sistema", "/").data.idUsuario);
+						if(comboAssignment.enabled){
+							if(comboAssignment.selectedItem != null){
+								facade.getOperation("getTeamHasUserHasAssignmentByUserAndAssignment").send(id, CastEntities.castAssignment(comboAssignment.selectedItem).id);
+							}
+						}else{
+							if(comboLateAssignment.selectedItem != null){
+								facade.getOperation("getTeamHasUserHasAssignmentByUserAndAssignment").send(id, CastEntities.castAssignment(comboLateAssignment.selectedItem).id);
+							}
 						}
 					}
 					catch(e: Error){
@@ -154,9 +165,14 @@
 				public function submitAssignment(): void{
 					try{
 						var param:Array;
-						if (comboAssignment.selectedItem == null){
-							param = new Array(true, "Before submit a solution you should choose the assignment.");
-							ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
+						if(comboAssignment.enabled){
+							if (comboAssignment.selectedItem == null){
+								param = new Array(true, "Before submit a solution you should choose the assignment.");
+								ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
+							}
+						}else if (comboLateAssignment.selectedItem == null){
+								param = new Array(true, "Before submit a solution you should choose the assignment.");
+								ModulesController.createModule("modules/System/MessageStatus.swf", this, param);
 						}
 						else if (fileRef == null){
 							param = new Array(true, "Before submit the solution you should attach the .zip file with it.");
@@ -194,19 +210,49 @@
 				
 				
 				public function getReleasedAssignments():void{
-					facade.getOperation("getReleasedAssignments").send()
+					facade.getOperation("getReleasedAssignments").send();
 				}
 				
 				public function getReleasedAssignments_result(event:ResultEvent):void{
 					comboAssignment.dataProvider = event.result;
 					comboAssignment.selectedIndex = -1;
+					facade.getOperation("getLateAssignments").send();
 				}
+				
+				public function getLateAssignments_result(event:ResultEvent):void{
+					comboLateAssignment.dataProvider = event.result;
+					comboLateAssignment.selectedIndex = -1;
+				}
+				
+				public function clearinfo():void{
+					nameTeam.text = "...";
+					maxNumberSubmission.text = "0";
+					numberSubmissions.text = "0";
+					path.text = "";
+					inputDescription.text = "";
+				}
+				
+				public function openLateAssignments():void{
+					comboAssignment.selectedIndex = -1;
+					clearinfo();
+					comboAssignment.enabled = false;
+					comboLateAssignment.enabled = true;
+					
+				}
+				
+				public function openWithinAssignments():void{
+					comboLateAssignment.selectedIndex = -1;
+					clearinfo();
+					comboLateAssignment.enabled = false;
+					comboAssignment.enabled = true;
+				}				
 				
 			]]>
 		</mx:Script>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			<mx:method name="getReleasedAssignments" result="getReleasedAssignments_result(event)" fault="failure(event)"/>
+			<mx:method name="getLateAssignments" result="getLateAssignments_result(event)" fault="failure(event)"/>
 			<mx:method name="getTeamHasUserHasAssignmentByUserAndAssignment" result="getTeamHasUserHasAssignmentByUserAndAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="submitAssignment" result="submitAssignment_result(event)" fault="failure(event)"/>
 			<mx:method name="deleteSubmission" result="deleteSubmission_result(event)" fault="failure(event)"/>
@@ -216,25 +262,26 @@
 		</mx:RemoteObject>
 		
 		<mx:Label text="Automatic Results:" fontWeight="bold"
-			textAlign="left" width="144" x="21" y="209"/>
+			textAlign="left" width="144" x="22.5" y="249.5"/>
 		<mx:Label text="Submissions (Sent/Max):" fontWeight="bold"
-			textAlign="left" width="181.15" x="454.85" y="214"/>
+			textAlign="left" width="181.15" x="456.35" y="254.5"/>
 		<mx:Label text="/" fontWeight="bold"
-			textAlign="left" width="20.149994" x="644" y="214" id="labelDescricao1"/>
+			textAlign="left" width="20.149994" x="645.5" y="254.5" id="labelDescricao1"/>
 		<mx:Label text="0" fontWeight="bold"
-			textAlign="right" width="31" x="612" y="214" id="numberSubmissions" color="#048E14"/>
+			textAlign="right" width="31" x="613.5" y="254.5" id="numberSubmissions" color="#048E14"/>
 		<mx:Label text="0" fontWeight="bold"
-			textAlign="right" width="31" x="646" y="214" id="maxNumberSubmission" color="#048E14"/>
-		<mx:TextArea x="21" y="237" width="656" height="127" id="inputDescription"/>
-		<mx:LinkButton x="222.55" y="88" label="   Attach Solution" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTest" click="fileSelect()"/>
-		<mx:Label x="21" y="126" width="656" id="path" textAlign="center"/>
-		<mx:Label x="16" y="10" width="90" textAlign="left" text="Assignment:" fontWeight="bold"/>
-		<mx:Label x="18" y="38" width="88" textAlign="left" text="Team:" fontWeight="bold"/>
-		<mx:Label x="114" y="38" width="237" id="nameTeam" textAlign="left" text="..." fontWeight="bold" color="#048E2B"/>
-		<mx:Button x="257" y="156" label="   Submit Solution" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="submitButtonAssignment" click="submitAssignment()"/>
-		<mx:HRule x="21" y="192" width="656" height="9"/>
-		<mx:HRule x="21" y="70" width="656" height="10"/>
-		<mx:ComboBox x="114" y="8" width="565" id="comboAssignment" change="getTeamHasUserHasAssignmentByUserAndAssignment()" enter="getTeamHasUserHasAssignmentByUserAndAssignment()" labelField="name"></mx:ComboBox>
-		
+			textAlign="right" width="31" x="647.5" y="254.5" id="maxNumberSubmission" color="#048E14"/>
+		<mx:TextArea x="22.5" y="277.5" width="656" height="144.5" id="inputDescription"/>
+		<mx:LinkButton x="224.05" y="128.5" label="   Attach Solution" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTest" click="fileSelect()"/>
+		<mx:Label x="22.5" y="166.5" width="656" id="path" textAlign="center"/>
+		<mx:Label x="19.5" y="78.5" width="88" textAlign="left" text="Team:" fontWeight="bold"/>
+		<mx:Label x="19.5" y="41" width="62" textAlign="left" text="Within:" fontWeight="bold"/>
+		<mx:Label x="19.5" y="11.5" width="74" textAlign="left" text="Late:" fontWeight="bold"/>
+		<mx:Label x="115.5" y="78.5" width="237" id="nameTeam" textAlign="left" text="..." fontWeight="bold" color="#048E2B"/>
+		<mx:Button x="258.5" y="196.5" label="   Submit Solution" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="submitButtonAssignment" click="submitAssignment()"/>
+		<mx:HRule x="22.5" y="232.5" width="656" height="9"/>
+		<mx:HRule x="22.5" y="110.5" width="656" height="10"/>
+		<mx:ComboBox x="89.5" y="39.5" width="589" id="comboAssignment" change="getTeamHasUserHasAssignmentByUserAndAssignment()" enter="getTeamHasUserHasAssignmentByUserAndAssignment()" labelField="name" click="openWithinAssignments()"></mx:ComboBox>
+		<mx:ComboBox x="89.5" y="10" width="589" id="comboLateAssignment" change="getTeamHasUserHasAssignmentByUserAndAssignment()" enter="getTeamHasUserHasAssignmentByUserAndAssignment()" labelField="name" enabled="false" click="openLateAssignments()"></mx:ComboBox>
 		
 </les:ModuleTitleWindow>
