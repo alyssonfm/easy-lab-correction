@@ -532,6 +532,15 @@ public class Facade {
 		}
 	}
 	
+	public List<Assignment> getLateAssignments() throws Throwable {
+		try {
+			return system.getLateAssignments();
+		} catch (Throwable e) {
+			log.error("getLateAssignments()", e);
+			throw e;
+		}
+	}
+	
 	public List<Assignment> getAssignmentByCourse(String course) throws Throwable {
 		try {
 			return system.getAssignmentByCourse(course);
