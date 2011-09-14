@@ -51,6 +51,19 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 		List<Assignment> list = q.list();
 		return instantiatesList(list);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Assignment> findByLateAssignments(Date currentDate) {
+		Query q = getSession()
+				.createQuery(
+						"from Assignment where deliveryDate <= :currentDate and discussionDate > :currentDate " +
+						"and penaltyPerDaysLate <> 0 and stage.id = :stageId");
+		q.setParameter("currentDate", currentDate);
+		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
+		q.setCacheable(true);
+		List<Assignment> list = q.list();
+		return instantiatesList(list);
+	}
 
 	/**
 	 * Consideramos que as datas selecionadas tem seus relogios zerados. Ou
@@ -68,6 +81,33 @@ public class AssignmentHibernateDAO extends AbstractHibernateDAO<Assignment, Int
 				.createQuery(
 						"from Assignment where releaseDate <= :currentDate and " +
 						"deliveryDate > :currentDate " +
+						"and id = :idAssignment " +
+						"and stage.id = :stageId");
+		q.setParameter("currentDate", currentDate);
+		q.setParameter("idAssignment", assignmentId);
+		q.setParameter("stageId", HibernateUtil.getCurrentStageId());
+		q.setCacheable(true);
+		List<Assignment> list = q.list();
+		return instantiatesList(list);
+	}
+	
+	/**
+	 * Consideramos que as datas selecionadas tem seus relogios zerados. Ou
+	 * seja, o data XX-YY-ZZZZ tem o relogio 00:00:00 e isso tem impacto direto
+	 * na definicao de igualdade. Assim, o momento atual da data de hoje serah
+	 * sempre maior do que a data de hoje que estah no banco.
+	 * 
+	 * @param currentDate
+	 * @param assignmentId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Assignment> findByLateAssignments(Date currentDate, Integer assignmentId) {
+		Query q = getSession()
+				.createQuery(
+						"from Assignment where deliveryDate <= :currentDate and " +
+						"discussionDate > :currentDate " +
+						"and penaltyPerDaysLate <> 0 " +
 						"and id = :idAssignment " +
 						"and stage.id = :stageId");
 		q.setParameter("currentDate", currentDate);
