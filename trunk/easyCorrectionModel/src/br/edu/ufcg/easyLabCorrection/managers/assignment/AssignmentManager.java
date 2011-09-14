@@ -112,6 +112,27 @@ public class AssignmentManager extends Manager {
 			return null;
 		}
 	}
+	
+	/**
+	 * Function used to retrieve an lateassignment in the system, receives
+	 * as parameter an assignment identifier.<br>
+	 * 
+	 * @param id
+	 *            The assignment identifier used to retrieve a released
+	 *            assignment.<br>
+	 * @return The assignment released whose identifier corresponds at the
+	 *         identifier passed as parameter.<br>
+	 */
+	public Assignment getLateAssignment(Integer id) {
+		Date currentDate = easyCorrectionUtil.getRealTime();
+		List<Assignment> list = DAOFactory.DEFAULT.buildAssignmentDAO()
+				.findByLateAssignments(currentDate, id);
+		if (!list.isEmpty()) {
+			return list.get(0);
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Function used to retrieve all assignments in creation of system.<br>
@@ -135,6 +156,18 @@ public class AssignmentManager extends Manager {
 		List<Assignment> releasedAssignments = DAOFactory.DEFAULT
 				.buildAssignmentDAO().findByReleasedAssignments(currentDate);
 		return releasedAssignments;
+	}
+	
+	/**
+	 * Function used to retrieve all late assignments of system.<br>
+	 * 
+	 * @return A list of all late assignments released of the system.<br>
+	 */
+	public List<Assignment> getLateAssignments() {
+		Date currentDate = easyCorrectionUtil.getRealTime();
+		List<Assignment> lateAssignments = DAOFactory.DEFAULT
+				.buildAssignmentDAO().findByLateAssignments(currentDate);
+		return lateAssignments;
 	}
 
 	/**
