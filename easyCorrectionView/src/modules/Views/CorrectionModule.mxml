@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <les:ModuleTitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
-						xmlns:les="modules.System.*" 
+						xmlns:les="modules.System.*"
 						xmlns:comp="com.adobe.flex.extras.controls.*"
 						xmlns:extra="br.com.thinklab.util.control.*"
-	width="1020" height="766" creationComplete="init()" title="Avaliação de Roteiros" showCloseButton="true" close="closeWindow()" layout="absolute">
+	width="1020" height="784" creationComplete="init()" title="Source Grading" showCloseButton="true" close="closeWindow()" layout="absolute">
 		
 		<mx:Script>
 			<![CDATA[
+				import nochump.util.zip.ZipEntry;
+				import mx.events.ListEvent;
+				import nochump.util.zip.ZipFile;
+				import bean.Utility.Constant;
+				import bean.Utility.CastEntities;
+				import bean.assessments.Assessment;
 				import mx.collections.ArrayCollection;
 				import mx.utils.ArrayUtil;
 				import events.UserEvent;
@@ -27,8 +33,72 @@
 				import mx.rpc.events.ResultEvent;
 				import mx.rpc.events.FaultEvent;
 				
-				private var fileRef:FileReference;
+				private const FILE_UPLOAD_URL:String = Constant.urlUploadDonwload;
+				private var fileRef:FileReference = new FileReference();
+				private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadRoteiro'));
+				private var codeNameFile: String = "";
+				
 				private const local:String = "../exemplos/";
+				private var assessment: Assessment;
+				private var tuaList: ArrayCollection;
+				
+				[Bindable]
+				private var _zipFile:ZipFile;
+				
+				private function init():void {	
+					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
+					var args: ArrayCollection = ModulesController.getParam();
+					assessment = CastEntities.castAssessment(args.getItemAt(0));
+					tuaList = ArrayCollection(args.getItemAt(1));
+					codeNameFile = String(args.getItemAt(2));
+					inputAssignment.text = assessment.submission.teamHasUserHasAssignment.assignment.name;
+					inputMembers.text = getMembers();
+					inputTeam.text = assessment.submission.teamHasUserHasAssignment.team.name;
+					codeDownload();				
+				}
+				
+				private function codeDownload():void{
+					try{
+						var variables:URLVariables = new URLVariables();
+						variables.fileName = assessment.submission.url + codeNameFile;
+						request.data = variables;
+						var urlStream:URLStream = new URLStream();
+						urlStream.addEventListener(Event.COMPLETE, completeHandler);
+						urlStream.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+						urlStream.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
+						urlStream.load(request);		
+					}
+					catch(e: Error){
+						var message:String = "Choose a Team.";
+						ModulesController.createModule("modules/System/MenssageStatus.swf", this, new Array(true, message));
+					}
+				}
+				
+				private function completeHandler(event:Event):void {
+					var data:URLStream = URLStream(event.target);
+					_zipFile = new ZipFile(data);
+				}
+				
+				private function itemClickEvent(event:ListEvent):void {
+					var entry:ZipEntry = event.currentTarget.selectedItem as ZipEntry;
+					if (entry) {
+						sourceArea.text = String(_zipFile.getInput(entry));
+						onRuleChange();
+					}
+				}
+				
+				private function errorHandler(event:ErrorEvent):void {
+					trace(event.currentTarget);
+				}
+				
+				private function getMembers(): String{
+					var result: String = "";
+					for(var i: int = 0; i < tuaList.length; i++){
+						result += (tuaList.getItemAt(i) as TeamHasUserHasAssignment).user.login + 
+							" - " + (tuaList.getItemAt(i) as TeamHasUserHasAssignment).user.name + ", ";
+					}
+					return result.substring(0, result.length - 2);
+				} 
 			
 	            private function failure(event:FaultEvent):void {
 					var message:String;
@@ -45,16 +115,6 @@
 					ModulesController.createModule("modules/System/MensagemStatus.swf", this, new Array(true, message));
 				}
 				
-				private function selectFile(): void{
-					fileRef = new FileReference();
-			   	 	fileRef.addEventListener(Event.SELECT, selectedFile);
-			    	fileRef.browse(new Array(new FileFilter("Testes","*.java;")));
-				}
-				
-				public function selectedFile(evt:Event):void {
-			       	readFile(fileRef.name);
-				}
-				
 				private function closeWindow():void {
 					dispatchEvent(new ClosePopupEvent(this));
 				}
@@ -67,13 +127,7 @@
 					var e:FaultEvent = new FaultEvent(FaultEvent.FAULT, true, true,
 						event.fault, event.token, event.message);
 					dispatchEvent(e);
-				}
-				
-				private function init():void {
-					
-					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
-					var status: String = String(ModulesController.getParam());
-				}
+				}				
 				
 				private function callsScreenSaveAssignment():void{
 					ModulesController.createModule("modules/Views/SaveAssignment.swf", this, null);
@@ -91,9 +145,34 @@
 					function loaderComplete(event : Event) : void {
 						var fileString:String = event.target.data;
 						var noNLStr:String = fileString.split("\n").join("");
-						txtArea.text = noNLStr;
+						sourceArea.text = noNLStr;
 					}
 				}
+				
+				/**
+                 * This event fires when the rule text changes. This is only fired
+                 * on a keystroke, rather than on drag and drop. 
+                 */
+                private function onRuleChange():void {
+                	reSizeLineNum();
+                }
+                
+                private function reSizeLineNum():void{
+                    lineNum.text="";
+                    var code:String = sourceArea.text; 
+                    var lines:Array = code.split("\n"); 
+                    var lineCount:int = lines.length;
+                    
+                    if(lineCount > 0){
+                    	for(var i:int=1; i <= lineCount; i++){
+         					lineNum.text = lineNum.text + i + "\n";
+                    	}
+                    }
+                }
+                
+                private function ScrollLineNum():void{
+                    lineNum.verticalScrollPosition = sourceArea.verticalScrollPosition;
+                }
 				
 			]]>
 		</mx:Script>
@@ -101,32 +180,57 @@
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 			
 		</mx:RemoteObject>
-		<mx:Label text="Roteiro: 6" fontWeight="bold"
-			textAlign="left" width="72" x="10" y="10" id="labelAssignment"/>
-		<mx:Label text="Selecione o arquivo:" fontWeight="bold"
-			textAlign="left" width="140" x="10" y="49"/>
-		<mx:Label text="Grupo: A" fontWeight="bold"
-			textAlign="left" width="72" x="122" y="10" id="labelGroup"/>
-		<mx:Label text="Observações:" fontWeight="bold"
-			textAlign="left" width="114" x="10" y="502"/>
-		<mx:Label text="Nota:" fontWeight="bold"
-			textAlign="left" width="43" x="808.95" y="497" id="labelGrade"/>
+		
+		
+		<mx:Label text="Assignment:" fontWeight="bold"
+			textAlign="left" width="95" x="10" y="10" id="labelAssignment"/>
+		<mx:Label fontWeight="bold"
+			textAlign="left" width="888" x="102" y="10" id="inputAssignment"/>
+		<mx:Label fontWeight="bold"
+			textAlign="left" width="888" x="102" y="66" id="inputMembers"/>
+		<mx:Label fontWeight="bold"
+			textAlign="left" width="888" x="102" y="38" id="inputTeam"/>
+		<mx:Label text="Source Navigator:" fontWeight="bold"
+			textAlign="left" width="139" x="10" y="105" id="labelAssignment0"/>
+		<mx:Label text="Source:" fontWeight="bold"
+			textAlign="left" width="139" x="226.95" y="105" id="labelAssignment1"/>
+		<mx:Label text="Team:" fontWeight="bold"
+			textAlign="left" width="95" x="10" y="38" id="labelTeam"/>
+		<mx:Label text="Comments:" fontWeight="bold"
+			textAlign="left" width="114" x="10" y="442"/>
+		<mx:Label text="Grade:" fontWeight="bold"
+			textAlign="left" width="64" x="10" y="674" id="labelGrade"/>
 		<mx:Label text="Peso: 60%" fontWeight="bold"
-			textAlign="left" width="80" x="910" y="497" id="labelWeight"/>
-		<mx:Label text="Integrantes: Augusto Queiros, Alysson Filgueira, Demetrio Mestre" fontWeight="bold"
-			textAlign="left" width="543.05" x="226.95" y="10" id="labelMembers"/>
-		<mx:HRule x="10" y="670" width="980" height="3"/>
+			textAlign="left" width="80" x="139" y="674" id="labelWeight"/>
+		<mx:Label text="Member (s):" fontWeight="bold"
+			textAlign="left" width="95" x="10" y="66" id="labelMembers"/>
 		
-		<mx:TextArea id="txtArea" 
-			fontFamily="Tahoma" fontSize="11" fontWeight="bold" width="980" height="398" 
-			paddingLeft="10" x="10" y="77"/>
-		<mx:LinkButton x="158" y="45" label="   Selecionar Arquivo" icon="@Embed(source='../../image/estonar.png')" width="252.9" height="28" id="attachTesting" click="selectFile()"/>
+		<mx:HBox width="763.05" height="597" x="226.95" y="133" backgroundColor="#FFFFFF" 
+			verticalAlign="top" verticalGap="0"   paddingRight="0" paddingLeft="0" horizontalGap="0" borderStyle="none">
+            <mx:TextArea id="lineNum" height="596" width="30" 
+            		verticalScrollPolicy="off" 
+            		editable="false" 
+            		textAlign="right"
+            		selectable="false"  
+            		paddingRight="0" 
+            		paddingLeft="0"/>      
+            <mx:TextArea id="sourceArea" width="732" height="596" x="226.95" y="133" paddingRight="0" paddingLeft="0"
+                    change="onRuleChange();"
+                    tabChildren="false" 
+                    tabEnabled="false"
+                    selectable="false"
+                    editable="false" 
+                    resize="reSizeLineNum();"
+                    scroll="ScrollLineNum();"/>
+        </mx:HBox>
 		
-		<mx:HRule x="10" y="483" width="980" height="3"/>
-		<mx:HRule x="10" y="38" width="980" height="3"/>
-		<mx:Button x="408.05" y="684" click="saveScheduli()" label="   Salvar" width="183.9" icon="@Embed(source='../../image/disquete.png')" height="28" id="buttonSave"/>
-		<mx:TextInput x="853" y="495" width="49" id="inputGrade"/>
-		<mx:TextArea x="10" y="527" width="980" height="135" id="inputObservations"/>
+		<mx:HRule x="10" y="437" width="208.95" height="2"/>
+		<mx:HRule x="10" y="94" width="980" height="3"/>
+		<mx:Button x="10" y="702" click="saveScheduli()" label="   Salvar" width="208.95" icon="@Embed(source='../../image/disquete.png')" height="28" id="buttonSave"/>
+		<mx:TextInput x="68" y="672" width="63" id="inputGrade"/>
+		<mx:TextArea x="9.95" y="465" width="208.95001" height="199" id="inputObservations"/>
+		<comp:AutoSizeTree x="10" y="133" width="208.95" height="296" id="navigator" dataProvider="{_zipFile.entries}" 
+				horizontalScrollPolicy="auto" change="itemClickEvent(event);"/>
 		
 		
 </les:ModuleTitleWindow>
