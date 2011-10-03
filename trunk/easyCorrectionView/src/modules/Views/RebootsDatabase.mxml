@@ -6,7 +6,6 @@
 		
 		<mx:Script>
 			<![CDATA[
-				import mx.charts.CategoryAxis;
 				import mx.collections.ArrayCollection;
 				import net.digitalprimates.fluint.utils.ResultDisplayUtils;
 				import events.UserEvent;
