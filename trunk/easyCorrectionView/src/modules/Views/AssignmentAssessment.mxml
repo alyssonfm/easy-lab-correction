@@ -140,6 +140,7 @@
 				private function getSourceFileName_result(event:ResultEvent):void{
 					codeNameFile = String(event.result);
 					downloadImplementation.enabled = true;
+					buttonSourceGrading.enabled = true;
 					buttonSave.enabled = true;
 				}
 				
@@ -183,6 +184,14 @@
 	                }
 	                return iconClass;
 	            }
+	            
+	            private function openCorrectionModule():void {
+	            	var args: ArrayCollection = new ArrayCollection();
+	            	args.addItem(assessment);
+	            	args.addItem(membersList.dataProvider);
+	            	args.addItem(codeNameFile);
+	                ModulesController.createModule("modules/Views/CorrectionModule.swf", this, args);
+	            }
 				
 			]]>
 		</mx:Script>
@@ -207,7 +216,8 @@
 		<mx:List id="teamList" x="10" y="94" width="226" height="302" labelFunction="labelSelectionTeams" itemClick="selectTeam()" iconFunction="defIcone" fontSize="12" color="#042E8E"/>
 		<mx:List id="membersList" x="265.95" y="94" width="504.05" height="66" labelFunction="selecaoLabelIntegrantes"/>
 		<mx:VRule x="244" y="62" height="334" width="13.95"/>
-		<mx:Button x="383" y="182" label="Download Solution" click="codeDownload()" width="254" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="downloadImplementation" enabled="false"/>
+		<mx:Button x="265.95" y="179" label="Download Solution" click="codeDownload()" width="244" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="downloadImplementation" enabled="false"/>
+		<mx:Button x="526" y="179" label="Source Grading" click="openCorrectionModule()" width="244" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="buttonSourceGrading" enabled="false"/>
 		<mx:Button x="383" y="329" label="Save Grade" click="saveGradeCorrector()" width="254" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" enabled="false" id="buttonSave"/>
 		<mx:Label text="Grade:" fontWeight="bold"
 			textAlign="left" width="69" x="383" y="275" id="labelGrade" fontSize="16"/>
