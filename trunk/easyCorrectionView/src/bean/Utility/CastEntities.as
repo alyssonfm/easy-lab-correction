@@ -236,6 +236,7 @@ package bean.Utility {
 					a.penalty = object.penalty;
 					a.submission = castSubmission(object.submission);
 					a.testsExecutionResult = object.testsExecutionResult;
+					a.comments = object.comments; 
 					return a;
 				}
 			}
