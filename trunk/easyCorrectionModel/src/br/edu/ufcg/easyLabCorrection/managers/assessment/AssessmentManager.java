@@ -155,6 +155,7 @@ public class AssessmentManager extends Manager {
 					.getTeamHasUserHasAssignment().getAssignment()
 					.getAutomaticTestsPercentage()));
 			assess.setCorrected(assessment.isCorrected());
+			assess.setComments(assessment.getComments());
 			return updateAssessment(assess);
 		} catch (Exception e) {
 			throw new ObjectNotFoundException(ErrorMsgs.OBJ_NOT_FOUND

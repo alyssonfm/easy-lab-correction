@@ -16,6 +16,7 @@ public class Assessment {
 	private Date assessmentDate;
 	private User corrector;
 	private boolean corrected;
+	private String comments;
 
 	public Assessment(Integer id, 
 			Submission submission, 
@@ -35,8 +36,9 @@ public class Assessment {
 		this.penalty = penalty;
 		this.assessmentDate = assessmentDate;
 		this.corrector = corrector;
+		this.comments = "";
 	}
-	
+
 	public Assessment() {
 		super();
 	}
@@ -137,6 +139,14 @@ public class Assessment {
 				+ ((testsExecutionResult == null) ? 0 : testsExecutionResult
 						.hashCode());
 		return result;
+	}
+	
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 	@Override
