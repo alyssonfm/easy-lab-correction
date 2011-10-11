@@ -17,6 +17,7 @@
 		<property name="corrected" column="corrigido"/>
 		<many-to-one name="corrector"	class="br.edu.ufcg.easyLabCorrection.pojo.user.User" column="corretor_id"/>
 		<many-to-one name="submission"	class="br.edu.ufcg.easyLabCorrection.pojo.assignments.Submission" column="submissao_id"/>
+		<property name="comments" column="comentarios"/>
 		
 	</class>
 </hibernate-mapping>
