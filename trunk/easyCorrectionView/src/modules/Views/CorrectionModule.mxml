@@ -28,8 +28,6 @@
 				import mx.utils.StringUtil;
 				import Scripts.ModulesController;
 				import mx.binding.utils.BindingUtils;
-				//import eventos.RespostaLoginEvent;
-				//import eventos.FechaPopupEvent;
 				import mx.rpc.events.ResultEvent;
 				import mx.rpc.events.FaultEvent;
 				
@@ -38,7 +36,6 @@
 				private var request:URLRequest = new URLRequest(ExternalInterface.call('downLoadRoteiro'));
 				private var codeNameFile: String = "";
 				
-				private const local:String = "../exemplos/";
 				private var assessment: Assessment;
 				private var tuaList: ArrayCollection;
 				
