@@ -8,6 +8,8 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import events.AssessmentEvent;
+				import bean.Utility.Util;
 				import nochump.util.zip.ZipEntry;
 				import mx.events.ListEvent;
 				import nochump.util.zip.ZipFile;
@@ -51,7 +53,26 @@
 					inputAssignment.text = assessment.submission.teamHasUserHasAssignment.assignment.name;
 					inputMembers.text = getMembers();
 					inputTeam.text = assessment.submission.teamHasUserHasAssignment.team.name;
+					updateAssessmentValues();
 					codeDownload();				
+				}
+				
+				private function updateAssessmentValues(): void{
+					inputWeight.text = String(100 - 
+					assessment.submission.teamHasUserHasAssignment.assignment.automaticTestsPercentage) + "%";
+					inputComments.text = assessment.comments;
+					try{
+						var grade: Number = assessment.correctionGrade;
+						grade = (grade / (100 - assessment.submission.teamHasUserHasAssignment.assignment.automaticTestsPercentage)) * 100;
+						if(grade == 10){
+							inputGrade.text = String(grade);
+						}else{
+							inputGrade.text = "0" + String(grade);
+						}
+					}
+					catch(e: Error){
+						inputGrade.text = "0000";
+					}
 				}
 				
 				private function codeDownload():void{
@@ -130,8 +151,23 @@
 					ModulesController.createModule("modules/Views/SaveAssignment.swf", this, null);
 				}
 				
-				private function saveScheduli():void{
-					dispatchEvent(new ClosePopupEvent(this));
+				private function saveAssessment():void{
+					if (Util.formatsTextValueToNumber2(inputGrade.fullText) <= 10){
+						assessment.correctionGrade = Util.formatsTextValueToNumber2(inputGrade.fullText);
+						assessment.corrected = true;
+						assessment.comments = inputComments.text;
+						facade.getOperation("saveAssessment").send(assessment);
+					}
+					else{
+						var message:String = "The grade should be less than or equal to 10.";
+						ModulesController.createModule("modulos/sistema/MensagemStatus.swf", this, new Array(true, message));
+					}
+				}
+				
+				private function saveAssessment_result(event:ResultEvent):void{
+					dispatchEvent(new AssessmentEvent(""));
+					var message:String = "The team solution was successful assessed.";
+					ModulesController.createModule("modules/System/MessageStatus.swf", this, new Array(false, message));	
 				}
 				
 				public function readFile(fName:String):void {
@@ -157,7 +193,7 @@
                 private function reSizeLineNum():void{
                     lineNum.text="";
                     var code:String = sourceArea.text; 
-                    var lines:Array = code.split("\n"); 
+                    var lines:Array = code.split(/(\n)/); 
                     var lineCount:int = lines.length;
                     
                     if(lineCount > 0){
@@ -175,7 +211,7 @@
 		</mx:Script>
 				
 		<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
-			
+			<mx:method name="saveAssessment" result="saveAssessment_result(event)" fault="failure(event)"/>
 		</mx:RemoteObject>
 		
 		
@@ -197,15 +233,15 @@
 			textAlign="left" width="114" x="10" y="442"/>
 		<mx:Label text="Grade:" fontWeight="bold"
 			textAlign="left" width="64" x="10" y="674" id="labelGrade"/>
-		<mx:Label text="Peso: 60%" fontWeight="bold"
-			textAlign="left" width="80" x="139" y="674" id="labelWeight"/>
+		<mx:Label fontWeight="bold"
+			textAlign="right" width="69.05" x="149.9" y="672" id="inputWeight" height="24"/>
 		<mx:Label text="Member (s):" fontWeight="bold"
 			textAlign="left" width="95" x="10" y="66" id="labelMembers"/>
 		
 		<mx:HBox width="763.05" height="597" x="226.95" y="133" backgroundColor="#FFFFFF" 
 			verticalAlign="top" verticalGap="0"   paddingRight="0" paddingLeft="0" horizontalGap="0" borderStyle="none">
             <mx:TextArea id="lineNum" height="596" width="30" 
-            		verticalScrollPolicy="off" 
+            		verticalScrollPolicy="off"
             		editable="false" 
             		textAlign="right"
             		selectable="false"  
@@ -223,9 +259,9 @@
 		
 		<mx:HRule x="10" y="437" width="208.95" height="2"/>
 		<mx:HRule x="10" y="94" width="980" height="3"/>
-		<mx:Button x="10" y="702" click="saveScheduli()" label="   Salvar" width="208.95" icon="@Embed(source='../../image/disquete.png')" height="28" id="buttonSave"/>
-		<mx:TextInput x="68" y="672" width="63" id="inputGrade"/>
-		<mx:TextArea x="9.95" y="465" width="208.95001" height="199" id="inputObservations"/>
+		<mx:Button x="10" y="702" click="saveAssessment()" label="   Salvar" width="208.95" icon="@Embed(source='../../image/disquete.png')" height="28" id="buttonSave"/>
+		<comp:MaskedTextInput x="68" y="672" width="63" inputMask="##,##" id="inputGrade" color="#1B7A0F" text="0"/>
+		<mx:TextArea x="9.95" y="465" width="208.95001" height="199" id="inputComments"/>
 		<comp:AutoSizeTree x="10" y="133" width="208.95" height="296" id="navigator" dataProvider="{_zipFile.entries}" 
 				horizontalScrollPolicy="auto" change="itemClickEvent(event);"/>
 		

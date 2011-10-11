@@ -7,6 +7,7 @@
 		
 		<mx:Script>
 			<![CDATA[
+				import events.AssessmentEvent;
 				import bean.Utility.Constant;
 				import bean.Utility.Util;
 				import bean.assessments.Assessment;
@@ -78,7 +79,12 @@
 					facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 					var status: String = String(ModulesController.getParam());
 					var assignment: ArrayCollection = new ArrayCollection();
+					systemManager.addEventListener(AssessmentEvent.assessmentEventConst, updatesList);
 					listAssignment();
+				}
+				
+				private function updatesList(event:AssessmentEvent):void{
+					getAssingmentTeamByAssingment();
 				}
 				
 				private function listAssignment():void{
@@ -89,7 +95,6 @@
 					comboAssignment.dataProvider = new ArrayCollection();
 					comboAssignment.selectedIndex = -1;
 					comboAssignment.dataProvider = event.result;
-					
 				}				
 				
 				private function getAssingmentTeamByAssingment():void{
