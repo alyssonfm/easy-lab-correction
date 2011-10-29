@@ -95,9 +95,11 @@ public class ServletUpload extends HttpServlet {
 			while (e.hasMoreElements()) {
 				ZipEntry entrada = (ZipEntry) e.nextElement();
 				arquivo = new File(dir, entrada.getName());
-
-				if (entrada.isDirectory() && !arquivo.exists()) {
-					arquivo.mkdirs();
+				
+				if (entrada.isDirectory()) {
+					if(!arquivo.exists()){
+						arquivo.mkdirs();
+					}
 					continue;
 				}
 
