@@ -1,7 +1,10 @@
 package br.edu.ufcg.easyLabCorrection.util;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +15,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import flex.messaging.io.MessageSerializer;
+import flex.messaging.io.SerializationContext;
+import flex.messaging.io.amf.ActionMessage;
+import flex.messaging.io.amf.AmfMessageSerializer;
+import flex.messaging.io.amf.MessageBody;
+import flex.messaging.messages.RemotingMessage;
 
 import br.edu.ufcg.easyLabCorrection.exceptions.NonexistantAttributeException;
 import br.edu.ufcg.easyLabCorrection.pojo.user.UserGroup;
@@ -166,6 +176,76 @@ public class easyCorrectionUtil {
 	    }
 	    in.close();
 	    out.close();
+	}
+	
+	public static void main(String[] args) {
+		easyCorrectionUtil ecu = new easyCorrectionUtil();
+		Object[] opParams = new Object[2];
+		opParams[0] = 6;
+		opParams[1] = "";
+		AmfRequestParameters params = new AmfRequestParameters("easyCorrection", "generatePassword", opParams);
+		ecu.generate(params);
+	}
+	
+	public byte[] generate(AmfRequestParameters params) {
+	    ActionMessage message = new ActionMessage();
+	    message.addBody(createMessageBody(params));
+	 
+	    ByteArrayOutputStream out = new ByteArrayOutputStream();
+	    MessageSerializer serializer = createMessageSerializer(out);
+	    try {
+	        serializer.writeMessage(message);
+	    } catch (IOException e) {
+	    	System.out.println("Algum erro Ocorreu!!!");
+	        //throw new AmfRequestGenerationException(e);
+	    }
+	    
+	    String strFileName = "D:/requisicao";
+		BufferedOutputStream bos = null;
+		
+	    try {
+			FileOutputStream fos = new FileOutputStream(new File(strFileName));
+			bos = new BufferedOutputStream(fos);
+			bos.write(out.toByteArray());
+		}
+		catch(FileNotFoundException fnfe){
+			System.out.println("Specified file not found" + fnfe);
+		}
+		catch(IOException ioe){
+			System.out.println("Error while writing file" + ioe);
+		}
+		finally{
+			if(bos != null){
+				try{
+					bos.flush();
+					bos.close();
+				}
+				catch(Exception e){}
+			}
+		}
+	    return out.toByteArray();
+	}
+	
+	protected MessageBody createMessageBody(AmfRequestParameters params) {
+	    RemotingMessage message = new RemotingMessage();
+	    message.setHeader("HEADER_DS_ENDPOINT", "my-secure-amf");
+	    message.setHeader("HEADER_DS_ID", "1");
+	    message.setMessageId("1");
+	    message.setDestination(params.getDestination());
+	    message.setOperation(params.getOperation());
+	    message.setBody(params.getParameters());
+	 
+	    return new MessageBody(null, null, new RemotingMessage[] {message});
+	}
+	
+	protected MessageSerializer createMessageSerializer(OutputStream out) {
+	    SerializationContext context = new SerializationContext();
+	    context.setSerializerClass(AmfMessageSerializer.class);
+	    SerializationContext.setSerializationContext(context);
+	 
+	    MessageSerializer serializer = context.newMessageSerializer();
+	    serializer.initialize(context, out, null);
+	    return serializer;
 	}
 	
 }
