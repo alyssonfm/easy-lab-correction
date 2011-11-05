@@ -13,7 +13,7 @@
 	<mx:RemoteObject id="facade" destination="easyCorrection" showBusyCursor="true">
 		<mx:method name="getUserGroupByUser" result="getUserGroupByUser_result(event)" fault="fail(event)"/>
 		<mx:method name="setSystemStage" result="setSystemStage_result(event)" fault="fail(event)"/>
-		<mx:method name="getDataNow" result="getDataNow_result(event)" fault="fail(event)"/>		
+		<mx:method name="getRealTime" result="getRealTime_result(event)" fault="fail(event)"/>		
 	</mx:RemoteObject>
 	
 	<mx:Image id="imageELC" x="46" y="15" width="88" height="106" source="ELC_java_logo.jpg" />
