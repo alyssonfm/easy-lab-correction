@@ -318,14 +318,14 @@ private function PressedMenuItem(event: MenuEvent):void  {
 private function init():void {
 	facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 	var state: String = String(ModulesController.getParam());
-	facade.getOperation("getDataNow").send();
+	facade.getOperation("getRealTime").send();
 	inicializeMenus();
 	listenToEvents();
 	generateBLinks();
 	generateLoginScreen();
 }
 
-private function getDataNow_result(event:ResultEvent): void{
+private function getRealTime_result(event:ResultEvent): void{
 	inputTime.updateTime(event.result as Date);
 }
 
