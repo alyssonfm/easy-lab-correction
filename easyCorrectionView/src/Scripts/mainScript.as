@@ -101,7 +101,7 @@ private function geraTabBar(): TabBar {
 	
 	cb_systemStage = new ComboBox();
 	cb_systemStage.x = 150;
-	cb_systemStage.y = 50;
+	cb_systemStage.y = 62;
 	cb_systemStage.labelFunction = showCourse;
 	cb_systemStage.addEventListener(ListEvent.CHANGE, setSystemStage);
 	cb_systemStage.invalidateSize();
@@ -318,10 +318,15 @@ private function PressedMenuItem(event: MenuEvent):void  {
 private function init():void {
 	facade.channelSet = ModulesController.createChannel("easyCorrection", ExternalInterface.call('getCanalSeguro'));
 	var state: String = String(ModulesController.getParam());
+	facade.getOperation("getDataNow").send();
 	inicializeMenus();
 	listenToEvents();
 	generateBLinks();
 	generateLoginScreen();
+}
+
+private function getDataNow_result(event:ResultEvent): void{
+	inputTime.updateTime(event.result as Date);
 }
 
 private function fail(event:FaultEvent):void {
