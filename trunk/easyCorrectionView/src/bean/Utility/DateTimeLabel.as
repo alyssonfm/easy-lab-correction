@@ -10,6 +10,7 @@ package bean.Utility{
 	 	
            private var dtNow:Date = new Date();
            private var timer:Timer;
+           private var countSeconds: int;
            
            public function DateTimeLabel()  {
                super();
@@ -21,13 +22,15 @@ package bean.Utility{
            }
            
            private function startTimer(e:FlexEvent):void{
+           	   countSeconds = 0;
                timer = new Timer(1000);
                timer.addEventListener("timer", updateHour);
                timer.start();
            }
            
            private function updateHour(event:TimerEvent):void{
-               var now:Date = new Date();
+               countSeconds++;
+               var now:Date = new Date(dtNow.getTime() + (countSeconds * 1000));
                var sMonth:Array = new Array(
                    "January",
                    "February",
