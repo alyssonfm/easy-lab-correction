@@ -462,7 +462,7 @@ public class System {
 				+ submission.getUrl().replace("/", File.separator);
 		String libDirectory = (ServletUpload.local + "/").replace("/",
 				File.separator);
-
+		
 		if (submission.getTeamHasUserHasAssignment().getAssignment()
 				.getAssignmentType().getCompilation()) {
 
@@ -534,6 +534,15 @@ public class System {
 			 * assessmentManager.setAssessment(submission, 0, result); return
 			 * "Result: " + result; }
 			 */
+		}
+		
+		if (submission.getTeamHasUserHasAssignment().getAssignment()
+				.getAssignmentType().getSendingOnly()) {
+			
+			double automaticTestsGrade = 0;
+			result = "SENDING: OK.";
+			assessmentManager.setAssessment(submission,
+					automaticTestsGrade, result);
 		}
 		return result;
 	}
