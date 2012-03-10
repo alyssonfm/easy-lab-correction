@@ -24,6 +24,13 @@ public class AssignmentType {
 		this.name = name;
 	}
 	
+	public Boolean getSendingOnly() {
+		if(!getCompilation() && !getOutputComparison() && !getTestExecution()){
+			return true;
+		}
+		return false;
+	}
+	
 	public Boolean getCompilation() {
 		return compilation;
 	}
