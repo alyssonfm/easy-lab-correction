@@ -9,29 +9,10 @@ package bean.Utility{
 	 public class DateTimeLabel extends Label  {
 	 	
            private var dtNow:Date = new Date();
+           private var now:Date = new Date();
            private var timer:Timer;
-           private var countSeconds: int;
-           
-           public function DateTimeLabel()  {
-               super();
-               this.addEventListener(FlexEvent.CREATION_COMPLETE,startTimer);
-           }
-           
-           public function updateTime(dateNow: Date): void{
-           	   this.dtNow = dateNow;
-           }
-           
-           private function startTimer(e:FlexEvent):void{
-           	   countSeconds = 0;
-               timer = new Timer(1000);
-               timer.addEventListener("timer", updateHour);
-               timer.start();
-           }
-           
-           private function updateHour(event:TimerEvent):void{
-               countSeconds++;
-               var now:Date = new Date(dtNow.getTime() + (countSeconds * 1000));
-               var sMonth:Array = new Array(
+           private var timeDifference: Number;
+           private var sMonth:Array = new Array(
                    "January",
                    "February",
                    "March",
@@ -44,7 +25,7 @@ package bean.Utility{
                    "October",
                    "November",
                    "December");
-               var sWeekDay:Array = new Array(
+           private var sWeekDay:Array = new Array(
                    "Sunday",
                    "Monday",
                    "Tuesday",
@@ -52,12 +33,29 @@ package bean.Utility{
                    "Thursday",
                    "Friday",
                    "Saturday");
-               this.text = (dtNow.dateUTC < 10 ? sMonth[now.getMonth()] + " " +
-                   "0" + dtNow.dateUTC:dtNow.dateUTC) +", "+
-                   now.getFullYear() + ". " + String(sWeekDay[now.dayUTC] + " – "+
-                   (now.getHours()   < 10 ? "0" + now.getHours()   :now.getHours()) + ":" +
-                   (now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes()) + ":" +
-                   (now.getSeconds() < 10 ? "0" + now.getSeconds() :now.getSeconds())
+           
+           public function DateTimeLabel()  {
+               super();
+               this.addEventListener(FlexEvent.CREATION_COMPLETE,startTimer);
+           }
+           
+           public function updateTime(dateNow: Date): void{
+           	   this.dtNow = dateNow;
+           }
+           
+           private function startTimer(e:FlexEvent):void{
+               timer = new Timer(1000);
+               timer.addEventListener("timer", updateHour);
+               timer.start();
+           }
+           
+           private function updateHour(event:TimerEvent):void{
+           	   dtNow.setTime(dtNow.getTime() + 1000);
+               this.text = sMonth[dtNow.getMonth()] + " " + (dtNow.dateUTC < 10 ? "0" + dtNow.dateUTC:dtNow.dateUTC) + ", " +
+                   dtNow.getFullYear() + ". " + String(sWeekDay[dtNow.dayUTC] + " – " +
+                   (dtNow.getHours()   < 10 ? "0" + dtNow.getHours()   : dtNow.getHours()) + ":" +
+                   (dtNow.getMinutes() < 10 ? "0" + dtNow.getMinutes() : dtNow.getMinutes()) + ":" +
+                   (dtNow.getSeconds() < 10 ? "0" + dtNow.getSeconds() : dtNow.getSeconds())
                );
            }
        }
