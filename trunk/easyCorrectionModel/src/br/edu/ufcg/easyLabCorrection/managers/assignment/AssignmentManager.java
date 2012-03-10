@@ -112,10 +112,10 @@ public class AssignmentManager extends Manager {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Function used to retrieve an lateassignment in the system, receives
-	 * as parameter an assignment identifier.<br>
+	 * Function used to retrieve an lateassignment in the system, receives as
+	 * parameter an assignment identifier.<br>
 	 * 
 	 * @param id
 	 *            The assignment identifier used to retrieve a released
@@ -157,7 +157,7 @@ public class AssignmentManager extends Manager {
 				.buildAssignmentDAO().findByReleasedAssignments(currentDate);
 		return releasedAssignments;
 	}
-	
+
 	/**
 	 * Function used to retrieve all late assignments of system.<br>
 	 * 
@@ -208,8 +208,8 @@ public class AssignmentManager extends Manager {
 			throws AssignmentException {
 
 		if (assignmentTemp == null) {
-			throw new AssignmentException(ErrorMsgs.NULL_OBJECT
-					.msg("Assignment"));
+			throw new AssignmentException(
+					ErrorMsgs.NULL_OBJECT.msg("Assignment"));
 		}
 
 		this.assignmentNextState = "created";
@@ -238,8 +238,8 @@ public class AssignmentManager extends Manager {
 			throws AssignmentException {
 
 		if (assignmentTemp == null) {
-			throw new AssignmentException(ErrorMsgs.NULL_OBJECT
-					.msg("Assignment"));
+			throw new AssignmentException(
+					ErrorMsgs.NULL_OBJECT.msg("Assignment"));
 		}
 
 		this.assignmentNextState = "updated";
@@ -248,7 +248,7 @@ public class AssignmentManager extends Manager {
 
 		switch (currentAssignmentState) {
 		case (ASSIGNMENT_IN_CREATION):
-			// This case should never occur, since this state should be the 
+			// This case should never occur, since this state should be the
 			// registration of assignments rather than editing.
 			validateAssignmentInCreation(assignmentTemp);
 			break;
@@ -284,8 +284,8 @@ public class AssignmentManager extends Manager {
 			DAOFactory.DEFAULT.buildAssignmentDAO().update(a);
 
 		} catch (EasyCorrectionException e) {
-			throw new AssignmentException(ErrorMsgs.OBJ_NOT_FOUND
-					.msg("Assignment"));
+			throw new AssignmentException(
+					ErrorMsgs.OBJ_NOT_FOUND.msg("Assignment"));
 		}
 		return a;
 	}
@@ -306,16 +306,16 @@ public class AssignmentManager extends Manager {
 			throws AssignmentException {
 
 		if (assignment == null) {
-			throw new AssignmentException(ErrorMsgs.NULL_OBJECT
-					.msg("Assignment"));
+			throw new AssignmentException(
+					ErrorMsgs.NULL_OBJECT.msg("Assignment"));
 		}
 		DAOFactory.DEFAULT.buildAssignmentDAO().delete(assignment);
 	}
-	
+
 	public void deleteAssignmentByStage(Integer stageId) {
-		
+
 		DAOFactory.DEFAULT.buildAssignmentDAO().deleteByStage(stageId);
-		
+
 	}
 
 	/* ************************************************************
@@ -326,20 +326,19 @@ public class AssignmentManager extends Manager {
 			throws AssignmentException {
 
 		/*
-		 * Compute the state before the new assignment, 
-		 * we check if there is any change with respect to 
-		 * the former state and apply the appropriate restrictions.
+		 * Compute the state before the new assignment, we check if there is any
+		 * change with respect to the former state and apply the appropriate
+		 * restrictions.
 		 */
 		if (assignmentTemp == null) {
-			throw new AssignmentException(ErrorMsgs.NULL_OBJECT
-					.msg("Assignment"));
+			throw new AssignmentException(
+					ErrorMsgs.NULL_OBJECT.msg("Assignment"));
 		}
 
 		this.checksDatesModification(assignmentTemp);
 		return getCurrentAssignmentState(assignmentTemp);
 	}
 
-	//TODO: REDO!
 	private void checksDatesModification(Assignment newAssignment)
 			throws AssignmentException {
 
@@ -358,8 +357,7 @@ public class AssignmentManager extends Manager {
 			if (newAssignment.getReleaseDate() == null
 					|| newAssignment.getReleaseDate().before(currentDate)) {
 				throw new AssignmentException(
-						ErrorMsgs.INVALID_RELEASE_DATE
-								.msg(assignmentNextState));
+						ErrorMsgs.INVALID_RELEASE_DATE.msg(assignmentNextState));
 
 			} else if (newAssignment.getDeliveryDate() != null
 					&& newAssignment.getDeliveryDate().before(currentDate)) {
@@ -372,9 +370,7 @@ public class AssignmentManager extends Manager {
 				throw new AssignmentException(
 						ErrorMsgs.INVALID_DISCUSSION_DATE
 								.msg(assignmentNextState));
-
 			}
-
 			break;
 
 		case (ASSIGNMENT_RELEASED):
@@ -388,8 +384,7 @@ public class AssignmentManager extends Manager {
 							.getReleaseDate().equals(
 									oldAssignment.getReleaseDate())))) {
 				throw new AssignmentException(
-						ErrorMsgs.INVALID_RELEASE_DATE
-								.msg(assignmentNextState));
+						ErrorMsgs.INVALID_RELEASE_DATE.msg(assignmentNextState));
 
 			} else if (newAssignment.getDeliveryDate() != null
 					&& newAssignment.getDeliveryDate().before(currentDate)) {
@@ -402,7 +397,6 @@ public class AssignmentManager extends Manager {
 				throw new AssignmentException(
 						ErrorMsgs.INVALID_DISCUSSION_DATE
 								.msg(assignmentNextState));
-
 			}
 			break;
 
@@ -418,8 +412,7 @@ public class AssignmentManager extends Manager {
 							.getReleaseDate().equals(
 									oldAssignment.getReleaseDate())))) {
 				throw new AssignmentException(
-						ErrorMsgs.INVALID_RELEASE_DATE
-								.msg(assignmentNextState));
+						ErrorMsgs.INVALID_RELEASE_DATE.msg(assignmentNextState));
 
 			} else if (newAssignment.getDeliveryDate() == null
 					|| (newAssignment.getDeliveryDate().before(currentDate) && (!newAssignment
@@ -434,7 +427,6 @@ public class AssignmentManager extends Manager {
 				throw new AssignmentException(
 						ErrorMsgs.INVALID_DISCUSSION_DATE
 								.msg(assignmentNextState));
-
 			}
 			break;
 
@@ -448,8 +440,7 @@ public class AssignmentManager extends Manager {
 							.getReleaseDate().equals(
 									oldAssignment.getReleaseDate())))) {
 				throw new AssignmentException(
-						ErrorMsgs.INVALID_RELEASE_DATE
-								.msg(assignmentNextState));
+						ErrorMsgs.INVALID_RELEASE_DATE.msg(assignmentNextState));
 
 			} else if (newAssignment.getDeliveryDate() == null
 					|| (newAssignment.getDeliveryDate().before(currentDate) && (!newAssignment
@@ -466,15 +457,12 @@ public class AssignmentManager extends Manager {
 				throw new AssignmentException(
 						ErrorMsgs.INVALID_DISCUSSION_DATE
 								.msg(assignmentNextState));
-
 			}
-
 			break;
 
 		default:
 			break;
 		}
-
 		if (newAssignment.getDeliveryDate() != null
 				&& newAssignment.getReleaseDate() != null
 				&& (newAssignment.getDeliveryDate().before(
@@ -492,13 +480,13 @@ public class AssignmentManager extends Manager {
 						.getDiscussionDate().equals(
 								newAssignment.getDeliveryDate()))) {
 			throw new AssignmentException(
-					"Deadline for discussion previous/equal to deadline for submission. The assignment can not be "
+					"Deadline for discussion previous/equal to deadline for submission. "
+							+ "The assignment can not be "
 							+ assignmentNextState + "!");
-
 		}
 	}
 
-	private int getCurrentAssignmentState(Assignment assignment) {
+	private int getCurrentAssignmentState(final Assignment assignment) {
 		// Tempo nesse instante
 		Date currentTime = Calendar.getInstance().getTime();
 
@@ -521,14 +509,14 @@ public class AssignmentManager extends Manager {
 	/*
 	 * Metodos de Validacao de assignments para Criacao e Edicao
 	 */
-	private void validateAssignmentInCreation(Assignment assignment)
+	private void validateAssignmentInCreation(final Assignment assignment)
 			throws AssignmentException {
 
 		this.assignmentAttributesBasicValidations(assignment);
 
 	}
 
-	private void validateAssignmentCreated(Assignment assignment)
+	private void validateAssignmentCreated(final Assignment assignment)
 			throws AssignmentException {
 
 		// Os testes de JAH_CRIADO sao somados aos de EM_CRIACAO
@@ -549,8 +537,7 @@ public class AssignmentManager extends Manager {
 				.getTestsDirectory().equals(""))
 				&& !assignment.getTestsDirectory().endsWith(testsDirDefault)) {
 			throw new AssignmentException(
-					ErrorMsgs.WRONG_SERVER_TEST_DIR_HIERARCHY
-							.msg("updated"));
+					ErrorMsgs.WRONG_SERVER_TEST_DIR_HIERARCHY.msg("updated"));
 		} else if ((assignment.getInterfaceDirectory() != null && !assignment
 				.getInterfaceDirectory().equals(""))
 				&& !assignment.getInterfaceDirectory().endsWith(
@@ -575,8 +562,8 @@ public class AssignmentManager extends Manager {
 						.getAutomaticTestsPercentage() <= 100) && assignment
 						.getTestsDirectory() == null)) {
 			throw new AssignmentException(
-					ErrorMsgs.RELEASED_ASSIGNMENT_FIELDS_CHANGED
-							.msg(assignment.getName()));
+					ErrorMsgs.RELEASED_ASSIGNMENT_FIELDS_CHANGED.msg(assignment
+							.getName()));
 		}
 	}
 
@@ -597,7 +584,7 @@ public class AssignmentManager extends Manager {
 
 		return DAOFactory.DEFAULT.buildAssignmentTypeDAO().findAll();
 	}
-	
+
 	public List<Assignment> getAssignmentByCourse(String course) {
 
 		return DAOFactory.DEFAULT.buildAssignmentDAO().findByCourse(course);
@@ -608,8 +595,7 @@ public class AssignmentManager extends Manager {
 
 		if (assignment.getName() == null || assignment.getName().equals("")) {
 			throw new AssignmentException(
-					ErrorMsgs.INVALID_ASSIGNMENT_NAME
-							.msg(assignmentNextState));
+					ErrorMsgs.INVALID_ASSIGNMENT_NAME.msg(assignmentNextState));
 
 		} else if (assignment.getParticipantsMaxNumber() != null
 				&& assignment.getParticipantsMaxNumber() <= 0) {
@@ -661,16 +647,16 @@ public class AssignmentManager extends Manager {
 	public String getAssignmentStatus(int id) {
 		String status = "";
 		Assignment assign = getAssignment(id);
-		if(getClosedAssignments().contains(assign)){
-			status = "CLOSED";			
-		} else if(getReleasedAssignments().contains(status)){
+		if (getClosedAssignments().contains(assign)) {
+			status = "CLOSED";
+		} else if (getReleasedAssignments().contains(status)) {
 			status = "RELEASED";
-		} else if(getInCorrectionAssignments().contains(status)){
+		} else if (getInCorrectionAssignments().contains(status)) {
 			status = "IN CORRECTION";
-		}else if(getInCreationAssignments().contains(assign)){
+		} else if (getInCreationAssignments().contains(assign)) {
 			status = "IN CREATION";
 		}
 		return status;
 	}
-	
+
 }
