@@ -115,7 +115,7 @@ public class RelatoriosServlet extends HttpServlet implements Servlet {
 	}
 
 	/**
-	 * Método que gera o comprovante dos produtos que foram dados baixa
+	 * Metodo que gera o comprovante dos produtos que foram dados baixa
 	 * 
 	 * @param idMovimentacoes
 	 *            Os ids das movimentações geradas para cada produto
