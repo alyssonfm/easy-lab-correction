@@ -68,11 +68,7 @@ public class System {
 		stageManager = new StageManager();
 	}
 
-	public void rebootDataBase() {
-		accessPermissionManager.rebootDataBase();
-	}
-	
-	public void setSystemStage(int systemStage){
+	public void setSystemStage(int systemStage) {
 		HibernateUtil.setCurrentStageId(systemStage);
 	}
 
@@ -90,16 +86,21 @@ public class System {
 	}
 
 	public void deleteUser(UserGroup userGroup) throws EasyCorrectionException {
-		
-		assessmentManager.deleteAllAssessmentsByUserId(userGroup.getUser().getUserId());
-		submissionManager.deleteAllSubmissionsByUserId(userGroup.getUser().getUserId());
-		teamManager.deleteAllTeamHasUserHasAssignmentByUserId(userGroup.getUser().getUserId());
-		deallocateAll(assessmentManager.getAssessmentByCorrector(userGroup.getUser().getUserId()));
+
+		assessmentManager.deleteAllAssessmentsByUserId(userGroup.getUser()
+				.getUserId());
+		submissionManager.deleteAllSubmissionsByUserId(userGroup.getUser()
+				.getUserId());
+		teamManager.deleteAllTeamHasUserHasAssignmentByUserId(userGroup
+				.getUser().getUserId());
+		deallocateAll(assessmentManager.getAssessmentByCorrector(userGroup
+				.getUser().getUserId()));
 		accessUserManager.deleteUser(userGroup);
-		
+
 	}
-	
-	private void deallocateAll(List<Assessment> AssessmentList) throws EasyCorrectionException{
+
+	private void deallocateAll(List<Assessment> AssessmentList)
+			throws EasyCorrectionException {
 		for (Assessment assessment : AssessmentList) {
 			assessment.setCorrector(null);
 			allocateCorrector(assessment);
@@ -110,22 +111,6 @@ public class System {
 
 	public MenuFunction getFunction(Integer id) {
 		return accessPermissionManager.getFunction(id);
-	}
-
-	public Group getGroup(Integer id) {
-		return accessPermissionManager.getGroup(id);
-	}
-
-	public UserGroup getUserGroup(Integer id) {
-		return accessUserManager.getUserGroup(id);
-	}
-
-	public Menu getMenu(Integer id) {
-		return accessPermissionManager.getMenu(id);
-	}
-
-	public Permission getPermission(Integer id) {
-		return accessPermissionManager.getPermission(id);
 	}
 
 	public User getUser(Integer id) {
@@ -169,16 +154,16 @@ public class System {
 		User use = new User();
 
 		if (userGroup == null) {
-			throw new EasyCorrectionException(ErrorMsgs.OBJ_NOT_FOUND
-					.msg("The UserGroup"));
+			throw new EasyCorrectionException(
+					ErrorMsgs.OBJ_NOT_FOUND.msg("The UserGroup"));
 		}
 		if (userGroup.getUser() == null) {
-			throw new EasyCorrectionException(ErrorMsgs.OBJ_NOT_FOUND
-					.msg("The User"));
+			throw new EasyCorrectionException(
+					ErrorMsgs.OBJ_NOT_FOUND.msg("The User"));
 		}
 		if (userGroup.getGroup() == null) {
-			throw new EasyCorrectionException(ErrorMsgs.OBJ_NOT_FOUND
-					.msg("The Group"));
+			throw new EasyCorrectionException(
+					ErrorMsgs.OBJ_NOT_FOUND.msg("The Group"));
 		}
 
 		if (userGroup.getUser() != null) {
@@ -221,24 +206,28 @@ public class System {
 				try {
 					us = getUser(userGroup.getUser().getUserId());
 					if (u != null) {
-						if (!userGroup.getUser().getUserId().equals(
-								u.getUserId())) {
-							throw new ObjectNotFoundException(ErrorMsgs.REPEATED_USER_LOGIN.msg());
+						if (!userGroup.getUser().getUserId()
+								.equals(u.getUserId())) {
+							throw new ObjectNotFoundException(
+									ErrorMsgs.REPEATED_USER_LOGIN.msg());
 						}
 					}
-					if (use  != null) {
-						if (!userGroup.getUser().getUserId().equals(
-								use.getUserId())) {
-							throw new ObjectNotFoundException(ErrorMsgs.REPEATED_USER_EMAIL.msg());
+					if (use != null) {
+						if (!userGroup.getUser().getUserId()
+								.equals(use.getUserId())) {
+							throw new ObjectNotFoundException(
+									ErrorMsgs.REPEATED_USER_EMAIL.msg());
 						}
 					}
 					userGroup = accessUserManager.updateUser(userGroup, us);
 				} catch (ObjectNotFoundException e) {
 					if (u != null) {
-						throw new ObjectNotFoundException(ErrorMsgs.REPEATED_USER_LOGIN.msg());
+						throw new ObjectNotFoundException(
+								ErrorMsgs.REPEATED_USER_LOGIN.msg());
 					}
 					if (use != null) {
-						throw new ObjectNotFoundException(ErrorMsgs.REPEATED_USER_EMAIL.msg());
+						throw new ObjectNotFoundException(
+								ErrorMsgs.REPEATED_USER_EMAIL.msg());
 					}
 				}
 			}
@@ -269,15 +258,6 @@ public class System {
 		return accessPermissionManager.updateMenu(menu);
 	}
 
-	public List<Permission> updatePermissions(List<Permission> permissions)
-			throws EasyCorrectionException {
-		return accessPermissionManager.updatePermissions(permissions);
-	}
-
-	public List<User> listUsers() {
-		return accessUserManager.listUsers();
-	}
-
 	public List<Group> listGroups() {
 		return accessPermissionManager.listGroups();
 	}
@@ -289,7 +269,7 @@ public class System {
 	public List<Menu> listMenus() {
 		return accessPermissionManager.listMenus();
 	}
-
+	
 	public List<MenuFunction> getFunctionsPerValidatedUser(User user) {
 
 		List<MenuFunction> functions = new LinkedList<MenuFunction>();
@@ -308,25 +288,13 @@ public class System {
 		return functions;
 	}
 
-	public List<UserGroup> listUserGroups() {
-		return accessUserManager.listUserGroups();
-	}
-
-	public List<UserGroup> listUserGroupsByGroup(String groupName) {
-		return accessUserManager.listUserGroupsByGroup(groupName);
-	}
-
 	public List<Permission> listPermissionsByGroup(Integer groupId) {
 		return accessPermissionManager.listPermissionsByGroup(groupId);
 	}
 
-	public List<Permission> createGroupPermission(Group g, List<MenuFunction> list)
-			throws Throwable {
+	public List<Permission> createGroupPermission(Group g,
+			List<MenuFunction> list) throws Throwable {
 		return accessPermissionManager.createGroupPermission(g, list);
-	}
-
-	public List<Menu> listOrderMenus() {
-		return accessPermissionManager.listOrderedMenus();
 	}
 
 	public List<MenuFunction> listFunctionByMenu(Integer idMenu) {
@@ -339,26 +307,23 @@ public class System {
 
 	/*-------------------------------------- USUARIOS -------------------------------------------*/
 
-	public User updateUser(User user) throws EasyCorrectionException {
-		return accessUserManager.updateUser(user);
-	}
-
-	public User retrieveUserByLogin(String login) {
+	private User retrieveUserByLogin(String login) {
 		return accessUserManager.retrieveUserByLogin(login);
 	}
 
 	public List<UserGroup> getUserByGroup(Integer groupId) {
 		return accessUserManager.listUsersByGroup(groupId);
 	}
-	
-	public List<UserGroup> getUsersByGroupAndStage(Integer systemStage, Integer groupId) {
+
+	public List<UserGroup> getUsersByGroupAndStage(Integer systemStage,
+			Integer groupId) {
 		return accessUserManager.listUsersByGroupAndStage(systemStage, groupId);
 	}
-	
+
 	public List<UserGroup> getUserGroupByUser(Integer userId) {
 		return accessUserManager.getUserGroupByUser(userId);
 	}
-	
+
 	public List<UserGroup> getUserGroupByUserIdAndCurrentStageId(Integer userId) {
 		return accessUserManager.getUserGroupByUserIdAndCurrentStageId(userId);
 	}
@@ -367,13 +332,15 @@ public class System {
 		return accessUserManager.changePassword(user, newPassword);
 	}
 
-	public ArrayList<UserGroup> createUsersFromCsvFile(String path, Group group, SystemStage systemStage)
-			throws IOException, EasyCorrectionException {
-		
+	public ArrayList<UserGroup> createUsersFromCsvFile(String path,
+			Group group, SystemStage systemStage) throws IOException,
+			EasyCorrectionException {
+
 		ArrayList<UserGroup> ug = new ArrayList<UserGroup>();
 		path = path.replace("/", File.separator);
 		String uploadDir = ServletUpload.local + path;
-		ug = accessUserManager.createUsersFromCsvFile(uploadDir, group, systemStage);
+		ug = accessUserManager.createUsersFromCsvFile(uploadDir, group,
+				systemStage);
 		for (int i = 0; i < ug.size(); i++) {
 			createUser(ug.get(i));
 			ug.get(i).getUser().setPassword("123456");
@@ -381,31 +348,19 @@ public class System {
 		}
 		return ug;
 	}
-	
-	private void sendEmail(UserGroup ug){
-		
+
+	private void sendEmail(UserGroup ug) {
+
 		String assunto = "Welcome to EasyLabCorrection!";
 		String contato = ug.getUser().getEmail();
 		String mensagem = easyCorrectionUtil.getEmailMessage(ug);
 		String emailInst = SendMailServlet.emailInst;
-		
+
 		try {
 			EmailSender.sendMail(assunto, contato, mensagem, emailInst);
 		} catch (ServletException e) {
-		} catch (IOException e) {}
-	}
-
-	/******************************************** Controle de Criacao/Edicao de Roteiros EasyLabCorrection *********************************************/
-	public SystemStage getStage(int periodId) {
-		return assignmentManager.getPeriod(periodId);
-	}
-
-	public List<SystemStage> getCurrentStage() {
-		return assignmentManager.getCurrentPeriod();
-	}
-
-	public Assignment getAssignment(int assignmentId) {
-		return assignmentManager.getAssignment(assignmentId);
+		} catch (IOException e) {
+		}
 	}
 
 	public Assignment createAssignment(Assignment tempAssignment)
@@ -423,14 +378,6 @@ public class System {
 		return assignmentManager.updateAssignment(tempAssignment);
 	}
 
-	public void deleteAssignment(Assignment assignment)
-			throws AssignmentException {
-		assessmentManager.deleteAllAssessmentsByAssignment(assignment.getId());
-		submissionManager.deleteAllSubmissionsByAssignment(assignment.getId());
-		teamManager.deleteAllTeamHasUserHasAssignmentByAssignment(assignment.getId());
-		assignmentManager.deleteAssignment(assignment);
-	}
-
 	public List<Assignment> listAssignments() {
 		return assignmentManager.getAssignments();
 	}
@@ -438,7 +385,7 @@ public class System {
 	public List<Assignment> getReleasedAssignments() {
 		return assignmentManager.getReleasedAssignments();
 	}
-	
+
 	public List<Assignment> getLateAssignments() {
 		return assignmentManager.getLateAssignments();
 	}
@@ -451,16 +398,8 @@ public class System {
 				idUsuario, idRoteiro);
 	}
 
-	public List<Team> getTeams() {
-		return teamManager.getTeams();
-	}
-
 	public Team getTeam(int id) {
 		return teamManager.getTeam(id);
-	}
-
-	public Team getTeamByName(String teamName) throws Throwable {
-		return teamManager.getTeamByName(teamName);
 	}
 
 	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignments() {
@@ -481,40 +420,31 @@ public class System {
 	public List<Assessment> getAssessmentByAssignmentAndCorrector(
 			Assignment assignment, Integer us) {
 		List<UserGroup> ug = getUserGroupByUser(us);
-		if(lookForTeacherUser(ug)){
+		if (lookForTeacherUser(ug)) {
 			return assessmentManager.getAssessmentByAssignment(assignment);
-		}
-		else{
+		} else {
 			return assessmentManager.getAssessmentByAssignmentAndCorrector(
 					assignment, us);
 		}
 	}
-	
-	private boolean lookForTeacherUser(List<UserGroup> list){
+
+	private boolean lookForTeacherUser(List<UserGroup> list) {
 		for (UserGroup userGroup : list) {
-			if (userGroup.getGroup().getName().equals("Instructor")){
+			if (userGroup.getGroup().getName().equals("Instructor")) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public Submission getLastSubmissionByAssignmentAndTeam(
-			Assignment assignment, Team team) {
-		List<Submission> submissionList = submissionManager
-				.getSubmissionsByAssignmentAndTeam(assignment, team);
-		return submissionList.get(submissionList.size() - 1);
-	}
-
 	public Submission submitAssignment(Submission submission)
 			throws EasyCorrectionException {
 		Assignment assignment = assignmentManager
 				.getReleasedAssignment(submission.getTeamHasUserHasAssignment()
-				.getAssignment().getId());
+						.getAssignment().getId());
 		if (assignment == null) {
-			assignment = assignmentManager
-					.getLateAssignment(submission.getTeamHasUserHasAssignment()
-					.getAssignment().getId());
+			assignment = assignmentManager.getLateAssignment(submission
+					.getTeamHasUserHasAssignment().getAssignment().getId());
 		}
 		return submissionManager.submitAssignment(submission, assignment);
 	}
@@ -532,19 +462,20 @@ public class System {
 				+ submission.getUrl().replace("/", File.separator);
 		String libDirectory = (ServletUpload.local + "/").replace("/",
 				File.separator);
-		
+
 		if (submission.getTeamHasUserHasAssignment().getAssignment()
-				.getAssignmentType().getCompilation()){
-			
+				.getAssignmentType().getCompilation()) {
+
 			// Compilation
 			try {
 				compilationUnit(sourceDirectory, testsDirectory, libDirectory);
-				
-				if(!submission.getTeamHasUserHasAssignment().getAssignment()
-						.getAssignmentType().getTestExecution() &&
-				   !submission.getTeamHasUserHasAssignment().getAssignment()
-						.getAssignmentType().getOutputComparison()){
-					
+
+				if (!submission.getTeamHasUserHasAssignment().getAssignment()
+						.getAssignmentType().getTestExecution()
+						&& !submission.getTeamHasUserHasAssignment()
+								.getAssignment().getAssignmentType()
+								.getOutputComparison()) {
+
 					double automaticTestsGrade = 0;
 					result = "COMPILATION: OK.";
 					assessmentManager.setAssessment(submission,
@@ -555,17 +486,19 @@ public class System {
 			}
 		}
 		if (submission.getTeamHasUserHasAssignment().getAssignment()
-			.getAssignmentType().getTestExecution()){
+				.getAssignmentType().getTestExecution()) {
 			if (submission.getTeamHasUserHasAssignment().getAssignment()
-				.getAutomaticTestsPercentage() > 0) {
-				
+					.getAutomaticTestsPercentage() > 0) {
+
 				// Running Tests
-				testResult = correctionManager.runAutomaticTests(sourceDirectory,
-						submission.getTeamHasUserHasAssignment().getAssignment().getTestTimeLimit());
-	
+				testResult = correctionManager.runAutomaticTests(
+						sourceDirectory, submission
+								.getTeamHasUserHasAssignment().getAssignment()
+								.getTestTimeLimit());
+
 				if (testResult != null) {
-					Object[] answer = correctionManager.getTestsExecutionOutput(
-							testResult, submission);
+					Object[] answer = correctionManager
+							.getTestsExecutionOutput(testResult, submission);
 					double automaticTestsGrade = (Double) answer[0];
 					result = (String) answer[1];
 					assessmentManager.setAssessment(submission,
@@ -580,30 +513,27 @@ public class System {
 			}
 		}
 		if (submission.getTeamHasUserHasAssignment().getAssignment()
-				.getAssignmentType().getOutputComparison()){
+				.getAssignmentType().getOutputComparison()) {
 			/*
-			if (submission.getTeamHasUserHasAssignment().getAssignment()
-				.getAutomaticTestsPercentage() > 0) {
-				
-				// Running Tests
-				testResult = correctionManager.runAutomaticTests(sourceDirectory,
-						submission.getTeamHasUserHasAssignment().getAssignment().getTestTimeLimit());
-	
-				if (testResult != null) {
-					Object[] answer = correctionManager.getTestsExecutionOutput(
-							testResult, submission);
-					double automaticTestsGrade = (Double) answer[0];
-					result = (String) answer[1];
-					assessmentManager.setAssessment(submission,
-							automaticTestsGrade, result);
-				} else {
-					submissionManager.deleteSubmission(submission);
-				}
-			} else {
-				result = "This assessment will not output comparison.";
-				assessmentManager.setAssessment(submission, 0, result);
-				return "Result: " + result;
-			}*/
+			 * if (submission.getTeamHasUserHasAssignment().getAssignment()
+			 * .getAutomaticTestsPercentage() > 0) {
+			 * 
+			 * // Running Tests testResult =
+			 * correctionManager.runAutomaticTests(sourceDirectory,
+			 * submission.getTeamHasUserHasAssignment
+			 * ().getAssignment().getTestTimeLimit());
+			 * 
+			 * if (testResult != null) { Object[] answer =
+			 * correctionManager.getTestsExecutionOutput( testResult,
+			 * submission); double automaticTestsGrade = (Double) answer[0];
+			 * result = (String) answer[1];
+			 * assessmentManager.setAssessment(submission, automaticTestsGrade,
+			 * result); } else { submissionManager.deleteSubmission(submission);
+			 * } } else { result =
+			 * "This assessment will not output comparison.";
+			 * assessmentManager.setAssessment(submission, 0, result); return
+			 * "Result: " + result; }
+			 */
 		}
 		return result;
 	}
@@ -616,9 +546,9 @@ public class System {
 					libDirectory);
 		} catch (CompilationException e) {
 			compilationManager.setCompilationError(false);
-			throw new CompilationException(deleteDirectory(compilationManager
-					.getErrorResult(), testsDirectory, sourceDirectory,
-					libDirectory));
+			throw new CompilationException(deleteDirectory(
+					compilationManager.getErrorResult(), testsDirectory,
+					sourceDirectory, libDirectory));
 		}
 	}
 
@@ -649,10 +579,6 @@ public class System {
 		return teamManager.changeTeam(tua);
 	}
 
-	public Submission getSubmission(int submissionId) {
-		return submissionManager.getSubmission(submissionId);
-	}
-
 	public void deleteSubmission(Submission sub) throws EasyCorrectionException {
 		submissionManager.deleteSubmission(sub);
 	}
@@ -681,18 +607,6 @@ public class System {
 		return submissionManager.getSourceFileName(submission);
 	}
 
-	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignment(
-			Integer assignmentId) {
-		return teamManager
-				.getTeamHasUserHasAssignmentByAssignment(assignmentId);
-	}
-
-	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignmentByAssignmentGroupByTeam(
-			Integer assignmentId) {
-		return teamManager
-				.getTeamHasUserHasAssignmentByAssignmentGroupByTeam(assignmentId);
-	}
-
 	public List<Assignment> getClosedAssignments() {
 		return assignmentManager.getClosedAssignments();
 	}
@@ -717,15 +631,6 @@ public class System {
 		return assessmentManager.saveAssessment(assessment);
 	}
 
-	public void deleteAssessment(Assessment assessment)
-			throws EasyCorrectionException {
-		assessmentManager.deleteAssessment(assessment);
-	}
-
-	public List<Assessment> getAssessmentBySubmission(int submissionId) {
-		return assessmentManager.getAssessmentBySubmission(submissionId);
-	}
-
 	public Assessment allocateCorrector(Assessment assessement)
 			throws EasyCorrectionException {
 		return assessmentManager.updateAssessment(assessement);
@@ -746,10 +651,11 @@ public class System {
 						.getSubmissionDate(), tua, assessment.getSubmission()
 						.getStatus(), assessment.getTestsExecutionResult());
 				Assessment assessAux = new Assessment(assessment.getId(), sub,
-						assessment.getAutomaticGrade(), assessment
-								.getCorrectionGrade(), assessment
-								.getTestsExecutionResult(), assessment
-								.getPenalty(), assessment.getAssessmentDate(),
+						assessment.getAutomaticGrade(),
+						assessment.getCorrectionGrade(),
+						assessment.getTestsExecutionResult(),
+						assessment.getPenalty(),
+						assessment.getAssessmentDate(),
 						assessment.getCorrector());
 				completeList.add(assessAux);
 			}
@@ -831,24 +737,28 @@ public class System {
 	public List<AssignmentType> listAssignmentType() {
 		return assignmentManager.listAssignmentType();
 	}
-	
+
 	public List<SystemStage> systemStageList() {
 		return stageManager.systemStageList();
 	}
 
-	public SystemStage createSystemStage(SystemStage stage) throws EasyCorrectionException{
+	public SystemStage createSystemStage(SystemStage stage)
+			throws EasyCorrectionException {
 		return stageManager.createSystemStage(stage);
 	}
-	
-	public SystemStage updateSystemStage(SystemStage stage) throws EasyCorrectionException{
+
+	public SystemStage updateSystemStage(SystemStage stage)
+			throws EasyCorrectionException {
 		return stageManager.updateSystemStage(stage);
 	}
-	
-	public void deleteSystemStage(SystemStage stage) throws EasyCorrectionException {
+
+	public void deleteSystemStage(SystemStage stage)
+			throws EasyCorrectionException {
 		stageManager.deleteSystemStage(stage);
 	}
-	
-	public void deleteForcedSystemStage(SystemStage stage) throws EasyCorrectionException {
+
+	public void deleteForcedSystemStage(SystemStage stage)
+			throws EasyCorrectionException {
 		assessmentManager.deleteAllAssessmentsByStage(stage.getId());
 		submissionManager.deleteAllSubmissionsByStage(stage.getId());
 		teamManager.deleteAllTeamHasUserHasAssignmentByStage(stage.getId());
@@ -856,46 +766,43 @@ public class System {
 		deleteForcedUsersByStage(stage.getId());
 		stageManager.deleteSystemStage(stage);
 	}
-	
-	private void deleteForcedUsersByStage(Integer stageId) throws EasyCorrectionException{
-		List<UserGroup> userGroupList = accessUserManager.getUserGroupByStage(stageId);
+
+	private void deleteForcedUsersByStage(Integer stageId)
+			throws EasyCorrectionException {
+		List<UserGroup> userGroupList = accessUserManager
+				.getUserGroupByStage(stageId);
 		for (UserGroup userGroup : userGroupList) {
 			deleteUser(userGroup);
 		}
 	}
-	
+
 	public List<Assignment> getAssignmentByCourse(String course) {
 		return assignmentManager.getAssignmentByCourse(course);
 	}
 
-	public String getAssignmentStatus(int assign) {
-		return assignmentManager.getAssignmentStatus(assign);
-	}
-
-	public String countSubmissionsByAssignmentId(int assignmentId) {
-		return submissionManager.countSubmissionsByAssignmentId(assignmentId);
-	}
-
 	public void copyFiles(String testUrlImported,
-			String environmentUrlImported, 
-			String testUrl, 
-			String environmentUrl) {
+			String environmentUrlImported, String testUrl, String environmentUrl) {
 
-		testUrlImported = ServletUpload.local + testUrlImported.replace("/", File.separator);
-		environmentUrlImported = ServletUpload.local + environmentUrlImported.replace("/", File.separator);
+		testUrlImported = ServletUpload.local
+				+ testUrlImported.replace("/", File.separator);
+		environmentUrlImported = ServletUpload.local
+				+ environmentUrlImported.replace("/", File.separator);
 		testUrl = ServletUpload.local + testUrl.replace("/", File.separator);
-		environmentUrl = ServletUpload.local + environmentUrl.replace("/", File.separator);
-		
-        File testImportedDir = new File(testUrlImported);  
-        File testDir = new File(testUrl);
-        File environmentImportedDir = new File(environmentUrlImported);  
-        File environmentDir = new File(environmentUrl);
-        
-        try {
+		environmentUrl = ServletUpload.local
+				+ environmentUrl.replace("/", File.separator);
+
+		File testImportedDir = new File(testUrlImported);
+		File testDir = new File(testUrl);
+		File environmentImportedDir = new File(environmentUrlImported);
+		File environmentDir = new File(environmentUrl);
+
+		try {
 			easyCorrectionUtil.copyDirectory(testImportedDir, testDir);
-			easyCorrectionUtil.copyDirectory(environmentImportedDir, environmentDir);
-		} catch (IOException e) {}
-    
+			easyCorrectionUtil.copyDirectory(environmentImportedDir,
+					environmentDir);
+		} catch (IOException e) {
+		}
+
 	}
-	
+
 }
