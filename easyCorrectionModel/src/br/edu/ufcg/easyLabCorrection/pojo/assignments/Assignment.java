@@ -4,7 +4,7 @@ import java.util.Date;
 import br.edu.ufcg.easyLabCorrection.pojo.system.SystemStage;
 
 public class Assignment {
-	
+
 	private Integer id;
 	private SystemStage stage;
 	private String name;
@@ -20,7 +20,7 @@ public class Assignment {
 	private String interfaceDirectory;
 	private String testsDirectory;
 	private AssignmentType assignmentType;
-	
+
 	public Assignment() {
 		super();
 	}
@@ -61,111 +61,111 @@ public class Assignment {
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public SystemStage getStage() {
 		return stage;
 	}
-	
+
 	public void setStage(SystemStage stage) {
 		this.stage = stage;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public Date getReleaseDate() {
 		return releaseDate;
 	}
-	
+
 	public void setReleaseDate(Date releaseDate) {
 		this.releaseDate = releaseDate;
 	}
-	
+
 	public Date getDeliveryDate() {
 		return deliveryDate;
 	}
-	
+
 	public void setDeliveryDate(Date deliveryDate) {
 		this.deliveryDate = deliveryDate;
 	}
-	
+
 	public Date getDiscussionDate() {
 		return discussionDate;
 	}
-	
+
 	public void setDiscussionDate(Date discussionDate) {
 		this.discussionDate = discussionDate;
 	}
-	
+
 	public Integer getParticipantsMaxNumber() {
 		return participantsMaxNumber;
 	}
-	
+
 	public void setParticipantsMaxNumber(Integer participantsMaxNumber) {
 		this.participantsMaxNumber = participantsMaxNumber;
 	}
-	
+
 	public Integer getSendMaxNumber() {
 		return sendMaxNumber;
 	}
-	
+
 	public void setSendMaxNumber(Integer sendMaxNumber) {
 		this.sendMaxNumber = sendMaxNumber;
 	}
-	
+
 	public double getPenaltyPerDaysLate() {
 		return penaltyPerDaysLate;
 	}
-	
+
 	public void setPenaltyPerDaysLate(double penaltyPerDaysLate) {
 		this.penaltyPerDaysLate = penaltyPerDaysLate;
 	}
-	
+
 	public double getAutomaticTestsPercentage() {
 		return automaticTestsPercentage;
 	}
-	
+
 	public void setAutomaticTestsPercentage(double automaticTestsPercentage) {
 		this.automaticTestsPercentage = automaticTestsPercentage;
 	}
-	
+
 	public Integer getTestTimeLimit() {
 		return testTimeLimit;
 	}
-	
+
 	public void setTestTimeLimit(Integer testTimeLimit) {
 		this.testTimeLimit = testTimeLimit;
 	}
-	
+
 	public String getInterfaceDirectory() {
 		return interfaceDirectory;
 	}
-	
+
 	public void setInterfaceDirectory(String interfaceDirectory) {
 		this.interfaceDirectory = interfaceDirectory;
 	}
-	
+
 	public String getTestsDirectory() {
 		return testsDirectory;
 	}
-	
+
 	public void setTestsDirectory(String testsDirectory) {
 		this.testsDirectory = testsDirectory;
 	}
@@ -298,5 +298,5 @@ public class Assignment {
 				+ ", interfaceDirectory=" + interfaceDirectory
 				+ ", testsDirectory=" + testsDirectory + "]";
 	}
-	
+
 }
