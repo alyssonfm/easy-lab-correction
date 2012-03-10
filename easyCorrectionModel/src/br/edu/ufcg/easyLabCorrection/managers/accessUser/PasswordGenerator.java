@@ -20,7 +20,7 @@ public class PasswordGenerator {
 	 * @return The password generated<br>
 	 */
 		public static String generatePassword(int digits, String key) {
-			String[] keys = new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9",
+			String[] keys = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9",
 					"0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
 					"N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 

@@ -430,11 +430,8 @@ public class AccessUserManager extends Manager {
 		Matcher pesqLogin = patLogin.matcher(user.getLogin());
 		System.out.println(pesqLogin.matches());
 
-		if (pesqName.matches() && pesqEmail.matches() && pesqLogin.matches()) {
-			return true;
-		} else {
-			return false;
-		}
+		return pesqName.matches() && pesqEmail.matches() && pesqLogin.matches();
+		
 	}
 	
 }
