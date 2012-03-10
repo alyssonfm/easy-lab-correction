@@ -118,7 +118,7 @@ public class SwapperAtributosReflect {
 	 * 
 	 */
 	public static Object getAtributo(Object objeto, String atributo,
-			boolean isBoolean) throws NonexistantAttributeException {
+			boolean isBoolean){
 		try {
 			Method m = null;
 			if (isBoolean) {
@@ -145,7 +145,7 @@ public class SwapperAtributosReflect {
 	 * @throws NonexistantAttributeException If the attribute does not exist.<br>
 	 */
 	public static Object getAtributo(Object objeto, String atributo,
-			Class<?> type) throws NonexistantAttributeException {
+			Class<?> type) {
 		if (type.getName().equalsIgnoreCase("boolean")) {
 			return getAtributo(objeto, atributo, true);
 		} else {
