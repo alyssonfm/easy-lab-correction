@@ -1,4 +1,3 @@
-
 package br.edu.ufcg.easyLabCorrection.DAO.hibernate;
 
 import java.io.Serializable;
@@ -19,12 +18,14 @@ import org.hibernate.criterion.Restrictions;
 import br.edu.ufcg.easyLabCorrection.exceptions.EasyCorrectionRunTimeException;
 
 /**
- * Generated at Fri Jan 30 09:30:06 GMT-03:00 2009
- *
- * @author Salto-db Generator v1.0.16 / Pojos + Hibernate mapping + Generic DAO
- * @see http://www.hibernate.org/328.html
+ * 
+ * @author Demetrio
+ * 
+ * @param <T>
+ * @param <ID>
  */
-public abstract class AbstractHibernateDAO<T, ID extends Serializable> implements GenericDAO<T, ID> {
+public abstract class AbstractHibernateDAO<T, ID extends Serializable>
+		implements GenericDAO<T, ID> {
 
 	private Session session;
 
@@ -33,7 +34,8 @@ public abstract class AbstractHibernateDAO<T, ID extends Serializable> implement
 	@SuppressWarnings("unchecked")
 	public AbstractHibernateDAO(Session s) {
 		session = s;
-		this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		this.persistentClass = (Class<T>) ((ParameterizedType) getClass()
+				.getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
 	public Session getSession() {
@@ -46,66 +48,66 @@ public abstract class AbstractHibernateDAO<T, ID extends Serializable> implement
 
 	@SuppressWarnings("unchecked")
 	public ID save(T entity) {
-		ID id =null;
-		try{
+		ID id = null;
+		try {
 			HibernateUtil.beginTransaction();
 			id = (ID) getSession().save(entity);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new EasyCorrectionRunTimeException(e.getMessage());
-		}finally{
+		} finally {
 			HibernateUtil.commitTransactionCloseSession();
 		}
 		return id;
 	}
 
-	public void saveLista(List <Object> lista){
+	public void saveLista(List<Object> lista) {
 		HibernateUtil.beginTransaction();
-		for(Object object : lista){
+		for (Object object : lista) {
 			getSession().save(object);
 		}
 		HibernateUtil.commitTransactionCloseSession();
 	}
 
 	public void update(T entity) {
-		try{
+		try {
 			HibernateUtil.beginTransaction();
 			getSession().update(entity);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new EasyCorrectionRunTimeException(e.getMessage());
-		}finally{
+		} finally {
 			HibernateUtil.commitTransactionCloseSession();
 		}
 	}
 
 	public void merge(T entity) {
-		try{
+		try {
 			HibernateUtil.beginTransaction();
 			getSession().merge(entity);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new EasyCorrectionRunTimeException(e.getMessage());
-		}finally{
+		} finally {
 			HibernateUtil.commitTransactionCloseSession();
 		}
 	}
-	
+
 	public void saveOrUpdate(T entity) {
-		try{
+		try {
 			HibernateUtil.beginTransaction();
 			getSession().saveOrUpdate(entity);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new EasyCorrectionRunTimeException(e.getMessage());
-		}finally{
+		} finally {
 			HibernateUtil.commitTransactionCloseSession();
 		}
 	}
 
 	public void delete(T entity) {
-		try{
+		try {
 			HibernateUtil.beginTransaction();
 			getSession().delete(entity);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new EasyCorrectionRunTimeException(e.getMessage());
-		}finally{
+		} finally {
 			HibernateUtil.commitTransactionCloseSession();
 		}
 	}
@@ -123,7 +125,8 @@ public abstract class AbstractHibernateDAO<T, ID extends Serializable> implement
 	 * This method will execute an HQL query and return the number of affected
 	 * entities. Já realiza o commit e fecha a sessao
 	 */
-	protected int executeQuery(String query, String namedParams[], Object params[]) {
+	protected int executeQuery(String query, String[] namedParams,
+			Object[] params) {
 		Query q = getSession().createQuery(query);
 		if (namedParams != null) {
 			for (int i = 0; i < namedParams.length; i++) {
@@ -137,6 +140,7 @@ public abstract class AbstractHibernateDAO<T, ID extends Serializable> implement
 
 	/**
 	 * Executa a query e reliza o commit.
+	 * 
 	 * @param query
 	 * @return
 	 */
@@ -151,7 +155,8 @@ public abstract class AbstractHibernateDAO<T, ID extends Serializable> implement
 	 * This method will execute a Named HQL query and return the number of
 	 * affected entities.
 	 */
-	protected int executeNamedQuery(String namedQuery, String namedParams[],Object params[]) {
+	protected int executeNamedQuery(String namedQuery, String[] namedParams,
+			Object[] params) {
 		Query q = getSession().getNamedQuery(namedQuery);
 		if (namedParams != null) {
 			for (int i = 0; i < namedParams.length; i++) {
@@ -166,24 +171,24 @@ public abstract class AbstractHibernateDAO<T, ID extends Serializable> implement
 	protected int executeNamedQuery(String namedQuery) {
 		return executeNamedQuery(namedQuery, null, null);
 	}
-	
+
 	public Class<T> getPersistentClass() {
-        return persistentClass;
-    }
+		return persistentClass;
+	}
 
 	@SuppressWarnings("unchecked")
 	public T getById(ID id) {
 
 		T t = (T) getSession().get(getPersistentClass(), id);
-		if (t != null){
-			List <T> l = new LinkedList<T>();
+		if (t != null) {
+			List<T> l = new LinkedList<T>();
 			l.add(t);
 			instantiatesList(l);
 			return l.get(0);
-		}else{
-			return t;	
+		} else {
+			return t;
 		}
-		 
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -200,56 +205,57 @@ public abstract class AbstractHibernateDAO<T, ID extends Serializable> implement
 		return (T) getSession().load(getPersistentClass(), id);
 	}
 
-	public void deleteById(ID id) 	{
+	public void deleteById(ID id) {
 		getSession().delete(loadById(id));
 	}
 
-    public List<T> findAll() {
-        return findByCriteria();
-    }
-	
+	public List<T> findAll() {
+		return findByCriteria();
+	}
+
 	/**
-     * Use this inside subclasses as a convenience method.
-     */
-    @SuppressWarnings("unchecked")
-    protected List<T> findByCriteria(Criterion... criterion) {
-        Criteria crit = getSession().createCriteria(getPersistentClass());
-        for (Criterion c : criterion) {
-            crit.add(c);
-        }
-        crit.setMaxResults(5000);//FIXME limitar a consulta
-        List<T> lista = crit.list();
-        instantiatesList(lista);
-        return  lista;
-   }
-   
-   	/**
- 	 * Find by criteria.
+	 * Use this inside subclasses as a convenience method.
+	 */
+	@SuppressWarnings("unchecked")
+	protected List<T> findByCriteria(Criterion... criterion) {
+		Criteria crit = getSession().createCriteria(getPersistentClass());
+		for (Criterion c : criterion) {
+			crit.add(c);
+		}
+		crit.setMaxResults(5000);// FIXME limitar a consulta
+		List<T> lista = crit.list();
+		instantiatesList(lista);
+		return lista;
+	}
+
+	/**
+	 * Find by criteria.
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> findByCriteria(Map criterias) {
-	
+
 		Criteria criteria = getSession().createCriteria(getPersistentClass());
 		criteria.add(Restrictions.allEq(criterias));
 		List<T> lista = criteria.list();
-	    instantiatesList(lista);
-	    return  lista;
+		instantiatesList(lista);
+		return lista;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-    public List<T> findByExample(T exampleInstance, String[] excludeProperty) {
-        Criteria crit = getSession().createCriteria(getPersistentClass());
-        Example example =  Example.create(exampleInstance).excludeZeroes().enableLike().ignoreCase();
-        for (String exclude : excludeProperty) {
-            example.excludeProperty(exclude);
-        }
-        
-        crit.add(example);
-        List<T> lista = crit.list();
-        instantiatesList(lista);
-        return  lista;
-    }	
-	
+	public List<T> findByExample(T exampleInstance, String[] excludeProperty) {
+		Criteria crit = getSession().createCriteria(getPersistentClass());
+		Example example = Example.create(exampleInstance).excludeZeroes()
+				.enableLike().ignoreCase();
+		for (String exclude : excludeProperty) {
+			example.excludeProperty(exclude);
+		}
+
+		crit.add(example);
+		List<T> lista = crit.list();
+		instantiatesList(lista);
+		return lista;
+	}
+
 	public abstract List<T> instantiatesList(List<T> lista);
-	
+
 }
