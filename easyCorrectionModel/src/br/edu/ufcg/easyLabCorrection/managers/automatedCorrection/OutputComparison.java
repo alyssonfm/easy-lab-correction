@@ -27,15 +27,14 @@ import br.edu.ufcg.easyLabCorrection.util.SecuritySupport;
  * standard output <br>
  * * The input and output txt files shall not contain accents
  */
-public class OutputComparison extends Thread{
-	
+public class OutputComparison extends Thread {
+
 	private String sourceDirectory;
 	private String inOutFilesDirectory;
 	private String result;
 	private Object pass;
 	private SecuritySupport secSupport;
-	
-	
+
 	/**
 	 * Constructor default of class, creates a new object OutputComparison.<br>
 	 */
@@ -43,10 +42,10 @@ public class OutputComparison extends Thread{
 		super();
 		pass = new Object();
 		secSupport = new SecuritySupport(pass);
-		this.inOutFilesDirectory = inOutFilesDirectory; 
+		this.inOutFilesDirectory = inOutFilesDirectory;
 		this.sourceDirectory = sourceDirectory;
 	}
-	
+
 	/**
 	 * This is the most important function of the module. Its job is execute the
 	 * given mainSolution (Main.java file) with the test data strings from the
@@ -61,56 +60,62 @@ public class OutputComparison extends Thread{
 	 * @param outputFile
 	 *            - the .txt file with all the expected outputs
 	 * @return an ArrayList with a boolean result for each test case
-	 * @throws EasyCorrectionException 
+	 * @throws EasyCorrectionException
 	 */
-	public ArrayList<Boolean> compareOutput(){
-		
-		try{
+	public ArrayList<Boolean> compareOutput() {
+
+		try {
 			File inputFile = new File(this.inOutFilesDirectory + "entrada.txt");
 			File outputFile = new File(this.inOutFilesDirectory + "saida.txt");
-	
+
 			ArrayList<String> testSuite = readTestCasesFromFile(inputFile);
 			ArrayList<String> expectedOutput = readExpectedOutputsFromFile(outputFile);
-			ArrayList<Boolean> testVerdicts = new ArrayList<Boolean>(testSuite
-					.size());
-	
+			ArrayList<Boolean> testVerdicts = new ArrayList<Boolean>(
+					testSuite.size());
+
 			PrintStream stdout = System.out;
 			OurOutputStream ourOutputStream = new OurOutputStream();
-	
+
 			System.setOut(new PrintStream(ourOutputStream));
-			
+
 			URLClassLoader cl;
 			Class<?> testClass;
 
 			try {
 				TestExecutionFileFilter tv = new TestExecutionFileFilter();
-				//Gets the names of all java files inside sourceDirectory
-				ArrayList<String> listSource = tv.visitAllDirsAndFiles(new File(sourceDirectory));
-				if (listSource.size() != 0){
+				// Gets the names of all java files inside sourceDirectory
+				ArrayList<String> listSource = tv
+						.visitAllDirsAndFiles(new File(sourceDirectory));
+				if (listSource.size() != 0) {
 					String pathFile = tv.findMainClass();
-					String path = pathFile.substring(sourceDirectory.length(), 
-						pathFile.lastIndexOf(File.separator) + 1).replace(File.separator, ".");
-					cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
-						.toURI().toURL() });
+					String path = pathFile.substring(sourceDirectory.length(),
+							pathFile.lastIndexOf(File.separator) + 1).replace(
+							File.separator, ".");
+					cl = new URLClassLoader(new URL[] { new File(
+							sourceDirectory).toURI().toURL() });
 					testClass = cl.loadClass(path + Constants.mainClass);
-					
-					Class<?> getArg1[] = { (new String[1]).getClass() };
-				    Method m = testClass.getMethod("main", getArg1);
-				    
-				    for (int i = 0; i < testSuite.size(); i++) {
+
+					Class<?>[] getArg1 = { (new String[1]).getClass() };
+					Method m = testClass.getMethod("main", getArg1);
+
+					for (int i = 0; i < testSuite.size(); i++) {
 						// Solution Execution
-						String[] arg1 = testSuite.get(i).split(Constants.TEST_DATA_SEPARATOR);
-						Object args[] = {arg1};
+						String[] arg1 = testSuite.get(i).split(
+								Constants.TEST_DATA_SEPARATOR);
+						Object[] args = { arg1 };
 						m.invoke(null, args);
-			
+
 						// Result comparison
-						testVerdicts.add(i, compareActualAndExpectedOutputs(ourOutputStream
-								.toString(), expectedOutput.get(i)));
-			
+						testVerdicts.add(
+								i,
+								compareActualAndExpectedOutputs(
+										ourOutputStream.toString(),
+										expectedOutput.get(i)));
+
 						// Stream cleaning
 						ourOutputStream.flushOurStream();
 					}
-			
+
 					System.setOut(stdout);
 					setResult("OK!");
 					return testVerdicts;
@@ -120,8 +125,7 @@ public class OutputComparison extends Thread{
 				System.err.println(e.getMessage());
 				setResult(null);
 			}
-		}
-		catch(EasyCorrectionException ece){
+		} catch (EasyCorrectionException ece) {
 			return new ArrayList<Boolean>();
 		}
 		return new ArrayList<Boolean>();
@@ -150,9 +154,10 @@ public class OutputComparison extends Thread{
 	 * @param f
 	 *            - the complete output file
 	 * @return an ArrayList of the expected output strings
-	 * @throws EasyCorrectionException 
+	 * @throws EasyCorrectionException
 	 */
-	private ArrayList<String> readExpectedOutputsFromFile(File f) throws EasyCorrectionException {
+	private ArrayList<String> readExpectedOutputsFromFile(File f)
+			throws EasyCorrectionException {
 		return readStringsFromFile(f, Constants.EXPECTED_OUTPUT_SEPARATOR);
 	}
 
@@ -162,9 +167,10 @@ public class OutputComparison extends Thread{
 	 * @param f
 	 *            - the complete input file
 	 * @return an ArrayList with the test case strings
-	 * @throws EasyCorrectionException 
+	 * @throws EasyCorrectionException
 	 */
-	private ArrayList<String> readTestCasesFromFile(File f) throws EasyCorrectionException {
+	private ArrayList<String> readTestCasesFromFile(File f)
+			throws EasyCorrectionException {
 		return readStringsFromFile(f, Constants.TEST_CASE_SEPARATOR);
 	}
 
@@ -207,7 +213,7 @@ public class OutputComparison extends Thread{
 
 		return contentOfFile;
 	}
-	
+
 	public void run() {
 		SecurityManager old = System.getSecurityManager();
 		System.setSecurityManager(secSupport);
