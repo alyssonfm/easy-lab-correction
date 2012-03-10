@@ -20,14 +20,14 @@ import br.edu.ufcg.easyLabCorrection.util.Constants;
 import br.edu.ufcg.easyLabCorrection.util.SecuritySupport;
 
 /**
- * Class responsible for managing of tests in the system 
- * Easy Lab Correction.<br>
+ * Class responsible for managing of tests in the system Easy Lab Correction.<br>
+ * 
  * @author Alysson Filgueira, Augusto Queiroz e Demetrio Gomes.<br>
  * @version 1.0 14 of May of 2011.<br>
- *
+ * 
  */
-public class TestExecution extends Thread{
-	
+public class TestExecution extends Thread {
+
 	private String sourceDirectory;
 	private TestResult result;
 	private Object pass = new Object();
@@ -40,7 +40,7 @@ public class TestExecution extends Thread{
 		super();
 		this.sourceDirectory = sourceDirectory;
 	}
-	
+
 	public TestResult getResult() {
 		return result;
 	}
@@ -58,30 +58,35 @@ public class TestExecution extends Thread{
 	}
 
 	/**
-	 * Function used to execute the tests of system, receives as parameter
-	 * the path of the tests directory, and of the source code directory.<br>
-	 * @param sourceDirectory The path of source code directory.<br>
-	 * @param testsDirectory The path of tests directory.<br>
+	 * Function used to execute the tests of system, receives as parameter the
+	 * path of the tests directory, and of the source code directory.<br>
+	 * 
+	 * @param sourceDirectory
+	 *            The path of source code directory.<br>
+	 * @param testsDirectory
+	 *            The path of tests directory.<br>
 	 * @return The test result of execution.<br>
-	 * @throws TestExecutionException Exception can be thrown during 
-	 * the execution of tests.<br>
+	 * @throws TestExecutionException
+	 *             Exception can be thrown during the execution of tests.<br>
 	 */
-	public void executeTests(){
-		
+	public void executeTests() {
+
 		JUnit4TestAdapter testAdapter;
 		URLClassLoader cl;
 		Class<?> testClass;
 
 		try {
 			TestExecutionFileFilter tv = new TestExecutionFileFilter();
-			//Gets the names of all java files inside sourceDirectory
-			ArrayList<String> listSource = tv.visitAllDirsAndFiles(new File(sourceDirectory));
-			if (listSource.size() != 0){
+			// Gets the names of all java files inside sourceDirectory
+			ArrayList<String> listSource = tv.visitAllDirsAndFiles(new File(
+					sourceDirectory));
+			if (listSource.size() != 0) {
 				String pathFile = tv.findMainTest();
-				String path = pathFile.substring(sourceDirectory.length(), 
-					pathFile.lastIndexOf(File.separator) + 1).replace(File.separator, ".");
+				String path = pathFile.substring(sourceDirectory.length(),
+						pathFile.lastIndexOf(File.separator) + 1).replace(
+						File.separator, ".");
 				cl = new URLClassLoader(new URL[] { new File(sourceDirectory)
-					.toURI().toURL() }, JUnitCore.class.getClassLoader());
+						.toURI().toURL() }, JUnitCore.class.getClassLoader());
 				testClass = cl.loadClass(path + Constants.mainTest);
 				testAdapter = new JUnit4TestAdapter(testClass);
 				result = TestRunner.run(testAdapter);
@@ -100,19 +105,22 @@ public class TestExecution extends Thread{
 		System.setSecurityManager(old);
 		secSupport.disable(pass);
 	}
-	
+
 	/**
-	 * Function used to retrieve the output of tests execution, receives a test 
+	 * Function used to retrieve the output of tests execution, receives a test
 	 * result and a submission as parameter.<br>
-	 * @param result The test result of execution of submission who want to 
-	 * retrieve the output.<br>  
-	 * @param submission The submission who want to retrieve the output.<br>  
+	 * 
+	 * @param result
+	 *            The test result of execution of submission who want to
+	 *            retrieve the output.<br>
+	 * @param submission
+	 *            The submission who want to retrieve the output.<br>
 	 * @return The string corresponding at the tests execution of the submission
-	 * received as parameter.<br>
+	 *         received as parameter.<br>
 	 */
 	public Object[] getTestsExecutionOutput(TestResult result,
 			Submission submission) {
-		
+
 		TeamHasUserHasAssignment tua = submission.getTeamHasUserHasAssignment();
 		String report = "";
 
@@ -122,7 +130,7 @@ public class TestExecution extends Thread{
 				/ testsRunnedNumber;
 		double automaticTestsGrade = (itemsPercent * tua.getAssignment()
 				.getAutomaticTestsPercentage()) / 1000;
-		
+
 		report = "Assessment Report: \n\n"
 				+ "Total of Test Cases Executed = "
 				+ testsRunnedNumber
@@ -130,17 +138,12 @@ public class TestExecution extends Thread{
 				+ "Error Verdict(s) = "
 				+ errors
 				+ "\n"
-//				+ "Failures Verdict(s) = "
-//				+ result.failureCount()
-//				+ "\n"
-				+ "Success Verdict(s) = "
-				+ (testsRunnedNumber - errors)
-				+ "\n"
-				+ "Success percentage = "
-				+ itemsPercent
-				+ " %\n"
-				+ "Automatic Execution Grade: "
-				+ automaticTestsGrade
+				// + "Failures Verdict(s) = "
+				// + result.failureCount()
+				// + "\n"
+				+ "Success Verdict(s) = " + (testsRunnedNumber - errors) + "\n"
+				+ "Success percentage = " + itemsPercent + " %\n"
+				+ "Automatic Execution Grade: " + automaticTestsGrade
 				+ "\n\nConsole: \n";
 
 		if (result.wasSuccessful()) {
