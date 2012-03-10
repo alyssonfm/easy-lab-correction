@@ -47,10 +47,10 @@ public class DumpSender implements Job {
 		props.put("mail.smtp.auth", "true");
 	
 		Session session = Session.getDefaultInstance(props,
-		new javax.mail.Authenticator() 
-		{
-			protected PasswordAuthentication getPasswordAuthentication()
-			{ return new PasswordAuthentication("leda@dsc.ufcg.edu.br", "lda!2010");	}
+		new javax.mail.Authenticator(){
+			protected PasswordAuthentication getPasswordAuthentication(){ 
+				return new PasswordAuthentication("leda@dsc.ufcg.edu.br", "lda!2010");
+			}
 		});		
 	
 		try {
