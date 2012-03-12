@@ -120,6 +120,10 @@ public class System {
 	public User getUserByLogin(String login) {
 		return accessUserManager.getUserByLogin(login);
 	}
+	
+	private User getUserByEmail(String email) {
+		return accessUserManager.getUserByEmail(email);
+	}
 
 	public MenuFunction createFunction(MenuFunction function)
 			throws EasyCorrectionException {
@@ -346,11 +350,19 @@ public class System {
 				createUser(ug.get(i));
 				ug.get(i).getUser().setPassword("123456");
 				sendEmail(ug.get(i));
-			}catch(Exception e){
-				User us = getUserByLogin(ug.get(i).getUser().getLogin());
-				ug.get(i).setUser(us);
-				List<UserGroup> ugs = getUserGroupByUser(us.getUserId());
-				if (!containsGroup(ug.get(i), ugs)){
+			}catch(ObjectNotFoundException e){
+				try{
+					User us = getUserByLogin(ug.get(i).getUser().getLogin());
+					ug.get(i).setUser(us);
+					List<UserGroup> ugs = getUserGroupByUser(us.getUserId());
+					if (!containsGroup(ug.get(i), ugs)){
+						createUserGroup(ug.get(i));
+					}
+				}catch(ObjectNotFoundException ex){
+					User us = getUserByEmail(ug.get(i).getUser().getEmail());
+					us.setLogin(ug.get(i).getUser().getLogin());
+					ug.get(i).setUser(us);
+					createUser(ug.get(i));
 					createUserGroup(ug.get(i));
 				}
 			}
