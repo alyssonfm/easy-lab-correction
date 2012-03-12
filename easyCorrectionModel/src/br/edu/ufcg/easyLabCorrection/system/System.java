@@ -342,11 +342,31 @@ public class System {
 		ug = accessUserManager.createUsersFromCsvFile(uploadDir, group,
 				systemStage);
 		for (int i = 0; i < ug.size(); i++) {
-			createUser(ug.get(i));
-			ug.get(i).getUser().setPassword("123456");
-			sendEmail(ug.get(i));
+			try{
+				createUser(ug.get(i));
+				ug.get(i).getUser().setPassword("123456");
+				sendEmail(ug.get(i));
+			}catch(Exception e){
+				User us = getUserByLogin(ug.get(i).getUser().getLogin());
+				ug.get(i).setUser(us);
+				List<UserGroup> ugs = getUserGroupByUser(us.getUserId());
+				if (!containsGroup(ug.get(i), ugs)){
+					createUserGroup(ug.get(i));
+				}
+			}
 		}
 		return ug;
+	}
+	
+	private boolean containsGroup(UserGroup ug, List<UserGroup> ugs) {
+		for (UserGroup userGroup : ugs) {
+			if(userGroup.getSystemStage().getId().equals(ug.getSystemStage().getId()) &&
+				userGroup.getUser().getLogin().equals(ug.getUser().getLogin()) &&
+				userGroup.getGroup().getGroupId().equals(ug.getGroup().getGroupId())){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void sendEmail(UserGroup ug) {
@@ -396,6 +416,10 @@ public class System {
 			Integer idUsuario, Integer idRoteiro) {
 		return teamManager.getTeamHasUserHasAssignmentByUserAndAssignment(
 				idUsuario, idRoteiro);
+	}
+	
+	public List<Team> getTeams() {
+		return teamManager.getTeams();
 	}
 
 	public Team getTeam(int id) {
