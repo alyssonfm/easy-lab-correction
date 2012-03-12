@@ -95,7 +95,7 @@ public class UserGroupHibernateDAO extends
 
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findByUserId(Integer userId) {
-		Query q = getSession().createQuery("from UserGroup where user.userId = :userId");
+		Query q = getSession().createQuery("from UserGroup where user.userId = :userId order by systemStage.id desc");
 		q.setParameter("userId",userId);
 		q.setCacheable(true);
 		List <UserGroup> list = q.list();
