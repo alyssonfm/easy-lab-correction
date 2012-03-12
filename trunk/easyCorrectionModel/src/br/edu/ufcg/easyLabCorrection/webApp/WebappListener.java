@@ -25,7 +25,7 @@ public class WebappListener implements ServletContextListener {
 				+ sce.getServletContext().getContextPath() + "...");
 		
 		if (sce.getServletContext().getContextPath().equals(
-				"/easyCorrectionModel")) {
+				"/easyCorrection")) {
 			  
 			new ELCScheduler(6, 23, 0);
 		}
