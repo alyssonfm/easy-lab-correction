@@ -412,6 +412,15 @@ public class Facade {
 			throw e;
 		}
 	}
+	
+	public List<Team> getTeams() throws Throwable {
+		try {
+			return system.getTeams();
+		} catch (Throwable e) {
+			log.error("getTeams()", e);
+			throw e;
+		}
+	}
 
 	public List<TeamHasUserHasAssignment> getTeamHasUserHasAssignments()
 			throws Throwable {
