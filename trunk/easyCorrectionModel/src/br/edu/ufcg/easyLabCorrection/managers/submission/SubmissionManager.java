@@ -105,7 +105,7 @@ public class SubmissionManager {
 						.getSendMaxNumber())) {
 
 					submission.setSubmissionDate(easyCorrectionUtil
-							.getDataNow());
+							.getRealTime());
 					Integer id = DAOFactory.DEFAULT.buildSubmissionDAO().save(
 							submission);
 					submission.setId(id);
