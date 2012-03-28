@@ -306,13 +306,13 @@ public class AssessmentManager extends Manager {
 					submission.getTeamHasUserHasAssignment().getTeam().getId());
 			assess.setSubmission(submission);
 			assess.setAutomaticGrade(automaticTestsGrade);
-			assess.setAssessmentDate(easyCorrectionUtil.getDataNow());
+			assess.setAssessmentDate(easyCorrectionUtil.getRealTime());
 			assess.setTestsExecutionResult(automaticTestsResult);
 			return updateAssessment(assess);
 		} catch (ObjectNotFoundException e) {
 			Assessment assess = new Assessment(0, submission,
 					automaticTestsGrade, 0.0, automaticTestsResult, 0.0,
-					easyCorrectionUtil.getDataNow(), null);
+					easyCorrectionUtil.getRealTime(), null);
 			return createAssessment(assess);
 		}
 	}
