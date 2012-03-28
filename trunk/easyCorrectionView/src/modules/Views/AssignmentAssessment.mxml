@@ -123,6 +123,9 @@
 					membersList.dataProvider = new ArrayCollection(); 
 					membersList.dataProvider = event.result;
 					try{
+						var subDate: Date = assessment.submission.submissionDate;
+						inputSendingTime.text = subDate.getHours() + "h " + subDate.getMinutes() + "m " + subDate.getSeconds() + "s on " + 
+							subDate.getDate() + "/" + (subDate.getMonth() + 1) + "/" + subDate.fullYear;
 						var grade: Number = assessment.correctionGrade;
 						grade = (grade / (100 - assessment.submission.teamHasUserHasAssignment.assignment.automaticTestsPercentage)) * 100;
 						if(grade == 10){
@@ -215,6 +218,8 @@
 			textAlign="left" width="72" x="10" y="72" id="labelGroups"/>
 		<mx:Label text="Members: " fontWeight="bold"
 			textAlign="left" width="93.04999" x="265.95" y="72" id="labelMembers" height="20"/>
+		<mx:Label text="Sending Time: " fontWeight="bold"
+			textAlign="left" width="109" x="265.95" y="244" id="labelMembers0" height="20"/>
 		<comp:ComboBoxAC labelField="name" x="114" y="21" width="656" id="comboAssignment" change="getAssingmentTeamByAssingment()"/>
 		<mx:HRule x="10" y="62" width="760" height="2"/>
 		<mx:HRule x="251" y="234" width="518" height="2"/>
@@ -223,13 +228,14 @@
 		<mx:VRule x="244" y="62" height="334" width="13.95"/>
 		<mx:Button x="265.95" y="179" label="Download Solution" click="codeDownload()" width="244" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="downloadImplementation" enabled="false"/>
 		<mx:Button x="526" y="179" label="Source Grading" click="openCorrectionModule()" width="244" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" id="buttonSourceGrading" enabled="false"/>
-		<mx:Button x="383" y="329" label="Save Grade" click="saveGradeCorrector()" width="254" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" enabled="false" id="buttonSave"/>
+		<mx:Button x="382.95" y="342" label="Save Grade" click="saveGradeCorrector()" width="254" height="33" fontSize="16" fontStyle="italic" fontWeight="normal" enabled="false" id="buttonSave"/>
 		<mx:Label text="Grade:" fontWeight="bold"
-			textAlign="left" width="69" x="383" y="275" id="labelGrade" fontSize="16"/>
+			textAlign="left" width="69" x="382.95" y="288" id="labelGrade" fontSize="16"/>
 		<mx:Label text="Weigth:" fontWeight="bold"
-			textAlign="left" width="64" x="526" y="278" id="labelWeight"/>
-		<mx:Label fontWeight="bold" textAlign="left" width="49" x="588" y="278" id="inputWeight" height="23"/>
-		<comp:MaskedTextInput x="460" y="276" inputMask="##,##" width="58" id="inputGrade" color="#1B7A0F" text="0"/>
+			textAlign="left" width="64" x="525.95" y="291" id="labelWeight"/>
+		<mx:Label fontWeight="bold" textAlign="left" width="49" x="587.95" y="291" id="inputWeight" height="23"/>
+		<mx:Label fontWeight="bold" textAlign="left" width="387.05" x="382.95" y="244" id="inputSendingTime" height="23"/>
+		<comp:MaskedTextInput x="459.95" y="289" inputMask="##,##" width="58" id="inputGrade" color="#1B7A0F" text="0"/>
 		
 		
 </les:ModuleTitleWindow>
